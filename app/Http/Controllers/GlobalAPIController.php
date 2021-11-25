@@ -51,26 +51,13 @@ class GlobalAPIController extends Controller
     protected $errors = [];
     protected $message = [];
 
-    public $acceptedClasses = [
-        'caseStudies' => "App\Models\CaseStudy",
-        'projects' => "App\Models\Project",
-        'content' => "App\Models\Content",
-        'experience' => "App\Models\Experience",
-        'images' => "App\Models\Image",
-        'posts' => "App\Models\Post",
-        'resources' => "App\Models\Resource",
-        'categories' => "App\Models\Category",
-        'tags' => "App\Models\Tag",
-        'skillTypes' => "App\Models\SkillType",
-        'skills' => "App\Models\Skill",
-        'workHistoryTypes' => "App\Models\WorkHistoryType",
-        'workHistory' => "App\Models\WorkHistory"
-    ];
+    public $acceptedClasses;
 
     public function processRequest($endpointKey = null, $classId = null, Request $request){
 
         // Initial set up of key variables
         $this->endpointKey = $endpointKey;
+        $this->acceptedClasses = config('coreintegration.acceptedclasses');
         $this->classId = $classId;
         $this->indexUrlPath = substr($request->url(), 0, strpos($request->url(), "api"));
         
