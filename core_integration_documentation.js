@@ -29,6 +29,32 @@
 
             // Further instructions in each of the classes will modify the auto populated index page
 
+    // # default parameters
+        // page
+        // perPage
+        // orderBy
+        // includes
+        // availableColumns
+            // example for http://127.0.0.1:8000/api/v1/projects?availableColumns=find
+            // {
+            //     "availableColumns": [
+            //         "id",
+            //         "title",
+            //         "roles",
+            //         "client",
+            //         "description",
+            //         "content",
+            //         "video_link",
+            //         "code_link",
+            //         "demo_link",
+            //         "start_date",
+            //         "end_date",
+            //         "is_published",
+            //         "created_at",
+            //         "updated_at"
+            //     ]
+            // }
+
 
 
 

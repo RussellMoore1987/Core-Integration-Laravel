@@ -17,10 +17,9 @@ use Illuminate\Support\Facades\DB;
             // select
             // save
 
-    // to add 
-    // includesAccepted
-    // paramsAccepted
-    // paramsRejected
+    // add
+        // get form data
+
 // Список Дел eventually: 
     // nesting relationships
     // select statement
@@ -54,8 +53,6 @@ class GlobalAPIController extends Controller
     public $acceptedClasses;
 
     public function processRequest($endpointKey = null, $classId = null, Request $request){
-
-
         // Initial set up of key variables
         $this->endpointKey = $endpointKey;
         $this->classId = $classId;
@@ -79,6 +76,12 @@ class GlobalAPIController extends Controller
 
         $columnData = $this->getAcceptableParameters();
         $this->setAcceptableParameters($columnData);
+        // If they just want to see what columns are available for this in point
+        if ($request->availableColumns) {
+            return response()->json([
+                'availableColumns' => array_keys($this->acceptableParameters)
+            ], 200);
+        }
         $this->initialProcessOfAllParameters($request->all(), $this->acceptableParameters);
 
         // # which HTTP method
@@ -173,6 +176,8 @@ class GlobalAPIController extends Controller
             } else {
                 if (array_key_exists($orderByColumn, $this->acceptableParameters)) {
                     $this->paramsAccepted['orderBy'][$orderByColumn] = 'ASC';
+                } else {
+                    $this->paramsRejected['orderBy'][$orderByColumn] = 'Not acceptable order by parameter';
                 }
             }
         }
@@ -189,11 +194,9 @@ class GlobalAPIController extends Controller
     protected function getRequest(){
         
         if ($this->includes || $this->paramsAccepted) {
-            return response()->json($this->queryBuilder(), 200); 
+            return response()->json($this->responseBuilder($this->queryBuilder()), 200); 
         } else {
-            
             return response()->json($this->responseBuilder($this->class::paginate($this->perPageParameter)), 200);
-            // return response()->json($this->class::paginate($this->perPageParameter), 200);
         }
     }
 
@@ -216,18 +219,16 @@ class GlobalAPIController extends Controller
         }
 
         if ($this->query === null) {
-            return $this->class::paginate($this->getPerPage());
+            return $this->class::paginate($this->perPageParameter);
         }
 
-        $this->makeAdjustmentsToOrderByParameterToWorkWithTheAppendsMethod();
-        
-        return $this->query->paginate($this->getPerPage())->appends($this->paramsAccepted);;
+        return $this->query->paginate($this->perPageParameter)->withQueryString();
     }
 
     protected function processDefaultParameter($parameter, $value)
     {
         if ($parameter === 'perPage') {
-            $this->perPage = is_numeric(request()->perPage) ? (int) request()->perPage : $this->perPageParameter;
+            $this->perPage = is_numeric(request()->perPage) ? (int) $value : $this->perPageParameter;
         } elseif ($parameter === 'orderBy') {
             foreach ($this->paramsAccepted['orderBy'] as $parameter => $orderByIndicator) {
                 if ($this->query) {
@@ -242,7 +243,12 @@ class GlobalAPIController extends Controller
 
     protected function determineParameterType($parameterType)
     {
-        if ($parameterType == 'date' || $parameterType == 'timestamp' || $parameterType == 'datetime' ||str_contains($parameterType, 'date')) {
+        if (
+            $parameterType == 'date' || 
+            $parameterType == 'timestamp' || 
+            $parameterType == 'datetime' || 
+            str_contains($parameterType, 'date')
+        ) {
             return 'date';
         } elseif (
             str_contains($parameterType, 'varchar') || 
@@ -283,21 +289,68 @@ class GlobalAPIController extends Controller
            case 'string': $this->stringQueryBuilder(); break;
            case 'int': $this->intQueryBuilder(); break;
            case 'float': $this->floatQueryBuilder(); break;
-           case 'bool': $this->boolQueryBuilder(); break;
        }
     }
 
-    protected function makeAdjustmentsToOrderByParameterToWorkWithTheAppendsMethod()
+    protected function dateQueryBuilder()
     {
-        // ! start here ************************************************************* finish
-        if (isset($this->acceptableParameters['orderBy'])) {
-            $oderByString = '';
-            foreach ($this->acceptableParameters['orderBy'] as $orderByColumnName => $OrderByIndicator) {
-                
-                $oderByString .= $orderByColumnName;
+        // Should only ever one parameter at a time this is just an easy way to get the key and value
+        foreach ($this->currentParameter as $parameter_name => $date) {
+            if (str_contains($date, '::')) {
+                $this->formatDateStringWithOperator($parameter_name, $date);
+            } else {
+                $date = date('Y-m-d', strtotime($date));
+                if ($this->query) {
+                    $this->query->whereDate($parameter_name, $date);
+                } else{
+                    $this->query = $this->class::whereDate($parameter_name, $date);
+                }
             }
         }
-    } 
+    }
+
+    protected function formatDateStringWithOperator($parameter_name, $date_string)
+    {
+        $date_array = explode('::', $date_string);
+        if (str_contains($date_array[0], ',')) {
+            $between_dates = explode(',', $date_array[0]);
+            $date[] = date('Y-m-d', strtotime($between_dates[0])); // Beginning of day
+            $date[] = date('Y-m-d H:i:s', strtotime("tomorrow", strtotime($between_dates[1])) - 1); // End of day
+        } else {
+            $date = date('Y-m-d', strtotime($date_array[0]));
+        }
+        $date_action = $date_array[1];
+
+        $this->applyDateComparisonOperator($date_action, $date, $parameter_name);
+    }
+
+    protected function applyDateComparisonOperator($date_action, $date, $parameter_name)
+    {
+        if (strtolower($date_action) == strtolower('greaterThan') || strtolower($date_action) == strtolower('GT')) {
+            $comparison_operator = '>';
+        } else if (strtolower($date_action) == strtolower('greaterThanOrEqual') || strtolower($date_action) == strtolower('GTE')) {
+            $comparison_operator = '>=';
+        } else if (strtolower($date_action) == strtolower('lessThan') || strtolower($date_action) == strtolower('LT')) {
+            $comparison_operator = '<';
+        } else if (strtolower($date_action) == strtolower('lessThanOrEqual') || strtolower($date_action) == strtolower('LTE')) {
+            $comparison_operator = '<=';
+        } else if (strtolower($date_action) == strtolower('Between') || strtolower($date_action) == strtolower('BT')) {
+            if ($this->query) {
+                $this->query->whereBetween($parameter_name, $date);
+            } else{
+                $this->query = $this->class::whereBetween($parameter_name, $date);
+            }
+            return true;
+        } else {
+            $comparison_operator = '=';
+        }
+
+        if ($this->query) {
+            $this->query->whereDate($parameter_name, $comparison_operator, $date);
+        } else{
+            $this->query = $this->class::whereDate($parameter_name, $comparison_operator, $date);
+        }
+    }
 
     protected function isRelationship($class, $relationship) {
         return method_exists($class, $relationship);
