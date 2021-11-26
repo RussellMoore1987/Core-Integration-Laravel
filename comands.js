@@ -124,6 +124,10 @@
     // >>> $Project->save();
     // => true
 
+
+
+    // $Project = new App\Models\Project::find(51);
+
 // @ retrieving models
     // # App\Models\Project::find(51);
         // php artisan tinker 

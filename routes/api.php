@@ -15,4 +15,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::any("v1/{class}/{id?}", [GlobalAPIController::class, 'processRequest']);
+Route::any("v1/{class?}/{id?}/{path?}", [GlobalAPIController::class, 'processRequest'])->where('path', '.+');

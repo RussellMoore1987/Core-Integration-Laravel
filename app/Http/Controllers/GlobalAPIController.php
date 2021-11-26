@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\DB;
 
     // to add 
     // includesAccepted
-    // includesRejected
     // paramsAccepted
     // paramsRejected
 // Список Дел eventually: 
@@ -37,13 +36,14 @@ class GlobalAPIController extends Controller
     protected $classId;
     protected $statusCode;
     protected $indexUrlPath;
+    protected $url;
+    protected $httpMethod;
     
     protected $includes = [];
     protected $paramsAccepted  = [];
     protected $paramsRejected = [];
     protected $includesAccepted  = [];
-    protected $includesRejected  = [];
-    protected $defaultPerPage = 30;
+    protected $perPageParameter = 30;
     protected $query;
     protected $currentParameter;
     protected $currentParameterType;
@@ -55,11 +55,14 @@ class GlobalAPIController extends Controller
 
     public function processRequest($endpointKey = null, $classId = null, Request $request){
 
+
         // Initial set up of key variables
         $this->endpointKey = $endpointKey;
-        $this->acceptedClasses = config('coreintegration.acceptedclasses');
         $this->classId = $classId;
-        $this->indexUrlPath = substr($request->url(), 0, strpos($request->url(), "api"));
+        $this->acceptedClasses = config('coreintegration.acceptedclasses');
+        $this->indexUrlPath = $endpointKey !== NULL ? substr($request->url(), 0, strpos($request->url(), $this->endpointKey)) : $request->url();
+        $this->httpMethod = $_SERVER['REQUEST_METHOD'] ?? request()->method() ?? null;
+        $this->url = $request->url();
         
         // TODO:
         if ($this->endpointKey === null) {
@@ -80,10 +83,10 @@ class GlobalAPIController extends Controller
 
         // # which HTTP method
         if ($this->isGetRequest()){
-            $this->getRequest();
+            return $this->getRequest();
         }else{
             // # POST, PUT, PATCH, DELETE
-            $this->postRequest();
+            return $this->postRequest();
         }
     }
 
@@ -100,11 +103,12 @@ class GlobalAPIController extends Controller
         if ($includes) {
             $includes = explode(',', $includes);
             foreach ($includes as $relationship) {
+                // TODO: improve isRelationship, Not specific enough to real relationships
                 if($this->isRelationship($this->class, $relationship)) {
                     $this->includes[] = $relationship;
                     $this->includesAccepted[$relationship] = 'Include Accepted';
                 } else {
-                    $this->includesRejected[$relationship] = 'Include Not Accepted, not a valid relationship';
+                    $this->paramsRejected['includes'][$relationship] = 'Include Not Accepted, not a valid relationship';
                 }
             }
         }
@@ -148,7 +152,9 @@ class GlobalAPIController extends Controller
             } else if (array_key_exists($parameterName, $acceptableParameters) || in_array($parameterName, $this->defaultAcceptableParameters)) {
                 $this->paramsAccepted[$parameterName] = $parameterValue;
             } else {
-                $this->paramsRejected[$parameterName] = $parameterValue;
+                if ($parameterName != 'includes') {
+                    $this->paramsRejected[$parameterName] = $parameterValue;
+                }
             } 
         }
     }
@@ -183,9 +189,11 @@ class GlobalAPIController extends Controller
     protected function getRequest(){
         
         if ($this->includes || $this->paramsAccepted) {
-            return response()->json([$this->queryBuilder()], 200); 
+            return response()->json($this->queryBuilder(), 200); 
         } else {
-            return response()->json([$this->class::paginate($this->defaultPerPage)], 200);
+            
+            return response()->json($this->responseBuilder($this->class::paginate($this->perPageParameter)), 200);
+            // return response()->json($this->class::paginate($this->perPageParameter), 200);
         }
     }
 
@@ -202,7 +210,7 @@ class GlobalAPIController extends Controller
                 continue;
             }
             $this->currentParameter = [$parameter => $value];
-            $this->currentParameterType = $this->determineParameterType($this->acceptableParameters[$parameter]['Type']); 
+            $this->currentParameterType = $this->determineParameterType($this->acceptableParameters[$parameter]['type']); 
             if (!$this->currentParameterType) {continue;}
             $this->processParameter();
         }
@@ -219,7 +227,7 @@ class GlobalAPIController extends Controller
     protected function processDefaultParameter($parameter, $value)
     {
         if ($parameter === 'perPage') {
-            $this->perPage = is_numeric(request()->perPage) ? (int) request()->perPage : $this->defaultPerPage;
+            $this->perPage = is_numeric(request()->perPage) ? (int) request()->perPage : $this->perPageParameter;
         } elseif ($parameter === 'orderBy') {
             foreach ($this->paramsAccepted['orderBy'] as $parameter => $orderByIndicator) {
                 if ($this->query) {
@@ -296,32 +304,22 @@ class GlobalAPIController extends Controller
     }
 
     protected function postRequest(){
-        $this->results = "'{$this->httpMethod}' is not an accepted method. Please view the documentation at {$this->url}.";
-        $this->errors['statusMessage'] = 'Bad Request';
-        $this->errors['errorMessage'] = "{$this->httpMethod} not valid";
+        return response()->json([
+            "Content" => "'{$this->httpMethod}' is not an accepted method. Please view the documentation at {$this->indexUrlPath}."
+        ], 400);
     }
 
-    protected function responseBuilder(){
+    protected function responseBuilder(Object $paginateObj){
 
-        // * constructing wrapper
+        $paginateObj = json_decode($paginateObj->toJson(), true);
 
         $success = $this->errors ? false : true;
-        // 404, 403, 400, 200, 201
-        // ? https://restfulapi.net/http-methods/#get
-        $statusCode = $this->statusCode ?? ($success ? 200 : 400);
         
-        $paramsAccepted = $this->paramsAccepted ?? [];
-        $paramsRejected = $this->paramsRejected ?? [];
-
-        $currentPage = $this->currentPage ?? null;
-        $totalPages = $this->totalPages ?? null;
-        $requestPerPage = $this->requestPerPage ?? null;
-
-        $totalResults = $this->totalResults ?? null;
+        $paramsAccepted = array_merge($this->paramsAccepted, $this->includesAccepted);
+        $paramsRejected = $this->paramsRejected;
 
         $responseData = [
             'success' => $success,
-            'statusCode' => $statusCode,
             'errors' => $this->errors,
             'requestMethod' => $this->httpMethod,
             'paramsSent' => [
@@ -331,18 +329,19 @@ class GlobalAPIController extends Controller
             ],
             'paramsAccepted' => $paramsAccepted,
             'paramsRejected' => $paramsRejected,
-            'mainEndpoint' => $this->endpointKey,
-            'endpoint' => $this->endpoint,
-            'endpointUrl' => $this->url,
-            'pageInfo' => [
-                'currentPage' => $currentPage,
-                'totalPages' => $totalPages,
-                'requestPerPage' => $requestPerPage
-            ],
-            'totalResults' => $this->totalResults,
-            'results' => $this->results
+            'endpoint' => $this->endpointKey,
+            'indexUrlPath' => $this->indexUrlPath,
+            'endpointUrl' => $this->url
         ];
 
-        return response()->json($responseData, $statusCode);
+        return array_merge($responseData, $paginateObj);
+    }
+
+
+    public function indexPage()
+    {
+        return response()->json([
+            "Content" => "index Page"
+        ], 200);
     }
 }
