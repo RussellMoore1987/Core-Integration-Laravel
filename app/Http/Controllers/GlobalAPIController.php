@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\DB;
     // add
         // get form data
 
-// Список Дел eventually: 
+// Список Дел eventually:
     // nesting relationships
     // select statement
 
@@ -37,7 +37,7 @@ class GlobalAPIController extends Controller
     protected $indexUrlPath;
     protected $url;
     protected $httpMethod;
-    
+
     protected $includes = [];
     protected $paramsAccepted  = [];
     protected $paramsRejected = [];
@@ -60,7 +60,7 @@ class GlobalAPIController extends Controller
         $this->indexUrlPath = $endpointKey !== NULL ? substr($request->url(), 0, strpos($request->url(), $this->endpointKey)) : $request->url();
         $this->httpMethod = $_SERVER['REQUEST_METHOD'] ?? request()->method() ?? null;
         $this->url = $request->url();
-        
+
         // TODO:
         if ($this->endpointKey === null) {
             return $this->indexPage();
@@ -122,7 +122,7 @@ class GlobalAPIController extends Controller
         $tempClass = new $this->class();
         $classTableName = $tempClass->gettable();
         $columnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$classTableName}"));
-        
+
         return $columnData;
     }
 
@@ -142,7 +142,7 @@ class GlobalAPIController extends Controller
                 $column_data_name = strtolower($column_data_name);
                 $value = $value === Null ? $value : strtolower($value);
 
-                $this->acceptableParameters[$columnArray['Field']][$column_data_name] = $value; 
+                $this->acceptableParameters[$columnArray['Field']][$column_data_name] = $value;
             }
         }
     }
@@ -158,7 +158,7 @@ class GlobalAPIController extends Controller
                 if ($parameterName != 'includes') {
                     $this->paramsRejected[$parameterName] = $parameterValue;
                 }
-            } 
+            }
         }
     }
 
@@ -184,17 +184,13 @@ class GlobalAPIController extends Controller
     }
 
     protected function isGetRequest(){
-        if ($this->httpMethod == 'GET'){
-            return true;
-        }else{
-            return false;
-        }
+        return $this->httpMethod == 'GET';
     }
 
     protected function getRequest(){
-        
+
         if ($this->includes || $this->paramsAccepted) {
-            return response()->json($this->responseBuilder($this->queryBuilder()), 200); 
+            return response()->json($this->responseBuilder($this->queryBuilder()), 200);
         } else {
             return response()->json($this->responseBuilder($this->class::paginate($this->perPageParameter)), 200);
         }
@@ -213,7 +209,7 @@ class GlobalAPIController extends Controller
                 continue;
             }
             $this->currentParameter = [$parameter => $value];
-            $this->currentParameterType = $this->determineParameterType($this->acceptableParameters[$parameter]['type']); 
+            $this->currentParameterType = $this->determineParameterType($this->acceptableParameters[$parameter]['type']);
             if (!$this->currentParameterType) {continue;}
             $this->processParameter();
         }
@@ -244,16 +240,16 @@ class GlobalAPIController extends Controller
     protected function determineParameterType($parameterType)
     {
         if (
-            $parameterType == 'date' || 
-            $parameterType == 'timestamp' || 
-            $parameterType == 'datetime' || 
+            $parameterType == 'date' ||
+            $parameterType == 'timestamp' ||
+            $parameterType == 'datetime' ||
             str_contains($parameterType, 'date')
         ) {
             return 'date';
         } elseif (
-            str_contains($parameterType, 'varchar') || 
-            str_contains($parameterType, 'char') || 
-            $parameterType == 'blob' || 
+            str_contains($parameterType, 'varchar') ||
+            str_contains($parameterType, 'char') ||
+            $parameterType == 'blob' ||
             $parameterType == 'text'
         ) {
             return 'string';
@@ -367,7 +363,7 @@ class GlobalAPIController extends Controller
         $paginateObj = json_decode($paginateObj->toJson(), true);
 
         $success = $this->errors ? false : true;
-        
+
         $paramsAccepted = array_merge($this->paramsAccepted, $this->includesAccepted);
         $paramsRejected = $this->paramsRejected;
 
