@@ -32,7 +32,9 @@ RUN npm install --production
 
 # Copy the dependancies for composer and install
 COPY ./composer*.json .
-RUN composer install --no-dev
+
+# TODO: If we ever use this image in production then use the "--no-dev" option with the composer install
+RUN composer install
 
 # Default command when server starts
 CMD ["php-fpm"]
