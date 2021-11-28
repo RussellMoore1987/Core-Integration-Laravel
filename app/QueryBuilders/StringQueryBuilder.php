@@ -35,7 +35,7 @@ class StringQueryBuilder extends QueryBuilder {
 
     public function build($column)
     {
-        $this->createbuilder();
+        $this->createBuilder();
         $this->buildQuery($column);
 
         return $this->builder;
