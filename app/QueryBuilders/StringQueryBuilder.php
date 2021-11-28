@@ -28,6 +28,7 @@ class StringQueryBuilder extends QueryBuilder {
         return str_replace(" ", "", $string);
     }
 
+    // TODO: Better name for this method
     private function separateStringByComma($string)
     {
         $this->values = explode(',', $string);
