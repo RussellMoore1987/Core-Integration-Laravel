@@ -50,12 +50,12 @@ class StringQueryBuilder extends QueryBuilder {
     {
         foreach($this->values as $value) {
             // TODO: Get rid of these function params and return values
-            $operator = $this->determineOperator($value);
+            $operator = $this->determineSqlComparisonOperator($value);
             $this->addWhereClause($column, $operator, $value);
         }
     }
 
-    private function determineOperator($value)
+    private function determineSqlComparisonOperator($value)
     {
         return $this->stringContainsPercentSymbol($value) ? 'like' : '=';
     }
