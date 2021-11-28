@@ -305,6 +305,12 @@ class GlobalAPIController extends Controller
         }
     }
 
+    // TODO: Finish implementing this
+    protected function stringQueryBuilder()
+    {
+        dd("Here");
+    }
+
     protected function formatDateStringWithOperator($parameter_name, $date_string)
     {
         $date_array = explode('::', $date_string);
