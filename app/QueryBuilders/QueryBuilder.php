@@ -10,5 +10,5 @@ abstract class QueryBuilder {
      * Builds a query
      * @return Illuminate\Database\Eloquent\Builder
      */
-    abstract public function build();
+    //abstract public function build();
 }
