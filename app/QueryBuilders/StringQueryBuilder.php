@@ -49,6 +49,7 @@ class StringQueryBuilder extends QueryBuilder {
     private function buildQuery($column)
     {
         foreach($this->values as $value) {
+            // TODO: Get rid of these function params and return values
             $operator = $this->determineOperator($value);
             $this->addWhereClause($column, $operator, $value);
         }
