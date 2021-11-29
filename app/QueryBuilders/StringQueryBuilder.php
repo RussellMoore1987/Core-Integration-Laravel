@@ -2,42 +2,44 @@
 
 namespace App\QueryBuilders;
 
+use Illuminate\Database\Eloquent\Builder;
 class StringQueryBuilder extends QueryBuilder {
 
-    private $values = [];
-    private $model = null;
-    private $builder;
+    private ?string $operator;
 
-    public function setModel($model)
-    {
-        $this->model = $model;
-    }
-
-    // TODO: Should this be implementation or exposed method?
-    // TODO: Should the parsing belong to another class?
-    public function parse($string): array
+    /**
+     * Parses a comma sparated string into an array of values
+     * @param string
+     * @return array
+     */
+    public function parse(string $string): array
     {
         $cleaned_string = $this->stripSpacesFromString($string);
-        $this->separateStringByComma($cleaned_string);
+        $this->splitStringIntoArrayByCommaSeparator($cleaned_string);
 
         return $this->values;
     }
 
+    // TODO: If a string has legit whitespace this could cause unintended logic errors? Leave whitespaces?
     private function stripSpacesFromString($string)
     {
         return str_replace(" ", "", $string);
     }
 
-    // TODO: Better name for this method
-    private function separateStringByComma($string)
+    private function splitStringIntoArrayByCommaSeparator($string)
     {
         $this->values = explode(',', $string);
     }
 
-    public function build($column)
+    /**
+     * Builds an eloquent query builder for searching string columns
+     * @param string
+     * @return Builder
+     */
+    public function build(): Builder
     {
         $this->createBuilder();
-        $this->buildQuery($column);
+        $this->buildQuery();
 
         return $this->builder;
     }
@@ -47,23 +49,22 @@ class StringQueryBuilder extends QueryBuilder {
         $this->builder = $this->model::query();
     }
 
-    private function buildQuery($column)
+    private function buildQuery()
     {
         foreach($this->values as $value) {
-            // TODO: Get rid of these function params and return values
-            $operator = $this->determineSqlComparisonOperator($value);
-            $this->addWhereClause($column, $operator, $value);
+            $this->determineSqlComparisonOperator($value);
+            $this->addWhereClause($value);
         }
     }
 
     private function determineSqlComparisonOperator($value)
     {
-        return $this->stringContainsPercentSymbol($value) ? 'like' : '=';
+        $this->operator = $this->stringContainsPercentSymbol($value) ? 'like' : '=';
     }
 
-    private function addWhereClause($column, $operator, $value)
+    private function addWhereClause($value)
     {
-        $this->builder->orWhere($column, $operator, $value);
+        $this->builder->orWhere($this->column, $this->operator, $value);
     }
 
     private function stringContainsPercentSymbol($string)
