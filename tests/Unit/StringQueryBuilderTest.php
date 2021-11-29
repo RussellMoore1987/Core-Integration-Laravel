@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\QueryBuilders\StringQueryBuilder;
-
+use App\Exceptions\EmptyBindingsException;
 use Tests\TestCase;
 
 // TODO: Edge cases for building the query
@@ -123,5 +123,10 @@ class StringQueryBuilderTest extends TestCase
         $this->assertEquals($expectedBindings, $query->getBindings());
     }
 
-    //public function test_it_
+    public function test_it_throws_an_exception_if_there_are_no_bindings_set_when_building_the_query()
+    {
+        $this->expectException(EmptyBindingsException::class);
+
+        $this->queryBuilder->build();
+    }
 }

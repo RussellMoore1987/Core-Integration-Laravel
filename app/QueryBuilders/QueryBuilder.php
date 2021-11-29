@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 abstract class QueryBuilder {
 
-    protected array $values = [];
+    protected array $bindings = [];
     protected ?Builder $builder;
     protected ?string $model;
     protected ?string $column;
