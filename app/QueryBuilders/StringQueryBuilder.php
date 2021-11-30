@@ -4,6 +4,8 @@ namespace App\QueryBuilders;
 
 use Illuminate\Database\Eloquent\Builder;
 use App\Exceptions\EmptyBindingsException;
+use App\Exceptions\ColumnNotSetException;
+use App\Exceptions\ModelNotSetException;
 class StringQueryBuilder extends QueryBuilder {
 
     private ?string $operator;
@@ -39,10 +41,39 @@ class StringQueryBuilder extends QueryBuilder {
      */
     public function build(): Builder
     {
+        $this->validateQueryPrerequisites();
         $this->createBuilder();
         $this->buildQuery();
 
         return $this->builder;
+    }
+
+    private function validateQueryPrerequisites()
+    {
+        $this->validateBindings();
+        $this->validateColumn();
+        $this->validateModel();
+    }
+
+    private function validateBindings()
+    {
+        if(empty($this->bindings)) {
+            throw new EmptyBindingsException("Must have bindings set before building the query!");
+        }
+    }
+
+    private function validateColumn()
+    {
+        if(!isset($this->column)) {
+            throw new ColumnNotSetException("Must have a column set before building the query!");
+        }
+    }
+
+    private function validateModel()
+    {
+        if(!isset($this->model)) {
+            throw new ModelNotSetException("Must have a model set before building the query!");
+        }
     }
 
     private function createBuilder()
@@ -52,17 +83,9 @@ class StringQueryBuilder extends QueryBuilder {
 
     private function buildQuery()
     {
-        $this->checkBindingsExist();
         foreach($this->bindings as $binding) {
             $this->determineSqlComparisonOperator($binding);
             $this->addWhereClause($binding);
-        }
-    }
-
-    private function checkBindingsExist()
-    {
-        if(empty($this->bindings)) {
-            throw new EmptyBindingsException("Must have bindings set before building the query!");
         }
     }
 
