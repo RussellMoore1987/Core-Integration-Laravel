@@ -307,7 +307,6 @@ class GlobalAPIController extends Controller
         }
     }
 
-    // TODO: Finish implementing this
     protected function stringQueryBuilder()
     {
         // TODO: Use dependancy injection rather than hard coded class instanitation here...
