@@ -17,16 +17,9 @@ class StringQueryBuilder extends QueryBuilder {
      */
     public function parse(string $string): array
     {
-        $cleaned_string = $this->stripSpacesFromString($string);
-        $this->splitStringIntoArrayByCommaSeparator($cleaned_string);
+        $this->splitStringIntoArrayByCommaSeparator($string);
 
         return $this->bindings;
-    }
-
-    // TODO: If a string has legit whitespace this could cause unintended logic errors? Leave whitespaces?
-    private function stripSpacesFromString($string)
-    {
-        return str_replace(" ", "", $string);
     }
 
     private function splitStringIntoArrayByCommaSeparator($string)

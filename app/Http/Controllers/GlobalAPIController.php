@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\QueryBuilders\StringQueryBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -24,7 +25,7 @@ use Illuminate\Support\Facades\DB;
     // nesting relationships
     // select statement
 
-
+// TODO: Simplify this controller. It should be much thinner than it is...
 class GlobalAPIController extends Controller
 {
 
@@ -280,6 +281,7 @@ class GlobalAPIController extends Controller
 
     protected function processParameter()
     {
+        // TODO: Replace this with polymorphism...
        switch ($this->currentParameterType) {
            case 'date': $this->dateQueryBuilder(); break;
            case 'string': $this->stringQueryBuilder(); break;
@@ -308,7 +310,16 @@ class GlobalAPIController extends Controller
     // TODO: Finish implementing this
     protected function stringQueryBuilder()
     {
-        dd("Here");
+        // TODO: Use dependancy injection rather than hard coded class instanitation here...
+        $queryBuilder = new StringQueryBuilder;
+        // Should only ever one parameter at a time this is just an easy way to get the key and value
+        // TODO: Find a better way to access the key and value without a for loop. It gives the wrong impression....
+        foreach ($this->currentParameter as $parameter_name => $string) {
+            $queryBuilder->parse($string);
+            $queryBuilder->setColumn($parameter_name);
+            $queryBuilder->setModel($this->class);
+            $this->query = $queryBuilder->build();
+        }
     }
 
     protected function formatDateStringWithOperator($parameter_name, $date_string)
