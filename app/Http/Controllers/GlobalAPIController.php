@@ -314,6 +314,7 @@ class GlobalAPIController extends Controller
         $queryBuilder = new StringQueryBuilder;
         // Should only ever one parameter at a time this is just an easy way to get the key and value
         // TODO: Find a better way to access the key and value without a for loop. It gives the wrong impression....
+        // TODO: Add error handling to catch exceptions thrown by the StringQueryBuilder and return the correct errors.
         foreach ($this->currentParameter as $parameter_name => $string) {
             $queryBuilder->parse($string);
             $queryBuilder->setColumn($parameter_name);
