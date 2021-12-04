@@ -26,7 +26,7 @@ class StringQueryBuilderTest extends TestCase
 
     public function test_it_can_parse_a_single_string()
     {
-        $string = 'Ted';
+        $string = 'ted';
         $expected = ["%ted%"];
 
         $actual = $this->queryBuilder->parse($string);
@@ -36,8 +36,8 @@ class StringQueryBuilderTest extends TestCase
 
     public function test_it_can_parse_a_comma_separated_string()
     {
-        $string = 'Ted,Tom,Fred';
-        $expected = ["%Ted%", "%Tom%", "%Fred%"];
+        $string = 'ted,tom,fred';
+        $expected = ["%ted%", "%tom%", "%fred%"];
 
         $actual = $this->queryBuilder->parse($string);
 
@@ -46,8 +46,8 @@ class StringQueryBuilderTest extends TestCase
 
     public function test_it_can_parse_a_comma_separated_string_with_whitespaces()
     {
-        $string = 'Ted Meyers,Tom Jones,Fred Hanks';
-        $expected = ["%Ted Meyers%", "%Tom Jones%", "%Fred Hanks%"];
+        $string = 'ted meyers,tom jones,fred hanks';
+        $expected = ["%ted meyers%", "%tom jones%", "%fred hanks%"];
 
         $actual = $this->queryBuilder->parse($string);
 
@@ -56,8 +56,8 @@ class StringQueryBuilderTest extends TestCase
 
     public function test_it_can_parse_a_single_string_with_exact_symbol()
     {
-        $string = 'Ted::exact';
-        $expected = ["Ted"];
+        $string = 'ted::exact';
+        $expected = ["ted"];
 
         $actual = $this->queryBuilder->parse($string);
 
@@ -66,8 +66,8 @@ class StringQueryBuilderTest extends TestCase
 
     public function test_it_can_parse_comma_separated_string_with_exact_symbols()
     {
-        $string = 'Ted::exact,Fred::exact,Jones::exact';
-        $expected = ["Ted", "Fred", "Jones"];
+        $string = 'ted::exact,fred::exact,jones::exact';
+        $expected = ["ted", "fred", "jones"];
 
         $actual = $this->queryBuilder->parse($string);
 
@@ -76,8 +76,17 @@ class StringQueryBuilderTest extends TestCase
 
     public function test_it_can_parse_string_with_incorrect_exact_symbol_usage()
     {
-        $string = '::exactTed::exact';
-        $expected = ["Ted"];
+        $string = '::exactmathew::exact';
+        $expected = ["mathew"];
+
+        $actual = $this->queryBuilder->parse($string);
+
+        $this->assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    public function test_it_parses_strings_with_uppercase_letters_correctly() {
+        $string = 'Ted::exact,FRED,jOnEs::exact';
+        $expected = ["ted", "%fred%", "jones"];
 
         $actual = $this->queryBuilder->parse($string);
 
@@ -89,8 +98,8 @@ class StringQueryBuilderTest extends TestCase
     {
         $string = 'Ted';
 
-        $expectedSql = "select * from `$this->table` where `$this->column` like ?";
-        $expectedBindings = ["%Ted%"];
+        $expectedSql = "select * from `$this->table` where lower(`$this->column`) like ?";
+        $expectedBindings = ["%ted%"];
 
         $this->queryBuilder->parse($string);
 
@@ -104,8 +113,8 @@ class StringQueryBuilderTest extends TestCase
     {
         $string = 'Ted,Fred';
 
-        $expectedSql = "select * from `$this->table` where `$this->column` like ? or `$this->column` like ?";
-        $expectedBindings = ["%Ted%", "%Fred%"];
+        $expectedSql = "select * from `$this->table` where lower(`$this->column`) like ? or lower(`$this->column`) like ?";
+        $expectedBindings = ["%ted%", "%fred%"];
 
         $this->queryBuilder->parse($string);
         $query = $this->queryBuilder->build();
@@ -118,8 +127,8 @@ class StringQueryBuilderTest extends TestCase
     {
         $string = 'Ted::exact';
 
-        $expectedSql = "select * from `$this->table` where `$this->column` = ?";
-        $expectedBindings = ["Ted"];
+        $expectedSql = "select * from `$this->table` where lower(`$this->column`) = ?";
+        $expectedBindings = ["ted"];
 
         $this->queryBuilder->parse($string);
         $query = $this->queryBuilder->build();
@@ -132,8 +141,8 @@ class StringQueryBuilderTest extends TestCase
     {
         $string = 'Ted::exact,Fred,Ned::exact,Edward,Thadeus::exact';
 
-        $expectedSql = "select * from `$this->table` where `$this->column` = ? or `$this->column` like ? or `$this->column` = ? or `$this->column` like ? or `$this->column` = ?";
-        $expectedBindings = ["Ted", "%Fred%", "Ned", "%Edward%", "Thadeus"];
+        $expectedSql = "select * from `$this->table` where lower(`$this->column`) = ? or lower(`$this->column`) like ? or lower(`$this->column`) = ? or lower(`$this->column`) like ? or lower(`$this->column`) = ?";
+        $expectedBindings = ["ted", "%fred%", "ned", "%edward%", "thadeus"];
 
         $this->queryBuilder->parse($string);
         $query = $this->queryBuilder->build();

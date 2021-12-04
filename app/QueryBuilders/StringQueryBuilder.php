@@ -33,9 +33,14 @@ class StringQueryBuilder extends QueryBuilder {
     }
 
     private function prepareBindings() {
-        foreach($this->rawStringValues as $value) {
-            $this->determineBinding($value);
+        foreach($this->rawStringValues as $rawString) {
+            $rawLowerCaseString = $this->convertStringToLowerCase($rawString);
+            $this->determineBinding($rawLowerCaseString);
         }
+    }
+
+    private function convertStringToLowerCase(string $string) {
+        return strtolower($string);
     }
 
     private function determineBinding(string $string) {
@@ -128,7 +133,7 @@ class StringQueryBuilder extends QueryBuilder {
 
     private function addWhereClause($binding)
     {
-        $this->builder->orWhere($this->column, $this->operator, $binding);
+        $this->builder->orWhereRaw("lower(`$this->column`) $this->operator ?", $binding);
     }
 
     private function stringContainsPercentSymbol($string)
