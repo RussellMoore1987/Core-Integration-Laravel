@@ -10,6 +10,10 @@ class StringQueryBuilder extends QueryBuilder {
 
     private ?string $operator;
 
+    private array $rawStringValues = [];
+
+    public const EXACT_MATCH_SYMBOL = '::exact';
+
     /**
      * Parses a comma sparated string into an array of bindings for the query
      * @param string
@@ -18,13 +22,48 @@ class StringQueryBuilder extends QueryBuilder {
     public function parse(string $string): array
     {
         $this->splitStringIntoArrayByCommaSeparator($string);
+        $this->prepareBindings();
 
         return $this->bindings;
     }
 
     private function splitStringIntoArrayByCommaSeparator($string)
     {
-        $this->bindings = explode(',', $string);
+        $this->rawStringValues = explode(',', $string);
+    }
+
+    private function prepareBindings() {
+        foreach($this->rawStringValues as $value) {
+            $this->determineBinding($value);
+        }
+    }
+
+    private function determineBinding(string $string) {
+        if($this->stringContainsExactMatchSymbol($string)) {
+            $this->addExactMatchBinding($string);
+        } else {
+            $this->addLikeBinding($string);
+        }
+    }
+
+    private function addExactMatchBinding(string $string) {
+        $this->bindings[] = $this->stripExactMatchSymbolFromString($string);
+    }
+
+    private function addLikeBinding(string $string) {
+        $this->bindings[] = $this->addPercentSymbolsToString($string);
+    }
+
+    private function stringContainsExactMatchSymbol(string $string) {
+        return str_contains($string, self::EXACT_MATCH_SYMBOL);
+    }
+
+    private function stripExactMatchSymbolFromString(string $string) {
+        return str_replace(self::EXACT_MATCH_SYMBOL, '', $string);
+    }
+
+    private function addPercentSymbolsToString(string $string) {
+        return "%" . $string . "%";
     }
 
     /**
