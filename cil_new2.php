@@ -2,14 +2,12 @@
     // RequestProcessor
     abstract class RequestProcessor
     {
-        protected $request;
         protected $requestValidator;
         protected $queryResolver;
         protected $responseBuilder;
 
-        function __construct(Request $request, RequestValidator $requestValidator, QueryResolver $queryResolver, ResponseBuilder $responseBuilder) 
+        function __construct(RequestValidator $requestValidator, QueryResolver $queryResolver, ResponseBuilder $responseBuilder) 
         {
-            $this->request = $request;
             $this->requestValidator = $requestValidator;
             $this->queryResolver = $queryResolver;
             $this->responseBuilder = $responseBuilder;
@@ -25,210 +23,9 @@
             return $this->respond();
         }
 
-
-
-
-
-
-
-
-
-
-
-        // # version 1
-        // methods in process() 
         protected function validate() 
         {
-            $this->validateAndGetMetadata();
-        }
-        protected function resolve() 
-        {
-            $this->getValidatedQueryData();
-            $this->resolveQuery();
-        }
-        protected function respond()
-        {
-            $this->setMetaDataInResponse();
-            $this->setQueryResultInResponse();
-            return $this->createResponse();
-        }
-
-        // methods in resolve()
-        private function validateAndGetMetadata()
-        {
-            $this->metaData = $this->requestValidator->validate($this->request);
-        }
-
-        // methods in resolve()
-        private function getValidatedQueryData() {
-            $this->queryArgs = $this->requestValidator->getValidatedQueryData();
-        }
-        private function resolveQuery() {
-            $this->queryResult = $this->queryResolver->resolve($this->queryArgs);
-        }
-
-        
-        // methods in respond()
-        protected function createResponse() {
-            return $this->responseBuilder->make();
-        }
-        private function setMetaDataInResponse()
-        {
-            $this->responseBuilder->setValidationMetaData($this->metaData);
-        }
-        private function setQueryResultInResponse() {
-            $this->responseBuilder->setResponseData($this->queryResult);
-        }
-
-
-
-
-
-
-
-        // # version 2
-        // methods in process() 
-        // ====================================================================================
-        protected function validate() 
-        {
-            $this->validateAndGetMetadata();
-        }
-        protected function resolve() 
-        {
-            $this->getValidatedQueryData();
-            $this->resolveQuery();
-        }
-        protected function respond()
-        {
-            $this->setMetaDataInResponse();
-            $this->setQueryResultInResponse();
-            return $this->createResponse();
-        }
-        // ====================================================================================
-
-        // methods in resolve() 
-        // ====================================================================================
-        private function validateAndGetMetadata()
-        {
-            $this->metaData = $this->requestValidator->validate($this->request);
-        }
-        // ====================================================================================
-
-        // methods in resolve() 
-        // ====================================================================================
-        private function getValidatedQueryData() {
-            $this->queryArgs = $this->requestValidator->getValidatedQueryData();
-        }
-        private function resolveQuery() {
-            $this->queryResult = $this->queryResolver->resolve($this->queryArgs);
-        }
-        // ====================================================================================
-
-        // methods in respond()
-        // ====================================================================================
-        protected function createResponse() {
-            return $this->responseBuilder->make();
-        }
-        private function setMetaDataInResponse()
-        {
-            $this->responseBuilder->setValidationMetaData($this->metaData);
-        }
-        private function setQueryResultInResponse() {
-            $this->responseBuilder->setResponseData($this->queryResult);
-        }
-        // ====================================================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // # version 3
-        // @ methods in process() 
-        protected function validate() 
-        {
-            $this->validateAndGetMetadata();
-        }
-        protected function resolve() 
-        {
-            $this->getValidatedQueryData();
-            $this->resolveQuery();
-        }
-        protected function respond()
-        {
-            $this->setMetaDataInResponse();
-            $this->setQueryResultInResponse();
-            return $this->createResponse();
-        }
-
-        // @ methods in resolve() 
-        private function validateAndGetMetadata()
-        {
-            $this->metaData = $this->requestValidator->validate($this->request);
-        }
-
-        // @ methods in resolve() 
-        private function getValidatedQueryData() {
-            $this->queryArgs = $this->requestValidator->getValidatedQueryData();
-        }
-        private function resolveQuery() {
-            $this->queryResult = $this->queryResolver->resolve($this->queryArgs);
-        }
-
-        // @ methods in respond()
-        private function setMetaDataInResponse()
-        {
-            $this->responseBuilder->setValidationMetaData($this->metaData);
-        }
-        private function setQueryResultInResponse() {
-            $this->responseBuilder->setResponseData($this->queryResult);
-        }
-        protected function createResponse() {
-            return $this->responseBuilder->make();
-        }
-
-
-
-
-
-        // or
-
-
-
-        // # version 4
-        protected function validate() 
-        {
-            $this->responseBuilder->setValidationMetaData($this->requestValidator->validate($this->request));
-        }
-
-        protected function resolve() 
-        {
-            $this->responseBuilder->setResponseData($this->queryResolver->resolve($this->requestValidator->getValidatedQueryData()));
-        }
-
-        protected function respond()
-        {
-            return $this->responseBuilder->make();
-        }
-
-
-
-
-        // or
-
-
-
-        // # version 5
-        protected function validate() 
-        {
-            $metaData = $this->requestValidator->validate($this->request);
+            $metaData = $this->requestValidator->validate();
             $this->responseBuilder->setValidationMetaData($metaData);
         }
 
@@ -243,20 +40,6 @@
         {
             return $this->responseBuilder->make();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
     class RestRequestProcessor extends RequestProcessor {
         // uses serves provider Located ...
@@ -266,6 +49,124 @@
         // uses serves provider Located ...
         // loads function __construct(Request $request, ContextRequestFormatter, CILQueryBuilder, ContextResponseWrapper)
     }
+
+    // requestValidator
+    abstract class RequestValidator 
+    {
+
+        protected $request;
+
+        function __construct(Request $request) 
+        {
+            $this->request = $request;
+        }   
+
+        abstract public function validate();
+        abstract protected function setRejectedParameter();
+        abstract public function getRejectedParameters();
+        abstract protected function setAcceptedParameter();
+        abstract public function getAcceptedParameters();
+        abstract protected function setQueryArgument();
+        abstract public function getQueryArguments();
+        abstract public function getValidatedQueryData();
+    }
+    class RestRequestValidator extends RequestValidator
+    {
+        public function validate()
+        {
+            // get/validate class 
+            // get/validate id ? nullable 
+            $this->validateEndPoint();
+
+            // get/validate long path 
+            $this->validateEndPointFullPath();
+            
+            // get/validate methodCalls parameters ?? will this work or We need to build out something to handle this
+                // setRejectedParameter();
+                // setAcceptedParameter();
+                // setQueryArgument();
+            $this->validateMethodCalls();
+            
+            // get/validate includes parameters
+                // setRejectedParameter();
+                // setAcceptedParameter();
+                // setQueryArgument();
+            $this->validateIncludes();
+            
+            // get/validate perPage parameter
+                // setAcceptedParameter();
+                // setQueryArgument();
+            $this->validatePerPageParameter();
+            
+            // get/validate orderBy parameters
+                // setRejectedParameter();
+                // setAcceptedParameter();
+                // setQueryArgument();
+            $this->validateOrderByParameter();
+
+            // get/validate select parameters
+                // setRejectedParameter();
+                // setAcceptedParameter();
+                // setQueryArgument();
+            $this->validateSelectParameter();
+            
+            // get/validate get parameters
+                // setRejectedParameter();
+                // setAcceptedParameter();
+                // setQueryArgument();
+            $this->validateAllOtherParameter();
+
+            return $this->getValidatedMetaData();
+        }
+    }
+    class ContextRequestValidator extends RequestValidator
+    {
+        public function validate()
+        {
+            // loop over requests and validate each one
+                // get/validate class 
+                // get/validate id ? nullable 
+                $this->validateEndPoint();
+
+                // get/validate methodCalls parameters ?? will this work or We need to build out something to handle this
+                    // setRejectedParameter();
+                    // setAcceptedParameter();
+                    // setQueryArgument();
+                $this->validateMethodCalls();
+                
+                // get/validate includes parameters
+                    // setRejectedParameter();
+                    // setAcceptedParameter();
+                    // setQueryArgument();
+                $this->validateIncludes();
+                
+                // get/validate perPage parameter
+                    // setAcceptedParameter();
+                    // setQueryArgument();
+                $this->validatePerPageParameter();
+                
+                // get/validate orderBy parameters
+                    // setRejectedParameter();
+                    // setAcceptedParameter();
+                    // setQueryArgument();
+                $this->validateOrderByParameter();
+
+                // get/validate select parameters
+                    // setRejectedParameter();
+                    // setAcceptedParameter();
+                    // setQueryArgument();
+                $this->validateSelectParameter();
+                
+                // get/validate get parameters
+                    // setRejectedParameter();
+                    // setAcceptedParameter();
+                    // setQueryArgument();
+                $this->validateAllOtherParameter();
+
+            return $this->getValidatedMetaData();
+        }
+    }
+    
 
     // responseBuilder->setValidationMetaData
     // responseBuilder->setResponseData
@@ -433,6 +334,7 @@
 
     // DataTypeDefiner = QueryAssembler
     // stringPerimeterBuilder
+    // idWhereClauseBuilder
     // stringWhereClauseBuilder
     // ...
     // orderByClauseBuilder
