@@ -58,6 +58,8 @@
         protected $acceptableParameters;
         protected $class;
         protected $endpoint;
+        protected $errors = [];
+        protected $validatedMetaData = [];
 
         function __construct(Request $request) 
         {
@@ -76,26 +78,53 @@
         public function validate()
         {
             // Unique preparations
-                // prep data
+            // ! start here ***********************************************************************
+                $this->prepRequestData();
+                // or prepRequestData obj or requestObj
+                // prepRequestData() ***
 
-            // defalt prosses
-                // loop???
-            $this->validateEndPoint();
-            $this->validateMethodCalls();
-            $this->validateIncludes();
-            $this->validatePerPageParameter();
-            $this->validateOrderByParameter();
-            $this->validateSelectParameter();
-            $this->validateAllOtherParameter();
+            foreach ($this->preppedRequests as $request) {
+                $this->setUpPreppedRequest($request);
+                $this->getAcceptableParameters();
+                $this->validateEndPoint();
+                $this->validateMethodCalls();
+                $this->validateIncludes();
+                $this->validatePerPageParameter();
+                $this->validateOrderByParameter();
+                $this->validateSelectParameter();
+                $this->validateAllOtherParameter();
+                $this->setValidatedMetaData();
                 // get/set Groups of validated data
-            
-            return $this->getValidatedMetaData();
+            }
+
+            return $this->validatedMetaData;
         }
         
         // TODO: Search for field that's not displayed *hidden, kinda like a Social Security number
-        protected function getAcceptableParameters(Model $class)
+        protected function getAcceptableParameters()
         {
             // set $this->acceptableParameters
+        }
+
+        protected function setValidatedMetaData()
+        {
+            $validatedRequestMetaData['rejectedParameters'] = $this->getRejectedParameters();
+            $validatedRequestMetaData['acceptedParameters'] = $this->getAcceptedParameters();
+            $validatedRequestMetaData['errors'] = $this->errors;
+            $validatedRequestMetaData['queryArguments'] = $this->getQueryArguments();
+            $this->validatedMetaData[] = $validatedRequestMetaData;
+        }
+
+        protected function setUpPreppedRequest($request)
+        {
+            $this->class = $request['class'];
+            $this->endpoint = $request['endpoint'];
+            $this->methodCalls = $request['methodCalls'] ?? [];
+            $this->includes = $request['includes'] ?? [];
+            $this->perPageParameter = $request['perPageParameter'] ?? 30;
+            $this->orderByParameter = $request['orderByParameter'] ?? [];
+            $this->selectParameter = $request['selectParameter'] ?? [];
+            $this->otherParameter = $request['otherParameter'] ?? [];
         }
 
         protected function validateEndPoint()
