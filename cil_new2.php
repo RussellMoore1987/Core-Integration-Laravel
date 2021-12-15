@@ -55,13 +55,15 @@
     {
 
         protected $request;
+        protected $acceptableParameters;
+        protected $class;
+        protected $endpoint;
 
         function __construct(Request $request) 
         {
             $this->request = $request;
         }   
 
-        abstract public function validate();
         abstract protected function setRejectedParameter();
         abstract public function getRejectedParameters();
         abstract protected function setAcceptedParameter();
@@ -69,6 +71,70 @@
         abstract protected function setQueryArgument();
         abstract public function getQueryArguments();
         abstract public function getValidatedQueryData();
+
+        // Shared logic
+        public function validate()
+        {
+            // Unique preparations
+                // prep data
+
+            // defalt prosses
+                // loop???
+            $this->validateEndPoint();
+            $this->validateMethodCalls();
+            $this->validateIncludes();
+            $this->validatePerPageParameter();
+            $this->validateOrderByParameter();
+            $this->validateSelectParameter();
+            $this->validateAllOtherParameter();
+                // get/set Groups of validated data
+            
+            return $this->getValidatedMetaData();
+        }
+        
+        // TODO: Search for field that's not displayed *hidden, kinda like a Social Security number
+        protected function getAcceptableParameters(Model $class)
+        {
+            // set $this->acceptableParameters
+        }
+
+        protected function validateEndPoint()
+        {
+            // see if end point is in config('coreintegration.acceptedclasses')
+        }
+
+        protected function validateMethodCalls()
+        {
+            // class have method
+        }
+
+        protected function validateIncludes()
+        {
+            // class have Includes
+        }
+
+        protected function validatePerPageParameter()
+        {
+            // code...
+        }
+
+        protected function validateOrderByParameter()
+        {
+            // code...
+            // use $this->acceptableParameters
+        }
+
+        protected function validateSelectParameter()
+        {
+            // code...
+            // use $this->acceptableParameters
+        }
+
+        protected function validateAllOtherParameter()
+        {
+            // code...
+            // use $this->acceptableParameters
+        }
     }
     class RestRequestValidator extends RequestValidator
     {
@@ -123,7 +189,7 @@
     {
         public function validate()
         {
-            // loop over requests and validate each one
+            // * loop over requests and validate each one
                 // get/validate class 
                 // get/validate id ? nullable 
                 $this->validateEndPoint();
