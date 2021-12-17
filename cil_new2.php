@@ -50,60 +50,79 @@
         // loads function __construct(Request $request, ContextRequestFormatter, CILQueryBuilder, ContextResponseWrapper)
     }
 
-    // requestValidator
-    abstract class RequestValidator 
-    {
 
+    
+    abstract class RequestDataPrepper
+    {
         protected $request;
-        protected $acceptableParameters;
-        protected $class;
-        protected $endpoint;
-        protected $errors = [];
-        protected $validatedMetaData = [];
 
         function __construct(Request $request) 
         {
             $this->request = $request;
+        }  
+
+        abstract public function prep();
+        abstract public function getPreppedData();
+    }
+
+    class RestRequestDataPrepper extends RequestDataPrepper
+    {
+        public function prep()
+        {
+            // possess rest request
+        }
+
+        public function getPreppedData()
+        {
+            // get rest request
+        }
+    }
+    
+    
+
+    // requestValidator
+    abstract class RequestValidator 
+    {
+
+        protected $requestDataPrepper;
+        protected $acceptableParameters;
+        protected $class;
+        protected $endpoint;
+        protected $errors = [];
+        protected $validatedMetaData;
+        
+        
+        protected $rejectedParameters = [];
+        protected $acceptedParameters = [];
+        protected $queryArguments = [];
+
+        function __construct(RequestDataPrepper $requestDataPrepper) 
+        {
+            $this->requestDataPrepper = $requestDataPrepper;
         }   
 
-        abstract protected function setRejectedParameter();
-        abstract public function getRejectedParameters();
-        abstract protected function setAcceptedParameter();
-        abstract public function getAcceptedParameters();
-        abstract protected function setQueryArgument();
-        abstract public function getQueryArguments();
-        abstract public function getValidatedQueryData();
-
-        // Shared logic
         public function validate()
         {
-            // Unique preparations
-            // ! start here ***********************************************************************
-                $this->prepRequestData();
-                // or prepRequestData obj or requestObj
-                // prepRequestData() ***
+            $this->requestDataPrepper->prep();
 
-            foreach ($this->preppedRequests as $request) {
-                $this->setUpPreppedRequest($request);
-                $this->getAcceptableParameters();
-                $this->validateEndPoint();
-                $this->validateMethodCalls();
-                $this->validateIncludes();
-                $this->validatePerPageParameter();
-                $this->validateOrderByParameter();
-                $this->validateSelectParameter();
-                $this->validateAllOtherParameter();
-                $this->setValidatedMetaData();
-                // get/set Groups of validated data
-            }
+            $this->validateRequest($this->requestDataPrepper->getPreppedData());
 
             return $this->validatedMetaData;
         }
-        
-        // TODO: Search for field that's not displayed *hidden, kinda like a Social Security number
-        protected function getAcceptableParameters()
+
+        protected function validateRequest($request)
         {
-            // set $this->acceptableParameters
+            $this->setUpPreppedRequest($request);
+            $this->getAcceptableParameters();
+
+            $this->validateEndPoint();
+            $this->validateMethodCalls();
+            $this->validateIncludes();
+            $this->validatePerPageParameter();
+            $this->validateOrderByParameter();
+            $this->validateSelectParameter();
+            $this->validateAllOtherParameter();
+            $this->setValidatedMetaData();
         }
 
         protected function setValidatedMetaData()
@@ -112,7 +131,7 @@
             $validatedRequestMetaData['acceptedParameters'] = $this->getAcceptedParameters();
             $validatedRequestMetaData['errors'] = $this->errors;
             $validatedRequestMetaData['queryArguments'] = $this->getQueryArguments();
-            $this->validatedMetaData[] = $validatedRequestMetaData;
+            $this->validatedMetaData = $validatedRequestMetaData;
         }
 
         protected function setUpPreppedRequest($request)
@@ -125,6 +144,12 @@
             $this->orderByParameter = $request['orderByParameter'] ?? [];
             $this->selectParameter = $request['selectParameter'] ?? [];
             $this->otherParameter = $request['otherParameter'] ?? [];
+        }
+
+        // TODO: Search for field that's not displayed *hidden, kinda like a Social Security number
+        protected function getAcceptableParameters()
+        {
+            // set $this->acceptableParameters
         }
 
         protected function validateEndPoint()
@@ -164,101 +189,76 @@
             // code...
             // use $this->acceptableParameters
         }
+
+        protected function setRejectedParameter()
+        {
+
+        }
+        public function getRejectedParameters()
+        {
+
+        }
+        protected function setAcceptedParameter()
+        {
+
+        }
+        public function getAcceptedParameters()
+        {
+
+        }
+        protected function setQueryArgument()
+        {
+
+        }
+        public function getQueryArguments()
+        {
+
+        }
+        public function getValidatedQueryData()
+        {
+
+        }
     }
     class RestRequestValidator extends RequestValidator
     {
-        public function validate()
-        {
-            // get/validate class 
-            // get/validate id ? nullable 
-            $this->validateEndPoint();
-
-            // get/validate long path 
-            $this->validateEndPointFullPath();
-            
-            // get/validate methodCalls parameters ?? will this work or We need to build out something to handle this
-                // setRejectedParameter();
-                // setAcceptedParameter();
-                // setQueryArgument();
-            $this->validateMethodCalls();
-            
-            // get/validate includes parameters
-                // setRejectedParameter();
-                // setAcceptedParameter();
-                // setQueryArgument();
-            $this->validateIncludes();
-            
-            // get/validate perPage parameter
-                // setAcceptedParameter();
-                // setQueryArgument();
-            $this->validatePerPageParameter();
-            
-            // get/validate orderBy parameters
-                // setRejectedParameter();
-                // setAcceptedParameter();
-                // setQueryArgument();
-            $this->validateOrderByParameter();
-
-            // get/validate select parameters
-                // setRejectedParameter();
-                // setAcceptedParameter();
-                // setQueryArgument();
-            $this->validateSelectParameter();
-            
-            // get/validate get parameters
-                // setRejectedParameter();
-                // setAcceptedParameter();
-                // setQueryArgument();
-            $this->validateAllOtherParameter();
-
-            return $this->getValidatedMetaData();
-        }
+        // uses serves provider Located ...
+        // loads function __construct(RestRequestDataPrepper $restRequestDataPrepper)
     }
     class ContextRequestValidator extends RequestValidator
     {
+        protected $validatedMetaData = [];
+
+        // uses serves provider Located ...
+        // loads function __construct(ContextRequestDataPrepper $contextRequestDataPrepper)
+
         public function validate()
         {
-            // * loop over requests and validate each one
-                // get/validate class 
-                // get/validate id ? nullable 
-                $this->validateEndPoint();
+            $this->requestDataPrepper->prep();
 
-                // get/validate methodCalls parameters ?? will this work or We need to build out something to handle this
-                    // setRejectedParameter();
-                    // setAcceptedParameter();
-                    // setQueryArgument();
-                $this->validateMethodCalls();
-                
-                // get/validate includes parameters
-                    // setRejectedParameter();
-                    // setAcceptedParameter();
-                    // setQueryArgument();
-                $this->validateIncludes();
-                
-                // get/validate perPage parameter
-                    // setAcceptedParameter();
-                    // setQueryArgument();
-                $this->validatePerPageParameter();
-                
-                // get/validate orderBy parameters
-                    // setRejectedParameter();
-                    // setAcceptedParameter();
-                    // setQueryArgument();
-                $this->validateOrderByParameter();
+            foreach ($this->requestDataPrepper->getPreppedData() as $request) {
+                $this->validateRequest($request);
+            }
 
-                // get/validate select parameters
-                    // setRejectedParameter();
-                    // setAcceptedParameter();
-                    // setQueryArgument();
-                $this->validateSelectParameter();
-                
-                // get/validate get parameters
-                    // setRejectedParameter();
-                    // setAcceptedParameter();
-                    // setQueryArgument();
-                $this->validateAllOtherParameter();
+            return $this->validatedMetaData;
+        }
 
-            return $this->getValidatedMetaData();
+        protected function setUpPreppedRequest($request)
+        {
+            parent::setUpPreppedRequest($request);
+            
+            $this->rejectedParameters = [];
+            $this->acceptedParameters = [];
+            $this->errors = [];
+            $this->queryArguments = [];
+        }
+
+        protected function setValidatedMetaData()
+        {
+            $validatedRequestMetaData['rejectedParameters'] = $this->getRejectedParameters();
+            $validatedRequestMetaData['acceptedParameters'] = $this->getAcceptedParameters();
+            $validatedRequestMetaData['errors'] = $this->errors;
+            $validatedRequestMetaData['queryArguments'] = $this->getQueryArguments();
+            $this->validatedMetaData[] = $validatedRequestMetaData;
         }
     }
     
@@ -313,7 +313,7 @@
                 // index
                 // Error / bad endpoint
 
-     
+    // ! start here *********************************************************************88 
     // QueryResolver
     abstract class QueryResolver
     {
