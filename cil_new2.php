@@ -43,42 +43,12 @@
     }
     class RestRequestProcessor extends RequestProcessor {
         // uses serves provider Located ...
-        // loads function __construct(Request $request, RestRequestFormatter, CILQueryBuilder, RestResponseWrapper)
+        // loads __construct(RestRequestValidator $requestValidator, RestQueryResolver $queryResolver, RestResponseBuilder $responseBuilder)
     }
     class ContextRequestProcessor extends RequestProcessor {
         // uses serves provider Located ...
-        // loads function __construct(Request $request, ContextRequestFormatter, CILQueryBuilder, ContextResponseWrapper)
+        // loads __construct(ContextRequestValidator $requestValidator, ContextQueryResolver $queryResolver, ContextResponseBuilder $responseBuilder)
     }
-
-
-    
-    abstract class RequestDataPrepper
-    {
-        protected $request;
-
-        function __construct(Request $request) 
-        {
-            $this->request = $request;
-        }  
-
-        abstract public function prep();
-        abstract public function getPreppedData();
-    }
-
-    class RestRequestDataPrepper extends RequestDataPrepper
-    {
-        public function prep()
-        {
-            // possess rest request
-        }
-
-        public function getPreppedData()
-        {
-            // get rest request
-        }
-    }
-    
-    
 
     // requestValidator
     abstract class RequestValidator 
@@ -261,59 +231,44 @@
             $this->validatedMetaData[] = $validatedRequestMetaData;
         }
     }
-    
 
-    // responseBuilder->setValidationMetaData
-    // responseBuilder->setResponseData
-    // responseBuilder->make
+    abstract class RequestDataPrepper
+    {
+        protected $request;
 
-    // validation -> meta data -> pass to response wraper
-            // requestValidator->validate
-            // requestValidator->setRejected
-            // requestValidator->getRejected
-            // requestValidator->setAccepted
-            // requestValidator->getAccepted
-            // requestValidator->getMetaData
-            // requestValidator->setQueryArgument
-            // requestValidator->getValidatedQueryData
-                // rest requestValidator->getValidatedQueryData
-                    // [
-                    //     'GET' => [
-                    //         [column => title, value => someting, dataType => string],
-                    //         [column => title, value => someting, dataType => string],
-                    //         [column => title, value => someting, dataType => string]
-                    //     ]
-                    // ]
-                // context requestValidator->getValidatedQueryData
-                    // [
-                    //     'getUsers' => [
-                    //         'GET' => [
-                    //             [column => title, value => someting, dataType => string],
-                    //             [column => title, value => someting, dataType => string],
-                    //             [column => title, value => someting, dataType => string]
-                    //         ]
-                    //     ],
-                    //     'setprojects' => [
-                    //         'SET' => [
-                    //             [column => title, value => someting, dataType => string],
-                    //             [column => title, value => someting, dataType => string],
-                    //             [column => title, value => someting, dataType => string]
-                    //         ]
-                    //     ]
-                    // ]
+        function __construct(Request $request) 
+        {
+            $this->request = $request;
+        }  
 
-        // $this->requestValidator->validate($this->request);
-            // what if errors / not valid end point -> send with getValidatedQueryData
-            // what about index -> send with getValidatedQueryData
-            // what about single record -> send with getValidatedQueryData
+        abstract public function prep();
+        abstract public function getPreppedData();
+    }
+    class RestRequestDataPrepper extends RequestDataPrepper
+    {
+        public function prep()
+        {
+            // possess rest request
+        }
 
-            // $this->responseBuilder->setResponseData($this->queryResolver->resolve($this->requestValidator->getValidatedQueryData()));
-                // Query
-                // Persist
-                // index
-                // Error / bad endpoint
+        public function getPreppedData()
+        {
+            // get rest request
+        }
+    }
+    class ContextRequestDataPrepper extends RequestDataPrepper
+    {
+        public function prep()
+        {
+            // possess rest request
+        }
 
-    // ! start here *********************************************************************88 
+        public function getPreppedData()
+        {
+            // get rest request
+        }
+    }
+
     // QueryResolver
     abstract class QueryResolver
     {
@@ -336,7 +291,7 @@
     {
         public function resolve($validatedQueryData)
         {
-            // bad endpoint
+            // bad endpoint / errors
             $query = $validatedQueryData->errors ? $validatedQueryData->errors : NULL;
 
             // index
@@ -395,77 +350,188 @@
       }
     class CILQueryAssembler implements QueryAssembler
     {
-        protected $dataTypeDefiner;
-        protected $query;
+        protected $clauseBuilderFactory;
+        protected $queryBuilder;
 
-        function __construct(DataTypeDefiner $dataTypeDefiner) 
+        function __construct(ClauseBuilderFactory $clauseBuilderFactory) 
         {
-            $this->dataTypeDefiner = $dataTypeDefiner;
+            $this->clauseBuilderFactory = $clauseBuilderFactory;
         }
 
         public function query($validatedQueryData)
         {
             // start laravel builder
-            // $this->query
+            // $this->queryBuilder
 
             // add includes
 
             // loop over column arguments
-                // determine type
-                // $dataType = $this->dataTypeDefiner->define($type);
-                
-                // Get the specific dataType query builder
-                // $queryBuilderClassName = $dataType . "QueryBuilder"
-                    // $this->queryBuilder = $queryBuilderClassName::build($this->queryBuilder, $column, $value)
+                // $clauseBuilder = $this->clauseBuilderFactory->getClauseBuilder($type);
+                // $this->queryBuilder = $clauseBuilder->build($this->queryBuilder, $column, $value)
             
             // return query;
             // return $this->queryBuilder->get();
         }
     }
 
-// CILQueryAssembler
-    // definer
-    // seter
-
-    // DataTypeDefiner = QueryAssembler
-    // stringPerimeterBuilder
-    // idWhereClauseBuilder
-    // stringWhereClauseBuilder
-    // ...
-    // orderByClauseBuilder
-    // selectClauseBuilder
-
-
-
-
-
-
-    // TODO: still to add
-    // DataTypeDefiner
-    // ParameterBuilder
-        // DateQueryBuilder
-        // StringQueryBuilder
-        // IntQueryBuilder
-        // FloatIntQueryBuilder
-
-
-    // ResponseWrapper
-    abstract class ResponseWrapper
+    // ! working here UML **********************************************************************
+    class ClauseBuilderFactory
     {
-        abstract public function wrap($formattedData, $query);
-    }
-    class RestResponseWrapper extends ResponseWrapper
-    {
-        public function wrap($formattedData, $query)
+        public function getClauseBuilder($type)
         {
-            // return final processing of data    
+            // find and return type
+        }  
+    }
+
+    interface ClauseBuilder {
+        public function build(Builder $queryBuilder, $column, $value) : Builder;
+    }
+    class StringWhereClauseBuilder implements ClauseBuilder
+    {
+        public function build(Builder $queryBuilder, $column, $value) : Builder
+        {
+            // code...
         }
     }
-    class ContextResponseWrapper extends ResponseWrapper
+    class DateWhereClauseBuilder implements ClauseBuilder
     {
-        public function wrap($formattedData, $query)
+        public function build(Builder $queryBuilder, $column, $value) : Builder
         {
-            // return final processing of data    
+            // code...
+        }
+    }
+    class IntWhereClauseBuilder implements ClauseBuilder
+    {
+        public function build(Builder $queryBuilder, $column, $value) : Builder
+        {
+            // code...
+        }
+    }
+    class FloatWhereClauseBuilder implements ClauseBuilder
+    {
+        public function build(Builder $queryBuilder, $column, $value) : Builder
+        {
+            // code...
+        }
+    }
+    class OrderByClauseBuilder implements ClauseBuilder
+    {
+        public function build(Builder $queryBuilder, $column, $value) : Builder
+        {
+            // code...
+        }
+    }
+    class SelectClauseBuilder implements ClauseBuilder
+    {
+        public function build(Builder $queryBuilder, $column, $value) : Builder
+        {
+            // code...
+        }
+    }
+    class IncludesClauseBuilder implements ClauseBuilder
+    {
+        public function build(Builder $queryBuilder, $column, $value) : Builder
+        {
+            // code...
+        }
+    }
+    class MethodCallsClauseBuilder implements ClauseBuilder
+    {
+        public function build(Builder $queryBuilder, $column, $value) : Builder
+        {
+            // code...
+        }
+    }
+
+
+    interface QueryPersister {
+        public function persist($validatedQueryData);
+    }
+    class CILQueryPersister implements QueryPersister
+    {
+        public function persist($validatedQueryData)
+        {
+            if ($validatedQueryData->action == 'PATCH') {
+                // find record
+                // merge filds
+                // save & validate new record
+            } else {
+                // save & validate record
+                    // id -> update PUT
+                    // no id -> new POST
+            }
+        }
+    }
+
+    interface QueryIndex {
+        public function get();
+    }
+    class RestQueryIndex implements QueryIndex
+    {
+        public function get()
+        {
+            // get rest index
+        }
+    }
+    class ContextQueryIndex implements QueryIndex
+    {
+        public function get()
+        {
+            // get context index
+        }
+    }
+
+    interface QueryDeleter {
+        public function delete();
+    }
+    class CILQueryDeleter implements QueryDeleter
+    {
+        public function delete()
+        {
+            // delete record
+        }
+    }
+
+
+    // ResponseBuilder
+    interface ResponseBuilder
+    {
+        public function setValidationMetaData($metaData);
+        public function setResponseData($queryResult);
+        public function make();
+    }
+    class RestResponseBuilder implements ResponseBuilder
+    {
+        public function setValidationMetaData($metaData)
+        {
+
+        }
+
+        public function setResponseData($queryResult)
+        {
+
+        }
+
+        public function make()
+        {
+
+        }
+    }
+    class ContextResponseBuilder implements ResponseBuilder
+    {
+        public function setValidationMetaData($metaData)
+        {
+
+        }
+
+        public function setResponseData($queryResult)
+        {
+
+        }
+
+        public function make()
+        {
+
         }
     }
     
@@ -634,5 +700,69 @@
  
          // abstract protected function packageReturnData(ResponseWrapper $responseWrapper, $prepareData, $query);
      }
+
+
+
+// responseBuilder->setValidationMetaData
+    // responseBuilder->setResponseData
+    // responseBuilder->make
+
+    // validation -> meta data -> pass to response wraper
+            // requestValidator->validate
+            // requestValidator->setRejected
+            // requestValidator->getRejected
+            // requestValidator->setAccepted
+            // requestValidator->getAccepted
+            // requestValidator->getMetaData
+            // requestValidator->setQueryArgument
+            // requestValidator->getValidatedQueryData
+                // rest requestValidator->getValidatedQueryData
+                    // [
+                    //     'GET' => [
+                    //         [column => title, value => someting, dataType => string],
+                    //         [column => title, value => someting, dataType => string],
+                    //         [column => title, value => someting, dataType => string]
+                    //     ]
+                    // ]
+                // context requestValidator->getValidatedQueryData
+                    // [
+                    //     'getUsers' => [
+                    //         'GET' => [
+                    //             [column => title, value => someting, dataType => string],
+                    //             [column => title, value => someting, dataType => string],
+                    //             [column => title, value => someting, dataType => string]
+                    //         ]
+                    //     ],
+                    //     'setprojects' => [
+                    //         'SET' => [
+                    //             [column => title, value => someting, dataType => string],
+                    //             [column => title, value => someting, dataType => string],
+                    //             [column => title, value => someting, dataType => string]
+                    //         ]
+                    //     ]
+                    // ]
+
+        // $this->requestValidator->validate($this->request);
+            // what if errors / not valid end point -> send with getValidatedQueryData
+            // what about index -> send with getValidatedQueryData
+            // what about single record -> send with getValidatedQueryData
+
+            // $this->responseBuilder->setResponseData($this->queryResolver->resolve($this->requestValidator->getValidatedQueryData()));
+                // Query
+                // Persist
+                // index
+                // Error / bad endpoint
+
+
+
+
+
+
     
 ?>
+
+
+
+
+
+
