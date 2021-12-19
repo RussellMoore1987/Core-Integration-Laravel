@@ -289,6 +289,10 @@
     }
     class RestQueryResolver extends QueryResolver
     {
+
+        // uses serves provider Located ...
+        // loads function __construct(CILQueryAssembler $queryAssembler, CILQueryPersister $queryPersister, RestQueryIndex $queryIndex, CILQueryDeleter $queryDeleter)
+
         public function resolve($validatedQueryData)
         {
             // bad endpoint / errors
@@ -312,6 +316,9 @@
     }
     class ContextQueryResolver extends QueryResolver
     {
+        // uses serves provider Located ...
+        // loads function __construct(CILQueryAssembler $queryAssembler, CILQueryPersister $queryPersister, ContextQueryIndex $queryIndex, CILQueryDeleter $queryDeleter)
+
         public function resolve($validatedQueryData)
         {
             $queries = [];
@@ -374,7 +381,6 @@
         }
     }
 
-    // ! working here UML **********************************************************************
     class ClauseBuilderFactory
     {
         public function getClauseBuilder($type)
@@ -463,6 +469,7 @@
         }
     }
 
+    // ! working here ********************************************************************
     interface QueryIndex {
         public function get();
     }
