@@ -298,6 +298,10 @@
             // bad endpoint / errors
             $query = $validatedQueryData->errors ? $validatedQueryData->errors : NULL;
 
+            // get column data
+
+            // get form data
+
             // index
             $query = $query === NULL && $validatedQueryData->action == 'INDEX' ? $this->queryIndex->get() : NULL;
 
@@ -327,6 +331,10 @@
 
                 // bad endpoint
                 $query = $queryArguments->errors ? $queryArguments->errors : NULL;
+
+                // get column data
+
+                // get form data
     
                 // index
                 $query = $query === NULL && $queryArguments->action == 'index' ? $this->queryIndex->get() : NULL;
