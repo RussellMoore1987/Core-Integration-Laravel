@@ -457,7 +457,7 @@
         }
     }
 
-
+    // ! working here ********************************************************************
     interface QueryPersister {
         public function persist($validatedQueryData);
     }
@@ -477,7 +477,6 @@
         }
     }
 
-    // ! working here ********************************************************************
     interface QueryIndex {
         public function get();
     }
