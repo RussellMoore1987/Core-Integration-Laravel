@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
+use App\CoreIntegrationApi\RestApi\RestRequestDataPrepper;
 use App\CoreIntegrationApi\RestApi\RestRequestProcessor;
 use App\CoreIntegrationApi\RestApi\RestRequestValidator;
-use App\CoreIntegrationApi\RestApi\RestQueryResolver;
 use App\CoreIntegrationApi\RestApi\RestResponseBuilder;
-use App\CoreIntegrationApi\RestApi\RestRequestDataPrepper;
+use App\CoreIntegrationApi\RestApi\RestQueryIndex;
+use App\CoreIntegrationApi\RestApi\RestQueryResolver;
+use App\CoreIntegrationApi\CIL\CILQueryAssembler;
+use App\CoreIntegrationApi\CIL\CILQueryDeleter;
+use App\CoreIntegrationApi\CIL\CILQueryPersister;
 
 // use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
