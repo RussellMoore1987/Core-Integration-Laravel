@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\GlobalAPIController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::any("v1/{class?}/{id?}/{path?}", [GlobalAPIController::class, 'processRequest'])->where('path', '.+');
+
+Route::any("rest/v1/{class?}/{id?}/{path?}", [GlobalAPIController::class, 'processRestRequest'])->where('path', '.+');
+
+Route::any("context/v1", [GlobalAPIController::class, 'processContextRequest']);

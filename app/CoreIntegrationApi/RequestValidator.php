@@ -48,15 +48,6 @@ abstract class RequestValidator
             $this->setValidatedMetaData();
         }
 
-        protected function setValidatedMetaData()
-        {
-            $validatedRequestMetaData['rejectedParameters'] = $this->getRejectedParameters();
-            $validatedRequestMetaData['acceptedParameters'] = $this->getAcceptedParameters();
-            $validatedRequestMetaData['errors'] = $this->errors;
-            $validatedRequestMetaData['queryArguments'] = $this->getQueryArguments();
-            $this->validatedMetaData = $validatedRequestMetaData;
-        }
-
         protected function setUpPreppedRequest($request)
         {
             $this->class = $request['class'];
@@ -111,6 +102,15 @@ abstract class RequestValidator
         {
             // code...
             // use $this->acceptableParameters
+        }
+
+        protected function setValidatedMetaData()
+        {
+            $validatedRequestMetaData['rejectedParameters'] = $this->getRejectedParameters();
+            $validatedRequestMetaData['acceptedParameters'] = $this->getAcceptedParameters();
+            $validatedRequestMetaData['errors'] = $this->errors;
+            $validatedRequestMetaData['queryArguments'] = $this->getQueryArguments();
+            $this->validatedMetaData = $validatedRequestMetaData;
         }
 
         protected function setRejectedParameter()

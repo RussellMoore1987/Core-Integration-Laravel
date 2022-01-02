@@ -14,5 +14,9 @@ abstract class RequestDataPrepper
         }  
 
         abstract public function prep();
-        abstract public function getPreppedData();
+
+        public function getPreppedData() 
+        {
+            return $this->request;
+        }
     }

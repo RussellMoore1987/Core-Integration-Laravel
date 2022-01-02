@@ -10,9 +10,4 @@ class ContextRequestDataPrepper extends RequestDataPrepper
     {
         // possess rest request
     }
-
-    public function getPreppedData()
-    {
-        // get rest request
-    }
 }

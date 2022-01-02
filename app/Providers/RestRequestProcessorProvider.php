@@ -12,15 +12,10 @@ use App\CoreIntegrationApi\CIL\CILQueryAssembler;
 use App\CoreIntegrationApi\CIL\CILQueryDeleter;
 use App\CoreIntegrationApi\CIL\CILQueryPersister;
 
-// use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
-// scoped https://laravel.com/docs/8.x/container#binding-scoped
-// https://laravel.com/docs/8.x/providers#deferred-providers
-// config/app.php
-
-// implements DeferrableProvider
-class RestRequestProcessorProvider extends ServiceProvider
+class RestRequestProcessorProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Register services.
