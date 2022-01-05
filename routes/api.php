@@ -14,8 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::any("v1/{class?}/{id?}/{path?}", [GlobalAPIController::class, 'processRequest'])->where('path', '.+');
+Route::any("v1/{endpoint?}/{endpointId?}", [GlobalAPIController::class, 'processRequest']);
 
-Route::any("rest/v1/{class?}/{id?}/{path?}", [GlobalAPIController::class, 'processRestRequest'])->where('path', '.+');
+Route::any("rest/v1/{endpoint?}/{endpointId?}", [GlobalAPIController::class, 'processRestRequest']);
 
 Route::any("context/v1", [GlobalAPIController::class, 'processContextRequest']);
+
+// TODO: To utilize leader for perhaps building out a more complex pathing rest request
+// Route::any("rest/v1/{class?}/{id?}/{path?}", [GlobalAPIController::class, 'processRestRequest'])->where('path', '.+');

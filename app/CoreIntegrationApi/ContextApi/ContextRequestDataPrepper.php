@@ -6,7 +6,7 @@ use App\CoreIntegrationApi\RequestDataPrepper;
 
 class ContextRequestDataPrepper extends RequestDataPrepper
 {
-    public function prep()
+    public function prepRequestData()
     {
         // possess rest request
     }
