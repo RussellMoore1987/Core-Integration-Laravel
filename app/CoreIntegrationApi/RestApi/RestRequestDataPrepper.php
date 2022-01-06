@@ -10,52 +10,14 @@ class RestRequestDataPrepper extends RequestDataPrepper
 
     public function prepRequestData()
     {
-        $this->allAvailableParameters = $this->request->input();
-        
-        // ! prep this data ************************************************ setEndpointDetails()
-        // set class
         $this->setClass();
         $this->setEndpointDetails();
         $this->setMethodCalls();
         $this->setIncludes();
-        
-        
         $this->setPerPageParameter();
         $this->setOrderByParameters();
         $this->setSelectParameters();
         $this->setOtherParameters();
-        
-        // ! $request->except(['key1','key2',....])
-        // if there remove from all parameters
-        
-
-        dd($this->preppedData, 'got here@@@');
-        // dd($this->preppedData, $this->request->input(), request()->all(), 'got here@@@');
-
-        $this->preppedData['includes'] ?? [];
-        $this->preppedData['perPageParameter'] ?? 30;
-        $this->preppedData['orderByParameters'] ?? [];
-        $this->preppedData['selectParameters'] ?? [];
-        $this->preppedData['otherParameters'] ?? [];
-
-        // Initial set up of key variables
-        $this->endpointKey = $endpointKey;
-        $this->classId = $classId;
-        $this->acceptedClasses = config('coreintegration.acceptedclasses');
-        $this->indexUrlPath = $endpointKey !== NULL ? substr($request->url(), 0, strpos($request->url(), $this->endpointKey)) : $request->url();
-        $this->httpMethod = $_SERVER['REQUEST_METHOD'] ?? request()->method() ?? null;
-        $this->url = $request->url();
-        
-
-        // $this->class = $request['class'];
-        //     $this->endpoint = $request['endpoint'];
-        //     $this->methodCalls = $request['methodCalls'] ?? [];
-        //     $this->includes = $request['includes'] ?? [];
-        //     $this->perPageParameter = $request['perPageParameter'] ?? 30;
-        //     $this->orderByParameter = $request['orderByParameter'] ?? [];
-        //     $this->selectParameter = $request['selectParameter'] ?? [];
-        //     $this->otherParameter = $request['otherParameter'] ?? [];
-        
     }
 
     private function setClass()

@@ -55,9 +55,9 @@ abstract class RequestValidator
             $this->methodCalls = $request['methodCalls'] ?? [];
             $this->includes = $request['includes'] ?? [];
             $this->perPageParameter = $request['perPageParameter'] ?? 30;
-            $this->orderByParameter = $request['orderByParameter'] ?? [];
-            $this->selectParameter = $request['selectParameter'] ?? [];
-            $this->otherParameter = $request['otherParameter'] ?? [];
+            $this->orderByParameters = $request['orderByParameters'] ?? [];
+            $this->selectParameters = $request['selectParameters'] ?? [];
+            $this->otherParameters = $request['otherParameters'] ?? [];
         }
 
         // TODO: Search for field that's not displayed *hidden, kinda like a Social Security number
