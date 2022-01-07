@@ -29,7 +29,7 @@ class CILQueryAssembler implements QueryAssembler
             // Don't know exactly how to do method calls yet
             // id - all in one - $data = 1 or 1,2,3,4,5
             // perPageParameter - set Local variable, continue, go to next item in the loop, Set perPageParameter Later in paginate($perPageParameter), default 30
-                // $clauseBuilder = $this->clauseBuilderFactory->getClauseBuilder($type);
+                // $clauseBuilder = $this->clauseBuilderFactory->getClauseBuilder($parameterType);
                 // $this->queryBuilder = $clauseBuilder->build($this->queryBuilder, $data)
         
         // return query;

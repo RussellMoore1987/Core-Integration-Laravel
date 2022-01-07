@@ -17,6 +17,22 @@ class ClauseBuilderFactory
         $this->parameterType = $parameterType;
 
         // find and return type
+        // types 
+            // select
+            // column - Already listed below, there are probably more but this is a fairly sufficient list for now. 
+                // ex: 
+                    // $parameterType == 'date'
+                    // $parameterType == 'varchar'
+                    // $parameterType == 'datetime'
+                    // $parameterType == 'integer'
+                // date
+                // string
+                // int
+                // float
+            // include
+            // orderBy
+            // methodCall
+            // id
         $this->checkForSelect(); // *** use this method. This will help break up the big if statement.
         // $this->checkForOrderBy();
         // $this->checkForDate();
