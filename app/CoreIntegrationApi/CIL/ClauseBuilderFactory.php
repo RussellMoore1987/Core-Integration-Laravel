@@ -23,8 +23,8 @@ class ClauseBuilderFactory
                 // ex: 
                     // $parameterType == 'date'
                     // $parameterType == 'varchar'
-                    // $parameterType == 'datetime'
                     // $parameterType == 'integer'
+                    // $parameterType == 'decimal'
                 // date
                 // string
                 // int

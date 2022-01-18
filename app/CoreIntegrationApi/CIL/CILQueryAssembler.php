@@ -32,7 +32,6 @@ class CILQueryAssembler implements QueryAssembler
                 // $clauseBuilder = $this->clauseBuilderFactory->getClauseBuilder($parameterType);
                 // $this->queryBuilder = $clauseBuilder->build($this->queryBuilder, $data)
         
-        // return query;
         // return $this->queryBuilder->paginate($perPageParameter)
     }
 }
