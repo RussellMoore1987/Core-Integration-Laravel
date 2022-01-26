@@ -1,5 +1,13 @@
 <?php
 
+use App\CoreIntegrationApi\ContextApi\ContextRequestDataPrepper;
+use App\CoreIntegrationApi\ContextApi\ContextRequestValidator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+
+
+use App\Models\Project;
+
 use App\Http\Controllers\GlobalAPIController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +21,20 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::any("projects", function () {
+    // $r = new Request;
+    // $c = new ContextRequestDataPrepper($r);
+    // $v = new ContextRequestValidator($c);
+
+    // ! failed
+    // $v2 = App::make(ContextRequestValidator::class);
+    // * good
+    // $c = App::make(ContextRequestDataPrepper::class);
+
+    // dd($v);
+    return Project::all();
+});
 
 Route::any("v1/{endpoint?}/{endpointId?}", [GlobalAPIController::class, 'processRequest']);
 

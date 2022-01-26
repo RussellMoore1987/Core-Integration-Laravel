@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\CoreIntegrationApi\RestApi\RestRequestProcessor;
 use App\CoreIntegrationApi\RestApi\RestRequestValidator;
 use App\CoreIntegrationApi\RestApi\RestQueryResolver;
+use App\CoreIntegrationApi\RestApi\RestRequestDataPrepper;
 use App\CoreIntegrationApi\RestApi\RestResponseBuilder;
 
 use Illuminate\Support\Facades\App;
@@ -31,13 +32,13 @@ class RestRequestProcessorProviderTest extends TestCase
 
         $this->assertInstanceOf($classPath, $newClass);
     }
-
     public function classDataProvider()
     {
         return [
             'RestRequestProcessor' => [RestRequestProcessor::class],
             'RestRequestValidator' => [RestRequestValidator::class],
             'RestQueryResolver' => [RestQueryResolver::class],
+            'RestRequestDataPrepper' => [RestRequestDataPrepper::class],
             'RestResponseBuilder' => [RestResponseBuilder::class]
         ];
     }

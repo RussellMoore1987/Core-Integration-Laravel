@@ -6,6 +6,7 @@ use App\CoreIntegrationApi\ContextApi\ContextRequestProcessor;
 use App\CoreIntegrationApi\ContextApi\ContextRequestValidator;
 use App\CoreIntegrationApi\ContextApi\ContextQueryResolver;
 use App\CoreIntegrationApi\ContextApi\ContextResponseBuilder;
+use App\CoreIntegrationApi\ContextApi\ContextRequestDataPrepper;
 
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
@@ -38,6 +39,7 @@ class ContextRequestProcessorProviderTest extends TestCase
             'ContextRequestProcessor' => [ContextRequestProcessor::class],
             'ContextRequestValidator' => [ContextRequestValidator::class],
             'ContextQueryResolver' => [ContextQueryResolver::class],
+            'ContextRequestDataPrepper' => [ContextRequestDataPrepper::class],
             'ContextResponseBuilder' => [ContextResponseBuilder::class]
         ];
     }

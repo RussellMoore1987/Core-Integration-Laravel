@@ -12,10 +12,10 @@ use App\CoreIntegrationApi\CIL\CILQueryAssembler;
 use App\CoreIntegrationApi\CIL\CILQueryDeleter;
 use App\CoreIntegrationApi\CIL\CILQueryPersister;
 
-use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 
-class RestRequestProcessorProvider extends ServiceProvider implements DeferrableProvider
+class RestRequestProcessorProvider extends ServiceProvider 
 {
     /**
      * Register services.
@@ -24,10 +24,19 @@ class RestRequestProcessorProvider extends ServiceProvider implements Deferrable
      */
     public function register()
     {
+        $this->bindRequestDataPrepper();
         $this->bindRequestValidator();
         $this->bindQueryResolver();
         $this->bindResponseBuilder();
         $this->bindRequestProcessor();
+    }
+
+    private function bindRequestDataPrepper() {
+        $this->app->bind(RestRequestDataPrepper::class, function ($app) {
+            return new RestRequestDataPrepper(
+                $app->make(Request::class),
+            );
+        });
     }
 
     private function bindRequestValidator() {

@@ -10,8 +10,11 @@ npm install &&
 echo "composer install" &&
 composer install &&
 
-echo "php artisan migrate --seed" &&
-php artisan migrate --seed &&
+# chaned on 1/22/22
+# echo "php artisan migrate:fresh --seed" &&
+# php artisan migrate:fresh --seed &&
+echo "php artisan migrate" &&
+php artisan migrate &&
 
 echo "php-fpm" &&
 php-fpm
