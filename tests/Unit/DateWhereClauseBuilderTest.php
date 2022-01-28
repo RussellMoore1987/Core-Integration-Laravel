@@ -19,6 +19,15 @@ class DateWhereClauseBuilderTest extends TestCase
     {
         parent::setUp();
 
+        $this->Project = Project::factory()->create([
+            'title' => 'Really Cool Project!!!',
+            'roles' => 'Software architect, UX UI designer',
+            'client' => 'Creative Studio',
+            'description' => "A really cool project.",
+            'start_date' => '1976-05-20',
+            'end_date' => '2021-05-20'
+        ]);
+
         $this->projectQueryBuilderInstance = Project::query();
 
         $this->data = [
@@ -27,41 +36,72 @@ class DateWhereClauseBuilderTest extends TestCase
         ];
 
         $this->dateWhereClauseBuilder = new DateWhereClauseBuilder();
-
-        $this->builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $this->data);
     }
 
-    public function test_date_clause_builder_to_see_if_it_returns_an_instance_of_the_laravel_builder_class()
-    {   
-        $this->assertInstanceOf('Illuminate\Database\Eloquent\Builder', $this->builderInstance);
-    }
-
-    public function test_to_make_sure_builder_has_what_we_expect()
+    public function test_date_equals_clause()
     {
-        $builderInstanceWheres = $this->builderInstance->getQuery()->wheres[0];
-        $builderInstanceFrom = $this->builderInstance->getQuery()->from;
+        $data = [
+            'columnName' => 'start_date',
+            'date' => '1976-05-20'
+        ];
+        
+        $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
+        
+        $project = $builderInstance->first();
 
-        $this->assertEquals('start_date' ,$builderInstanceWheres['column']);
-        $this->assertEquals('1976-05-20' ,$builderInstanceWheres['value']);
-        $this->assertEquals('=' ,$builderInstanceWheres['operator']);
-        $this->assertEquals('Date' ,$builderInstanceWheres['type']);
-
-        $this->assertEquals('projects' ,$builderInstanceFrom);
+        $this->assertEquals($this->Project->id ,$project->id);
     }
 
-    public function test_to_make_sure_we_can_get_back_a_record_from_the_builder_that_is_returned()
+    public function test_grater_than_clause()
     {
-        $createdProject = Project::factory()->create([
+        $otherProject = Project::factory()->create([
             'title' => 'Really Cool Project!!!',
             'roles' => 'Software architect, UX UI designer',
             'client' => 'Creative Studio',
             'description' => "A really cool project.",
-            'start_date' => '1976-05-20',
+            'start_date' => '1989-05-20',
             'end_date' => '2021-05-20'
         ]);
         
-        $project = $this->builderInstance->first();
+        $data = [
+            'columnName' => 'start_date',
+            'date' => '1976-05-20::GT'
+        ];
+        
+        $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
+        
+        $projects = $builderInstance->get();
+        $project = $projects->find($otherProject->id);
 
-        $this->assertEquals($createdProject->id ,$project->id);
+        // $this->assertGreaterThan(2, $projects->count());
+        $this->assertEquals(1 , $projects->count());
+        $this->assertEquals($otherProject->id ,$project->id);
+    }
+
+    public function test_grater_than_or_equal_to_clause()
+    {
+        $otherProject = Project::factory()->create([
+            'title' => 'Really Cool Project!!!',
+            'roles' => 'Software architect, UX UI designer',
+            'client' => 'Creative Studio',
+            'description' => "A really cool project.",
+            'start_date' => '1989-05-20',
+            'end_date' => '2021-05-20'
+        ]);
+        
+        $data = [
+            'columnName' => 'start_date',
+            'date' => '1976-05-20::GTE'
+        ];
+        
+        $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
+        
+        $projects = $builderInstance->get();
+        $project1 = $projects->find($otherProject->id);
+        $project2 = $projects->find($this->Project->id);
+
+        $this->assertGreaterThan(1, $projects->count());
+        $this->assertEquals($otherProject->id ,$project1->id);
+        $this->assertEquals($this->Project->id ,$project2->id);
     }
 }
