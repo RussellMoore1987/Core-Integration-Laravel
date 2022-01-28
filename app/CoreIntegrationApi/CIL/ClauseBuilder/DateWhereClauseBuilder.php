@@ -46,6 +46,7 @@ class DateWhereClauseBuilder implements ClauseBuilder
     
             if (str_contains($date_array[0], ',')) {
                 $between_dates = explode(',', $date_array[0]);
+                $this->date = [];
                 $this->date[] = date('Y-m-d', strtotime($between_dates[0])); // Beginning of day - default 1970-01-01
                 $this->date[] = date('Y-m-d H:i:s', strtotime("tomorrow", strtotime($between_dates[1])) - 1); // End of day - default 1970-01-01 23:59:59
             } else {

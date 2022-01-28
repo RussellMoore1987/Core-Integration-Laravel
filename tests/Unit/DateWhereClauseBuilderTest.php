@@ -2,8 +2,6 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Database\Eloquent\Builder;
-
 use App\CoreIntegrationApi\CIL\ClauseBuilder\DateWhereClauseBuilder;
 use App\Models\Project;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -19,13 +17,8 @@ class DateWhereClauseBuilderTest extends TestCase
     {
         parent::setUp();
 
-        $this->Project = Project::factory()->create([
-            'title' => 'Really Cool Project!!!',
-            'roles' => 'Software architect, UX UI designer',
-            'client' => 'Creative Studio',
-            'description' => "A really cool project.",
+        $this->project = Project::factory()->create([
             'start_date' => '1976-05-20',
-            'end_date' => '2021-05-20'
         ]);
 
         $this->projectQueryBuilderInstance = Project::query();
@@ -38,6 +31,7 @@ class DateWhereClauseBuilderTest extends TestCase
         $this->dateWhereClauseBuilder = new DateWhereClauseBuilder();
     }
 
+    // tests ------------------------------------------------------------
     public function test_date_equals_clause()
     {
         $data = [
@@ -49,19 +43,12 @@ class DateWhereClauseBuilderTest extends TestCase
         
         $project = $builderInstance->first();
 
-        $this->assertEquals($this->Project->id ,$project->id);
+        $this->assertEquals($this->project->id ,$project->id);
     }
 
     public function test_grater_than_clause()
     {
-        $otherProject = Project::factory()->create([
-            'title' => 'Really Cool Project!!!',
-            'roles' => 'Software architect, UX UI designer',
-            'client' => 'Creative Studio',
-            'description' => "A really cool project.",
-            'start_date' => '1989-05-20',
-            'end_date' => '2021-05-20'
-        ]);
+        $otherProject = $this->makeOtherProject();
         
         $data = [
             'columnName' => 'start_date',
@@ -71,23 +58,14 @@ class DateWhereClauseBuilderTest extends TestCase
         $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
         
         $projects = $builderInstance->get();
-        $project = $projects->find($otherProject->id);
 
-        // $this->assertGreaterThan(2, $projects->count());
         $this->assertEquals(1 , $projects->count());
-        $this->assertEquals($otherProject->id ,$project->id);
+        $this->assertTrue((boolean)$projects->find($otherProject->id));
     }
 
     public function test_grater_than_or_equal_to_clause()
     {
-        $otherProject = Project::factory()->create([
-            'title' => 'Really Cool Project!!!',
-            'roles' => 'Software architect, UX UI designer',
-            'client' => 'Creative Studio',
-            'description' => "A really cool project.",
-            'start_date' => '1989-05-20',
-            'end_date' => '2021-05-20'
-        ]);
+        $otherProject = $this->makeOtherProject();
         
         $data = [
             'columnName' => 'start_date',
@@ -97,11 +75,77 @@ class DateWhereClauseBuilderTest extends TestCase
         $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
         
         $projects = $builderInstance->get();
-        $project1 = $projects->find($otherProject->id);
-        $project2 = $projects->find($this->Project->id);
 
         $this->assertGreaterThan(1, $projects->count());
-        $this->assertEquals($otherProject->id ,$project1->id);
-        $this->assertEquals($this->Project->id ,$project2->id);
+        $this->assertTrue((boolean)$projects->find($otherProject->id));
+        $this->assertTrue((boolean)$projects->find($this->project->id));
     }
+
+    public function test_less_than_clause()
+    {
+        $data = [
+            'columnName' => 'start_date',
+            'date' => '1989-05-20::lt'
+        ];
+        
+        $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
+        
+        $projects = $builderInstance->get();
+
+        $this->assertEquals(1 , $projects->count());
+        $this->assertTrue((boolean)$projects->find($this->project->id));
+    }
+
+    public function test_less_than_or_equal_to_clause()
+    {
+        $otherProject = $this->makeOtherProject();
+        
+        $data = [
+            'columnName' => 'start_date',
+            'date' => '1989-05-20::LTE'
+        ];
+        
+        $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
+        
+        $projects = $builderInstance->get();
+
+        $this->assertGreaterThan(1, $projects->count());
+        $this->assertTrue((boolean)$projects->find($otherProject->id));
+        $this->assertTrue((boolean)$projects->find($this->project->id));
+    }
+
+    public function test_between_clause()
+    {
+        $otherProject = $this->makeOtherProject();
+        
+        $data = [
+            'columnName' => 'start_date',
+            'date' => '1976-05-20,1989-05-20::BT'
+        ];
+        
+        $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
+        
+        $projects = $builderInstance->get();
+
+        $this->assertGreaterThan(1, $projects->count());
+        $this->assertTrue((boolean)$projects->find($otherProject->id));
+        $this->assertTrue((boolean)$projects->find($this->project->id));
+    }
+
+    // helper functions -------------------------------------------------
+    private function makeOtherProject()
+    {
+        return Project::factory()->create([
+            'start_date' => '1989-05-20',
+        ]);
+    }
+
+
+    // TODO: 
+    // 'date' => '1976-05-20,1989-05-20::BT' OR 'date' => ['1976-05-20', '1989-05-20']
+        // 'columnName' => 'start_date',
+        // 'date' => ['1976-05-20', '1989-05-20'],
+        // 'dateAction' => 'BT'
+
+    // Exceptions
 }
