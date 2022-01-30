@@ -23,11 +23,6 @@ class DateWhereClauseBuilderTest extends TestCase
 
         $this->projectQueryBuilderInstance = Project::query();
 
-        $this->data = [
-            'columnName' => 'start_date',
-            'date' => '1976-05-20'
-        ];
-
         $this->dateWhereClauseBuilder = new DateWhereClauseBuilder();
     }
 
@@ -36,6 +31,7 @@ class DateWhereClauseBuilderTest extends TestCase
     {
         $data = [
             'columnName' => 'start_date',
+            'comparisonOperator' => '=',
             'date' => '1976-05-20'
         ];
         
@@ -52,7 +48,8 @@ class DateWhereClauseBuilderTest extends TestCase
         
         $data = [
             'columnName' => 'start_date',
-            'date' => '1976-05-20::GT'
+            'comparisonOperator' => '>',
+            'date' => '1976-05-20'
         ];
         
         $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
@@ -69,7 +66,8 @@ class DateWhereClauseBuilderTest extends TestCase
         
         $data = [
             'columnName' => 'start_date',
-            'date' => '1976-05-20::GTE'
+            'comparisonOperator' => '>=',
+            'date' => '1976-05-20'
         ];
         
         $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
@@ -85,7 +83,8 @@ class DateWhereClauseBuilderTest extends TestCase
     {
         $data = [
             'columnName' => 'start_date',
-            'date' => '1989-05-20::lt'
+            'comparisonOperator' => '<',
+            'date' => '1989-05-20'
         ];
         
         $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
@@ -102,7 +101,8 @@ class DateWhereClauseBuilderTest extends TestCase
         
         $data = [
             'columnName' => 'start_date',
-            'date' => '1989-05-20::LTE'
+            'comparisonOperator' => '<=',
+            'date' => '1989-05-20'
         ];
         
         $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
@@ -120,7 +120,8 @@ class DateWhereClauseBuilderTest extends TestCase
         
         $data = [
             'columnName' => 'start_date',
-            'date' => '1976-05-20,1989-05-20::BT'
+            'comparisonOperator' => 'bt',
+            'date' => ['1976-05-20','1989-05-20']
         ];
         
         $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);

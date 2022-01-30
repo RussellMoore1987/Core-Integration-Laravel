@@ -102,6 +102,8 @@ abstract class RequestValidator
         {
             // code...
             // use $this->acceptableParameters
+            // Run them through a data preper or Parameter validator
+            // All parameter validation needs to be done here
         }
 
         protected function setValidatedMetaData()
