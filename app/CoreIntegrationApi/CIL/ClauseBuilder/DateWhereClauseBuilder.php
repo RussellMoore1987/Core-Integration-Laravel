@@ -7,11 +7,6 @@ use App\CoreIntegrationApi\CIL\ClauseBuilder\ClauseBuilder;
 
 class DateWhereClauseBuilder implements ClauseBuilder
 {
-    private $queryBuilder;
-    private $columnName;
-    private $date;
-    private $comparisonOperator;
-
     public function build(Builder $queryBuilder, $data) : Builder
     {
         extract($data, EXTR_OVERWRITE); // $columnName, $date and $comparisonOperator are now available

@@ -11,8 +11,9 @@ use App\CoreIntegrationApi\RestApi\RestQueryResolver;
 use App\CoreIntegrationApi\CIL\CILQueryAssembler;
 use App\CoreIntegrationApi\CIL\CILQueryDeleter;
 use App\CoreIntegrationApi\CIL\CILQueryPersister;
-
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\ServiceProvider;
 
 class RestRequestProcessorProvider extends ServiceProvider 
@@ -35,6 +36,7 @@ class RestRequestProcessorProvider extends ServiceProvider
         $this->app->bind(RestRequestDataPrepper::class, function ($app) {
             return new RestRequestDataPrepper(
                 $app->make(Request::class),
+                $app->make(ParameterValidatorFactory::class),
             );
         });
     }
