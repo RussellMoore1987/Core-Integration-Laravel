@@ -5,9 +5,9 @@ namespace App\CoreIntegrationApi\RestApi;
 use App\CoreIntegrationApi\QueryIndex;
 
 class RestQueryIndex implements QueryIndex
+{
+    public function get()
     {
-        public function get()
-        {
-            // get rest index
-        }
+        // get rest index
     }
+}

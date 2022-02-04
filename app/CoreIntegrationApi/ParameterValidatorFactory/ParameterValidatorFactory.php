@@ -11,60 +11,22 @@ class ParameterValidatorFactory
 
     public function getParameterValidator($parameterType)
     {
-        $this->parameterType = $parameterType;
+        $this->parameterType = strtolower($parameterType);
         
-        // ! Start here ************************************************************************
         $this->checkForStringValidator();
+        $this->checkForDateValidator();
+        $this->checkForIntValidator();
+        $this->checkForFloatValidator();
+        $this->checkForIdValidator();
+        $this->checkForOrderByValidator();
+        $this->checkForSelectValidator();
+        $this->checkForIncludesValidator();
+        $this->checkForMethodCallsValidator();
 
         return $this->parameterValidatorClass;
-
-
-        // some code to work with
-        if ($parameterType == 'select') {
-            // return new SelectClauseBuilder();
-        } elseif ($parameterType == 'orderBy') {
-            // return new OrderByClauseBuilder();
-        } elseif (
-            $parameterType == 'date' || 
-            $parameterType == 'timestamp' || 
-            $parameterType == 'datetime' || 
-            str_contains($parameterType, 'date')
-        ) {
-            // return new DateWhereClauseBuilder();
-        } elseif (
-            str_contains($parameterType, 'varchar') || 
-            str_contains($parameterType, 'char') || 
-            $parameterType == 'blob' || 
-            $parameterType == 'text'
-        ) {
-            // return new StringWhereClauseBuilder();
-        } elseif (
-            $parameterType == 'integer' ||
-            $parameterType == 'int' ||
-            $parameterType == 'smallint' ||
-            $parameterType == 'tinyint' ||
-            $parameterType == 'mediumint' ||
-            $parameterType == 'bigint'
-        ) {
-            return 'int';
-        } elseif (
-            $parameterType == 'decimal' ||
-            $parameterType == 'numeric' ||
-            $parameterType == 'float' ||
-            $parameterType == 'double'
-        ) {
-            return 'float';
-        } else { // Maybe throw an exception here ???
-            foreach ($this->currentParameter as $parameter => $value) {
-                unset($this->paramsAccepted[$parameter]);
-                $this->paramsRejected[$parameter] = "Column type for \"{$parameter}\" is not supported in the query processor, contact the API administer for help!";
-            }
-            return false;
-        } 
-        
     }  
 
-    private function checkForStringValidator()
+    protected function checkForStringValidator()
     {
         if (
             !$this->clauseBuilderClass && 
@@ -78,4 +40,95 @@ class ParameterValidatorFactory
             $this->clauseBuilderClass = new StringParameterValidator();
         }
     }
+
+    protected function checkForDateValidator()
+    {
+        if (
+            !$this->clauseBuilderClass && 
+            (
+                $this->parameterType == 'date' || 
+                $this->parameterType == 'timestamp' || 
+                $this->parameterType == 'datetime' || 
+                str_contains($this->parameterType, 'date')
+            )
+        ) {
+            $this->clauseBuilderClass = new DateParameterValidator();
+        }
+    }
+
+    protected function checkForIntValidator()
+    {
+        if (
+            !$this->clauseBuilderClass && 
+            (
+                $this->parameterType == 'integer' ||
+                $this->parameterType == 'int' ||
+                $this->parameterType == 'smallint' ||
+                $this->parameterType == 'tinyint' ||
+                $this->parameterType == 'mediumint' ||
+                $this->parameterType == 'bigint'
+            )
+        ) {
+            $this->clauseBuilderClass = new IntParameterValidator();
+        }
+    }
+
+    protected function checkForFloatValidator()
+    {
+        if (
+            !$this->clauseBuilderClass && 
+            (
+                $this->parameterType == 'decimal' ||
+                $this->parameterType == 'numeric' ||
+                $this->parameterType == 'float' ||
+                $this->parameterType == 'double'
+            )
+        ) {
+            $this->clauseBuilderClass = new FloatParameterValidator();
+        }
+    }
+
+    protected function checkForIdValidator()
+    {
+        if (
+            !$this->clauseBuilderClass && 
+            (
+                $this->parameterType == 'date' || 
+                $this->parameterType == 'timestamp' || 
+                $this->parameterType == 'datetime' || 
+                str_contains($this->parameterType, 'date')
+            )
+        ) {
+            $this->clauseBuilderClass = new IdParameterValidator();
+        }
+    }
+
+    protected function checkForOrderByValidator()
+    {
+        if (!$this->clauseBuilderClass && $this->parameterType == 'orderby') {
+            $this->clauseBuilderClass = new OrderByParameterValidator();
+        }
+    }
+
+    protected function checkForSelectValidator()
+    {
+        if (!$this->clauseBuilderClass && $this->parameterType == 'select') {
+            $this->clauseBuilderClass = new SelectParameterValidator();
+        }
+    }
+
+    protected function checkForIncludesValidator()
+    {
+        if (!$this->clauseBuilderClass && $this->parameterType == 'includes') {
+            $this->clauseBuilderClass = new IncludesParameterValidator();
+        }
+    }
+
+    protected function checkForMethodCallsValidator()
+    {
+        if (!$this->clauseBuilderClass && $this->parameterType == 'methodcalls') {
+            $this->clauseBuilderClass = new MethodCallsParameterValidator();
+        }
+    }
+
 }

@@ -3,18 +3,15 @@
 namespace App\CoreIntegrationApi;
 
 use Illuminate\Http\Request;
-use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 
 abstract class RequestDataPrepper
     {
         protected $request;
         protected $preppedData;
 
-        function __construct(Request $request, ParameterValidatorFactory $parameterValidatorFactory) 
+        function __construct(Request $request) 
         {
             $this->request = $request;
-            $this->acceptedClasses = config('coreintegration.acceptedclasses') ?? [];
-            $this->parameterValidatorFactory = $parameterValidatorFactory;
         }  
 
         public function prep() 
