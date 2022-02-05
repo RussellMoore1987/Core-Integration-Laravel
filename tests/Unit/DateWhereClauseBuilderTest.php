@@ -140,13 +140,4 @@ class DateWhereClauseBuilderTest extends TestCase
             'start_date' => '1989-05-20',
         ]);
     }
-
-
-    // TODO: 
-    // 'date' => '1976-05-20,1989-05-20::BT' OR 'date' => ['1976-05-20', '1989-05-20']
-        // 'columnName' => 'start_date',
-        // 'date' => ['1976-05-20', '1989-05-20'],
-        // 'dateAction' => 'BT'
-
-    // Exceptions
 }
