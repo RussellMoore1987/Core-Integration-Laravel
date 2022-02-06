@@ -12,12 +12,8 @@ abstract class RequestValidator
     protected $acceptableParameters;
     protected $class;
     protected $endpoint;
-    protected $errors = [];
     protected $validatedMetaData;
     
-    protected $rejectedParameters = [];
-    protected $acceptedParameters = [];
-    protected $queryArguments = [];
 
     // TODO: maybe make Validator data collector 
     function __construct(RequestDataPrepper $requestDataPrepper, ParameterValidatorFactory $parameterValidatorFactory, ValidatorDataCollector $validatorDataCollector) 
@@ -53,7 +49,7 @@ abstract class RequestValidator
         $this->class = $request['class'];
         $this->endpoint = $request['endpoint'];
         $this->endpointId = $request['endpointId'];
-        $this->Parameters = $request['parameters'] ?? [];
+        $this->parameters = $request['parameters'] ?? [];
     }
 
     // TODO: Returns database data type with validated information
@@ -73,7 +69,7 @@ abstract class RequestValidator
     {
         $allAcceptableParameters = array_merge($this->acceptableParameters, $this->defaultAcceptableParameters);
 
-        foreach ($this->Parameters as $key => $value) {
+        foreach ($this->parameters as $key => $value) {
             if (array_key_exists($key, $allAcceptableParameters)) {
                 $ParameterValidator = $this->ParameterValidatorFactory->getParameterValidator($allAcceptableParameters[$key]['type'] ?? $allAcceptableParameters[$key]);
                 $this->validatorDataCollector = $ParameterValidator->validate($this->validatorDataCollector, [$key => $value]);
@@ -97,33 +93,6 @@ abstract class RequestValidator
         $validatedRequestMetaData['errors'] = $this->errors;
         $validatedRequestMetaData['queryArguments'] = $this->getQueryArguments();
         $this->validatedMetaData = $validatedRequestMetaData;
-    }
-
-    protected function setRejectedParameter()
-    {
-
-    }
-    public function getRejectedParameters()
-    {
-
-    }
-    
-    protected function setAcceptedParameter()
-    {
-
-    }
-    public function getAcceptedParameters()
-    {
-
-    }
-
-    protected function setQueryArgument()
-    {
-
-    }
-    public function getQueryArguments()
-    {
-
     }
 
     public function getValidatedQueryData()
