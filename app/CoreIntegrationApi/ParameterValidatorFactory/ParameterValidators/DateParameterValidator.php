@@ -4,7 +4,6 @@ namespace App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators;
 
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ParameterValidator;
 use App\CoreIntegrationApi\ValidatorDataCollector;
-use Hamcrest\Arrays\IsArray;
 
 class DateParameterValidator implements ParameterValidator
 {
@@ -52,7 +51,7 @@ class DateParameterValidator implements ParameterValidator
     
             $this->dateAction = strtolower($date_array[1]);
     
-            if (str_contains($date_array[0], ',') && $this->dateAction == 'bt') {
+            if (str_contains($date_array[0], ',') && in_array($this->dateAction, ['between', 'bt'])) {
                 $between_dates = explode(',', $date_array[0]);
                 $this->date = [];
                 $this->date[] = $this->convertToDate($between_dates[0]);
@@ -122,7 +121,7 @@ class DateParameterValidator implements ParameterValidator
             count($this->date) == 2)
         ) {
             $this->error = true;
-            $this->errors[] = "The between date action requires two dates, no more, no less. ex: 2021-01-01,2021-12-31::BT.";
+            $this->errors[] = "The between date action requires two dates, It only utilizes the first two if more are passed in. ex: 2021-01-01,2021-12-31::BT.";
         }
     }
 
