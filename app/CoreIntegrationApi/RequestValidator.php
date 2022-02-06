@@ -74,7 +74,12 @@ abstract class RequestValidator
                 $ParameterValidator = $this->ParameterValidatorFactory->getParameterValidator($allAcceptableParameters[$key]['type'] ?? $allAcceptableParameters[$key]);
                 $this->validatorDataCollector = $ParameterValidator->validate($this->validatorDataCollector, [$key => $value]);
             } else {
-                $this->validatorDataCollector->setRejectedParameter([$key => $value], 'This is an invalid parameter for this endpoint.');
+                $this->validatorDataCollector->setRejectedParameter([
+                    $key => [
+                        $key => $value,
+                        'parameterError' => 'This is an invalid parameter for this endpoint.'
+                    ]
+                ]);
             }
         }
         // code...
@@ -97,6 +102,6 @@ abstract class RequestValidator
 
     public function getValidatedQueryData()
     {
-
+        // return $this->validatedMetaData; // I think
     }
 }
