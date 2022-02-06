@@ -76,7 +76,7 @@ abstract class RequestValidator
         foreach ($this->Parameters as $key => $value) {
             if (array_key_exists($key, $allAcceptableParameters)) {
                 $ParameterValidator = $this->ParameterValidatorFactory->getParameterValidator($allAcceptableParameters[$key]['type'] ?? $allAcceptableParameters[$key]);
-                $this->validatorDataCollector = $ParameterValidator->validate([$key => $value], $this->validatorDataCollector);
+                $this->validatorDataCollector = $ParameterValidator->validate($this->validatorDataCollector, [$key => $value]);
             } else {
                 $this->validatorDataCollector->setRejectedParameter([$key => $value], 'This is an invalid parameter for this endpoint.');
             }

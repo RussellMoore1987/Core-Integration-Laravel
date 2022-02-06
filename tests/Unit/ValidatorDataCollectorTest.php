@@ -7,9 +7,7 @@ use Tests\TestCase;
 
 class ValidatorDataCollectorTest extends TestCase
 {
-    private $endPointData;
-    private $rejectedParameters;
-    private $acceptedParameters;
+    private $endpointData;
 
     protected function setUp(): void
     {
@@ -17,7 +15,7 @@ class ValidatorDataCollectorTest extends TestCase
 
         $this->ValidatorDataCollector = new ValidatorDataCollector();
 
-        $this->endPointData = [
+        $this->endpointData = [
             'endpoint' => 'projects',
             'endpointValid' => true,
         ];
@@ -43,11 +41,11 @@ class ValidatorDataCollectorTest extends TestCase
     }
 
     // tests ------------------------------------------------------------
-    public function test_setEndPointData_function()
+    public function test_setEndpointData_function()
     {
-        $this->ValidatorDataCollector->setEndPointData($this->endPointData); 
+        $this->ValidatorDataCollector->setEndpointData($this->endpointData); 
         
-        $this->assertEquals($this->endPointData, $this->ValidatorDataCollector->getEndPointData());
+        $this->assertEquals($this->endpointData, $this->ValidatorDataCollector->getEndpointData());
     }
 
     /**
@@ -69,7 +67,55 @@ class ValidatorDataCollectorTest extends TestCase
         ];
     }
 
-    // TODO: Test
-    // getAllData
-    // resetCollector
+    public function test_getAllData_function()
+    {
+        $this->setAllParameters(); 
+
+        $expectedOutput = [
+            'endpointData' => $this->endpointData,
+            'rejectedParameters' => $this->expectedParameters,
+            'acceptedParameters' => $this->expectedParameters,
+            'queryArguments' => $this->expectedParameters,
+        ];
+
+        $this->assertEquals($expectedOutput, $this->ValidatorDataCollector->getAllData());
+    }
+    public function setAllParameters()
+    {
+        $this->ValidatorDataCollector->setEndpointData($this->endpointData);
+        $this->ValidatorDataCollector->setRejectedParameter($this->parameters[0]); 
+        $this->ValidatorDataCollector->setRejectedParameter($this->parameters[1]); 
+        $this->ValidatorDataCollector->setAcceptedParameter($this->parameters[0]);  
+        $this->ValidatorDataCollector->setAcceptedParameter($this->parameters[1]); 
+        $this->ValidatorDataCollector->setQueryArgument($this->parameters[0]);  
+        $this->ValidatorDataCollector->setQueryArgument($this->parameters[1]); 
+    }
+
+    public function test_getAllData_function_with_nulls_returned()
+    {
+        $expectedOutput = [
+            'endpointData' => null,
+            'rejectedParameters' => [],
+            'acceptedParameters' => [],
+            'queryArguments' => [],
+        ];
+
+        $this->assertEquals($expectedOutput, $this->ValidatorDataCollector->getAllData());
+    }
+
+    public function test_resetCollector_function()
+    {
+        $this->setAllParameters(); 
+
+        $expectedOutput = [
+            'endpointData' => null,
+            'rejectedParameters' => [],
+            'acceptedParameters' => [],
+            'queryArguments' => [],
+        ];
+
+        $this->ValidatorDataCollector->resetCollector();
+
+        $this->assertEquals($expectedOutput, $this->ValidatorDataCollector->getAllData());
+    }
 }

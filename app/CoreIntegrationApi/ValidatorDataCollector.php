@@ -9,11 +9,11 @@ class ValidatorDataCollector
     protected $acceptedParameters = [];
     protected $queryArguments = [];
 
-    public function setEndPointData(array $endpointData)
+    public function setEndpointData(array $endpointData)
     {
         $this->endpointData = $endpointData;
     }
-    public function getEndPointData()
+    public function getEndpointData()
     {
         return $this->endpointData;
     }
@@ -55,7 +55,7 @@ class ValidatorDataCollector
     public function getAllData()
     {
         return [
-           'endpoint' => $this->endpoint,
+           'endpointData' => $this->endpointData,
            'rejectedParameters' => $this->rejectedParameters,
            'acceptedParameters' => $this->acceptedParameters,
            'queryArguments' => $this->queryArguments,
@@ -64,7 +64,7 @@ class ValidatorDataCollector
 
     public function resetCollector()
     {
-        $this->endpoint = Null;
+        $this->endpointData = Null;
         $this->rejectedParameters = [];
         $this->acceptedParameters = [];
         $this->queryArguments = [];
