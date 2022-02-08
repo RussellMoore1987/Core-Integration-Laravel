@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\ClauseBuilder;
 
 use Illuminate\Database\Eloquent\Builder;
 
@@ -32,7 +32,7 @@ class DateWhereClauseBuilderTest extends TestCase
     }
 
     public function test_date_clause_builder_to_see_if_it_returns_an_instance_of_the_laravel_builder_class()
-    {   
+    {
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Builder', $this->builderInstance);
     }
 
@@ -59,7 +59,7 @@ class DateWhereClauseBuilderTest extends TestCase
             'start_date' => '1976-05-20',
             'end_date' => '2021-05-20'
         ]);
-        
+
         $project = $this->builderInstance->first();
 
         $this->assertEquals($createdProject->id ,$project->id);
