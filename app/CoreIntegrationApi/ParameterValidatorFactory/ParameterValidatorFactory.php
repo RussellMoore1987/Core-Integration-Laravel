@@ -98,43 +98,40 @@ class ParameterValidatorFactory
 
     protected function checkForIdValidator()
     {
-        if (
-            !$this->parameterValidatorClass && 
-            (
-                $this->parameterType == 'date' || 
-                $this->parameterType == 'timestamp' || 
-                $this->parameterType == 'datetime' || 
-                str_contains($this->parameterType, 'date')
-            )
-        ) {
+        if (!$this->parameterValidatorClass && $this->parameterType == 'id') 
+        {
             $this->parameterValidatorClass = new IdParameterValidator();
         }
     }
 
     protected function checkForOrderByValidator()
     {
-        if (!$this->parameterValidatorClass && $this->parameterType == 'orderby') {
+        if (!$this->parameterValidatorClass && $this->parameterType == 'orderby') 
+        {
             $this->parameterValidatorClass = new OrderByParameterValidator();
         }
     }
 
     protected function checkForSelectValidator()
     {
-        if (!$this->parameterValidatorClass && $this->parameterType == 'select') {
+        if (!$this->parameterValidatorClass && $this->parameterType == 'select') 
+        {
             $this->parameterValidatorClass = new SelectParameterValidator();
         }
     }
 
     protected function checkForIncludesValidator()
     {
-        if (!$this->parameterValidatorClass && $this->parameterType == 'includes') {
+        if (!$this->parameterValidatorClass && $this->parameterType == 'includes') 
+        {
             $this->parameterValidatorClass = new IncludesParameterValidator();
         }
     }
 
     protected function checkForMethodCallsValidator()
     {
-        if (!$this->parameterValidatorClass && $this->parameterType == 'methodcalls') {
+        if (!$this->parameterValidatorClass && $this->parameterType == 'methodcalls') 
+        {
             $this->parameterValidatorClass = new MethodCallsParameterValidator();
         }
     }
