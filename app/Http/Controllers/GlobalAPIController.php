@@ -6,7 +6,7 @@ use App\CoreIntegrationApi\RequestProcessRouter;
 
 class GlobalAPIController extends Controller
 {
-    function __construct() 
+    function __construct()
     {
         $this->requestProcessRouter = new RequestProcessRouter;
     }
