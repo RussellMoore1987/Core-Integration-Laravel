@@ -3,6 +3,14 @@
 namespace App\CoreIntegrationApi\ParameterValidatorFactory;
 
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\StringParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\DateParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IntParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\FloatParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IdParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\OrderByParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\SelectParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IncludesParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\MethodCallsParameterValidator;
 
 class ParameterValidatorFactory
 {
@@ -29,7 +37,7 @@ class ParameterValidatorFactory
     protected function checkForStringValidator()
     {
         if (
-            !$this->clauseBuilderClass && 
+            !$this->parameterValidatorClass && 
             (
                 str_contains($this->parameterType, 'varchar') || 
                 str_contains($this->parameterType, 'char') || 
@@ -37,14 +45,14 @@ class ParameterValidatorFactory
                 $this->parameterType == 'text'
             )
         ) {
-            $this->clauseBuilderClass = new StringParameterValidator();
+            $this->parameterValidatorClass = new StringParameterValidator();
         }
     }
 
     protected function checkForDateValidator()
     {
         if (
-            !$this->clauseBuilderClass && 
+            !$this->parameterValidatorClass && 
             (
                 $this->parameterType == 'date' || 
                 $this->parameterType == 'timestamp' || 
@@ -52,14 +60,14 @@ class ParameterValidatorFactory
                 str_contains($this->parameterType, 'date')
             )
         ) {
-            $this->clauseBuilderClass = new DateParameterValidator();
+            $this->parameterValidatorClass = new DateParameterValidator();
         }
     }
 
     protected function checkForIntValidator()
     {
         if (
-            !$this->clauseBuilderClass && 
+            !$this->parameterValidatorClass && 
             (
                 $this->parameterType == 'integer' ||
                 $this->parameterType == 'int' ||
@@ -69,14 +77,14 @@ class ParameterValidatorFactory
                 $this->parameterType == 'bigint'
             )
         ) {
-            $this->clauseBuilderClass = new IntParameterValidator();
+            $this->parameterValidatorClass = new IntParameterValidator();
         }
     }
 
     protected function checkForFloatValidator()
     {
         if (
-            !$this->clauseBuilderClass && 
+            !$this->parameterValidatorClass && 
             (
                 $this->parameterType == 'decimal' ||
                 $this->parameterType == 'numeric' ||
@@ -84,14 +92,14 @@ class ParameterValidatorFactory
                 $this->parameterType == 'double'
             )
         ) {
-            $this->clauseBuilderClass = new FloatParameterValidator();
+            $this->parameterValidatorClass = new FloatParameterValidator();
         }
     }
 
     protected function checkForIdValidator()
     {
         if (
-            !$this->clauseBuilderClass && 
+            !$this->parameterValidatorClass && 
             (
                 $this->parameterType == 'date' || 
                 $this->parameterType == 'timestamp' || 
@@ -99,35 +107,35 @@ class ParameterValidatorFactory
                 str_contains($this->parameterType, 'date')
             )
         ) {
-            $this->clauseBuilderClass = new IdParameterValidator();
+            $this->parameterValidatorClass = new IdParameterValidator();
         }
     }
 
     protected function checkForOrderByValidator()
     {
-        if (!$this->clauseBuilderClass && $this->parameterType == 'orderby') {
-            $this->clauseBuilderClass = new OrderByParameterValidator();
+        if (!$this->parameterValidatorClass && $this->parameterType == 'orderby') {
+            $this->parameterValidatorClass = new OrderByParameterValidator();
         }
     }
 
     protected function checkForSelectValidator()
     {
-        if (!$this->clauseBuilderClass && $this->parameterType == 'select') {
-            $this->clauseBuilderClass = new SelectParameterValidator();
+        if (!$this->parameterValidatorClass && $this->parameterType == 'select') {
+            $this->parameterValidatorClass = new SelectParameterValidator();
         }
     }
 
     protected function checkForIncludesValidator()
     {
-        if (!$this->clauseBuilderClass && $this->parameterType == 'includes') {
-            $this->clauseBuilderClass = new IncludesParameterValidator();
+        if (!$this->parameterValidatorClass && $this->parameterType == 'includes') {
+            $this->parameterValidatorClass = new IncludesParameterValidator();
         }
     }
 
     protected function checkForMethodCallsValidator()
     {
-        if (!$this->clauseBuilderClass && $this->parameterType == 'methodcalls') {
-            $this->clauseBuilderClass = new MethodCallsParameterValidator();
+        if (!$this->parameterValidatorClass && $this->parameterType == 'methodcalls') {
+            $this->parameterValidatorClass = new MethodCallsParameterValidator();
         }
     }
 
