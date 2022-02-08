@@ -175,6 +175,12 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * Custom Service Providers...
+         */
+        App\Providers\CILProvider::class,
+        App\Providers\RestRequestProcessorProvider::class,
+        App\Providers\ContextRequestProcessorProvider::class,
     ],
 
     /*
