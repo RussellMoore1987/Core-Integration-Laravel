@@ -26,24 +26,3 @@ abstract class RequestDataPrepper
             return $this->preppedData;
         }
     }
-
-    // REST
-        // $_GET = [
-        //     'select' => 'name,email,phone',
-        //     'name' => 'sam'
-        // ];
-    // Context
-        // $contextInstructions = [
-        //     'users' => [ // as get
-        //         'select' => 'name,email,phone',
-        //         'name' => 'sam'
-        //     ],
-        //     'projects' => [ // as get
-        //         'select' => 'title,lead,customer,email,phone',
-        //         'title' => 'Gogo!!!'
-        //     ],
-        //     'projects2::projects' => [ // as get
-        //         'select' => 'title,lead,customer,email,phone',
-        //         'title' => 'Soso!!!'
-        //     ]
-        // ];

@@ -33,8 +33,8 @@ abstract class RequestProcessor
 
     protected function resolve() 
     {
-        $ValidatedQueryData = $this->requestValidator->getValidatedQueryData();
-        $queryResult = $this->queryResolver->resolve($ValidatedQueryData);
+        $validatedQueryData = $this->requestValidator->getValidatedQueryData();
+        $queryResult = $this->queryResolver->resolve($validatedQueryData);
         $this->responseBuilder->setResponseData($queryResult);
     }
 

@@ -118,25 +118,4 @@ class ParameterValidatorFactoryTest extends TestCase
 
         $this->assertInstanceOf(MethodCallsParameterValidator::class, $parameterValidator);
     }
-    // public function classDataProvider()
-    // {
-    //     // ! start here ****************************************************************
-    //     return [
-    //         'StringParameterValidator' => [['varchar','char','blob','text'], StringParameterValidator::class],
-    //         'DateParameterValidator' => ['varchar', DateParameterValidator::class],
-    //         'IntParameterValidator' => ['varchar', IntParameterValidator::class],
-    //         'FloatParameterValidator' => ['varchar', FloatParameterValidator::class],
-    //         'IdParameterValidator' => ['varchar', IdParameterValidator::class],
-    //         'OrderByParameterValidator' => ['varchar', OrderByParameterValidator::class],
-    //         'SelectParameterValidator' => ['varchar', SelectParameterValidator::class],
-    //         'IncludesParameterValidator' => ['varchar', IncludesParameterValidator::class],
-    //         'MethodCallsParameterValidator' => ['varchar', MethodCallsParameterValidator::class],
-    //     ];
-    // }
-
-    
-
-
-
-
 }
