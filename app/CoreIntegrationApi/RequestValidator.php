@@ -2,8 +2,9 @@
 
 namespace App\CoreIntegrationApi;
 
-use App\CoreIntegrationApi\RequestDataPrepper;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
+use App\CoreIntegrationApi\RequestDataPrepper;
+use App\CoreIntegrationApi\ValidatorDataCollector;
 
 abstract class RequestValidator 
 {
@@ -14,8 +15,6 @@ abstract class RequestValidator
     protected $endpoint;
     protected $validatedMetaData;
     
-
-    // TODO: maybe make Validator data collector 
     function __construct(RequestDataPrepper $requestDataPrepper, ParameterValidatorFactory $parameterValidatorFactory, ValidatorDataCollector $validatorDataCollector) 
     {
         $this->requestDataPrepper = $requestDataPrepper;
