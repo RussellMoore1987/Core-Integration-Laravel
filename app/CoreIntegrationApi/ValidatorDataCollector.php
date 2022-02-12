@@ -62,7 +62,7 @@ class ValidatorDataCollector
         ];
     }
 
-    public function resetCollector()
+    public function reset()
     {
         $this->endpointData = Null;
         $this->rejectedParameters = [];

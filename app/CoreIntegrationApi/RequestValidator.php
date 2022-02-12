@@ -9,11 +9,22 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 abstract class RequestValidator 
 {
 
-    protected $requestDataPrepper;
-    protected $acceptableParameters;
-    protected $class;
-    protected $endpoint;
-    protected $validatedMetaData;
+    private $requestDataPrepper;
+    private $validatorDataCollector;
+    private $acceptedClasses;
+    private $parameterValidatorFactory;
+    private $class;
+    private $endpoint;
+    private $endpointId;
+    private $parameters;
+    private $defaultAcceptableParameters = [
+        'orderby' => 'orderby', 
+        'perpage' => 'perpage', 
+        'select' => 'select', 
+        'page' => 'page',
+    ];
+    private $acceptableParameters;
+    private $validatedMetaData;
     
     function __construct(RequestDataPrepper $requestDataPrepper, ParameterValidatorFactory $parameterValidatorFactory, ValidatorDataCollector $validatorDataCollector) 
     {
@@ -32,9 +43,9 @@ abstract class RequestValidator
         return $this->validatedMetaData;
     }
 
-    protected function validateRequest($request)
+    protected function validateRequest($prepRequestData)
     {
-        $this->setUpPreppedRequest($request);
+        $this->setUpPreppedRequest($prepRequestData);
         
         $this->validateEndPoint();
         $this->getAcceptableParameters();
@@ -43,12 +54,12 @@ abstract class RequestValidator
         $this->setValidatedMetaData();
     }
 
-    protected function setUpPreppedRequest($request)
+    protected function setUpPreppedRequest($prepRequestData)
     {
-        $this->class = $request['class'];
-        $this->endpoint = $request['endpoint'];
-        $this->endpointId = $request['endpointId'];
-        $this->parameters = $request['parameters'] ?? [];
+        $this->class = $prepRequestData['class'] ?? '';
+        $this->endpoint = $prepRequestData['endpoint'] ?? '';
+        $this->endpointId = $prepRequestData['endpointId']  ?? []; // may be set in the prepper
+        $this->parameters = $prepRequestData['parameters'] ?? [];
     }
 
     // TODO: Returns database data type with validated information
@@ -64,14 +75,15 @@ abstract class RequestValidator
         // see if end point is in config('coreintegration.acceptedclasses')
     }
 
+    // get validation but what about the others put patch post
     protected function validateParameters()
     {
         $allAcceptableParameters = array_merge($this->acceptableParameters, $this->defaultAcceptableParameters);
 
         foreach ($this->parameters as $key => $value) {
             if (array_key_exists($key, $allAcceptableParameters)) {
-                $ParameterValidator = $this->ParameterValidatorFactory->getParameterValidator($allAcceptableParameters[$key]['type'] ?? $allAcceptableParameters[$key]);
-                $this->validatorDataCollector = $ParameterValidator->validate($this->validatorDataCollector, [$key => $value]);
+                $parameterValidator = $this->parameterValidatorFactory->getParameterValidator($allAcceptableParameters[$key]['type'] ?? $allAcceptableParameters[$key]);
+                $this->validatorDataCollector = $parameterValidator->validate($this->validatorDataCollector, [$key => $value]);
             } else {
                 $this->validatorDataCollector->setRejectedParameter([
                     $key => [
@@ -92,15 +104,17 @@ abstract class RequestValidator
 
     protected function setValidatedMetaData()
     {
-        $validatedRequestMetaData['rejectedParameters'] = $this->getRejectedParameters();
-        $validatedRequestMetaData['acceptedParameters'] = $this->getAcceptedParameters();
-        $validatedRequestMetaData['errors'] = $this->errors;
-        $validatedRequestMetaData['queryArguments'] = $this->getQueryArguments();
+        $validatedRequestMetaData['rejectedParameters'] = $this->validatorDataCollector->getRejectedParameters();
+        $validatedRequestMetaData['acceptedParameters'] = $this->validatorDataCollector->getAcceptedParameters();
+        // $validatedRequestMetaData['queryArguments'] = $this->validatorDataCollector->getQueryArguments(); // don't know if we need to send this one
         $this->validatedMetaData = $validatedRequestMetaData;
+
+        $this->validatorDataCollector->reset();
     }
 
-    public function getValidatedQueryData()
-    {
-        // return $this->validatedMetaData; // I think
-    }
+    // I don't know if we need this
+    // public function getValidatedQueryData() 
+    // {
+    //     return $this->validatedMetaData;
+    // }
 }
