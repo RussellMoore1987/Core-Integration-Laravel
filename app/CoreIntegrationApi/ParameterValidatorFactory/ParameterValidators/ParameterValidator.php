@@ -1,6 +1,7 @@
 <?php
 
 namespace App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators;
+
 use App\CoreIntegrationApi\ValidatorDataCollector;
 
 interface ParameterValidator

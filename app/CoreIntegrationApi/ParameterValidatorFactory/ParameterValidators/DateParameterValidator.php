@@ -11,18 +11,16 @@ class DateParameterValidator implements ParameterValidator
     private $date;
     private $dateAction;
     private $comparisonOperator;
+    private $originalComparisonOperator = '';
     private $errors;
-
-    // TODO: make sure to clean up all classes associated with these changes as well as the ***URL diagram***
 
     public function validate(ValidatorDataCollector $validatorDataCollector, $parameterData) : ValidatorDataCollector
     {
         $this->setMainVariables($validatorDataCollector, $parameterData);
         $this->processDateData();
         $this->checkForErrors();
-        $this->setErrorsIfAny();
-        $this->setAcceptedParameter(); 
-        $this->setDataCollectorWithQueryArgument(); 
+        $this->setAcceptedParameterIfAny(); 
+        $this->setDataQueryArgumentIfAny(); 
 
         return $this->validatorDataCollector;
     }
@@ -49,23 +47,24 @@ class DateParameterValidator implements ParameterValidator
         if (str_contains($this->date, '::')) {
             $date_array = explode('::', $this->date);
     
+            $this->originalComparisonOperator = $date_array[1];
             $this->dateAction = strtolower($date_array[1]);
     
             if (str_contains($date_array[0], ',') && in_array($this->dateAction, ['between', 'bt'])) {
                 $between_dates = explode(',', $date_array[0]);
                 $this->date = [];
-                $this->date[] = $this->convertToDate($between_dates[0]);
-                $this->date[] = date('Y-m-d H:i:s', strtotime("tomorrow", strtotime($between_dates[1])) - 1); // End of day - default 1970-01-01 23:59:59
+                $this->date[] = $this->convertStringToDate($between_dates[0]);
+                $this->date[] = date('Y-m-d H:i:s', strtotime("tomorrow", strtotime($between_dates[1])) - 1); // End of day
             } else {
-                $this->date = $this->convertToDate($date_array[0]);
+                $this->date = $this->convertStringToDate($date_array[0]);
             }
 
         } else {
-            $this->date = $this->convertToDate($this->date);
+            $this->date = $this->convertStringToDate($this->date);
         }
     }
 
-    private function convertToDate($dateString)
+    private function convertStringToDate($dateString)
     {
         return date('Y-m-d H:i:s', strtotime($dateString));
     }
@@ -90,12 +89,13 @@ class DateParameterValidator implements ParameterValidator
     private function checkForErrors()
     {
         $this->validateBetweenDatesAreCorrect();
+        $this->setErrorsIfAny();
     }
 
     private function validateBetweenDatesAreCorrect()
     {
         $this->checkToSeeIfFirstDateIsGreaterThenLastDate();
-        $this->checkToSeeIfWeHaveToDates();
+        $this->checkToSeeIfWeHaveTwoDates();
     }
 
     private function checkToSeeIfFirstDateIsGreaterThenLastDate()
@@ -113,15 +113,17 @@ class DateParameterValidator implements ParameterValidator
         }
     }
 
-    private function checkToSeeIfWeHaveToDates()
+    private function checkToSeeIfWeHaveTwoDates()
     {
         if (
             $this->comparisonOperator == 'bt' && 
-            !(is_array($this->date) && 
-            count($this->date) == 2)
+            !(
+                is_array($this->date) && 
+                count($this->date) == 2
+            )
         ) {
             $this->error = true;
-            $this->errors[] = "The between date action requires two dates, It only utilizes the first two if more are passed in. ex: 2021-01-01,2021-12-31::BT.";
+            $this->errors[] = "The between date action requires two dates, ex: 2021-01-01,2021-12-31::BT. It only utilizes the first two if more are passed in.";
         }
     }
 
@@ -132,27 +134,29 @@ class DateParameterValidator implements ParameterValidator
                 "$this->columnName" => [
                     'dateCoveredTo' => $this->date,
                     'originalDate' => $this->originalDate,
-                    'comparisonOperator' => $this->comparisonOperator,
+                    'comparisonOperatorCoveredTo' => $this->comparisonOperator,
+                    'originalComparisonOperator' => $this->originalComparisonOperator,
                     'parameterError' => $this->errors,
                 ]
             ]);
         }
     }
 
-    private function setAcceptedParameter()
+    private function setAcceptedParameterIfAny()
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setAcceptedParameter([
                 "$this->columnName" => [
                     'dateCoveredTo' => $this->date,
                     'originalDate' => $this->originalDate,
-                    'comparisonOperator' => $this->comparisonOperator,
+                    'comparisonOperatorCoveredTo' => $this->comparisonOperator,
+                    'originalComparisonOperator' => $this->originalComparisonOperator,
                 ]
             ]);
         }
     }
 
-    private function setDataCollectorWithQueryArgument()
+    private function setDataQueryArgumentIfAny()
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setQueryArgument([
@@ -160,6 +164,7 @@ class DateParameterValidator implements ParameterValidator
                 'columnName' => $this->columnName,
                 'date' => $this->date,
                 'comparisonOperator' => $this->comparisonOperator,
+                'originalComparisonOperator' => $this->originalComparisonOperator,
             ]);
         }
     }

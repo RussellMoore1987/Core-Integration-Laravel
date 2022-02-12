@@ -17,6 +17,7 @@ class ParameterValidatorFactory
     private $parameterValidatorClass;
     private $parameterType;
 
+    // TODO: Possibly make this an abstract class to which we can utilize it for parameter validation, query builder, and column type determiner
     public function getParameterValidator($parameterType)
     {
         $this->parameterType = strtolower($parameterType);

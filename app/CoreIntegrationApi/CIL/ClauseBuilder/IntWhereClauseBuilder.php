@@ -7,8 +7,8 @@ use App\CoreIntegrationApi\CIL\ClauseBuilder\ClauseBuilder;
 
 class IntWhereClauseBuilder implements ClauseBuilder
 {
-    public function build(Builder $queryBuilder, $column, $value) : Builder
+    public function build(Builder $queryBuilder, $data) : Builder
     {
-        // code...
+        return $queryBuilder;
     }
 }

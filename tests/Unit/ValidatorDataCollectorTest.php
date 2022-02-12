@@ -114,7 +114,7 @@ class ValidatorDataCollectorTest extends TestCase
             'queryArguments' => [],
         ];
 
-        $this->ValidatorDataCollector->resetCollector();
+        $this->ValidatorDataCollector->reset();
 
         $this->assertEquals($expectedOutput, $this->ValidatorDataCollector->getAllData());
     }

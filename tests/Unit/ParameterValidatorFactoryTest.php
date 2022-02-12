@@ -38,7 +38,7 @@ class ParameterValidatorFactoryTest extends TestCase
     public function stringParameterProvider()
     {
         return [
-            'varchar' => ['varchar'],
+            'varchar' => ['Varchar'],
             'char' => ['char'],
             'blob' => ['blob'],
             'text' => ['text'],
@@ -58,7 +58,7 @@ class ParameterValidatorFactoryTest extends TestCase
     {
         return [
             'date' => ['date'],
-            'timestamp' => ['timestamp'],
+            'timestamp' => ['Timestamp'],
             'datetime' => ['datetime'],
         ];
     }
@@ -76,11 +76,30 @@ class ParameterValidatorFactoryTest extends TestCase
     {
         return [
             'integer' => ['integer'],
-            'int' => ['int'],
+            'int' => ['Int'],
             'smallint' => ['smallint'],
             'tinyint' => ['tinyint'],
-            'mediumint' => ['mediumint'],
+            'mediumint' => ['Mediumint'],
             'bigint' => ['bigint'],
+        ];
+    }
+
+    /**
+     * @dataProvider floatParameterProvider
+     */
+    public function test_creation_of_float_parameter_validator_class($dataType)
+    {
+        $parameterValidator = $this->ParameterValidatorFactory->getParameterValidator($dataType);
+
+        $this->assertInstanceOf(FloatParameterValidator::class, $parameterValidator);
+    }
+    public function floatParameterProvider()
+    {
+        return [
+            'decimal' => ['decimal'],
+            'numeric' => ['numeric'],
+            'float' => ['Float'],
+            'double' => ['double'],
         ];
     }
 
@@ -93,7 +112,7 @@ class ParameterValidatorFactoryTest extends TestCase
 
     public function test_creation_of_order_by_parameter_validator_class()
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getParameterValidator('orderby');
+        $parameterValidator = $this->ParameterValidatorFactory->getParameterValidator('orderBy');
 
         $this->assertInstanceOf(OrderByParameterValidator::class, $parameterValidator);
     }
@@ -114,7 +133,7 @@ class ParameterValidatorFactoryTest extends TestCase
 
     public function test_creation_of_method_calls_parameter_validator_class()
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getParameterValidator('methodcalls');
+        $parameterValidator = $this->ParameterValidatorFactory->getParameterValidator('methodCalls');
 
         $this->assertInstanceOf(MethodCallsParameterValidator::class, $parameterValidator);
     }

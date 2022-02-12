@@ -7,8 +7,7 @@ use App\CoreIntegrationApi\QueryResolver;
 class RestQueryResolver extends QueryResolver
 {
 
-    // uses serves provider Located ...
-    // loads function __construct(CILQueryAssembler $queryAssembler, CILQueryPersister $queryPersister, RestQueryIndex $queryIndex, CILQueryDeleter $queryDeleter)
+    // uses serves provider Located app\Providers\RestRequestProcessorProvider.php
 
     public function resolve($validatedQueryData)
     {
@@ -31,7 +30,6 @@ class RestQueryResolver extends QueryResolver
         // delete
         $query = $query === NULL && $validatedQueryData->action == 'DELETE' ? $this->queryDeleter->delete($validatedQueryData) : NULL;
 
-        // return errors???
         return $query;
     }
 }

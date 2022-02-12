@@ -58,7 +58,7 @@ abstract class RequestValidator
     {
         $this->class = $prepRequestData['class'] ?? '';
         $this->endpoint = $prepRequestData['endpoint'] ?? '';
-        $this->endpointId = $prepRequestData['endpointId']  ?? []; // may be set in the prepper
+        $this->endpointId = $prepRequestData['endpointId']  ?? []; // may be set in the prepper as an id
         $this->parameters = $prepRequestData['parameters'] ?? [];
     }
 
@@ -108,8 +108,6 @@ abstract class RequestValidator
         $validatedRequestMetaData['acceptedParameters'] = $this->validatorDataCollector->getAcceptedParameters();
         // $validatedRequestMetaData['queryArguments'] = $this->validatorDataCollector->getQueryArguments(); // don't know if we need to send this one
         $this->validatedMetaData = $validatedRequestMetaData;
-
-        $this->validatorDataCollector->reset();
     }
 
     // I don't know if we need this

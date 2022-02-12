@@ -8,37 +8,31 @@ class ContextRequestValidator extends RequestValidator
 {
     protected $validatedMetaData = [];
 
-    // uses serves provider Located ...
-    // loads function __construct(ContextRequestDataPrepper $contextRequestDataPrepper)
+    // uses serves provider Located app\Providers\ContextRequestProcessorProvider.php
 
     public function validate()
     {
         $this->requestDataPrepper->prep();
 
         // TODO: set request name
-        foreach ($this->requestDataPrepper->getPreppedData() as $request) {
-            $this->validateRequest($request);
+        foreach ($this->requestDataPrepper->getPreppedData() as $prepRequestData) {
+            $this->validateRequest($prepRequestData);
         }
 
         return $this->validatedMetaData;
     }
 
-    protected function setUpPreppedRequest($request)
+    protected function setUpPreppedRequest($prepRequestData)
     {
-        parent::setUpPreppedRequest($request);
+        parent::setUpPreppedRequest($prepRequestData);
         
-        $this->rejectedParameters = [];
-        $this->acceptedParameters = [];
-        $this->errors = [];
-        $this->queryArguments = [];
+        $this->validatorDataCollector->reset();
     }
 
     protected function setValidatedMetaData()
     {
-        $validatedRequestMetaData['rejectedParameters'] = $this->getRejectedParameters();
-        $validatedRequestMetaData['acceptedParameters'] = $this->getAcceptedParameters();
-        $validatedRequestMetaData['errors'] = $this->errors;
-        $validatedRequestMetaData['queryArguments'] = $this->getQueryArguments();
+        $validatedRequestMetaData['rejectedParameters'] = $this->validatorDataCollector->getRejectedParameters();
+        $validatedRequestMetaData['acceptedParameters'] = $this->validatorDataCollector->getAcceptedParameters();
         $this->validatedMetaData[] = $validatedRequestMetaData;
     }
 }
