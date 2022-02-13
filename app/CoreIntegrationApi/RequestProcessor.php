@@ -2,6 +2,10 @@
 
 namespace App\CoreIntegrationApi;
 
+use App\CoreIntegrationApi\RequestValidator;
+use App\CoreIntegrationApi\QueryResolver;
+use App\CoreIntegrationApi\ResponseBuilder;
+
 abstract class RequestProcessor
 {
     protected $requestValidator;

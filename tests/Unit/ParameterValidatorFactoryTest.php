@@ -31,7 +31,7 @@ class ParameterValidatorFactoryTest extends TestCase
      */
     public function test_creation_of_string_parameter_validator_class($dataType)
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getParameterValidator($dataType);
+        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem($dataType);
 
         $this->assertInstanceOf(StringParameterValidator::class, $parameterValidator);
     }
@@ -50,7 +50,7 @@ class ParameterValidatorFactoryTest extends TestCase
      */
     public function test_creation_of_date_parameter_validator_class($dataType)
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getParameterValidator($dataType);
+        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem($dataType);
 
         $this->assertInstanceOf(DateParameterValidator::class, $parameterValidator);
     }
@@ -68,7 +68,7 @@ class ParameterValidatorFactoryTest extends TestCase
      */
     public function test_creation_of_int_parameter_validator_class($dataType)
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getParameterValidator($dataType);
+        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem($dataType);
 
         $this->assertInstanceOf(IntParameterValidator::class, $parameterValidator);
     }
@@ -89,7 +89,7 @@ class ParameterValidatorFactoryTest extends TestCase
      */
     public function test_creation_of_float_parameter_validator_class($dataType)
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getParameterValidator($dataType);
+        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem($dataType);
 
         $this->assertInstanceOf(FloatParameterValidator::class, $parameterValidator);
     }
@@ -105,35 +105,35 @@ class ParameterValidatorFactoryTest extends TestCase
 
     public function test_creation_of_id_parameter_validator_class()
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getParameterValidator('id');
+        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem('id');
 
         $this->assertInstanceOf(IdParameterValidator::class, $parameterValidator);
     }
 
     public function test_creation_of_order_by_parameter_validator_class()
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getParameterValidator('orderBy');
+        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem('orderBy');
 
         $this->assertInstanceOf(OrderByParameterValidator::class, $parameterValidator);
     }
 
     public function test_creation_of_select_parameter_validator_class()
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getParameterValidator('select');
+        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem('select');
 
         $this->assertInstanceOf(SelectParameterValidator::class, $parameterValidator);
     }
 
     public function test_creation_of_includes_parameter_validator_class()
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getParameterValidator('includes');
+        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem('includes');
 
         $this->assertInstanceOf(IncludesParameterValidator::class, $parameterValidator);
     }
 
     public function test_creation_of_method_calls_parameter_validator_class()
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getParameterValidator('methodCalls');
+        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem('methodCalls');
 
         $this->assertInstanceOf(MethodCallsParameterValidator::class, $parameterValidator);
     }
