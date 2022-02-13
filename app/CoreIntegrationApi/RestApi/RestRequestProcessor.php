@@ -5,6 +5,5 @@ namespace App\CoreIntegrationApi\RestApi;
 use App\CoreIntegrationApi\RequestProcessor;
 
 class RestRequestProcessor extends RequestProcessor {
-    // uses serves provider Located app\Providers\RestRequestProcessorProvider.php
-    // As of 1/1/22 loads __construct(RestRequestValidator $requestValidator, RestQueryResolver $queryResolver, RestResponseBuilder $responseBuilder)
+    // uses serves a provider for dependency injection, Located app\Providers\RestRequestProcessorProvider.php
 }

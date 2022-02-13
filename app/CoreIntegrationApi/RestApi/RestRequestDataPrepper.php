@@ -20,6 +20,7 @@ class RestRequestDataPrepper extends RequestDataPrepper
         $this->setOtherParameters();
     }
 
+    // TODO: might Use these functions for both rest and context API
     private function setClass()
     {
         if ($this->request->endpoint && isset($this->acceptedClasses[$this->request->endpoint])) {
@@ -28,6 +29,8 @@ class RestRequestDataPrepper extends RequestDataPrepper
             $this->preppedData['class'] = NULL;
         }
     }
+
+    // TODO: set ids
 
     private function setEndpointDetails()
     {

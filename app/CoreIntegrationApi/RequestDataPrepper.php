@@ -12,7 +12,6 @@ abstract class RequestDataPrepper
         function __construct(Request $request) 
         {
             $this->request = $request;
-            $this->acceptedClasses = config('coreintegration.acceptedclasses') ?? [];
         }  
 
         public function prep() 
@@ -20,7 +19,7 @@ abstract class RequestDataPrepper
             $this->preppedData = $this->prepRequestData();
         }
 
-        abstract public function prepRequestData();
+        abstract public function prepRequestData(); // Rest = request, Context = array of requests
 
         public function getPreppedData() 
         {

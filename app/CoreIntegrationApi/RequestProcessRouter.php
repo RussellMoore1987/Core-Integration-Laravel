@@ -11,10 +11,10 @@ class RequestProcessRouter
     private $restRequestProcessor;
     private $contextRequestProcessor;
 
-    function __construct() 
+    function __construct(RestRequestProcessor $restRequestProcessor, ContextRequestProcessor $contextRequestProcessor) 
     {
-        $this->restRequestProcessor = App::make(RestRequestProcessor::class);
-        $this->contextRequestProcessor = App::make(ContextRequestProcessor::class);
+        $this->restRequestProcessor = $restRequestProcessor;
+        $this->contextRequestProcessor = $contextRequestProcessor;
     }  
     
     public function processRequest()
@@ -33,7 +33,7 @@ class RequestProcessRouter
 
     public function processContextRequest() 
     {
-        return ["Message" => "Got Here!!! " . request()->contextInstructions];
+        return ["Message" => "Got Here!!! " . request()->contextInstructions]; // TODO: needs to be removed
         return $this->contextRequestProcessor->process();
     }
 }
