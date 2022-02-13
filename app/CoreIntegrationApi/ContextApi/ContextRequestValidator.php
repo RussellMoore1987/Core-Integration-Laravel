@@ -8,7 +8,7 @@ class ContextRequestValidator extends RequestValidator
 {
     protected $validatedMetaData = [];
 
-    // uses serves provider Located app\Providers\ContextRequestProcessorProvider.php
+    // uses serves a provider for dependency injection, Located app\Providers\ContextRequestProcessorProvider.php
 
     public function validate()
     {

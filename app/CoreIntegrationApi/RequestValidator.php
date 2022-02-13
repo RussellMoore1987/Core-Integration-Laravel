@@ -20,8 +20,10 @@ abstract class RequestValidator
     private $defaultAcceptableParameters = [
         'orderby' => 'orderby', 
         'perpage' => 'perpage', 
-        'select' => 'select', 
+        'column' => 'select', 
         'page' => 'page',
+        'methodcalls' => 'methodcalls',
+        'includes' => 'includes',
     ];
     private $acceptableParameters;
     private $validatedMetaData;

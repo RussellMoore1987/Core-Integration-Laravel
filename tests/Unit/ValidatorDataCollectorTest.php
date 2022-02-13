@@ -80,7 +80,8 @@ class ValidatorDataCollectorTest extends TestCase
 
         $this->assertEquals($expectedOutput, $this->ValidatorDataCollector->getAllData());
     }
-    public function setAllParameters()
+
+    private function setAllParameters()
     {
         $this->ValidatorDataCollector->setEndpointData($this->endpointData);
         $this->ValidatorDataCollector->setRejectedParameter($this->parameters[0]); 
@@ -103,7 +104,7 @@ class ValidatorDataCollectorTest extends TestCase
         $this->assertEquals($expectedOutput, $this->ValidatorDataCollector->getAllData());
     }
 
-    public function test_resetCollector_function()
+    public function test_collector_reset_function()
     {
         $this->setAllParameters(); 
 

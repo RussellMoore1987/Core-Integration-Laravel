@@ -7,7 +7,7 @@ use App\CoreIntegrationApi\QueryResolver;
 class RestQueryResolver extends QueryResolver
 {
 
-    // uses serves provider Located app\Providers\RestRequestProcessorProvider.php
+    // uses serves a provider for dependency injection, Located app\Providers\RestRequestProcessorProvider.php
 
     public function resolve($validatedQueryData)
     {
