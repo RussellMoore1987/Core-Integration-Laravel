@@ -2,10 +2,14 @@
 
 namespace App\CoreIntegrationApi\CIL;
 
+use Illuminate\Support\Facades\App;
+
+// use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\StringParameterValidator;
+
 abstract class CILDataTypeDeterminerFactory
 {
     private $factoryItem;
-    private $parameterType;
+    private $dataType;
     protected $factoryReturnArray = [
         'string' => 'string',
         'date' => 'date',
@@ -18,9 +22,9 @@ abstract class CILDataTypeDeterminerFactory
         'methodcalls' => 'methodcalls',
     ];
 
-    public function getFactoryItem($parameterType)
+    public function getFactoryItem($dataType)
     {
-        $this->parameterType = strtolower($parameterType);
+        $this->dataType = strtolower($dataType);
         
         $this->checkForStringValidator();
         $this->checkForDateValidator();
@@ -40,13 +44,13 @@ abstract class CILDataTypeDeterminerFactory
         if (
             !$this->factoryItem && 
             (
-                str_contains($this->parameterType, 'varchar') || 
-                str_contains($this->parameterType, 'char') || 
-                $this->parameterType == 'blob' || 
-                $this->parameterType == 'text'
+                str_contains($this->dataType, 'varchar') || 
+                str_contains($this->dataType, 'char') || 
+                $this->dataType == 'blob' || 
+                $this->dataType == 'text'
             )
         ) {
-            $this->factoryItem = $this->factoryReturnArray['string'];
+            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['string']);
         }
     }
 
@@ -55,13 +59,13 @@ abstract class CILDataTypeDeterminerFactory
         if (
             !$this->factoryItem && 
             (
-                $this->parameterType == 'date' || 
-                $this->parameterType == 'timestamp' || 
-                $this->parameterType == 'datetime' || 
-                str_contains($this->parameterType, 'date')
+                $this->dataType == 'date' || 
+                $this->dataType == 'timestamp' || 
+                $this->dataType == 'datetime' || 
+                str_contains($this->dataType, 'date')
             )
         ) {
-            $this->factoryItem = $this->factoryReturnArray['date'];
+            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['date']);
         }
     }
 
@@ -70,15 +74,15 @@ abstract class CILDataTypeDeterminerFactory
         if (
             !$this->factoryItem && 
             (
-                $this->parameterType == 'integer' ||
-                $this->parameterType == 'int' ||
-                $this->parameterType == 'smallint' ||
-                $this->parameterType == 'tinyint' ||
-                $this->parameterType == 'mediumint' ||
-                $this->parameterType == 'bigint'
+                $this->dataType == 'integer' ||
+                $this->dataType == 'int' ||
+                $this->dataType == 'smallint' ||
+                $this->dataType == 'tinyint' ||
+                $this->dataType == 'mediumint' ||
+                $this->dataType == 'bigint'
             )
         ) {
-            $this->factoryItem = $this->factoryReturnArray['int'];
+            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['int']);
         }
     }
 
@@ -87,54 +91,59 @@ abstract class CILDataTypeDeterminerFactory
         if (
             !$this->factoryItem && 
             (
-                $this->parameterType == 'decimal' ||
-                $this->parameterType == 'numeric' ||
-                $this->parameterType == 'float' ||
-                $this->parameterType == 'double'
+                $this->dataType == 'decimal' ||
+                $this->dataType == 'numeric' ||
+                $this->dataType == 'float' ||
+                $this->dataType == 'double'
             )
         ) {
-            $this->factoryItem = $this->factoryReturnArray['float'];
+            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['float']);
         }
     }
 
     protected function checkForIdValidator()
     {
-        if (!$this->factoryItem && $this->parameterType == 'id') 
+        if (!$this->factoryItem && $this->dataType == 'id') 
         {
-            $this->factoryItem = $this->factoryReturnArray['id'];
+            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['id']);
         }
     }
 
     protected function checkForOrderByValidator()
     {
-        if (!$this->factoryItem && $this->parameterType == 'orderby') 
+        if (!$this->factoryItem && $this->dataType == 'orderby') 
         {
-            $this->factoryItem = $this->factoryReturnArray['orderby'];
+            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['orderby']);
         }
     }
 
     protected function checkForSelectValidator()
     {
-        if (!$this->factoryItem && $this->parameterType == 'select') 
+        if (!$this->factoryItem && $this->dataType == 'select') 
         {
-            $this->factoryItem = $this->factoryReturnArray['select'];
+            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['select']);
         }
     }
 
     protected function checkForIncludesValidator()
     {
-        if (!$this->factoryItem && $this->parameterType == 'includes') 
+        if (!$this->factoryItem && $this->dataType == 'includes') 
         {
-            $this->factoryItem = $this->factoryReturnArray['includes'];
+            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['includes']);
         }
     }
 
     protected function checkForMethodCallsValidator()
     {
-        if (!$this->factoryItem && $this->parameterType == 'methodcalls') 
+        if (!$this->factoryItem && $this->dataType == 'methodcalls') 
         {
-            $this->factoryItem = $this->factoryReturnArray['methodcalls'];
+            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['methodcalls']);
         }
+    }
+
+    protected function returnStringOrClass($dataTypeVale)
+    {
+        return str_contains($dataTypeVale, '\\') ? App::make($dataTypeVale) : $dataTypeVale;
     }
 
 }
