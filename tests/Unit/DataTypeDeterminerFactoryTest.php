@@ -18,7 +18,7 @@ class DataTypeDeterminerFactoryTest extends TestCase
 
     // tests ------------------------------------------------------------
     /**
-     * @dataProvider stringParameterProvider
+     * @dataProvider stringDataTypeProvider
      */
     public function test_for_data_type_of_string($dataType)
     {
@@ -26,7 +26,7 @@ class DataTypeDeterminerFactoryTest extends TestCase
 
         $this->assertEquals('string', $commonDataType);
     }
-    public function stringParameterProvider()
+    public function stringDataTypeProvider()
     {
         return [
             'varchar' => ['Varchar'],
@@ -37,7 +37,7 @@ class DataTypeDeterminerFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider dateParameterProvider
+     * @dataProvider dateDataTypeProvider
      */
     public function test_for_data_type_of_date($dataType)
     {
@@ -45,7 +45,7 @@ class DataTypeDeterminerFactoryTest extends TestCase
 
         $this->assertEquals('date', $commonDataType);
     }
-    public function dateParameterProvider()
+    public function dateDataTypeProvider()
     {
         return [
             'date' => ['date'],
@@ -55,7 +55,7 @@ class DataTypeDeterminerFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider intParameterProvider
+     * @dataProvider intDataTypeProvider
      */
     public function test_for_data_type_of_int($dataType)
     {
@@ -63,7 +63,7 @@ class DataTypeDeterminerFactoryTest extends TestCase
 
         $this->assertEquals('int', $commonDataType);
     }
-    public function intParameterProvider()
+    public function intDataTypeProvider()
     {
         return [
             'integer' => ['integer'],
@@ -76,7 +76,7 @@ class DataTypeDeterminerFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider floatParameterProvider
+     * @dataProvider floatDataTypeProvider
      */
     public function test_for_data_type_of_float($dataType)
     {
@@ -84,7 +84,7 @@ class DataTypeDeterminerFactoryTest extends TestCase
 
         $this->assertEquals('float', $commonDataType);
     }
-    public function floatParameterProvider()
+    public function floatDataTypeProvider()
     {
         return [
             'decimal' => ['decimal'],

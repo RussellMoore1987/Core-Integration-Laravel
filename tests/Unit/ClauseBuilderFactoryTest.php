@@ -2,8 +2,6 @@
 
 namespace Tests\Unit;
 
-// ! look over all files and names *************************************************** 5 files
-
 use App\CoreIntegrationApi\CIL\ClauseBuilder\StringWhereClauseBuilder;
 use App\CoreIntegrationApi\CIL\ClauseBuilder\DateWhereClauseBuilder;
 use App\CoreIntegrationApi\CIL\ClauseBuilder\IntWhereClauseBuilder;
@@ -30,52 +28,52 @@ class ClauseBuilderFactoryTest extends TestCase
 
     // tests ------------------------------------------------------------
     /**
-     * @dataProvider stringParameterProvider
+     * @dataProvider stringDataTypeProvider
      */
-    public function test_creation_of_string_parameter_validator_class($dataType)
+    public function test_creation_of_string_clause_builder_class($dataType)
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem($dataType);
 
         $this->assertInstanceOf(StringWhereClauseBuilder::class, $clauseBuilder);
     }
-    public function stringParameterProvider()
+    public function stringDataTypeProvider()
     {
         return [
             'varchar' => ['Varchar'],
             'char' => ['char'],
             'blob' => ['blob'],
-            'text' => ['text'],
+            'text' => ['Text'],
         ];
     }
 
     /**
-     * @dataProvider dateParameterProvider
+     * @dataProvider dateDataTypeProvider
      */
-    public function test_creation_of_date_parameter_validator_class($dataType)
+    public function test_creation_of_date_clause_builder_class($dataType)
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem($dataType);
 
         $this->assertInstanceOf(DateWhereClauseBuilder::class, $clauseBuilder);
     }
-    public function dateParameterProvider()
+    public function dateDataTypeProvider()
     {
         return [
             'date' => ['date'],
             'timestamp' => ['Timestamp'],
-            'datetime' => ['datetime'],
+            'datetime' => ['Datetime'],
         ];
     }
 
     /**
-     * @dataProvider intParameterProvider
+     * @dataProvider intDataTypeProvider
      */
-    public function test_creation_of_int_parameter_validator_class($dataType)
+    public function test_creation_of_int_clause_builder_class($dataType)
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem($dataType);
 
         $this->assertInstanceOf(IntWhereClauseBuilder::class, $clauseBuilder);
     }
-    public function intParameterProvider()
+    public function intDataTypeProvider()
     {
         return [
             'integer' => ['integer'],
@@ -88,15 +86,15 @@ class ClauseBuilderFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider floatParameterProvider
+     * @dataProvider floatDataTypeProvider
      */
-    public function test_creation_of_float_parameter_validator_class($dataType)
+    public function test_creation_of_float_clause_builder_class($dataType)
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem($dataType);
 
         $this->assertInstanceOf(FloatWhereClauseBuilder::class, $clauseBuilder);
     }
-    public function floatParameterProvider()
+    public function floatDataTypeProvider()
     {
         return [
             'decimal' => ['decimal'],
@@ -106,35 +104,35 @@ class ClauseBuilderFactoryTest extends TestCase
         ];
     }
 
-    public function test_creation_of_id_parameter_validator_class()
+    public function test_creation_of_id_clause_builder_class()
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('id');
 
         $this->assertInstanceOf(IdClauseBuilder::class, $clauseBuilder);
     }
 
-    public function test_creation_of_order_by_parameter_validator_class()
+    public function test_creation_of_order_by_clause_builder_class()
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('orderBy');
 
         $this->assertInstanceOf(OrderByClauseBuilder::class, $clauseBuilder);
     }
 
-    public function test_creation_of_select_parameter_validator_class()
+    public function test_creation_of_select_clause_builder_class()
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('select');
 
         $this->assertInstanceOf(SelectClauseBuilder::class, $clauseBuilder);
     }
 
-    public function test_creation_of_includes_parameter_validator_class()
+    public function test_creation_of_includes_clause_builder_class()
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('includes');
 
         $this->assertInstanceOf(IncludesClauseBuilder::class, $clauseBuilder);
     }
 
-    public function test_creation_of_method_calls_parameter_validator_class()
+    public function test_creation_of_method_calls_clause_builder_class()
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('methodCalls');
 

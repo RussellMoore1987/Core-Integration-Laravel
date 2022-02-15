@@ -2,10 +2,6 @@
 
 namespace App\CoreIntegrationApi\CIL;
 
-use Illuminate\Support\Facades\App;
-
-// use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\StringParameterValidator;
-
 abstract class CILDataTypeDeterminerFactory
 {
     private $factoryItem;
@@ -26,20 +22,20 @@ abstract class CILDataTypeDeterminerFactory
     {
         $this->dataType = strtolower($dataType);
         
-        $this->checkForStringValidator();
-        $this->checkForDateValidator();
-        $this->checkForIntValidator();
-        $this->checkForFloatValidator();
-        $this->checkForIdValidator();
-        $this->checkForOrderByValidator();
-        $this->checkForSelectValidator();
-        $this->checkForIncludesValidator();
-        $this->checkForMethodCallsValidator();
+        $this->checkForString();
+        $this->checkForDate();
+        $this->checkForInt();
+        $this->checkForFloat();
+        $this->checkForId();
+        $this->checkForOrderBy();
+        $this->checkForSelect();
+        $this->checkForIncludes();
+        $this->checkForMethodCalls();
 
         return $this->factoryItem;
     }  
 
-    protected function checkForStringValidator()
+    protected function checkForString()
     {
         if (
             !$this->factoryItem && 
@@ -50,11 +46,11 @@ abstract class CILDataTypeDeterminerFactory
                 $this->dataType == 'text'
             )
         ) {
-            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['string']);
+            $this->factoryItem = $this->returnValue($this->factoryReturnArray['string']);
         }
     }
 
-    protected function checkForDateValidator()
+    protected function checkForDate()
     {
         if (
             !$this->factoryItem && 
@@ -65,11 +61,11 @@ abstract class CILDataTypeDeterminerFactory
                 str_contains($this->dataType, 'date')
             )
         ) {
-            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['date']);
+            $this->factoryItem = $this->returnValue($this->factoryReturnArray['date']);
         }
     }
 
-    protected function checkForIntValidator()
+    protected function checkForInt()
     {
         if (
             !$this->factoryItem && 
@@ -82,11 +78,11 @@ abstract class CILDataTypeDeterminerFactory
                 $this->dataType == 'bigint'
             )
         ) {
-            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['int']);
+            $this->factoryItem = $this->returnValue($this->factoryReturnArray['int']);
         }
     }
 
-    protected function checkForFloatValidator()
+    protected function checkForFloat()
     {
         if (
             !$this->factoryItem && 
@@ -97,53 +93,52 @@ abstract class CILDataTypeDeterminerFactory
                 $this->dataType == 'double'
             )
         ) {
-            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['float']);
+            $this->factoryItem = $this->returnValue($this->factoryReturnArray['float']);
         }
     }
 
-    protected function checkForIdValidator()
+    protected function checkForId()
     {
         if (!$this->factoryItem && $this->dataType == 'id') 
         {
-            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['id']);
+            $this->factoryItem = $this->returnValue($this->factoryReturnArray['id']);
         }
     }
 
-    protected function checkForOrderByValidator()
+    protected function checkForOrderBy()
     {
         if (!$this->factoryItem && $this->dataType == 'orderby') 
         {
-            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['orderby']);
+            $this->factoryItem = $this->returnValue($this->factoryReturnArray['orderby']);
         }
     }
 
-    protected function checkForSelectValidator()
+    protected function checkForSelect()
     {
         if (!$this->factoryItem && $this->dataType == 'select') 
         {
-            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['select']);
+            $this->factoryItem = $this->returnValue($this->factoryReturnArray['select']);
         }
     }
 
-    protected function checkForIncludesValidator()
+    protected function checkForIncludes()
     {
         if (!$this->factoryItem && $this->dataType == 'includes') 
         {
-            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['includes']);
+            $this->factoryItem = $this->returnValue($this->factoryReturnArray['includes']);
         }
     }
 
-    protected function checkForMethodCallsValidator()
+    protected function checkForMethodCalls()
     {
         if (!$this->factoryItem && $this->dataType == 'methodcalls') 
         {
-            $this->factoryItem = $this->returnStringOrClass($this->factoryReturnArray['methodcalls']);
+            $this->factoryItem = $this->returnValue($this->factoryReturnArray['methodcalls']);
         }
     }
 
-    protected function returnStringOrClass($dataTypeVale)
+    protected function returnValue($dataTypeValue)
     {
-        return str_contains($dataTypeVale, '\\') ? App::make($dataTypeVale) : $dataTypeVale;
+        return $dataTypeValue;
     }
-
 }

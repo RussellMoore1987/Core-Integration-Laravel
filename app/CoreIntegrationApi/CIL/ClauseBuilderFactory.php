@@ -3,7 +3,6 @@
 namespace App\CoreIntegrationApi\CIL;
 
 use App\CoreIntegrationApi\CIL\CILDataTypeDeterminerFactory;
-
 use Illuminate\Support\Facades\App;
 
 class ClauseBuilderFactory extends CILDataTypeDeterminerFactory
@@ -23,5 +22,10 @@ class ClauseBuilderFactory extends CILDataTypeDeterminerFactory
         ];
 
         return parent::getFactoryItem($dataType);
+    }
+
+    protected function returnValue($dataTypeValue)
+    {
+        return App::make($dataTypeValue);
     }
 }

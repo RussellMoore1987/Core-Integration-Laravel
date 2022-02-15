@@ -3,7 +3,6 @@
 namespace App\CoreIntegrationApi\ParameterValidatorFactory;
 
 use App\CoreIntegrationApi\CIL\CILDataTypeDeterminerFactory;
-
 use Illuminate\Support\Facades\App;
 
 class ParameterValidatorFactory extends CILDataTypeDeterminerFactory
@@ -23,5 +22,10 @@ class ParameterValidatorFactory extends CILDataTypeDeterminerFactory
         ];
 
         return parent::getFactoryItem($dataType);
+    }
+
+    protected function returnValue($dataTypeValue)
+    {
+        return App::make($dataTypeValue);
     }
 }
