@@ -4,7 +4,6 @@ namespace App\CoreIntegrationApi;
 
 use App\CoreIntegrationApi\RestApi\RestRequestProcessor;
 use App\CoreIntegrationApi\ContextApi\ContextRequestProcessor;
-use Illuminate\Support\Facades\App;
 
 class RequestProcessRouter
 {
