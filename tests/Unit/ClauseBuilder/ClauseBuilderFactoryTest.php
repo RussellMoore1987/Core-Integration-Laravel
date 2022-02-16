@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\ClauseBuilder;
 
 use App\CoreIntegrationApi\CIL\ClauseBuilder\StringWhereClauseBuilder;
 use App\CoreIntegrationApi\CIL\ClauseBuilder\DateWhereClauseBuilder;
