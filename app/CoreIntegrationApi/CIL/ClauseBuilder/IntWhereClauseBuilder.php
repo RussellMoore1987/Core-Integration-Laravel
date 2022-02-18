@@ -15,7 +15,7 @@ class IntWhereClauseBuilder implements ClauseBuilder
             $queryBuilder->whereBetween($columnName, $int);
         } elseif ($comparisonOperator == 'in') {
             $queryBuilder->whereIn($columnName, $int);
-        } elseif ($comparisonOperator == 'notIn') {
+        } elseif ($comparisonOperator == 'notin') {
             $queryBuilder->whereNotIn($columnName, $int);
         } else {
             $queryBuilder->where($columnName, $comparisonOperator, $int);

@@ -9,6 +9,7 @@ class DateParameterValidator implements ParameterValidator
 {
     private $columnName;
     private $date;
+    private $originalDate;
     private $dateAction;
     private $comparisonOperator;
     private $originalComparisonOperator = '';
