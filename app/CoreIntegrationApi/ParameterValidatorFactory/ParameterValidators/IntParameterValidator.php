@@ -45,6 +45,7 @@ class IntParameterValidator implements ParameterValidator
 
     private function processIntString()
     {
+        // TODO: make function
         if (str_contains($this->int, '::')) {
             $int_array = explode('::', $this->int);
     
@@ -53,49 +54,55 @@ class IntParameterValidator implements ParameterValidator
             $this->int = $int_array[0];
         } 
         
+        // TODO: make function
         // ! working here ****************************************************
         if (str_contains($this->int, ',') && in_array($this->intAction, ['between', 'bt', 'in', 'notin'])) {
             $ints = explode(',', $this->int);
             foreach ($ints as $index => $value) {
-                if (is_numeric($value) && is_int((int)$value)) {
+                if ($this->isInt($value)) {
                     $realInts[] = (int) $value;
                 } elseif (is_numeric($value)) {
+                    // TODO: make function
                     $this->errors[] = [
-                        'int' => (float)$value,
-                        'valueError' => "The value at the index of {$index} is not an int. Only ints are permitted for this parameter. Your vale is a float.",
+                        'value' => (float)$value,
+                        'valueError' => "The value at the index of {$index} is not an int. Only ints are permitted for this parameter. Your value is a float.",
                     ];
                 } else {
+                    // TODO: make function
                     $this->errors[] = [
-                        'int' => $value,
-                        'valueError' => "The value at the index of {$index} is not an int. Only ints are permitted for this parameter. Your vale is a string.",
+                        'value' => $value,
+                        'valueError' => "The value at the index of {$index} is not an int. Only ints are permitted for this parameter. Your value is a string.",
                     ];
                 }
             }
-        } 
-        
-        
-        else {
-            $this->date = $this->convertStringToDate($this->date);
+            // see if we have any ints left over
+        } else {
+            // if one value/int check it to make sure it is an int
         }
+
     }
 
-    private function convertStringToDate($dateString)
+    private function isInt($value)
     {
-        return date('Y-m-d H:i:s', strtotime($dateString));
+        return is_numeric($value) && !str_contains($value, '.');
     }
 
     private function setComparisonOperator()
     {
-        if (in_array($this->dateAction, ['greaterthan', 'gt'])) {
+        if (in_array($this->intAction, ['greaterthan', 'gt'])) {
             $this->comparisonOperator = '>';
-        } else if (in_array($this->dateAction, ['greaterthanorequal', 'gte'])) {
+        } else if (in_array($this->intAction, ['greaterthanorequal', 'gte'])) {
             $this->comparisonOperator = '>=';
-        } else if (in_array($this->dateAction, ['lessthan', 'lt'])) {
+        } else if (in_array($this->intAction, ['lessthan', 'lt'])) {
             $this->comparisonOperator = '<';
-        } else if (in_array($this->dateAction, ['lessthanorequal', 'lte'])) {
+        } else if (in_array($this->intAction, ['lessthanorequal', 'lte'])) {
             $this->comparisonOperator = '<=';
-        } else if (in_array($this->dateAction, ['between', 'bt'])) {
+        } else if (in_array($this->intAction, ['between', 'bt'])) {
             $this->comparisonOperator = 'bt';
+        } else if ($this->intAction == 'in') {
+            $this->comparisonOperator = 'in';
+        } else if ($this->intAction == 'notin') {
+            $this->comparisonOperator = 'notin';
         } else {
             $this->comparisonOperator = '=';
         }
