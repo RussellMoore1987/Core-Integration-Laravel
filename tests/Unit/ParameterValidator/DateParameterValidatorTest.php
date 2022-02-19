@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\ParameterValidator;
 
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\DateParameterValidator;
 use App\CoreIntegrationApi\ValidatorDataCollector;
@@ -8,8 +8,6 @@ use Tests\TestCase;
 
 class DateParameterValidatorTest extends TestCase
 {
-    private $endpointData;
-
     protected function setUp(): void
     {
         parent::setUp();
