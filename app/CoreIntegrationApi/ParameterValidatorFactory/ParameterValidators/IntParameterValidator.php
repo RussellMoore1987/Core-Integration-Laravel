@@ -5,6 +5,7 @@ namespace App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ParameterValidator;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 
+// ! start here ******************************************************* Look over, finalize then test
 class IntParameterValidator implements ParameterValidator
 {
     private $columnName;
@@ -14,12 +15,13 @@ class IntParameterValidator implements ParameterValidator
     private $comparisonOperator;
     private $originalComparisonOperator = '';
     private $errors;
+    private $requestError = false;
 
     public function validate(ValidatorDataCollector $validatorDataCollector, $parameterData) : ValidatorDataCollector
     {
         $this->setMainVariables($validatorDataCollector, $parameterData);
         $this->processData();
-        $this->checkForErrors();
+        $this->checkForOtherErrors();
         $this->setAcceptedParameterIfAny(); 
         $this->setDataQueryArgumentIfAny(); 
 
@@ -45,7 +47,12 @@ class IntParameterValidator implements ParameterValidator
 
     private function processIntString()
     {
-        // TODO: make function
+        $this->seeIfParameterHasAction();
+        $this->seeIfParameterHasArrayProcessAccordingly();
+    }
+
+    private function seeIfParameterHasAction()
+    {
         if (str_contains($this->int, '::')) {
             $int_array = explode('::', $this->int);
     
@@ -53,38 +60,71 @@ class IntParameterValidator implements ParameterValidator
             $this->intAction = strtolower($int_array[1]);
             $this->int = $int_array[0];
         } 
-        
-        // TODO: make function
-        // ! working here ****************************************************
+    }
+
+    private function isInt($value)
+    {
+        return is_numeric($value) && !str_contains($value, '.');
+    }
+
+    private function seeIfParameterHasArrayProcessAccordingly()
+    {
+        $this->IfArray();
+        $this->IfNotArray();
+    }
+
+    private function IfArray()
+    {
         if (str_contains($this->int, ',') && in_array($this->intAction, ['between', 'bt', 'in', 'notin'])) {
             $ints = explode(',', $this->int);
+            $realInts = [];
             foreach ($ints as $index => $value) {
                 if ($this->isInt($value)) {
                     $realInts[] = (int) $value;
                 } elseif (is_numeric($value)) {
-                    // TODO: make function
                     $this->errors[] = [
                         'value' => (float)$value,
                         'valueError' => "The value at the index of {$index} is not an int. Only ints are permitted for this parameter. Your value is a float.",
                     ];
                 } else {
-                    // TODO: make function
                     $this->errors[] = [
                         'value' => $value,
                         'valueError' => "The value at the index of {$index} is not an int. Only ints are permitted for this parameter. Your value is a string.",
                     ];
                 }
             }
-            // see if we have any ints left over
-        } else {
-            // if one value/int check it to make sure it is an int
-        }
 
+            if ($realInts) {
+                $this->int = $realInts;
+            } else {
+                $this->requestError = true;
+                $this->errors[] = [
+                    'value' => $this->originalInt,
+                    'valueError' => "There are no ints available in this array. This parameter was not set.",
+                ];
+            }
+        }
     }
 
-    private function isInt($value)
+    private function IfNotArray()
     {
-        return is_numeric($value) && !str_contains($value, '.');
+        if (!is_array($this->int)) {
+            if ($this->isInt($this->int)) {
+                $this->int = (int) $this->int;
+            } elseif (is_numeric($this->int)) {
+                $this->requestError = true;
+                $this->errors[] = [
+                    'value' => (float)$this->int,
+                    'valueError' => "The value passed in is not an int. Only ints are permitted for this parameter. Your value is a float. This parameter was not set.",
+                ];
+            } else {
+                $this->requestError = true;
+                $this->errors[] = [
+                    'value' => $this->int,
+                    'valueError' => "The value passed in is not an int. Only ints are permitted for this parameter. Your value is a string. This parameter was not set.",
+                ];
+            }
+        }
     }
 
     private function setComparisonOperator()
@@ -108,44 +148,45 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    private function checkForErrors()
+    private function checkForOtherErrors()
     {
-        $this->validateBetweenDatesAreCorrect();
+        $this->validateBetweenIntsAreCorrect();
         $this->setErrorsIfAny();
     }
 
-    private function validateBetweenDatesAreCorrect()
+    private function validateBetweenIntsAreCorrect()
     {
-        $this->checkToSeeIfFirstDateIsGreaterThenLastDate();
-        $this->checkToSeeIfWeHaveTwoDates();
+        $this->checkToSeeIfFirstIntIsGreaterThenLastInt();
+        $this->checkToSeeIfWeHaveTwoInts();
     }
 
-    private function checkToSeeIfFirstDateIsGreaterThenLastDate()
+    private function checkToSeeIfFirstIntIsGreaterThenLastInt()
     {
         if (
             $this->comparisonOperator == 'bt' && 
-            is_array($this->date) && 
-            $this->date[0] > $this->date[1]
+            is_array($this->int) && 
+            count($this->int) >= 2 &&
+            $this->int[0] > $this->int[1]
         ) {
-            $this->error = true;
-
-            $firstDate = $this->date[0];
-            $secondDate = $this->date[1];
-            $this->errors[] = "The first date \"{$firstDate}\" must be smaller than the last date \"{$secondDate}\" sent in.";
+            $this->requestError = true;
+            $this->errors[] = [
+                'value' => [$this->int[0], $this->int[1]],
+                'valueError' => "The First int must be smaller then the second int, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in.",
+            ];
         }
     }
 
-    private function checkToSeeIfWeHaveTwoDates()
+    private function checkToSeeIfWeHaveTwoInts()
     {
         if (
             $this->comparisonOperator == 'bt' && 
             !(
-                is_array($this->date) && 
-                count($this->date) == 2
+                is_array($this->int) && 
+                count($this->int) >= 2
             )
         ) {
             $this->error = true;
-            $this->errors[] = "The between date action requires two dates, ex: 2021-01-01,2021-12-31::BT. It only utilizes the first two if more are passed in.";
+            $this->errors[] = "The between int action requires two ints, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in.";
         }
     }
 
@@ -166,11 +207,11 @@ class IntParameterValidator implements ParameterValidator
 
     private function setAcceptedParameterIfAny()
     {
-        if (!$this->errors) {
+        if (!$this->requestError) {
             $this->validatorDataCollector->setAcceptedParameter([
                 "$this->columnName" => [
-                    'dateCoveredTo' => $this->date,
-                    'originalDate' => $this->originalDate,
+                    'intCoveredTo' => $this->int,
+                    'originalIntString' => $this->originalInt,
                     'comparisonOperatorCoveredTo' => $this->comparisonOperator,
                     'originalComparisonOperator' => $this->originalComparisonOperator,
                 ]
@@ -180,11 +221,11 @@ class IntParameterValidator implements ParameterValidator
 
     private function setDataQueryArgumentIfAny()
     {
-        if (!$this->errors) {
+        if (!$this->requestError) {
             $this->validatorDataCollector->setQueryArgument([
-                'dataType' => 'date',
+                'dataType' => 'int',
                 'columnName' => $this->columnName,
-                'date' => $this->date,
+                'int' => $this->int,
                 'comparisonOperator' => $this->comparisonOperator,
                 'originalComparisonOperator' => $this->originalComparisonOperator,
             ]);
