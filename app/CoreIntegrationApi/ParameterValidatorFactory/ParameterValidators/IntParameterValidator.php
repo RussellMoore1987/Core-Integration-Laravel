@@ -98,10 +98,13 @@ class IntParameterValidator implements ParameterValidator
 
             if ($realInts) {
                 $this->int = $realInts;
+                if ($this->intAction == 'bt' && count($this->int) >= 2) {
+                    $this->int = [$this->int[0], $this->int[1]];
+                }
             } else {
                 $this->requestError = true;
                 $this->errors[] = [
-                    'value' => $this->originalInt,
+                    'value' => $this->int,
                     'valueError' => 'There are no ints available in this array. This parameter was not set.',
                 ];
             }
@@ -177,7 +180,7 @@ class IntParameterValidator implements ParameterValidator
             $this->requestError = true;
             $this->errors[] = [
                 'value' => [$this->int[0], $this->int[1]],
-                'valueError' => 'The First int must be smaller then the second int, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in.',
+                'valueError' => 'The First int must be smaller then the second int, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.',
             ];
         }
     }
@@ -193,8 +196,8 @@ class IntParameterValidator implements ParameterValidator
         ) {
             $this->error = true;
             $this->errors[] = [
-                'value' => [$this->int[0], $this->int[1]],
-                'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in.',
+                'value' => $this->int,
+                'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.',
             ];;
         }
     }
