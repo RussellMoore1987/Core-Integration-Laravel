@@ -14,6 +14,7 @@ class IntParameterValidator implements ParameterValidator
     private $comparisonOperator;
     private $originalComparisonOperator = '';
     private $errors;
+    private $processedAsArray = false;
     private $requestError = false;
 
     public function validate(ValidatorDataCollector $validatorDataCollector, $parameterData) : ValidatorDataCollector
@@ -103,6 +104,7 @@ class IntParameterValidator implements ParameterValidator
                 }
             } else {
                 $this->requestError = true;
+                $this->processedAsArray = true;
                 $this->errors[] = [
                     'value' => $this->int,
                     'valueError' => 'There are no ints available in this array. This parameter was not set.',
@@ -118,7 +120,7 @@ class IntParameterValidator implements ParameterValidator
 
     private function IfNotArray()
     {
-        if (!is_array($this->int)) {
+        if (!is_array($this->int) && !$this->processedAsArray) {
             if ($this->isInt($this->int)) {
                 $this->int = (int) $this->int;
             } elseif (is_numeric($this->int)) {
@@ -194,7 +196,7 @@ class IntParameterValidator implements ParameterValidator
                 count($this->int) >= 2
             )
         ) {
-            $this->error = true;
+            $this->requestError = true;
             $this->errors[] = [
                 'value' => $this->int,
                 'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.',
@@ -235,11 +237,13 @@ class IntParameterValidator implements ParameterValidator
     {
         if (!$this->requestError) {
             $this->validatorDataCollector->setQueryArgument([
-                'dataType' => 'int',
-                'columnName' => $this->columnName,
-                'int' => $this->int,
-                'comparisonOperator' => $this->comparisonOperator,
-                'originalComparisonOperator' => $this->originalComparisonOperator,
+                [
+                    'dataType' => 'int',
+                    'columnName' => $this->columnName,
+                    'int' => $this->int,
+                    'comparisonOperator' => $this->comparisonOperator,
+                    'originalComparisonOperator' => $this->originalComparisonOperator,
+                ]
             ]);
         }
     }
