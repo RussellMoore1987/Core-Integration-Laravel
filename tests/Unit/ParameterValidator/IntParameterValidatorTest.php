@@ -16,7 +16,6 @@ class IntParameterValidatorTest extends TestCase
         $this->intParameterValidator = new IntParameterValidator();
     }
 
-    // tests ------------------------------------------------------------
     public function test_IntParameterValidator_validate_function_with_random_string()
     {
         $comparisonOperator = '';
@@ -25,7 +24,7 @@ class IntParameterValidatorTest extends TestCase
             'team_id' => $intString
         ];
 
-        $expectedReturnData = [
+        $expectedRejectedParameters = [
             'team_id' => [
                 'intCoveredTo' => $intString,
                 'originalIntString' => $intString,
@@ -42,7 +41,7 @@ class IntParameterValidatorTest extends TestCase
 
         $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
@@ -55,7 +54,7 @@ class IntParameterValidatorTest extends TestCase
             'team_id' => $intString
         ];
 
-        $expectedReturnData = [
+        $expectedRejectedParameters = [
             'team_id' => [
                 'intCoveredTo' => $intString,
                 'originalIntString' => $intString,
@@ -72,11 +71,12 @@ class IntParameterValidatorTest extends TestCase
 
         $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
+    // ! start here ************************************************************* looking code over
     public function test_IntParameterValidator_validate_function_with_equal_to_with_out_action_operator()
     {
         $comparisonOperator = '';
@@ -85,7 +85,7 @@ class IntParameterValidatorTest extends TestCase
             'team_id' => $intString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             'team_id' => [
                 'intCoveredTo' => 1,
                 'originalIntString' => $intString,
@@ -94,9 +94,21 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
+        $expectedQueryArguments = [
+            [
+                "dataType" => "int",
+                "columnName" => "team_id",
+                "int" => 1,
+                "comparisonOperator" => "=",
+                "originalComparisonOperator" => $comparisonOperator,
+            ]
+        ];
+        
         $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
-
-        $this->assertEquals($expectedReturnData, $this->validatorDataCollector->getAcceptedParameters());
+        
+        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
     public function test_IntParameterValidator_validate_function_with_equal_to_by_default()
@@ -107,7 +119,7 @@ class IntParameterValidatorTest extends TestCase
             'team_id' => $intString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             'team_id' => [
                 "intCoveredTo" => 1,
                 "originalIntString" => $intString,
@@ -116,9 +128,21 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
+        $expectedQueryArguments = [
+            [
+                "dataType" => "int",
+                "columnName" => "team_id",
+                "int" => 1,
+                "comparisonOperator" => "=",
+                "originalComparisonOperator" => $comparisonOperator,
+            ]
+        ];
+        
         $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
     public function test_IntParameterValidator_validate_function_with_greater_then_using_gt()
@@ -129,7 +153,7 @@ class IntParameterValidatorTest extends TestCase
             'team_id' => $intString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "team_id" => [
                 "intCoveredTo" => 4,
                 "originalIntString" => $intString,
@@ -138,9 +162,21 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
+        $expectedQueryArguments = [
+            [
+                "dataType" => "int",
+                "columnName" => "team_id",
+                "int" => 4,
+                "comparisonOperator" => ">",
+                "originalComparisonOperator" => $comparisonOperator,
+            ]
+        ];
+        
         $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
-
-        $this->assertEquals($expectedReturnData, $this->validatorDataCollector->getAcceptedParameters());
+        
+        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
     public function test_IntParameterValidator_validate_function_with_greater_then_using_greater_than()
@@ -151,7 +187,7 @@ class IntParameterValidatorTest extends TestCase
             'team_id' => $intString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "team_id" => [
                 "intCoveredTo" => 4,
                 "originalIntString" => $intString,
@@ -160,9 +196,21 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
+        $expectedQueryArguments = [
+            [
+                "dataType" => "int",
+                "columnName" => "team_id",
+                "int" => 4,
+                "comparisonOperator" => ">",
+                "originalComparisonOperator" => $comparisonOperator,
+            ]
+        ];
+        
         $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
-
-        $this->assertEquals($expectedReturnData, $this->validatorDataCollector->getAcceptedParameters());
+        
+        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
     public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal()
@@ -173,7 +221,7 @@ class IntParameterValidatorTest extends TestCase
             'team_id' => $intString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "team_id" => [
                 "intCoveredTo" => 4,
                 "originalIntString" => $intString,
@@ -182,9 +230,21 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
+        $expectedQueryArguments = [
+            [
+                "dataType" => "int",
+                "columnName" => "team_id",
+                "int" => 4,
+                "comparisonOperator" => ">=",
+                "originalComparisonOperator" => $comparisonOperator,
+            ]
+        ];
+        
         $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
-
-        $this->assertEquals($expectedReturnData, $this->validatorDataCollector->getAcceptedParameters());
+        
+        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
     public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_gte()
@@ -195,7 +255,7 @@ class IntParameterValidatorTest extends TestCase
             'team_id' => $intString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "team_id" => [
                 "intCoveredTo" => 4,
                 "originalIntString" => $intString,
@@ -204,11 +264,21 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
-        // ! starting here ******************************************************
-
+        $expectedQueryArguments = [
+            [
+                "dataType" => "int",
+                "columnName" => "team_id",
+                "int" => 4,
+                "comparisonOperator" => ">=",
+                "originalComparisonOperator" => $comparisonOperator,
+            ]
+        ];
+        
         $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
-
-        $this->assertEquals($expectedReturnData, $this->validatorDataCollector->getAcceptedParameters());
+        
+        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
     public function test_IntParameterValidator_validate_function_with_less_then_using_less_than()
@@ -219,7 +289,7 @@ class IntParameterValidatorTest extends TestCase
             'team_id' => $intString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "team_id" => [
                 "intCoveredTo" => 4,
                 "originalIntString" => $intString,
@@ -240,7 +310,7 @@ class IntParameterValidatorTest extends TestCase
         
         $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
-        $this->assertEquals($expectedReturnData, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
