@@ -76,7 +76,6 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-    // ! start here ************************************************************* looking code over
     public function test_IntParameterValidator_validate_function_with_equal_to_with_out_action_operator()
     {
         $comparisonOperator = '';
@@ -179,6 +178,7 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
+    // ! start here ************************************************************* looking code over
     public function test_IntParameterValidator_validate_function_with_greater_then_using_greater_than()
     {
         $comparisonOperator = 'greaterThan';
@@ -817,4 +817,5 @@ class IntParameterValidatorTest extends TestCase
     // test getQueryArguments on this test and others***** Look for expectedReturnData
     // test getAllData
     // look over all my code
+    // add comparison operators =, >, <, >=, ... to ints, dates, floats, ect. 
 }
