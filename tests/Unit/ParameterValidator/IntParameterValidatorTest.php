@@ -212,6 +212,40 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
+    public function test_IntParameterValidator_validate_function_with_greater_then_using_greater_than_symbol()
+    {
+        $comparisonOperator = '>';
+        $intString = '4::' . $comparisonOperator;
+        $parameterData = [
+            'team_id' => $intString
+        ];
+
+        $expectedAcceptedParameters = [
+            "team_id" => [
+                "intCoveredTo" => 4,
+                "originalIntString" => $intString,
+                "comparisonOperatorCoveredTo" => '>',
+                'originalComparisonOperator' => $comparisonOperator,
+            ]
+        ];
+
+        $expectedQueryArguments = [
+            [
+                "dataType" => "int",
+                "columnName" => "team_id",
+                "int" => 4,
+                "comparisonOperator" => ">",
+                "originalComparisonOperator" => $comparisonOperator,
+            ]
+        ];
+        
+        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        
+        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
+    }
+
     public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal()
     {
         $comparisonOperator = 'greaterThanOrEqual';
@@ -280,9 +314,77 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
+    public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal_symbol()
+    {
+        $comparisonOperator = '>=';
+        $intString = '4::' . $comparisonOperator;
+        $parameterData = [
+            'team_id' => $intString
+        ];
+
+        $expectedAcceptedParameters = [
+            "team_id" => [
+                "intCoveredTo" => 4,
+                "originalIntString" => $intString,
+                "comparisonOperatorCoveredTo" => '>=',
+                'originalComparisonOperator' => $comparisonOperator,
+            ]
+        ];
+
+        $expectedQueryArguments = [
+            [
+                "dataType" => "int",
+                "columnName" => "team_id",
+                "int" => 4,
+                "comparisonOperator" => ">=",
+                "originalComparisonOperator" => $comparisonOperator,
+            ]
+        ];
+        
+        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        
+        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
+    }
+
     public function test_IntParameterValidator_validate_function_with_less_then_using_less_than()
     {
         $comparisonOperator = 'lessThan';
+        $intString = '4::' . $comparisonOperator;
+        $parameterData = [
+            'team_id' => $intString
+        ];
+
+        $expectedAcceptedParameters = [
+            "team_id" => [
+                "intCoveredTo" => 4,
+                "originalIntString" => $intString,
+                "comparisonOperatorCoveredTo" => '<',
+                'originalComparisonOperator' => $comparisonOperator,
+            ]
+        ];
+
+        $expectedQueryArguments = [
+            [
+                "dataType" => "int",
+                "columnName" => "team_id",
+                "int" => 4,
+                "comparisonOperator" => "<",
+                "originalComparisonOperator" => $comparisonOperator,
+            ]
+        ];
+        
+        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        
+        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
+    }
+
+    public function test_IntParameterValidator_validate_function_with_less_then_using_less_than_symbol()
+    {
+        $comparisonOperator = '<';
         $intString = '4::' . $comparisonOperator;
         $parameterData = [
             'team_id' => $intString
@@ -351,6 +453,40 @@ class IntParameterValidatorTest extends TestCase
     public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_less_than_or_equal()
     {
         $comparisonOperator = 'lessThanOrEqual';
+        $intString = '10::' . $comparisonOperator;
+        $parameterData = [
+            'team_id' => $intString
+        ];
+
+        $expectedAcceptedParameters = [
+            "team_id" => [
+                "intCoveredTo" => 10,
+                "originalIntString" => $intString,
+                "comparisonOperatorCoveredTo" => '<=',
+                'originalComparisonOperator' => $comparisonOperator,
+            ]
+        ];
+
+        $expectedQueryArguments = [
+            [
+                "dataType" => "int",
+                "columnName" => "team_id",
+                "int" => 10,
+                "comparisonOperator" => "<=",
+                "originalComparisonOperator" => $comparisonOperator,
+            ]
+        ];
+
+        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+
+        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
+    }
+
+    public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_less_than_or_equal_symbol()
+    {
+        $comparisonOperator = '<=';
         $intString = '10::' . $comparisonOperator;
         $parameterData = [
             'team_id' => $intString
@@ -873,11 +1009,4 @@ class IntParameterValidatorTest extends TestCase
 
         $this->assertEquals($expectedGetAllData, $this->validatorDataCollector->getAllData());
     }
-
-    // ! start here ***************************************************88
-    // TODO: 
-    // test getQueryArguments on this test and others***** Look for expectedReturnData
-    // test getAllData for dates
-    // look over all my code
-        // IntParameterValidatorTest.php Done
 }

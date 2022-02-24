@@ -25,7 +25,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => '1970-01-01 00:00:00',
                 "originalDate" => $dateString,
@@ -36,7 +36,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_no_date_use_default_date()
@@ -47,7 +47,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => '1970-01-01 00:00:00',
                 "originalDate" => $dateString,
@@ -58,7 +58,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_equal_to_with_out_action_operator()
@@ -69,7 +69,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => '2020-01-01 12:45:59',
                 "originalDate" => $dateString,
@@ -80,7 +80,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_equal_to_by_default()
@@ -91,7 +91,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => '2020-01-01 12:45:59',
                 "originalDate" => $dateString,
@@ -102,7 +102,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_greater_then_using_gt()
@@ -113,7 +113,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => '2020-01-01 12:45:59',
                 "originalDate" => $dateString,
@@ -124,7 +124,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_greater_then_using_greater_than()
@@ -135,7 +135,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => '2020-01-01 12:45:59',
                 "originalDate" => $dateString,
@@ -146,7 +146,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal()
@@ -157,7 +157,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => '2020-01-01 12:45:59',
                 "originalDate" => $dateString,
@@ -168,7 +168,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_greater_then_or_equal_to_using_gte()
@@ -179,7 +179,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => '2020-01-01 12:45:59',
                 "originalDate" => $dateString,
@@ -190,7 +190,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_less_then_using_less_than()
@@ -201,7 +201,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => '2020-01-01 12:45:59',
                 "originalDate" => $dateString,
@@ -212,7 +212,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_less_then_using_lt()
@@ -223,7 +223,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => '2020-01-01 12:45:59',
                 "originalDate" => $dateString,
@@ -234,7 +234,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_less_then_or_equal_to_using_less_than_or_equal()
@@ -245,7 +245,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => '2020-01-01 12:45:59',
                 "originalDate" => $dateString,
@@ -256,7 +256,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_less_than_or_equal_to_using_lte()
@@ -267,7 +267,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => '2020-01-01 12:45:59',
                 "originalDate" => $dateString,
@@ -278,7 +278,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_default_date_conversion()
@@ -289,7 +289,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => [
                   0 => "1970-01-01 00:00:00",
@@ -303,7 +303,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_between()
@@ -314,7 +314,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => [
                   0 => "2020-01-01 01:01:59",
@@ -328,7 +328,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_between_error_first_date_grater_than_last_date()
@@ -339,7 +339,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedRejectedParameters = [
             "start_date" => [
                 "dateCoveredTo" => [
                   0 => "2222-01-01 00:00:00",
@@ -356,7 +356,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedRejectedParameters, $this->ValidatorDataCollector->getRejectedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_between_error_no_second_date()
@@ -367,7 +367,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedRejectedParameters = [
             "start_date" => [
                 "dateCoveredTo" => "2021-01-01 00:00:00",
                 "originalDate" => $dateString,
@@ -381,7 +381,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedRejectedParameters, $this->ValidatorDataCollector->getRejectedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_between_error_no_dates()
@@ -392,7 +392,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedRejectedParameters = [
             "start_date" => [
                 "dateCoveredTo" => "1970-01-01 00:00:00",
                 "originalDate" => $dateString,
@@ -406,7 +406,7 @@ class DateParameterValidatorTest extends TestCase
 
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedRejectedParameters, $this->ValidatorDataCollector->getRejectedParameters());
     }
 
     public function test_DateParameterValidator_validate_function_with_more_then_two_between_dates()
@@ -417,7 +417,7 @@ class DateParameterValidatorTest extends TestCase
             'start_date' => $dateString
         ];
 
-        $expectedReturnData = [
+        $expectedAcceptedParameters = [
             "start_date" => [
                 "dateCoveredTo" => [
                     "1970-01-01 00:00:00",
@@ -432,6 +432,13 @@ class DateParameterValidatorTest extends TestCase
         
         $this->ValidatorDataCollector = $this->DateParameterValidator->validate($this->ValidatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedReturnData, $this->ValidatorDataCollector->getAcceptedParameters());
+        $this->assertEquals($expectedAcceptedParameters, $this->ValidatorDataCollector->getAcceptedParameters());
     }
+
+    // ! start here ***************************************************
+    // TODO: 
+    // test getQueryArguments on this test and others*****
+    // test getAllData
+    // look over all my code
+        // IntParameterValidatorTest.php Done
 }

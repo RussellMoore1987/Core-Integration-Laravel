@@ -141,13 +141,13 @@ class IntParameterValidator implements ParameterValidator
 
     private function setComparisonOperator()
     {
-        if (in_array($this->intAction, ['greaterthan', 'gt'])) {
+        if (in_array($this->intAction, ['greaterthan', 'gt', '>'])) {
             $this->comparisonOperator = '>';
-        } else if (in_array($this->intAction, ['greaterthanorequal', 'gte'])) {
+        } else if (in_array($this->intAction, ['greaterthanorequal', 'gte', '>='])) {
             $this->comparisonOperator = '>=';
-        } else if (in_array($this->intAction, ['lessthan', 'lt'])) {
+        } else if (in_array($this->intAction, ['lessthan', 'lt', '<'])) {
             $this->comparisonOperator = '<';
-        } else if (in_array($this->intAction, ['lessthanorequal', 'lte'])) {
+        } else if (in_array($this->intAction, ['lessthanorequal', 'lte', '<='])) {
             $this->comparisonOperator = '<=';
         } else if (in_array($this->intAction, ['between', 'bt'])) {
             $this->comparisonOperator = 'bt';
