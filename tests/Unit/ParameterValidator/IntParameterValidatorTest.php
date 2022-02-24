@@ -178,7 +178,6 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    // ! start here ************************************************************* looking code over
     public function test_IntParameterValidator_validate_function_with_greater_then_using_greater_than()
     {
         $comparisonOperator = 'greaterThan';
@@ -317,7 +316,7 @@ class IntParameterValidatorTest extends TestCase
 
     public function test_IntParameterValidator_validate_function_with_less_then_using_lt()
     {
-        $comparisonOperator = 'LT';
+        $comparisonOperator = 'lt';
         $intString = '4::' . $comparisonOperator;
         $parameterData = [
             'team_id' => $intString
@@ -417,8 +416,9 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_lte_with_two_parameter()
+    public function test_IntParameterValidator_validate_function_with_action_that_is_not_in_notin_or_bt()
     {
+        // arrays or int strings that have a comma are only used in these actions IN, NotIn, BT, or Between
         $comparisonOperator = 'LTE';
         $int = '10,56';
         $intString = $int . '::' . $comparisonOperator;
@@ -576,7 +576,7 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_more_then_two_between_ints()
+    public function test_IntParameterValidator_validate_function_with_between_more_then_two_ints()
     {
         $comparisonOperator = 'BT';
         $intString = '1,100,33::' . $comparisonOperator;
@@ -813,9 +813,71 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
+    public function test_IntParameterValidator_validate_function_get_all_data()
+    {
+        $comparisonOperator = 'IN';
+        $int = '13,6.87,6,fugue';
+        $intString = $int . '::' . $comparisonOperator;
+        $parameterData = [
+            'team_id' => $intString
+        ];
+
+        $expectedRejectedParameters = [
+            'team_id' => [
+                'intCoveredTo' => [13,6],
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => 'in',
+                'originalComparisonOperator' => $comparisonOperator,
+                'parameterError' => [
+                    [
+                        "value" => 6.87,
+                        "valueError" => "The value at the index of 1 is not an int. Only ints are permitted for this parameter. Your value is a float."
+                    ],
+                    [
+                        "value" => "fugue",
+                        "valueError" => "The value at the index of 3 is not an int. Only ints are permitted for this parameter. Your value is a string."
+                    ],
+                ],
+            ],    
+        ];
+
+        $expectedAcceptedParameters = [
+            "team_id" => [
+                "intCoveredTo" => [13, 6],
+                "originalIntString" => "13,6.87,6,fugue::IN",
+                "comparisonOperatorCoveredTo" => "in",
+                "originalComparisonOperator" => "IN",
+            ]
+        ];
+
+        $expectedQueryArguments = [
+            [
+                "dataType" => "int",
+                "columnName" => "team_id",
+                "int" => [13, 6],
+                "comparisonOperator" => "in",
+                "originalComparisonOperator" => "IN",
+            ]
+        ];
+
+        $expectedGetAllData = [
+            'endpointData' => null,
+            'acceptedParameters' => $expectedAcceptedParameters,
+            'rejectedParameters' => $expectedRejectedParameters,
+            'queryArguments' => $expectedQueryArguments,
+        ];
+        
+        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+
+        // dd($this->validatorDataCollector->getAllData());
+
+        $this->assertEquals($expectedGetAllData, $this->validatorDataCollector->getAllData());
+    }
+
+    // ! start here ***************************************************88
     // TODO: 
     // test getQueryArguments on this test and others***** Look for expectedReturnData
-    // test getAllData
+    // test getAllData for dates
     // look over all my code
-    // add comparison operators =, >, <, >=, ... to ints, dates, floats, ect. 
+        // IntParameterValidatorTest.php Done
 }
