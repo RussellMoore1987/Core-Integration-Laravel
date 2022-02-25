@@ -14,7 +14,6 @@ class ParameterValidatorFactory extends CILDataTypeDeterminerFactory
             'date' => 'App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\DateParameterValidator',
             'int' => 'App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IntParameterValidator',
             'float' => 'App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\FloatParameterValidator',
-            'id' => 'App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IdParameterValidator',
             'orderby' => 'App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\OrderByParameterValidator',
             'select' => 'App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\SelectParameterValidator',
             'includes' => 'App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IncludesParameterValidator',

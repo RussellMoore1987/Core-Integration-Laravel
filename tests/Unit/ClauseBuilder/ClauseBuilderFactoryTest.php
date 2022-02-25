@@ -104,13 +104,6 @@ class ClauseBuilderFactoryTest extends TestCase
         ];
     }
 
-    public function test_creation_of_id_clause_builder_class()
-    {
-        $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('id');
-
-        $this->assertInstanceOf(IdClauseBuilder::class, $clauseBuilder);
-    }
-
     public function test_creation_of_order_by_clause_builder_class()
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('orderBy');

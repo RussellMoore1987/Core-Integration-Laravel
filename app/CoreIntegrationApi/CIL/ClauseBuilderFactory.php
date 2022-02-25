@@ -14,7 +14,6 @@ class ClauseBuilderFactory extends CILDataTypeDeterminerFactory
             'date' => 'App\CoreIntegrationApi\CIL\ClauseBuilder\DateWhereClauseBuilder',
             'int' => 'App\CoreIntegrationApi\CIL\ClauseBuilder\IntWhereClauseBuilder',
             'float' => 'App\CoreIntegrationApi\CIL\ClauseBuilder\FloatWhereClauseBuilder',
-            'id' => 'App\CoreIntegrationApi\CIL\ClauseBuilder\IdClauseBuilder',
             'orderby' => 'App\CoreIntegrationApi\CIL\ClauseBuilder\OrderByClauseBuilder',
             'select' => 'App\CoreIntegrationApi\CIL\ClauseBuilder\SelectClauseBuilder',
             'includes' => 'App\CoreIntegrationApi\CIL\ClauseBuilder\IncludesClauseBuilder',

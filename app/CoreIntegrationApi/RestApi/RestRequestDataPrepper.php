@@ -31,7 +31,9 @@ class RestRequestDataPrepper extends RequestDataPrepper
     }
 
     // TODO: set ids
-
+    // TODO: set id as class id, dynamically find it
+    // $class->getKeyName()
+    
     private function setEndpointDetails()
     {
         $this->preppedData['endpoint'] = $this->request->endpoint ?? 'index';
