@@ -161,11 +161,13 @@ class DateParameterValidator implements ParameterValidator
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setQueryArgument([
-                'dataType' => 'date',
-                'columnName' => $this->columnName,
-                'date' => $this->date,
-                'comparisonOperator' => $this->comparisonOperator,
-                'originalComparisonOperator' => $this->originalComparisonOperator,
+                [
+                    'dataType' => 'date',
+                    'columnName' => $this->columnName,
+                    'date' => $this->date,
+                    'comparisonOperator' => $this->comparisonOperator,
+                    'originalComparisonOperator' => $this->originalComparisonOperator,
+                ]
             ]);
         }
     }

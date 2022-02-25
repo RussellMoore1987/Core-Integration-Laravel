@@ -46,6 +46,39 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
+    public function test_IntParameterValidator_validate_function_with_extra_action()
+    {
+        $intString = "13,33::bt::something'";
+        $parameterData = [
+            'team_id' => $intString
+        ];
+
+        $expectedAcceptedParameters = [
+            'team_id' => [
+                'intCoveredTo' => [13,33],
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => 'bt',
+                'originalComparisonOperator' => 'bt',
+            ]
+        ];
+
+        $expectedQueryArguments = [
+            [
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => [13,33],
+                'comparisonOperator' => 'bt',
+                'originalComparisonOperator' => 'bt',
+            ]
+        ];
+
+        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+
+        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
+    }
+
     public function test_IntParameterValidator_validate_function_with_no_int_blank_string()
     {
         $comparisonOperator = '';
@@ -95,11 +128,11 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => 1,
-                "comparisonOperator" => "=",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => 1,
+                'comparisonOperator' => '=',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -120,20 +153,20 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                "intCoveredTo" => 1,
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => '=',
+                'intCoveredTo' => 1,
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => '=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => 1,
-                "comparisonOperator" => "=",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => 1,
+                'comparisonOperator' => '=',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -153,21 +186,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => 4,
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => '>',
+            'team_id' => [
+                'intCoveredTo' => 4,
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => '>',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => 4,
-                "comparisonOperator" => ">",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => 4,
+                'comparisonOperator' => '>',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -187,21 +220,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => 4,
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => '>',
+            'team_id' => [
+                'intCoveredTo' => 4,
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => '>',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => 4,
-                "comparisonOperator" => ">",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => 4,
+                'comparisonOperator' => '>',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -221,21 +254,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => 4,
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => '>',
+            'team_id' => [
+                'intCoveredTo' => 4,
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => '>',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => 4,
-                "comparisonOperator" => ">",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => 4,
+                'comparisonOperator' => '>',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -255,21 +288,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => 4,
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => '>=',
+            'team_id' => [
+                'intCoveredTo' => 4,
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => '>=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => 4,
-                "comparisonOperator" => ">=",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => 4,
+                'comparisonOperator' => '>=',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -289,21 +322,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => 4,
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => '>=',
+            'team_id' => [
+                'intCoveredTo' => 4,
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => '>=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => 4,
-                "comparisonOperator" => ">=",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => 4,
+                'comparisonOperator' => '>=',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -323,21 +356,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => 4,
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => '>=',
+            'team_id' => [
+                'intCoveredTo' => 4,
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => '>=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => 4,
-                "comparisonOperator" => ">=",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => 4,
+                'comparisonOperator' => '>=',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -357,21 +390,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => 4,
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => '<',
+            'team_id' => [
+                'intCoveredTo' => 4,
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => '<',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => 4,
-                "comparisonOperator" => "<",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => 4,
+                'comparisonOperator' => '<',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -391,21 +424,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => 4,
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => '<',
+            'team_id' => [
+                'intCoveredTo' => 4,
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => '<',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => 4,
-                "comparisonOperator" => "<",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => 4,
+                'comparisonOperator' => '<',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -425,21 +458,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => 4,
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => '<',
+            'team_id' => [
+                'intCoveredTo' => 4,
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => '<',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => 4,
-                "comparisonOperator" => "<",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => 4,
+                'comparisonOperator' => '<',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
@@ -459,21 +492,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => 10,
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => '<=',
+            'team_id' => [
+                'intCoveredTo' => 10,
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => '<=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => 10,
-                "comparisonOperator" => "<=",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => 10,
+                'comparisonOperator' => '<=',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
@@ -493,21 +526,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => 10,
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => '<=',
+            'team_id' => [
+                'intCoveredTo' => 10,
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => '<=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => 10,
-                "comparisonOperator" => "<=",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => 10,
+                'comparisonOperator' => '<=',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
@@ -527,21 +560,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => 10,
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => '<=',
+            'team_id' => [
+                'intCoveredTo' => 10,
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => '<=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => 10,
-                "comparisonOperator" => "<=",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => 10,
+                'comparisonOperator' => '<=',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
@@ -593,21 +626,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => [1,100],
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => 'bt',
+            'team_id' => [
+                'intCoveredTo' => [1,100],
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => 'bt',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => [1,100],
-                "comparisonOperator" => "bt",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => [1,100],
+                'comparisonOperator' => 'bt',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -721,21 +754,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => [1,100],
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => 'bt',
+            'team_id' => [
+                'intCoveredTo' => [1,100],
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => 'bt',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => [1,100],
-                "comparisonOperator" => "bt",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => [1,100],
+                'comparisonOperator' => 'bt',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -755,21 +788,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => [1,100,33,88,99,55],
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => 'in',
+            'team_id' => [
+                'intCoveredTo' => [1,100,33,88,99,55],
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => 'in',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => [1,100,33,88,99,55],
-                "comparisonOperator" => "in",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => [1,100,33,88,99,55],
+                'comparisonOperator' => 'in',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -789,21 +822,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => [1,100,33,88,99,55],
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => 'in',
+            'team_id' => [
+                'intCoveredTo' => [1,100,33,88,99,55],
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => 'in',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => [1,100,33,88,99,55],
-                "comparisonOperator" => "in",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => [1,100,33,88,99,55],
+                'comparisonOperator' => 'in',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -823,21 +856,21 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => [1,100,33,88,99,55],
-                "originalIntString" => $intString,
-                "comparisonOperatorCoveredTo" => 'notin',
+            'team_id' => [
+                'intCoveredTo' => [1,100,33,88,99,55],
+                'originalIntString' => $intString,
+                'comparisonOperatorCoveredTo' => 'notin',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => [1,100,33,88,99,55],
-                "comparisonOperator" => "notin",
-                "originalComparisonOperator" => $comparisonOperator,
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => [1,100,33,88,99,55],
+                'comparisonOperator' => 'notin',
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
         
@@ -865,24 +898,24 @@ class IntParameterValidatorTest extends TestCase
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     [
-                        "value" => "sam",
-                        "valueError" => "The value at the index of 0 is not an int. Only ints are permitted for this parameter. Your value is a string."
+                        'value' => 'sam',
+                        'valueError' => 'The value at the index of 0 is not an int. Only ints are permitted for this parameter. Your value is a string.'
                     ],
                     [
-                        "value" => 6.87,
-                        "valueError" => "The value at the index of 1 is not an int. Only ints are permitted for this parameter. Your value is a float."
+                        'value' => 6.87,
+                        'valueError' => 'The value at the index of 1 is not an int. Only ints are permitted for this parameter. Your value is a float.'
                     ],
                     [
-                        "value" => 0.01,
-                        "valueError" => "The value at the index of 2 is not an int. Only ints are permitted for this parameter. Your value is a float."
+                        'value' => 0.01,
+                        'valueError' => 'The value at the index of 2 is not an int. Only ints are permitted for this parameter. Your value is a float.'
                     ],
                     [
-                        "value" => "fugue",
-                        "valueError" => "The value at the index of 3 is not an int. Only ints are permitted for this parameter. Your value is a string."
+                        'value' => 'fugue',
+                        'valueError' => 'The value at the index of 3 is not an int. Only ints are permitted for this parameter. Your value is a string.'
                     ],
                     [
-                        "value" => "sam,6.87,.01,fugue",
-                        "valueError" => "There are no ints available in this array. This parameter was not set."
+                        'value' => 'sam,6.87,.01,fugue',
+                        'valueError' => 'There are no ints available in this array. This parameter was not set.'
                     ],
                 ],
             ],    
@@ -912,33 +945,33 @@ class IntParameterValidatorTest extends TestCase
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     [
-                        "value" => 6.87,
-                        "valueError" => "The value at the index of 1 is not an int. Only ints are permitted for this parameter. Your value is a float."
+                        'value' => 6.87,
+                        'valueError' => 'The value at the index of 1 is not an int. Only ints are permitted for this parameter. Your value is a float.'
                     ],
                     [
-                        "value" => "fugue",
-                        "valueError" => "The value at the index of 3 is not an int. Only ints are permitted for this parameter. Your value is a string."
+                        'value' => 'fugue',
+                        'valueError' => 'The value at the index of 3 is not an int. Only ints are permitted for this parameter. Your value is a string.'
                     ],
                 ],
             ],    
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => [13, 6],
-                "originalIntString" => "13,6.87,6,fugue::IN",
-                "comparisonOperatorCoveredTo" => "in",
-                "originalComparisonOperator" => "IN",
+            'team_id' => [
+                'intCoveredTo' => [13, 6],
+                'originalIntString' => '13,6.87,6,fugue::IN',
+                'comparisonOperatorCoveredTo' => 'in',
+                'originalComparisonOperator' => 'IN',
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => [13, 6],
-                "comparisonOperator" => "in",
-                "originalComparisonOperator" => "IN",
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => [13, 6],
+                'comparisonOperator' => 'in',
+                'originalComparisonOperator' => 'IN',
             ]
         ];
         
@@ -966,33 +999,33 @@ class IntParameterValidatorTest extends TestCase
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     [
-                        "value" => 6.87,
-                        "valueError" => "The value at the index of 1 is not an int. Only ints are permitted for this parameter. Your value is a float."
+                        'value' => 6.87,
+                        'valueError' => 'The value at the index of 1 is not an int. Only ints are permitted for this parameter. Your value is a float.'
                     ],
                     [
-                        "value" => "fugue",
-                        "valueError" => "The value at the index of 3 is not an int. Only ints are permitted for this parameter. Your value is a string."
+                        'value' => 'fugue',
+                        'valueError' => 'The value at the index of 3 is not an int. Only ints are permitted for this parameter. Your value is a string.'
                     ],
                 ],
             ],    
         ];
 
         $expectedAcceptedParameters = [
-            "team_id" => [
-                "intCoveredTo" => [13, 6],
-                "originalIntString" => "13,6.87,6,fugue::IN",
-                "comparisonOperatorCoveredTo" => "in",
-                "originalComparisonOperator" => "IN",
+            'team_id' => [
+                'intCoveredTo' => [13, 6],
+                'originalIntString' => '13,6.87,6,fugue::IN',
+                'comparisonOperatorCoveredTo' => 'in',
+                'originalComparisonOperator' => 'IN',
             ]
         ];
 
         $expectedQueryArguments = [
             [
-                "dataType" => "int",
-                "columnName" => "team_id",
-                "int" => [13, 6],
-                "comparisonOperator" => "in",
-                "originalComparisonOperator" => "IN",
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => [13, 6],
+                'comparisonOperator' => 'in',
+                'originalComparisonOperator' => 'IN',
             ]
         ];
 
@@ -1004,8 +1037,6 @@ class IntParameterValidatorTest extends TestCase
         ];
         
         $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
-
-        // dd($this->validatorDataCollector->getAllData());
 
         $this->assertEquals($expectedGetAllData, $this->validatorDataCollector->getAllData());
     }
