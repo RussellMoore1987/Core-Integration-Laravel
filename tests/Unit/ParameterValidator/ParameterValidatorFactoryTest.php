@@ -103,13 +103,6 @@ class ParameterValidatorFactoryTest extends TestCase
         ];
     }
 
-    public function test_creation_of_id_parameter_validator_class()
-    {
-        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem('id');
-
-        $this->assertInstanceOf(IdParameterValidator::class, $parameterValidator);
-    }
-
     public function test_creation_of_order_by_parameter_validator_class()
     {
         $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem('orderBy');
