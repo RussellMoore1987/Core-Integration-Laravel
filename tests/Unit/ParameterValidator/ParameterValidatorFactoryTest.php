@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\ParameterValidator;
 
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\StringParameterValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\DateParameterValidator;

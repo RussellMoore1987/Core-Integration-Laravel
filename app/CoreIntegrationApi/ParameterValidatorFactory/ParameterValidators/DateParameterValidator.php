@@ -9,6 +9,7 @@ class DateParameterValidator implements ParameterValidator
 {
     private $columnName;
     private $date;
+    private $originalDate;
     private $dateAction;
     private $comparisonOperator;
     private $originalComparisonOperator = '';
@@ -71,13 +72,13 @@ class DateParameterValidator implements ParameterValidator
 
     private function setComparisonOperator()
     {
-        if (in_array($this->dateAction, ['greaterthan', 'gt'])) {
+        if (in_array($this->dateAction, ['greaterthan', 'gt', '>'])) {
             $this->comparisonOperator = '>';
-        } else if (in_array($this->dateAction, ['greaterthanorequal', 'gte'])) {
+        } else if (in_array($this->dateAction, ['greaterthanorequal', 'gte', '>='])) {
             $this->comparisonOperator = '>=';
-        } else if (in_array($this->dateAction, ['lessthan', 'lt'])) {
+        } else if (in_array($this->dateAction, ['lessthan', 'lt', '<'])) {
             $this->comparisonOperator = '<';
-        } else if (in_array($this->dateAction, ['lessthanorequal', 'lte'])) {
+        } else if (in_array($this->dateAction, ['lessthanorequal', 'lte', '<='])) {
             $this->comparisonOperator = '<=';
         } else if (in_array($this->dateAction, ['between', 'bt'])) {
             $this->comparisonOperator = 'bt';
@@ -160,11 +161,13 @@ class DateParameterValidator implements ParameterValidator
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setQueryArgument([
-                'dataType' => 'date',
-                'columnName' => $this->columnName,
-                'date' => $this->date,
-                'comparisonOperator' => $this->comparisonOperator,
-                'originalComparisonOperator' => $this->originalComparisonOperator,
+                [
+                    'dataType' => 'date',
+                    'columnName' => $this->columnName,
+                    'date' => $this->date,
+                    'comparisonOperator' => $this->comparisonOperator,
+                    'originalComparisonOperator' => $this->originalComparisonOperator,
+                ]
             ]);
         }
     }
