@@ -94,13 +94,6 @@ class DataTypeDeterminerFactoryTest extends TestCase
         ];
     }
 
-    public function test_for_data_type_of_id()
-    {
-        $commonDataType = $this->dataTypeDeterminerFactory->getFactoryItem('id');
-
-        $this->assertEquals('id', $commonDataType);
-    }
-
     public function test_for_data_type_of_order_by()
     {
         $commonDataType = $this->dataTypeDeterminerFactory->getFactoryItem('orderBy');

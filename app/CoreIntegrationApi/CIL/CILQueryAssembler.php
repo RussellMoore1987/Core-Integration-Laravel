@@ -9,6 +9,7 @@ class CILQueryAssembler implements QueryAssembler
 {
     protected $clauseBuilderFactory;
     protected $queryBuilder;
+    protected $perPageParameter = 50;
 
     function __construct(ClauseBuilderFactory $clauseBuilderFactory) 
     {
@@ -17,21 +18,17 @@ class CILQueryAssembler implements QueryAssembler
 
     public function query($validatedQueryData)
     {
-        // start laravel builder
-        // $this->queryBuilder
+        $this->queryBuilder = $validatedQueryData['class']::query();
 
-        // loop over types arguments
-            // ? https://laravel.com/docs/8.x/queries#where-clauses
-            // select - all in one - $data = ['name', 'email']
-            // column - Individually - $data = [$column, $value]
-            // includes - all in one - $data = ['tags', 'categories', 'invoices'] - $books = Book::with(['author', 'publisher'])->get(); // ? https://laravel.com/docs/8.x/eloquent-relationships
-            // order by - Individually - $data = name
-            // Don't know exactly how to do method calls yet
-            // id - all in one - $data = 1 or 1,2,3,4,5
-            // perPageParameter - set Local variable, continue, go to next item in the loop, Set perPageParameter Later in paginate($perPageParameter), default 30
-                // $clauseBuilder = $this->clauseBuilderFactory->getClauseBuilder($parameterType);
-                // $this->queryBuilder = $clauseBuilder->build($this->queryBuilder, $data)
+        foreach ($validatedQueryData['queryArguments'] as $data) {
+            $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem($data['dataType']);
+            $this->queryBuilder = $clauseBuilder->build($this->queryBuilder, $data);
+        }
+
+        if (isset($validatedQueryData['acceptedParameters']['perPage'])) {
+            $this->perPageParameter = $validatedQueryData['acceptedParameters']['perPage'];
+        }
         
-        // return $this->queryBuilder->paginate($perPageParameter)
+        return $this->queryBuilder->paginate($this->perPageParameter);
     }
 }

@@ -26,7 +26,6 @@ abstract class CILDataTypeDeterminerFactory
         $this->checkForDate();
         $this->checkForInt();
         $this->checkForFloat();
-        $this->checkForId();
         $this->checkForOrderBy();
         $this->checkForSelect();
         $this->checkForIncludes();
@@ -43,7 +42,8 @@ abstract class CILDataTypeDeterminerFactory
                 str_contains($this->dataType, 'varchar') || 
                 str_contains($this->dataType, 'char') || 
                 $this->dataType == 'blob' || 
-                $this->dataType == 'text'
+                $this->dataType == 'text' ||
+                $this->dataType == 'string'
             )
         ) {
             $this->factoryItem = $this->returnValue($this->factoryReturnArray['string']);
@@ -94,14 +94,6 @@ abstract class CILDataTypeDeterminerFactory
             )
         ) {
             $this->factoryItem = $this->returnValue($this->factoryReturnArray['float']);
-        }
-    }
-
-    protected function checkForId()
-    {
-        if (!$this->factoryItem && $this->dataType == 'id') 
-        {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['id']);
         }
     }
 
