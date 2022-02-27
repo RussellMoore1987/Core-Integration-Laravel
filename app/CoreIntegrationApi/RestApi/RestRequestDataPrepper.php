@@ -26,7 +26,7 @@ class RestRequestDataPrepper extends RequestDataPrepper
         if ($this->request->endpoint && isset($this->acceptedClasses[$this->request->endpoint])) {
             $this->preppedData['class'] = $this->acceptedClasses[$this->request->endpoint];
         } else {
-            $this->preppedData['class'] = NULL;
+            $this->preppedData['class'] = NULL; 
         }
     }
 
