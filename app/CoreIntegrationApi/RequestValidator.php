@@ -5,6 +5,7 @@ namespace App\CoreIntegrationApi;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use App\CoreIntegrationApi\RequestDataPrepper;
 use App\CoreIntegrationApi\ValidatorDataCollector;
+use Illuminate\Support\Facades\DB;
 
 abstract class RequestValidator 
 {
@@ -40,6 +41,8 @@ abstract class RequestValidator
     {
         $this->requestDataPrepper->prep();
 
+        dd($this->requestDataPrepper->getPreppedData());
+
         $this->validateRequest($this->requestDataPrepper->getPreppedData());
 
         return $this->validatedMetaData;
@@ -58,10 +61,29 @@ abstract class RequestValidator
 
     protected function setUpPreppedRequest($prepRequestData)
     {
-        $this->class = $prepRequestData['class'] ?? '';
         $this->endpoint = $prepRequestData['endpoint'] ?? '';
-        $this->endpointId = $prepRequestData['endpointId']  ?? []; // may be set in the prepper as an id
+        $this->endpointId = $prepRequestData['endpointId']  ?? [];
         $this->parameters = $prepRequestData['parameters'] ?? [];
+    }
+
+    protected function validateEndPoint()
+    {
+        if (array_key_exists($this->endpoint, $this->acceptedClasses) ) {
+            $this->class = $this->acceptedClasses[$this->endpoint]; 
+            $this->checkForIdParameterIfThereSetItAppropriately();
+        } elseif ($this->endpoint != 'index') {
+            // ! start here ****************************************************************
+            // set endpoint error
+        } 
+    }
+
+    protected function checkForIdParameterIfThereSetItAppropriately()
+    {
+        if ($this->endpointId) {
+            $class = new $this->class();
+            $primaryKeyName = $class->getKeyName() ? $class->getKeyName() : 'id';
+            $this->parameters['otherParameters'][$primaryKeyName] = $this->endpointId;
+        }
     }
 
     // TODO: Returns database data type with validated information
@@ -69,12 +91,44 @@ abstract class RequestValidator
 
     protected function getAcceptableParameters()
     {
+        $this->getModelDBInfo();
+        $tempClass = new $this->class();
+        $classTableName = $tempClass->gettable();
+        $columnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$classTableName}"));
+        $this->setAcceptableParameters($columnData);
+
         // set $this->acceptableParameters
+        return $columnData;
     }
 
-    protected function validateEndPoint()
+    protected function arrayOfObjectsToArrayOfArrays(array $arrayOfObjects)
     {
-        // see if end point is in config('coreintegration.acceptedclasses')
+        foreach ($arrayOfObjects as $object) {
+            $arrayOfArrays[] = (array) $object;
+        }
+
+        return $arrayOfArrays;
+    }
+
+    protected function setAcceptableParameters(array $classDBData)
+    {
+        foreach ($classDBData as $columnArray) {
+            foreach ($columnArray as $column_data_name => $value) {
+                $column_data_name = strtolower($column_data_name);
+                $value = $value === Null ? $value : strtolower($value);
+
+                $this->acceptableParameters[$columnArray['Field']][$column_data_name] = $value; 
+            }
+        }
+    }
+
+    private function setClass()
+    {
+        if ($this->request->endpoint && isset($this->acceptedClasses[$this->request->endpoint])) {
+            $this->preppedData['class'] = $this->acceptedClasses[$this->request->endpoint];
+        } else {
+            $this->preppedData['class'] = NULL; 
+        }
     }
 
     // get validation but what about the others put patch post
@@ -84,7 +138,7 @@ abstract class RequestValidator
 
         foreach ($this->parameters as $key => $value) {
             if (array_key_exists($key, $allAcceptableParameters)) {
-                $parameterValidator = $this->parameterValidatorFactory->getParameterValidator($allAcceptableParameters[$key]['type'] ?? $allAcceptableParameters[$key]);
+                $parameterValidator = $this->parameterValidatorFactory->getFactoryItem($allAcceptableParameters[$key]['type'] ?? $allAcceptableParameters[$key]);
                 $this->validatorDataCollector = $parameterValidator->validate($this->validatorDataCollector, [$key => $value]);
             } else {
                 $this->validatorDataCollector->setRejectedParameter([
@@ -113,8 +167,8 @@ abstract class RequestValidator
     }
 
     // I don't know if we need this
-    // public function getValidatedQueryData() 
-    // {
-    //     return $this->validatedMetaData;
-    // }
+    public function getValidatedQueryData() 
+    {
+        return $this->validatedMetaData;
+    }
 }
