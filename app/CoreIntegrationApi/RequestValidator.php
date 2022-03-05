@@ -107,7 +107,7 @@ abstract class RequestValidator
                 'endpointIdConvertedTo' => [$primaryKeyName => $this->endpointId], 
                 'indexUrl' => $this->getIndexUrl(),
                 'url' => $this->request->url(),
-                'HTTP method' => $this->request->getMethod(),
+                'httpMethod' => $this->request->getMethod(),
             ]
         );
     }
@@ -180,7 +180,7 @@ abstract class RequestValidator
     protected function addApiDataTypeToAcceptableParameters()
     {
         foreach ($this->acceptableParameters as $key => $columnArray) {
-            $this->acceptableParameters[$key]['ApiDataType'] = $this->dataTypeDeterminerFactory->getFactoryItem($columnArray['type']);   
+            $this->acceptableParameters[$key]['api_data_type'] = $this->dataTypeDeterminerFactory->getFactoryItem($columnArray['type']);   
         }
     }
 
@@ -209,10 +209,10 @@ abstract class RequestValidator
         }
     }
 
-    protected function getMethodParameterValidator()
+    protected function getMethodParameterValidator($dataType, $data)
     {
         $parameterValidator = $this->parameterValidatorFactory->getFactoryItem($dataType);
-        $this->validatorDataCollector = $parameterValidator->validate($this->validatorDataCollector, [$key => $value]);
+        $this->validatorDataCollector = $parameterValidator->validate($this->validatorDataCollector, $data);
     }
 
     protected function handleDefaultParameters($key, $value)
@@ -220,24 +220,46 @@ abstract class RequestValidator
         if (in_array($key, ['perpage', 'per_page'])) {
             $this->setPerPageParameter($value);
         } elseif ($key == 'page') {
-            # code...
+            $this->setPageParameter($value);
         } elseif (in_array($key, ['columndata', 'column_data'])) {
-            # code...
+            $this->validatorDataCollector->setAcceptedParameter([
+                'column_data' => [
+                    'value' => $value,
+                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this endpoint '
+                ]
+            ]);
         }
     }
 
     protected function setPerPageParameter($value)
     {
-        // ! working here ****************************************************************8
         if ($this->isInt($value)) {
             $this->validatorDataCollector->setAcceptedParameter([
-                "per_page" => [
-                    'messsage' => "\"$this->endpoint\" is a valid endpoint for this API. You can also review available endpoints at " . $this->getIndexUrl(), 
-                    'error' => false
-                ]
+                'per_page' => (int) $value
             ]);
         } else {
-
+            $this->validatorDataCollector->setRejectedParameter([
+                'per_page' => [
+                    'value' => $value,
+                    'parameterError' => 'This parameter\'s value must be an int.'
+                ]
+            ]);
+        }
+    }
+    
+    protected function setPageParameter($value)
+    {
+        if ($this->isInt($value)) {
+            $this->validatorDataCollector->setAcceptedParameter([
+                'page' => (int) $value
+            ]);
+        } else {
+            $this->validatorDataCollector->setRejectedParameter([
+                'page' => [
+                    'value' => $value,
+                    'parameterError' => 'This parameter\'s value must be an int.'
+                ]
+            ]);
         }
     }
 
