@@ -9,26 +9,25 @@ class RestQueryResolver extends QueryResolver
 
     // uses serves a provider for dependency injection, Located app\Providers\RestRequestProcessorProvider.php
 
-    public function resolve($validatedQueryData)
+    public function resolve($validatedMetaData)
     {
-        // bad endpoint / errors
-        $query = $validatedQueryData->errors ? $validatedQueryData->errors : NULL;
+        dd($validatedMetaData);
 
         // get column data
 
-        // get form data
+        // TODO: get form data
 
         // index
-        $query = $query === NULL && $validatedQueryData->action == 'INDEX' ? $this->queryIndex->get() : NULL;
+        $query = $query === NULL && $validatedMetaData->action == 'INDEX' ? $this->queryIndex->get() : NULL;
 
         // GET
-        $query = $query === NULL && $validatedQueryData->action == 'GET' ? $this->queryAssembler->query($validatedQueryData) : NULL;
+        $query = $query === NULL && $validatedMetaData->action == 'GET' ? $this->queryAssembler->query($validatedMetaData) : NULL;
         
         // persist - POST = add, PUT = update, PATCH = copy
-        $query = $query === NULL && in_array($validatedQueryData->action, ['POST', 'PUT', 'PATCH']) ? $this->queryPersister->persist($validatedQueryData) : NULL;
+        $query = $query === NULL && in_array($validatedMetaData->action, ['POST', 'PUT', 'PATCH']) ? $this->queryPersister->persist($validatedMetaData) : NULL;
 
         // delete
-        $query = $query === NULL && $validatedQueryData->action == 'DELETE' ? $this->queryDeleter->delete($validatedQueryData) : NULL;
+        $query = $query === NULL && $validatedMetaData->action == 'DELETE' ? $this->queryDeleter->delete($validatedMetaData) : NULL;
 
         return $query;
     }

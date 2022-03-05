@@ -161,7 +161,7 @@ class DateParameterValidator implements ParameterValidator
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setQueryArgument([
-                [
+                "$this->columnName" => [
                     'dataType' => 'date',
                     'columnName' => $this->columnName,
                     'date' => $this->date,

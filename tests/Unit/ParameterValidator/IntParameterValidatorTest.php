@@ -63,7 +63,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => [13,33],
@@ -127,7 +127,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 1,
@@ -161,7 +161,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 1,
@@ -195,7 +195,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 4,
@@ -229,7 +229,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 4,
@@ -263,7 +263,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 4,
@@ -297,7 +297,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 4,
@@ -331,7 +331,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 4,
@@ -365,7 +365,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 4,
@@ -399,7 +399,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 4,
@@ -433,7 +433,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 4,
@@ -467,7 +467,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 4,
@@ -501,7 +501,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 10,
@@ -535,7 +535,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 10,
@@ -569,7 +569,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 10,
@@ -635,7 +635,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => [1,100],
@@ -763,7 +763,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => [1,100],
@@ -797,7 +797,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => [1,100,33,88,99,55],
@@ -831,7 +831,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => [1,100,33,88,99,55],
@@ -865,7 +865,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => [1,100,33,88,99,55],
@@ -966,7 +966,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => [13, 6],
@@ -1020,7 +1020,7 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => [13, 6],
@@ -1030,7 +1030,8 @@ class IntParameterValidatorTest extends TestCase
         ];
 
         $expectedGetAllData = [
-            'endpointData' => null,
+            'endpointData' => [],
+            'extraData' => [],
             'acceptedParameters' => $expectedAcceptedParameters,
             'rejectedParameters' => $expectedRejectedParameters,
             'queryArguments' => $expectedQueryArguments,

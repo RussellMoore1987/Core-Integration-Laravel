@@ -34,7 +34,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '1970-01-01 00:00:00',
@@ -68,7 +68,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '1970-01-01 00:00:00',
@@ -102,7 +102,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -136,7 +136,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -170,7 +170,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -204,7 +204,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -238,7 +238,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -272,7 +272,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -306,7 +306,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -340,7 +340,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -374,7 +374,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -408,7 +408,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -442,7 +442,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -476,7 +476,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -510,7 +510,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -544,7 +544,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -581,7 +581,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => [
@@ -621,7 +621,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => [
@@ -745,7 +745,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => [
@@ -785,7 +785,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => [
@@ -798,7 +798,8 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedGetAllData = [
-            'endpointData' => null,
+            'endpointData' => [],
+            'extraData' => [],
             'acceptedParameters' => $expectedAcceptedParameters,
             'rejectedParameters' => [],
             'queryArguments' => $expectedQueryArguments,

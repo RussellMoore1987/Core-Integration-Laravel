@@ -4,7 +4,8 @@ namespace App\CoreIntegrationApi;
 
 class ValidatorDataCollector 
 {   
-    protected $endpointData;
+    protected $endpointData = [];
+    protected $extraData = [];
     protected $rejectedParameters = [];
     protected $acceptedParameters = [];
     protected $queryArguments = [];
@@ -16,6 +17,15 @@ class ValidatorDataCollector
     public function getEndpointData()
     {
         return $this->endpointData;
+    }
+
+    public function setExtraData(array $extraData)
+    {
+        $this->extraData = $extraData;
+    }
+    public function getExtraData()
+    {
+        return $this->extraData;
     }
 
     public function setRejectedParameter(array $rejectedParameters)
@@ -56,6 +66,7 @@ class ValidatorDataCollector
     {
         return [
            'endpointData' => $this->endpointData,
+           'extraData' => $this->extraData,
            'rejectedParameters' => $this->rejectedParameters,
            'acceptedParameters' => $this->acceptedParameters,
            'queryArguments' => $this->queryArguments,
@@ -64,7 +75,8 @@ class ValidatorDataCollector
 
     public function reset()
     {
-        $this->endpointData = Null;
+        $this->endpointData = [];
+        $this->extraData = [];
         $this->rejectedParameters = [];
         $this->acceptedParameters = [];
         $this->queryArguments = [];

@@ -237,7 +237,7 @@ class IntParameterValidator implements ParameterValidator
     {
         if (!$this->requestError) {
             $this->validatorDataCollector->setQueryArgument([
-                [
+                "$this->columnName" => [
                     'dataType' => 'int',
                     'columnName' => $this->columnName,
                     'int' => $this->int,

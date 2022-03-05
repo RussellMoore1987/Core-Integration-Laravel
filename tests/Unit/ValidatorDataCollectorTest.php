@@ -20,6 +20,11 @@ class ValidatorDataCollectorTest extends TestCase
             'endpointValid' => true,
         ];
 
+        $this->extraData = [
+            'columnData' => ['projects' => ['...']],
+            'otherData' => true,
+        ];
+
         $this->parameters = [
             ['team' => 12],
             [
@@ -48,6 +53,13 @@ class ValidatorDataCollectorTest extends TestCase
         $this->assertEquals($this->endpointData, $this->ValidatorDataCollector->getEndpointData());
     }
 
+    public function test_setExtraData_function()
+    {
+        $this->ValidatorDataCollector->setExtraData($this->extraData); 
+        
+        $this->assertEquals($this->extraData, $this->ValidatorDataCollector->getExtraData());
+    }
+
     /**
      * @dataProvider parameterFunctions
      */
@@ -73,6 +85,7 @@ class ValidatorDataCollectorTest extends TestCase
 
         $expectedOutput = [
             'endpointData' => $this->endpointData,
+            'extraData' => $this->extraData,
             'rejectedParameters' => $this->expectedParameters,
             'acceptedParameters' => $this->expectedParameters,
             'queryArguments' => $this->expectedParameters,
@@ -84,6 +97,7 @@ class ValidatorDataCollectorTest extends TestCase
     private function setAllParameters()
     {
         $this->ValidatorDataCollector->setEndpointData($this->endpointData);
+        $this->ValidatorDataCollector->setExtraData($this->extraData);
         $this->ValidatorDataCollector->setRejectedParameter($this->parameters[0]); 
         $this->ValidatorDataCollector->setRejectedParameter($this->parameters[1]); 
         $this->ValidatorDataCollector->setAcceptedParameter($this->parameters[0]);  
@@ -95,7 +109,8 @@ class ValidatorDataCollectorTest extends TestCase
     public function test_getAllData_function_with_nulls_returned()
     {
         $expectedOutput = [
-            'endpointData' => null,
+            'endpointData' => [],
+            'extraData' => [],
             'rejectedParameters' => [],
             'acceptedParameters' => [],
             'queryArguments' => [],
@@ -109,7 +124,8 @@ class ValidatorDataCollectorTest extends TestCase
         $this->setAllParameters(); 
 
         $expectedOutput = [
-            'endpointData' => null,
+            'endpointData' => [],
+            'extraData' => [],
             'rejectedParameters' => [],
             'acceptedParameters' => [],
             'queryArguments' => [],

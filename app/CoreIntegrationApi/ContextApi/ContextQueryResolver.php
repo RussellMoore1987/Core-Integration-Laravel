@@ -8,11 +8,11 @@ class ContextQueryResolver extends QueryResolver
 {
     // uses serves a provider for dependency injection, Located app\Providers\ContextRequestProcessorProvider.php
 
-    public function resolve($validatedQueryData)
+    public function resolve($validatedMetaData)
     {
         $queries = [];
 
-        foreach ($validatedQueryData as $queryArguments) {
+        foreach ($validatedMetaData as $queryArguments) {
 
             // bad endpoint
             $query = $queryArguments->errors ? $queryArguments->errors : NULL;

@@ -4,8 +4,9 @@ namespace App\CoreIntegrationApi\CIL;
 
 abstract class CILDataTypeDeterminerFactory
 {
-    private $factoryItem;
-    private $dataType;
+    protected $factoryItem;
+    protected $factoryItemTrigger;
+    protected $dataType;
     protected $factoryReturnArray = [
         'string' => 'string',
         'date' => 'date',
@@ -21,7 +22,8 @@ abstract class CILDataTypeDeterminerFactory
     public function getFactoryItem($dataType)
     {
         $this->dataType = strtolower($dataType);
-        
+        $this->factoryItem = null;
+
         $this->checkForString();
         $this->checkForDate();
         $this->checkForInt();
@@ -31,13 +33,15 @@ abstract class CILDataTypeDeterminerFactory
         $this->checkForIncludes();
         $this->checkForMethodCalls();
 
+        $this->factoryItemTrigger = null;
+
         return $this->factoryItem;
     }  
 
     protected function checkForString()
     {
         if (
-            !$this->factoryItem && 
+            !$this->factoryItemTrigger && 
             (
                 str_contains($this->dataType, 'varchar') || 
                 str_contains($this->dataType, 'char') || 
@@ -53,7 +57,7 @@ abstract class CILDataTypeDeterminerFactory
     protected function checkForDate()
     {
         if (
-            !$this->factoryItem && 
+            !$this->factoryItemTrigger && 
             (
                 $this->dataType == 'date' || 
                 $this->dataType == 'timestamp' || 
@@ -68,14 +72,15 @@ abstract class CILDataTypeDeterminerFactory
     protected function checkForInt()
     {
         if (
-            !$this->factoryItem && 
+            !$this->factoryItemTrigger && 
             (
                 $this->dataType == 'integer' ||
                 $this->dataType == 'int' ||
                 $this->dataType == 'smallint' ||
                 $this->dataType == 'tinyint' ||
                 $this->dataType == 'mediumint' ||
-                $this->dataType == 'bigint'
+                $this->dataType == 'bigint' ||
+                (str_contains($this->dataType, 'int') && str_contains($this->dataType, 'unsigned'))
             )
         ) {
             $this->factoryItem = $this->returnValue($this->factoryReturnArray['int']);
@@ -85,7 +90,7 @@ abstract class CILDataTypeDeterminerFactory
     protected function checkForFloat()
     {
         if (
-            !$this->factoryItem && 
+            !$this->factoryItemTrigger && 
             (
                 $this->dataType == 'decimal' ||
                 $this->dataType == 'numeric' ||
@@ -99,7 +104,7 @@ abstract class CILDataTypeDeterminerFactory
 
     protected function checkForOrderBy()
     {
-        if (!$this->factoryItem && $this->dataType == 'orderby') 
+        if (!$this->factoryItemTrigger && $this->dataType == 'orderby') 
         {
             $this->factoryItem = $this->returnValue($this->factoryReturnArray['orderby']);
         }
@@ -107,7 +112,7 @@ abstract class CILDataTypeDeterminerFactory
 
     protected function checkForSelect()
     {
-        if (!$this->factoryItem && $this->dataType == 'select') 
+        if (!$this->factoryItemTrigger && $this->dataType == 'select') 
         {
             $this->factoryItem = $this->returnValue($this->factoryReturnArray['select']);
         }
@@ -115,7 +120,7 @@ abstract class CILDataTypeDeterminerFactory
 
     protected function checkForIncludes()
     {
-        if (!$this->factoryItem && $this->dataType == 'includes') 
+        if (!$this->factoryItemTrigger && $this->dataType == 'includes') 
         {
             $this->factoryItem = $this->returnValue($this->factoryReturnArray['includes']);
         }
@@ -123,7 +128,7 @@ abstract class CILDataTypeDeterminerFactory
 
     protected function checkForMethodCalls()
     {
-        if (!$this->factoryItem && $this->dataType == 'methodcalls') 
+        if (!$this->factoryItemTrigger && $this->dataType == 'methodcalls') 
         {
             $this->factoryItem = $this->returnValue($this->factoryReturnArray['methodcalls']);
         }

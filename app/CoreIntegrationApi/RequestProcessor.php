@@ -31,14 +31,13 @@ abstract class RequestProcessor
 
     protected function validate() 
     {
-        $metaData = $this->requestValidator->validate();
-        $this->responseBuilder->setValidationMetaData($metaData);
+        $this->validatedMetaData = $this->requestValidator->validate();
+        $this->responseBuilder->setValidationMetaData($this->validatedMetaData);
     }
 
     protected function resolve() 
     {
-        $validatedQueryData = $this->requestValidator->getValidatedQueryData();
-        $queryResult = $this->queryResolver->resolve($validatedQueryData);
+        $queryResult = $this->queryResolver->resolve($this->validatedMetaData);
         $this->responseBuilder->setResponseData($queryResult);
     }
 

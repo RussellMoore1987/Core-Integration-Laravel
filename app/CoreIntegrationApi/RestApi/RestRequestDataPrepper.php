@@ -39,17 +39,17 @@ class RestRequestDataPrepper extends RequestDataPrepper
 
     private function setPerPageParameter()
     {
-        $this->preppedData['parameters']['perPageParameter'] = $this->request->perPage ?? 30;
+        $this->preppedData['parameters']['perPage'] = $this->request->perPage ?? 30;
     }
 
     private function setOrderByParameters()
     {
-        $this->preppedData['parameters']['orderByParameters'] = $this->request->orderBy ?? [];
+        $this->preppedData['parameters']['orderBy'] = $this->request->orderBy ?? [];
     }
 
     private function setSelectParameters()
     {
-        $this->preppedData['parameters']['selectParameters'] = $this->request->columns ?? [];
+        $this->preppedData['parameters']['select'] = $this->request->columns ?? $this->request->select ?? [];
     }
 
     private function setOtherParameters()

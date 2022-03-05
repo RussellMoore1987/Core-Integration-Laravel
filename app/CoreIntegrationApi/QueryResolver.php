@@ -22,5 +22,5 @@ abstract class QueryResolver
         $this->queryDeleter = $queryDeleter;
     }
 
-    abstract public function resolve($validatedQueryData);
+    abstract public function resolve($validatedMetaData);
 }

@@ -11,6 +11,7 @@ use App\CoreIntegrationApi\ContextApi\ContextQueryResolver;
 use App\CoreIntegrationApi\CIL\CILQueryAssembler;
 use App\CoreIntegrationApi\CIL\CILQueryDeleter;
 use App\CoreIntegrationApi\CIL\CILQueryPersister;
+use App\CoreIntegrationApi\DataTypeDeterminerFactory;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use Illuminate\Http\Request;
@@ -39,6 +40,7 @@ class ContextRequestProcessorProvider extends ServiceProvider
         $this->app->bind(ContextRequestValidator::class, function ($app) {
             return new ContextRequestValidator(
                 $app->make(ContextRequestDataPrepper::class),
+                $app->make(DataTypeDeterminerFactory::class),
                 $app->make(ParameterValidatorFactory::class),
                 $app->make(ValidatorDataCollector::class),
             );
