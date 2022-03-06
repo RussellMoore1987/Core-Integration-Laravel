@@ -3,10 +3,10 @@
 namespace Tests\Unit\ClauseBuilder;
 
 use App\CoreIntegrationApi\CIL\ClauseBuilder\StringWhereClauseBuilder;
+use App\CoreIntegrationApi\CIL\ClauseBuilder\JsonWhereClauseBuilder;
 use App\CoreIntegrationApi\CIL\ClauseBuilder\DateWhereClauseBuilder;
 use App\CoreIntegrationApi\CIL\ClauseBuilder\IntWhereClauseBuilder;
 use App\CoreIntegrationApi\CIL\ClauseBuilder\FloatWhereClauseBuilder;
-use App\CoreIntegrationApi\CIL\ClauseBuilder\IdClauseBuilder;
 use App\CoreIntegrationApi\CIL\ClauseBuilder\OrderByClauseBuilder;
 use App\CoreIntegrationApi\CIL\ClauseBuilder\SelectClauseBuilder;
 use App\CoreIntegrationApi\CIL\ClauseBuilder\IncludesClauseBuilder;
@@ -102,6 +102,13 @@ class ClauseBuilderFactoryTest extends TestCase
             'float' => ['Float'],
             'double' => ['double'],
         ];
+    }
+
+    public function test_creation_of_json_clause_builder_class()
+    {
+        $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('json');
+
+        $this->assertInstanceOf(JsonWhereClauseBuilder::class, $clauseBuilder);
     }
 
     public function test_creation_of_order_by_clause_builder_class()

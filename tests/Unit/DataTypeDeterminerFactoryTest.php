@@ -94,31 +94,38 @@ class DataTypeDeterminerFactoryTest extends TestCase
         ];
     }
 
+    public function test_for_data_type_of_json()
+    {
+        $dataType = $this->dataTypeDeterminerFactory->getFactoryItem('json');
+
+        $this->assertEquals('json', $dataType);
+    }
+
     public function test_for_data_type_of_order_by()
     {
-        $commonDataType = $this->dataTypeDeterminerFactory->getFactoryItem('orderBy');
+        $dataType = $this->dataTypeDeterminerFactory->getFactoryItem('orderBy');
 
-        $this->assertEquals('orderby', $commonDataType);
+        $this->assertEquals('orderby', $dataType);
     }
 
     public function test_for_data_type_of_select()
     {
-        $commonDataType = $this->dataTypeDeterminerFactory->getFactoryItem('select');
+        $dataType = $this->dataTypeDeterminerFactory->getFactoryItem('select');
 
-        $this->assertEquals('select', $commonDataType);
+        $this->assertEquals('select', $dataType);
     }
 
     public function test_for_data_type_of_includes()
     {
-        $commonDataType = $this->dataTypeDeterminerFactory->getFactoryItem('includes');
+        $dataType = $this->dataTypeDeterminerFactory->getFactoryItem('includes');
 
-        $this->assertEquals('includes', $commonDataType);
+        $this->assertEquals('includes', $dataType);
     }
 
     public function test_for_data_type_of_method_calls()
     {
-        $commonDataType = $this->dataTypeDeterminerFactory->getFactoryItem('methodCalls');
+        $dataType = $this->dataTypeDeterminerFactory->getFactoryItem('methodCalls');
 
-        $this->assertEquals('methodcalls', $commonDataType);
+        $this->assertEquals('methodcalls', $dataType);
     }
 }

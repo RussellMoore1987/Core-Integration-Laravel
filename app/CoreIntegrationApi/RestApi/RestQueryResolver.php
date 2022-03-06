@@ -15,8 +15,6 @@ class RestQueryResolver extends QueryResolver
     {
         $this->validatedMetaData = $validatedMetaData;
         
-        dd($this->queryResult, $this->validatedMetaData);
-        
         if (!$this->validatedMetaData['endpointData']['endpointError']) {
             $this->checkEndpointColumnData();
             $this->checkIndex();
@@ -25,8 +23,6 @@ class RestQueryResolver extends QueryResolver
             $this->checkPersistRequest();
             $this->checkDeleteRequest();
         }
-
-        dd($this->queryResult, $this->validatedMetaData);
 
         return $this->queryResult;
     }
@@ -82,4 +78,4 @@ class RestQueryResolver extends QueryResolver
 }
 
 // TODO: make it so you can send in snake_case or camelCase as a parameter
-// TODO: make constant casing on out put
+// TODO: make constant casing on api output snake_case or camelCase

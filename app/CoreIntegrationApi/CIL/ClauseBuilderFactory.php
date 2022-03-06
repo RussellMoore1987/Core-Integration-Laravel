@@ -11,6 +11,7 @@ class ClauseBuilderFactory extends CILDataTypeDeterminerFactory
     {
         $this->factoryReturnArray = [
             'string' => 'App\CoreIntegrationApi\CIL\ClauseBuilder\StringWhereClauseBuilder',
+            'json' => 'App\CoreIntegrationApi\CIL\ClauseBuilder\JsonWhereClauseBuilder',
             'date' => 'App\CoreIntegrationApi\CIL\ClauseBuilder\DateWhereClauseBuilder',
             'int' => 'App\CoreIntegrationApi\CIL\ClauseBuilder\IntWhereClauseBuilder',
             'float' => 'App\CoreIntegrationApi\CIL\ClauseBuilder\FloatWhereClauseBuilder',

@@ -6,7 +6,7 @@ use App\CoreIntegrationApi\ResponseBuilder;
 
 class ContextResponseBuilder implements ResponseBuilder
     {
-        public function setValidationMetaData($metaData)
+        public function setValidatedMetaData($validatedMetaData)
         {
 
         }

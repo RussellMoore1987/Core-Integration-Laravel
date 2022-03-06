@@ -3,10 +3,10 @@
 namespace Tests\Unit\ParameterValidator;
 
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\StringParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\JsonParameterValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\DateParameterValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IntParameterValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\FloatParameterValidator;
-use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IdParameterValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\OrderByParameterValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\SelectParameterValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IncludesParameterValidator;
@@ -101,6 +101,13 @@ class ParameterValidatorFactoryTest extends TestCase
             'float' => ['Float'],
             'double' => ['double'],
         ];
+    }
+
+    public function test_creation_of_json_parameter_validator_class()
+    {
+        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem('json');
+
+        $this->assertInstanceOf(JsonParameterValidator::class, $parameterValidator);
     }
 
     public function test_creation_of_order_by_parameter_validator_class()

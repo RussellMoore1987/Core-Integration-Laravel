@@ -16,19 +16,19 @@ class CILQueryAssembler implements QueryAssembler
         $this->clauseBuilderFactory = $clauseBuilderFactory;
     }
 
-    public function query($validatedQueryData)
+    public function query($validatedMetaData)
     {
-        $this->queryBuilder = $validatedQueryData['class']::query();
+        $this->queryBuilder = $validatedMetaData['endpointData']['class']::query();
 
-        foreach ($validatedQueryData['queryArguments'] as $data) {
+        foreach ($validatedMetaData['queryArguments'] as $data) {
             $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem($data['dataType']);
             $this->queryBuilder = $clauseBuilder->build($this->queryBuilder, $data);
         }
 
-        if (isset($validatedQueryData['acceptedParameters']['perPage'])) {
-            $this->perPageParameter = $validatedQueryData['acceptedParameters']['perPage'];
+        if (isset($validatedMetaData['acceptedParameters']['per_page'])) {
+            $this->perPageParameter = $validatedMetaData['acceptedParameters']['per_page'];
         }
-        
+
         return $this->queryBuilder->paginate($this->perPageParameter);
     }
 }

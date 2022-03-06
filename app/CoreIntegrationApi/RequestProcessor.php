@@ -32,7 +32,7 @@ abstract class RequestProcessor
     protected function validate() 
     {
         $this->validatedMetaData = $this->requestValidator->validate();
-        $this->responseBuilder->setValidationMetaData($this->validatedMetaData);
+        $this->responseBuilder->setValidatedMetaData($this->validatedMetaData);
     }
 
     protected function resolve() 

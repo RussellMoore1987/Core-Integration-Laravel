@@ -11,6 +11,7 @@ class ParameterValidatorFactory extends CILDataTypeDeterminerFactory
     {
         $this->factoryReturnArray = [
             'string' => 'App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\StringParameterValidator',
+            'json' => 'App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\JsonParameterValidator',
             'date' => 'App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\DateParameterValidator',
             'int' => 'App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IntParameterValidator',
             'float' => 'App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\FloatParameterValidator',

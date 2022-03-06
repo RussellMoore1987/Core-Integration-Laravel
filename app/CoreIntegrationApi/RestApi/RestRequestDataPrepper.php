@@ -9,12 +9,7 @@ class RestRequestDataPrepper extends RequestDataPrepper
     public function prepRequestData()
     {
         $this->setEndpointDetails();
-        $this->setMethodCalls();
-        $this->setIncludes();
-        $this->setPerPageParameter();
-        $this->setOrderByParameters();
-        $this->setSelectParameters();
-        $this->setOtherParameters();
+        $this->setParameters();
 
         return $this->preppedData;
     }
@@ -27,35 +22,8 @@ class RestRequestDataPrepper extends RequestDataPrepper
         $this->preppedData['endpointId'] = $this->request->id ?? $this->request->endpointId ?? '';
     }
 
-    private function setMethodCalls()
+    private function setParameters()
     {
-        $this->preppedData['parameters']['methodCalls'] = $this->request->methodCalls ?? [];
-    }
-
-    private function setIncludes()
-    {
-        $this->preppedData['parameters']['includes'] = $this->request->includes ?? [];
-    }
-
-    private function setPerPageParameter()
-    {
-        $this->preppedData['parameters']['perPage'] = $this->request->perPage ?? 30;
-    }
-
-    private function setOrderByParameters()
-    {
-        $this->preppedData['parameters']['orderBy'] = $this->request->orderBy ?? [];
-    }
-
-    private function setSelectParameters()
-    {
-        $this->preppedData['parameters']['select'] = $this->request->columns ?? $this->request->select ?? [];
-    }
-
-    private function setOtherParameters()
-    {
-
-        $otherParameters = $this->request->except(['id', 'perPage', 'page', 'orderBy', 'columns', 'methodCalls','includes']);
-        $this->preppedData['parameters']['otherParameters'] = $otherParameters ?? [];
+        $this->preppedData['parameters'] = $this->request->except(['id']);
     }
 }

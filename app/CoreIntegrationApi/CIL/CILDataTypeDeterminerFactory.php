@@ -9,6 +9,7 @@ abstract class CILDataTypeDeterminerFactory
     protected $dataType;
     protected $factoryReturnArray = [
         'string' => 'string',
+        'json' => 'json',
         'date' => 'date',
         'int' => 'int',
         'float' => 'float',
@@ -25,6 +26,7 @@ abstract class CILDataTypeDeterminerFactory
         $this->factoryItem = null;
 
         $this->checkForString();
+        $this->checkForJson();
         $this->checkForDate();
         $this->checkForInt();
         $this->checkForFloat();
@@ -51,6 +53,13 @@ abstract class CILDataTypeDeterminerFactory
             )
         ) {
             $this->factoryItem = $this->returnValue($this->factoryReturnArray['string']);
+        }
+    }
+
+    protected function checkForJson()
+    {
+        if (!$this->factoryItemTrigger && str_contains($this->dataType, 'json')) {
+            $this->factoryItem = $this->returnValue($this->factoryReturnArray['json']);
         }
     }
 

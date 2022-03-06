@@ -4,142 +4,93 @@ namespace Tests\Unit\ClauseBuilder;
 
 use App\CoreIntegrationApi\CIL\ClauseBuilder\DateWhereClauseBuilder;
 use App\Models\Project;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class DateWhereClauseBuilderTest extends TestCase
 {
-    use DatabaseTransactions;
-
-    private $project;
+    private $queryBuilder;
+    private $dateWhereClauseBuilder;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->project = Project::factory()->create([
-            'start_date' => '1976-05-20',
-        ]);
-
-        $this->projectQueryBuilderInstance = Project::query();
+        $this->queryBuilder = Project::query();
 
         $this->dateWhereClauseBuilder = new DateWhereClauseBuilder();
     }
 
-    // tests ------------------------------------------------------------
-    public function test_date_equals_clause()
+    /**
+     * @test
+     *
+     * @covers ::build
+     * @dataProvider dataSetup
+     */
+    public function test_it_builds_the_correct_query($data, $expectedClause, $expectedBindings)
     {
-        $data = [
-            'columnName' => 'start_date',
-            'comparisonOperator' => '=',
-            'date' => '1976-05-20'
-        ];
-        
-        $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
-        
-        $project = $builderInstance->first();
+        $resultQueryBuilder = $this->dateWhereClauseBuilder->build($this->queryBuilder, $data);
 
-        $this->assertEquals($this->project->id ,$project->id);
+        $this->assertStringContainsString($expectedClause, $resultQueryBuilder->toSql());
+        $this->assertEquals($expectedBindings, $resultQueryBuilder->getBindings());
     }
 
-    public function test_grater_than_clause()
+    public function dataSetup()
     {
-        $otherProject = $this->makeOtherProject();
-        
-        $data = [
-            'columnName' => 'start_date',
-            'comparisonOperator' => '>',
-            'date' => '1976-05-20'
+        return [
+            'It returns an "=" SQL string' => [
+                'data' => [
+                    'columnName' => 'start_date',
+                    'date' => '2020-03-20',
+                    'comparisonOperator' => '=',
+                ],
+                'expectedClause' => 'where date(`start_date`) = ?',
+                'expectedBindings' => ['2020-03-20'],
+            ],
+            'It returns an ">" SQL string' => [
+                'data' => [
+                    'columnName' => 'start_date',
+                    'date' => 2020-03-20,
+                    'comparisonOperator' => '>',
+                ],
+                'expectedClause' => 'where date(`start_date`) > ?',
+                'expectedBindings' => [2020-03-20],
+            ],
+            'It returns an ">=" SQL string' => [
+                'data' => [
+                    'columnName' => 'start_date',
+                    'date' => 2020-03-20,
+                    'comparisonOperator' => '>=',
+                ],
+                'expectedClause' => 'where date(`start_date`) >= ?',
+                'expectedBindings' => [2020-03-20],
+            ],
+            'It returns an "<" SQL string' => [
+                'data' => [
+                    'columnName' => 'start_date',
+                    'date' => 2020-03-20,
+                    'comparisonOperator' => '<',
+                ],
+                'expectedClause' => 'where date(`start_date`) < ?',
+                'expectedBindings' => [2020-03-20],
+            ],
+            'It returns an "<=" SQL string' => [
+                'data' => [
+                    'columnName' => 'start_date',
+                    'date' => 2020-03-20,
+                    'comparisonOperator' => '<=',
+                ],
+                'expectedClause' => 'where date(`start_date`) <= ?',
+                'expectedBindings' => [2020-03-20],
+            ],
+            'It returns an "between" SQL string' => [
+                'data' => [
+                    'columnName' => 'start_date',
+                    'date' => [2020-03-20,2020-03-21],
+                    'comparisonOperator' => 'bt',
+                ],
+                'expectedClause' => 'where `start_date` between ? and ?',
+                'expectedBindings' => [2020-03-20,2020-03-21],
+            ],
         ];
-        
-        $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
-        
-        $projects = $builderInstance->get();
-
-        $this->assertEquals(1 , $projects->count());
-        $this->assertTrue((boolean)$projects->find($otherProject->id));
-    }
-
-    public function test_grater_than_or_equal_to_clause()
-    {
-        $otherProject = $this->makeOtherProject();
-        
-        $data = [
-            'columnName' => 'start_date',
-            'comparisonOperator' => '>=',
-            'date' => '1976-05-20'
-        ];
-        
-        $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
-        
-        $projects = $builderInstance->get();
-
-        $this->assertGreaterThan(1, $projects->count());
-        $this->assertTrue((boolean)$projects->find($otherProject->id));
-        $this->assertTrue((boolean)$projects->find($this->project->id));
-    }
-
-    public function test_less_than_clause()
-    {
-        $data = [
-            'columnName' => 'start_date',
-            'comparisonOperator' => '<',
-            'date' => '1989-05-20'
-        ];
-        
-        $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
-        
-        $projects = $builderInstance->get();
-
-        $this->assertEquals(1 , $projects->count());
-        $this->assertTrue((boolean)$projects->find($this->project->id));
-    }
-
-    public function test_less_than_or_equal_to_clause()
-    {
-        $otherProject = $this->makeOtherProject();
-        
-        $data = [
-            'columnName' => 'start_date',
-            'comparisonOperator' => '<=',
-            'date' => '1989-05-20'
-        ];
-        
-        $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
-        
-        $projects = $builderInstance->get();
-
-        $this->assertGreaterThan(1, $projects->count());
-        $this->assertTrue((boolean)$projects->find($otherProject->id));
-        $this->assertTrue((boolean)$projects->find($this->project->id));
-    }
-
-    public function test_between_clause()
-    {
-        $otherProject = $this->makeOtherProject();
-        
-        $data = [
-            'columnName' => 'start_date',
-            'comparisonOperator' => 'bt',
-            'date' => ['1976-05-20','1989-05-20']
-        ];
-        
-        $builderInstance = $this->dateWhereClauseBuilder->build($this->projectQueryBuilderInstance, $data);
-        
-        $projects = $builderInstance->get();
-
-        $this->assertGreaterThan(1, $projects->count());
-        $this->assertTrue((boolean)$projects->find($otherProject->id));
-        $this->assertTrue((boolean)$projects->find($this->project->id));
-    }
-
-    // helper functions -------------------------------------------------
-    private function makeOtherProject()
-    {
-        return Project::factory()->create([
-            'start_date' => '1989-05-20',
-        ]);
     }
 }
-
-// TODO: update this similar to IntWhereClauseBuilderTest.php

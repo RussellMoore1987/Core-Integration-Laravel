@@ -18,10 +18,10 @@ abstract class RequestValidator
     private $class;
     private $endpoint;
     private $endpointId;
-    private $endpointError;
+    private $endpointError = false;
     private $request;
     private $parameters;
-    private $defaultAcceptableParameters = ['per_page', 'perpage', 'page', 'column_data', 'columndata'];
+    private $defaultAcceptableParameters = ['per_page', 'perpage', 'page', 'column_data', 'columndata', 'formdata', 'form_data'];
     private $getMethodParameterValidatorDefaults = [
         'column' => 'select', 
         'select' => 'select', 
@@ -87,29 +87,29 @@ abstract class RequestValidator
         $this->checkForIdParameterIfThereSetItAppropriately();
         $this->validatorDataCollector->setAcceptedParameter([
             "endpoint" => [
-                'messsage' => "\"$this->endpoint\" is a valid endpoint for this API. You can also review available endpoints at " . $this->getIndexUrl(), 
-                'error' => false
+                'messsage' => "\"$this->endpoint\" is a valid endpoint for this API. You can also review available endpoints at " . $this->getIndexUrl()
             ]
         ]);
     }
 
     protected function checkForIdParameterIfThereSetItAppropriately()
     {
+        $endpointData = [
+            'endpoint' => $this->endpoint, 
+            'endpointId' => $this->endpointId,  
+            'endpointError' => $this->endpointError, 
+            'class' => $this->class, 
+            'indexUrl' => $this->getIndexUrl(),
+            'url' => $this->request->url(),
+            'httpMethod' => $this->request->getMethod(),
+        ];
         if ($this->endpointId) {
             $class = new $this->class();
             $primaryKeyName = $class->getKeyName() ? $class->getKeyName() : 'id';
-            $this->parameters['otherParameters'][$primaryKeyName] = $this->endpointId;
+            $this->parameters[$primaryKeyName] = $this->endpointId;
+            $endpointData['endpointIdConvertedTo'] = [$primaryKeyName => $this->endpointId];
         }
-        $this->validatorDataCollector->setEndpointData(
-            [
-                'endpoint' => $this->endpoint, 
-                'endpointId' => $this->endpointId, 
-                'endpointIdConvertedTo' => [$primaryKeyName => $this->endpointId], 
-                'indexUrl' => $this->getIndexUrl(),
-                'url' => $this->request->url(),
-                'httpMethod' => $this->request->getMethod(),
-            ]
-        );
+        $this->validatorDataCollector->setEndpointData($endpointData);
     }
 
     protected function getIndexUrl()
@@ -122,8 +122,7 @@ abstract class RequestValidator
         $this->endpointError = true;
         $this->validatorDataCollector->setRejectedParameter([
             'endpoint' => [
-                'messsage' => "\"$this->endpoint\" is not a valid endpoint for this API. Pleaase review available endpoints at " . $this->getIndexUrl(), 
-                'error' => true
+                'messsage' => "\"$this->endpoint\" is not a valid endpoint for this API. Pleaase review available endpoints at " . $this->getIndexUrl()
             ]
         ]);
         if ($this->endpointId) {
@@ -137,7 +136,9 @@ abstract class RequestValidator
         $this->validatorDataCollector->setEndpointData(
             [
                 'endpoint' => $this->endpoint, 
-                'endpointId' => $this->endpointId, 
+                'endpointId' => $this->endpointId,
+                'endpointError' => $this->endpointError, 
+                'class' => null, 
                 'indexUrl' => $this->getIndexUrl(),
                 'url' => $this->request->url(),
                 'HTTP method' => $this->request->getMethod(),
@@ -187,7 +188,7 @@ abstract class RequestValidator
     // TODO: get validation but what about the others put patch post
     protected function validateParameters()
     {
-        foreach ($this->parameters['otherParameters'] as $key => $value) {
+        foreach ($this->parameters as $key => $value) {
             $key = strtolower($key);
             $data = [$key => $value];
             if (array_key_exists($key, $this->acceptableParameters)) {
