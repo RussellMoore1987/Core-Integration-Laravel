@@ -23,5 +23,7 @@ class RestResponseBuilder implements ResponseBuilder
     {
         // ! working here **************************************************************************8
         dd($this->queryResult, $this->validatedMetaData, 'got here!!!');
+        // return response()->json($this->queryResult, 200);
+        // return $this->queryResult;
     }
 }
