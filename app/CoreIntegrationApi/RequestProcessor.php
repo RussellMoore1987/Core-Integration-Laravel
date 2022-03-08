@@ -22,7 +22,7 @@ abstract class RequestProcessor
     /**
      * @return The return string is a JSON string
      */
-    public function process() : string
+    public function process()
     {
         $this->validate();
         $this->resolve();

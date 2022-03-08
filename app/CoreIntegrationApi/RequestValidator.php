@@ -141,7 +141,7 @@ abstract class RequestValidator
                 'class' => null, 
                 'indexUrl' => $this->getIndexUrl(),
                 'url' => $this->request->url(),
-                'HTTP method' => $this->request->getMethod(),
+                'httpMethod' => $this->request->getMethod(),
             ]
         );
     }
