@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Project;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-
+use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class FullRestApiTest extends TestCase
@@ -22,55 +22,63 @@ class FullRestApiTest extends TestCase
 
     public function test_that_I_get_back_what_I_would_exsect_from_this_endpoint()
     {
-        // dd($this->projects->pluck('id')->toArray());
         $projectIds = implode(',',$this->projects->pluck('id')->toArray());
-        // dd($projectIds);
-        $response = $this->get("/api/v1/projects/$projectIds?per_page=2&page=2");
+        $response = $this->get("/api/v1/projects/$projectIds?per_page=1&page=2");
 
         $response->assertStatus(200);
         $response->assertJsonCount(17);
-        $response->assertJsonPath('endpointData.endpoint', 'projects');
-        $response_array = json_decode($response->content(), true);
 
-        $this->assertArrayHasKey('current_page', $response_array);
-        $this->assertArrayHasKey('data', $response_array);
-        $this->assertArrayHasKey('first_page_url', $response_array);
-        $this->assertArrayHasKey('from', $response_array);
-        $this->assertArrayHasKey('last_page', $response_array);
-        $this->assertArrayHasKey('last_page_url', $response_array);
-        $this->assertArrayHasKey('links', $response_array);
-        $this->assertArrayHasKey('next_page_url', $response_array);
-        $this->assertArrayHasKey('path', $response_array);
-        $this->assertArrayHasKey('per_page', $response_array);
-        $this->assertArrayHasKey('prev_page_url', $response_array);
-        $this->assertArrayHasKey('to', $response_array);
-        $this->assertArrayHasKey('total', $response_array);
-        $this->assertArrayHasKey('availableEndpointParameters', $response_array);
-            $this->assertArrayHasKey('parameters', $response_array['availableEndpointParameters']);
-                $parameters = $response_array['availableEndpointParameters']['parameters'];
-                $this->assertEquals('int', $parameters['id']);
-                $this->assertEquals('string', $parameters['title']);
-                $this->assertEquals('date', $parameters['start_date']);
-                $this->assertEquals('json', $parameters['content']);
-            $this->assertArrayHasKey('info', $response_array['availableEndpointParameters']);
-        $this->assertArrayHasKey('rejectedParameters', $response_array);
-        $this->assertArrayHasKey('acceptedParameters', $response_array);
-        $this->assertArrayHasKey('endpointData', $response_array);
-        $response->assertJson([
-            'availableEndpointParameters' => [],
-            'rejectedParameters' => [],
-            'acceptedParameters' => [],
-            'endpointData' => [],
-        ]);
-        // ! working here ************************************************************************
-            $response->assertJsonPath('endpointData.endpoint', 'projects');
-            $response->assertJsonPath('endpointData.endpointId', $projectIds);
-            $response->assertJsonPath('endpointData.endpointError', false);
-            $response->assertJsonPath('endpointData.indexUrl', 'http://localhost:8000/api/v1/');
-            $response->assertJsonPath('endpointData.url', 'http://localhost:8000/api/v1/projects/' . $projectIds);
-            $response->assertJsonPath('endpointData.httpMethod', 'GET');
-            $response->assertJsonPath('endpointData.endpointIdConvertedTo', ['id' => $projectIds]);
-        $this->assertTrue($response_array['per_page'] === 2);
+        // test that we have main paths
+        $response->assertJson(fn (AssertableJson $json) =>
+            $json->hasAll(
+                'current_page',
+                'data',
+                'first_page_url',
+                'from',
+                'last_page',
+                'last_page_url',
+                'links',
+                'next_page_url',
+                'path',
+                'per_page',
+                'prev_page_url',
+                'to',
+                'total',
+                'availableEndpointParameters',
+                'availableEndpointParameters.parameters',
+                'availableEndpointParameters.info',
+                'rejectedParameters',
+                'acceptedParameters',
+                'endpointData'
+            )->has('endpointData', fn ($json) =>
+                $json->missing('class')->etc()
+            )
+        );
+
+        // test that parameters are set right
+        $parameters = 'availableEndpointParameters.parameters.';
+        $response->assertJsonPath($parameters . 'id', 'int');
+        $response->assertJsonPath($parameters . 'title', 'string');
+        $response->assertJsonPath($parameters . 'start_date', 'date');
+        $response->assertJsonPath($parameters . 'content', 'json');
+        // ! start here *******************************************
+        // TODO: add float and others if there are any
+        
+        // test that endpoint data is correct
+        $response->assertJsonPath('endpointData.endpoint', 'projects');
+        $response->assertJsonPath('endpointData.endpointId', $projectIds);
+        $response->assertJsonPath('endpointData.endpointError', false);
+        $response->assertJsonPath('endpointData.indexUrl', 'http://localhost:8000/api/v1/');
+        $response->assertJsonPath('endpointData.url', 'http://localhost:8000/api/v1/projects/' . $projectIds);
+        $response->assertJsonPath('endpointData.httpMethod', 'GET');
+        $response->assertJsonPath('endpointData.endpointIdConvertedTo', ['id' => $projectIds]);
+
+        // test page and per_page work
+        $response->assertJsonPath('per_page', 1);
+        $response->assertJsonPath('current_page', 2);
+
+        // data count we expect back
+        $response_array = json_decode($response->content(), true);
         $this->assertTrue(count($response_array['data']) <= 4);
     }
 
