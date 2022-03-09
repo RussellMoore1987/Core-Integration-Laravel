@@ -19,7 +19,7 @@ class RestRequestDataPrepper extends RequestDataPrepper
         $this->preppedData['endpoint'] = $this->request->endpoint ?? 'index';
         
 
-        $this->preppedData['endpointId'] = $this->request->id ?? $this->request->endpointId ?? '';
+        $this->preppedData['endpointId'] = $this->request->endpointId ?? $this->request->id ?? '';
     }
 
     private function setParameters()
