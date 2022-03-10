@@ -23,7 +23,7 @@ abstract class RequestValidator
     private $parameters;
     private $defaultAcceptableParameters = ['per_page', 'perpage', 'page', 'column_data', 'columndata', 'formdata', 'form_data'];
     private $getMethodParameterValidatorDefaults = [
-        'column' => 'select', 
+        'columns' => 'select', 
         'select' => 'select', 
         'orderby' => 'orderby', 
         'order_by' => 'orderby', 

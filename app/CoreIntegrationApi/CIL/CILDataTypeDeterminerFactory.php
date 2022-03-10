@@ -101,10 +101,10 @@ abstract class CILDataTypeDeterminerFactory
         if (
             !$this->factoryItemTrigger && 
             (
-                $this->dataType == 'decimal' ||
-                $this->dataType == 'numeric' ||
-                $this->dataType == 'float' ||
-                $this->dataType == 'double'
+                $this->dataType == 'decimal' || str_contains($this->dataType, 'decimal') ||
+                $this->dataType == 'numeric' || str_contains($this->dataType, 'numeric') ||
+                $this->dataType == 'float' || str_contains($this->dataType, 'float') ||
+                $this->dataType == 'double' || str_contains($this->dataType, 'double')
             )
         ) {
             $this->factoryItem = $this->returnValue($this->factoryReturnArray['float']);

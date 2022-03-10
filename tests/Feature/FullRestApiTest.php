@@ -20,7 +20,7 @@ class FullRestApiTest extends TestCase
         $this->makeProjects();
     }
 
-    public function test_that_I_get_back_what_I_would_exsect_from_this_endpoint()
+    public function test_that_I_get_back_what_I_would_exsect_from_this_endpoint_testing_json_structure()
     {
         $projectIds = implode(',',$this->projects->pluck('id')->toArray());
         $response = $this->get("/api/v1/projects/$projectIds?per_page=1&page=2");
@@ -61,8 +61,7 @@ class FullRestApiTest extends TestCase
         $response->assertJsonPath($parameters . 'title', 'string');
         $response->assertJsonPath($parameters . 'start_date', 'date');
         $response->assertJsonPath($parameters . 'content', 'json');
-        // ! start here *******************************************
-        // TODO: add float and others if there are any
+        $response->assertJsonPath($parameters . 'budget', 'float');
         
         // test that endpoint data is correct
         $response->assertJsonPath('endpointData.endpoint', 'projects');
@@ -80,6 +79,88 @@ class FullRestApiTest extends TestCase
         // data count we expect back
         $response_array = json_decode($response->content(), true);
         $this->assertTrue(count($response_array['data']) <= 4);
+    }
+
+    public function test_return_of_one_record()
+    {
+        $projectId = $this->projects[0]->id;
+        $response = $this->get("/api/v1/projects/$projectId");
+
+        $response->assertStatus(200);
+
+        $response->assertJson(fn (AssertableJson $json) =>
+            $json->missing(
+                'current_page',
+                'data',
+                'first_page_url',
+                'from',
+                'last_page',
+                'last_page_url',
+                'links',
+                'next_page_url',
+                'path',
+                'per_page',
+                'prev_page_url',
+                'to',
+                'total',
+                'availableEndpointParameters',
+                'availableEndpointParameters.parameters',
+                'availableEndpointParameters.info',
+                'rejectedParameters',
+                'acceptedParameters',
+                'endpointData'
+            )->etc()
+        );
+    }
+
+    public function test_return_404_response()
+    {
+        $response = $this->get('/api/v1/projects/9999999999');
+
+        $response->assertStatus(404);
+        $response->assertJsonPath('message', 'The record with the id of 9999999999 at the "projects" endpoint was not found');
+    }
+
+    public function test_return_of_empty_data_set()
+    {
+        $response = $this->get('/api/v1/projects/?start_date=1000-02-01');
+
+        $response->assertStatus(200);
+        $response_array = json_decode($response->content(), true);
+        $this->assertTrue(count($response_array['data']) == 0);
+    }
+
+    public function test_return_of_column_data()
+    {
+        $response = $this->get('/api/v1/projects/?columnData=yes');
+
+        $response->assertStatus(200);
+        $response->assertJson(fn (AssertableJson $json) =>
+            $json->has('availableEndpointParameters', fn ($json) =>
+                $json->hasAll(
+                    'id',
+                    'title',
+                    'roles',
+                    'client',
+                    'description',
+                    'content',
+                    'video_link',
+                    'code_link',
+                    'demo_link',
+                    'start_date',
+                    'end_date',
+                    'is_published',
+                    'created_at',
+                    'updated_at',
+                    'budget'
+                )->etc()
+            )->has('info', fn ($json) =>
+            $json->hasAll(
+                'message',
+                'index_url'
+            )
+        )
+        );
     }
 
     protected function makeProjects()
@@ -129,27 +210,28 @@ class FullRestApiTest extends TestCase
     }
 
     // Test
-    // request with data I would expect 
-    // request with one record 
-    // 404 
-    // empty data set 
-    // ids - the many ways
     // GET with out authentication 
     // GET with authentication 
     // PUT, POST, PAtCH with authentication 
     // PUT, POST, PAtCH with out authentication, must fail 
-    // All data types tested, and all there veronese
-        // string
-        // date
-        // int
-        // float
-        // json
-    // All extra parameters
-        // method call
-        // includes
-        // page
-        // perPage
+    // PUT, POST, PAtCH response
+    // PUT response code
+    // POST response code
+    // PAtCH response code
+    // available includes / method calls in first test in this file
+    // separate test file
+        // ids - the many ways
+        // All data types tested, and all there veronese
+            // string
+            // date
+            // int
+            // float
+            // json
+        // All extra parameters
+            // method call
+            // includes - deep test
+            // page
+            // perPage
     // Not caring about casing, columns, parameters
-    // column data
     // form data
 }
