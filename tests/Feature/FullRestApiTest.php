@@ -20,7 +20,7 @@ class FullRestApiTest extends TestCase
         $this->makeProjects();
     }
 
-    public function test_that_I_get_back_what_I_would_exsect_from_this_endpoint_testing_json_structure()
+    public function test_that_what_I_get_back_is_what_I_would_exsect_from_this_endpoint_testing_json_structure()
     {
         $projectIds = implode(',',$this->projects->pluck('id')->toArray());
         $response = $this->get("/api/v1/projects/$projectIds?per_page=1&page=2");
