@@ -9,6 +9,10 @@ class Project extends Model
 {
     use HasFactory;
 
+    static public $availableMethods = ['pluse1_5', 'pluse1_5', 'newTitle'];
+
+    static public $availableRelationships = ['images', 'tags', 'Categories'];
+
     public function images()
     {
         return $this->belongsToMany(Image::class)->withPivot('is_featured_img', 'sort_order');
@@ -43,5 +47,20 @@ class Project extends Model
         $this->images()->updateExistingPivot($this->images, ['is_featured_img' => 0]);
 
         return true;
+    }
+
+    public function pluse1_5()
+    {
+        return 1 + 5;
+    }
+
+    public function budgetTimeTwo()
+    {
+        return $this->budget * 2;
+    }
+
+    public function newTitle()
+    {
+        return $this->title . '!!!';
     }
 }

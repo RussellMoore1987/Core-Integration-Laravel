@@ -3,7 +3,6 @@
 namespace App\CoreIntegrationApi\RestApi;
 
 use App\CoreIntegrationApi\ResponseBuilder;
-use Hamcrest\Arrays\IsArray;
 
 class RestResponseBuilder implements ResponseBuilder
 {

@@ -29,6 +29,8 @@ abstract class RequestValidator
         'order_by' => 'orderby', 
         'methodcalls' => 'methodcalls',
         'method_calls' => 'methodcalls',
+        // TODO: add to documentation relationships
+        'relationships' => 'includes',
         'includes' => 'includes',
     ];
     private $acceptableParameters = [];
@@ -146,6 +148,8 @@ abstract class RequestValidator
         );
     }
 
+    // ! start here *******************************************
+    // TODO: set avalble methed calls and includes
     protected function getAcceptableParameters()
     {
         if (!$this->endpointError) {
