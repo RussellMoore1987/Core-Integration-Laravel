@@ -148,8 +148,6 @@ abstract class RequestValidator
         );
     }
 
-    // ! start here *******************************************
-    // TODO: set avalble methed calls and includes
     protected function getAcceptableParameters()
     {
         if (!$this->endpointError) {
@@ -158,6 +156,10 @@ abstract class RequestValidator
             $columnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$classTableName}"));
             $this->setAcceptableParameters($columnData);
             $this->addApiDataTypeToAcceptableParameters();
+            // ! working here ***********************************************
+            dd($tempClass->availableMethodCalls);
+            $this->extraData['availableMethodCalls'] = $tempClass->availableMethodCalls ?? [];
+            $this->extraData['availableIncludes'] = $tempClass->availableIncludes ?? [];
         }
     }
 
@@ -187,8 +189,9 @@ abstract class RequestValidator
         foreach ($this->acceptableParameters as $key => $columnArray) {
             $this->acceptableParameters[$key]['api_data_type'] = $this->dataTypeDeterminerFactory->getFactoryItem($columnArray['type']);   
         }
+        $this->extraData['acceptableParameters'] = $this->acceptableParameters;
     }
-
+    
     // TODO: get validation but what about the others put patch post
     protected function validateParameters()
     {
@@ -275,7 +278,7 @@ abstract class RequestValidator
 
     protected function setExtraData()
     {
-        $this->validatorDataCollector->setExtraData(['acceptableParameters' => $this->acceptableParameters]);
+        $this->validatorDataCollector->setExtraData($this->extraData);
     }
 
     protected function setValidatedMetaData()

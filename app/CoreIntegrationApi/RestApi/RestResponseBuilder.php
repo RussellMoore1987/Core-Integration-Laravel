@@ -79,17 +79,26 @@ class RestResponseBuilder implements ResponseBuilder
                 'message' => 'Documentation on how to utilize parameter data types can be found in the index response, in the apiDocumentation.parameterDataTypes section.', 
                 'index_url' => $this->validatedMetaData['endpointData']['indexUrl']
             ];
+            dd($this->validatedMetaData);
+            // $this->extraData['availableMethodCalls'] = $tempClass->availableMethodCalls ?? [];
+            // $this->extraData['availableIncludes'] = $tempClass->availableIncludes ?? [];
             $paginateObj['availableEndpointParameters']['defaultParameters'] = [
                 'columns' => 'endpoint parameters',
                 'orderBy' => 'endpoint parameters',
-                'methodCalls' => 'endpoint methods',
-                'includes' => 'endpoint relationships',
+                'methodCalls' => [
+                    'value' => 'endpoint methods',
+                    'availableMethodCalls' => [],
+                ],
+                'includes' => [
+                    'value' => 'endpoint includes/relationships',
+                    'availableIncludes' => [],
+                ],
                 'page' => 'int',
                 'perPage' => 'int',
                 'columnData' => true,
                 'formData' => true,
-                'relationships' => true,
-                'methods' => true,
+                'includeData' => true,
+                'methodData' => true,
                 'info' => [
                     'message' => 'Documentation on how to utilize default parameter data types can be found in the index response, in the apiDocumentation.defaultParameterDataTypes section.', 
                     'index_url' => $this->validatedMetaData['endpointData']['indexUrl']

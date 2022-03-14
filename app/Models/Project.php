@@ -9,9 +9,9 @@ class Project extends Model
 {
     use HasFactory;
 
-    static public $availableMethods = ['pluse1_5', 'pluse1_5', 'newTitle'];
+    static public $availableMethodCalls = ['pluse1_5', 'pluse1_5', 'newTitle'];
 
-    static public $availableRelationships = ['images', 'tags', 'Categories'];
+    static public $availableIncludes = ['images', 'tags', 'Categories'];
 
     public function images()
     {
@@ -62,5 +62,10 @@ class Project extends Model
     public function newTitle()
     {
         return $this->title . '!!!';
+    }
+
+    protected function fjkdfjkfdjkdfjkfdjk()
+    {
+        # code...
     }
 }
