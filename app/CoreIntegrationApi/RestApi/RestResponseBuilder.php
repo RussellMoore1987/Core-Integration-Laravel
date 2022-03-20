@@ -22,8 +22,6 @@ class RestResponseBuilder implements ResponseBuilder
 
     public function make()
     {
-        // dd($this->queryResult, $this->validatedMetaData, 'got here!!!');
-        
         return $this->makeRequest();
     }
 
@@ -57,7 +55,6 @@ class RestResponseBuilder implements ResponseBuilder
                 if ($endpointId && !str_contains($endpointId, ',')) {
                     if (count($paginateObj['data']) == 0) {
                         $endpoint = $this->validatedMetaData['endpointData']['endpoint'];
-                        // ! start here **************************************************************
                         $this->response = response()->json(['message' => "The record with the id of $endpointId at the \"$endpoint\" endpoint was not found"], 404);
                     } else {
                         $this->response = response()->json($paginateObj['data'][0], 200);
@@ -79,26 +76,23 @@ class RestResponseBuilder implements ResponseBuilder
                 'message' => 'Documentation on how to utilize parameter data types can be found in the index response, in the apiDocumentation.parameterDataTypes section.', 
                 'index_url' => $this->validatedMetaData['endpointData']['indexUrl']
             ];
-            dd($this->validatedMetaData);
-            // $this->extraData['availableMethodCalls'] = $tempClass->availableMethodCalls ?? [];
-            // $this->extraData['availableIncludes'] = $tempClass->availableIncludes ?? [];
             $paginateObj['availableEndpointParameters']['defaultParameters'] = [
                 'columns' => 'endpoint parameters',
                 'orderBy' => 'endpoint parameters',
                 'methodCalls' => [
                     'value' => 'endpoint methods',
-                    'availableMethodCalls' => [],
+                    'availableMethodCalls' => $this->validatedMetaData['extraData']['availableMethodCalls'],
                 ],
                 'includes' => [
                     'value' => 'endpoint includes/relationships',
-                    'availableIncludes' => [],
+                    'availableIncludes' => $this->validatedMetaData['extraData']['availableIncludes'],
                 ],
                 'page' => 'int',
                 'perPage' => 'int',
                 'columnData' => true,
                 'formData' => true,
                 'includeData' => true,
-                'methodData' => true,
+                'methodCallData' => true,
                 'info' => [
                     'message' => 'Documentation on how to utilize default parameter data types can be found in the index response, in the apiDocumentation.defaultParameterDataTypes section.', 
                     'index_url' => $this->validatedMetaData['endpointData']['indexUrl']

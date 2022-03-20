@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
+// TODO: Test additional endpoint with id like post_id with id parameter
+
 class FullRestApiTest extends TestCase
 {
     use DatabaseTransactions;
@@ -60,7 +62,7 @@ class FullRestApiTest extends TestCase
                 'availableEndpointParameters.defaultParameters.columnData',
                 'availableEndpointParameters.defaultParameters.formData',
                 'availableEndpointParameters.defaultParameters.includeData',
-                'availableEndpointParameters.defaultParameters.methodData',
+                'availableEndpointParameters.defaultParameters.methodCallData',
                 'availableEndpointParameters.defaultParameters.info',
                 'rejectedParameters',
                 'acceptedParameters',

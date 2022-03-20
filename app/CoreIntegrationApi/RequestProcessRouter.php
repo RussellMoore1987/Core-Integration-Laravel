@@ -32,7 +32,7 @@ class RequestProcessRouter
 
     public function processContextRequest() 
     {
-        return ["Message" => "Got Here!!! " . request()->contextInstructions]; // TODO: needs to be removed
+        // return ["Message" => "Got Here!!! " . request()->contextInstructions]; // TODO: needs to be removed
         return $this->contextRequestProcessor->process();
     }
 }

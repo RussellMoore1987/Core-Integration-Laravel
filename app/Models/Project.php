@@ -9,9 +9,9 @@ class Project extends Model
 {
     use HasFactory;
 
-    static public $availableMethodCalls = ['pluse1_5', 'pluse1_5', 'newTitle'];
+    public $availableMethodCalls = ['pluse1_5', 'pluse1_5', 'newTitle'];
 
-    static public $availableIncludes = ['images', 'tags', 'Categories'];
+    public $availableIncludes = ['images', 'tags', 'categories'];
 
     public function images()
     {
@@ -23,7 +23,7 @@ class Project extends Model
         return $this->belongsToMany(Tag::class);
     }
 
-    public function Categories()
+    public function categories()
     {
         return $this->belongsToMany(Category::class);
     }

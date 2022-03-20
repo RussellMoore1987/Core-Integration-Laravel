@@ -11,18 +11,18 @@ use Illuminate\Support\Facades\DB;
 abstract class RequestValidator 
 {
 
-    private $requestDataPrepper;
-    private $validatorDataCollector;
-    private $acceptedClasses;
-    private $parameterValidatorFactory;
-    private $class;
-    private $endpoint;
-    private $endpointId;
-    private $endpointError = false;
-    private $request;
-    private $parameters;
-    private $defaultAcceptableParameters = ['per_page', 'perpage', 'page', 'column_data', 'columndata', 'formdata', 'form_data'];
-    private $getMethodParameterValidatorDefaults = [
+    protected $requestDataPrepper;
+    protected $validatorDataCollector;
+    protected $acceptedClasses;
+    protected $parameterValidatorFactory;
+    protected $class;
+    protected $endpoint;
+    protected $endpointId;
+    protected $endpointError = false;
+    protected $request;
+    protected $parameters;
+    protected $defaultAcceptableParameters = ['per_page', 'perpage', 'page', 'column_data', 'columndata', 'formdata', 'form_data'];
+    protected $getMethodParameterValidatorDefaults = [
         'columns' => 'select', 
         'select' => 'select', 
         'orderby' => 'orderby', 
@@ -33,8 +33,8 @@ abstract class RequestValidator
         'relationships' => 'includes',
         'includes' => 'includes',
     ];
-    private $acceptableParameters = [];
-    private $validatedMetaData;
+    protected $acceptableParameters = [];
+    protected $validatedMetaData;
     
     function __construct(RequestDataPrepper $requestDataPrepper, DataTypeDeterminerFactory $dataTypeDeterminerFactory, ParameterValidatorFactory $parameterValidatorFactory, ValidatorDataCollector $validatorDataCollector) 
     {
@@ -156,8 +156,6 @@ abstract class RequestValidator
             $columnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$classTableName}"));
             $this->setAcceptableParameters($columnData);
             $this->addApiDataTypeToAcceptableParameters();
-            // ! working here ***********************************************
-            dd($tempClass->availableMethodCalls);
             $this->extraData['availableMethodCalls'] = $tempClass->availableMethodCalls ?? [];
             $this->extraData['availableIncludes'] = $tempClass->availableIncludes ?? [];
         }
