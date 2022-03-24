@@ -399,5 +399,20 @@ class ContextRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    // no instructions
+    public function test_context_request_data_prepper_returns_expected_result_not_json_error333()
+    {
+        $this->request->request->add(['contextInstructions' => '["not_json", "red", 44, 77]']);
+        $this->contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $this->contextRequestDataPrepper->prep();
+        $preppedData = $this->contextRequestDataPrepper->getPreppedData();
+        dd($preppedData);
+
+        $expectedResponse = [
+            "contextErrorNotJson" => true,
+            "contextMainError_instructions" => false,
+            "requests" => []
+        ];
+
+        $this->assertEquals($expectedResponse,$preppedData);
+    }
 }

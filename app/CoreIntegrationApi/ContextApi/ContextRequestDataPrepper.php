@@ -23,20 +23,19 @@ class ContextRequestDataPrepper extends RequestDataPrepper
 
     protected function prepDefaultData()
     {
+        $this->preppedData['contextMainError_instructions'] = true;
+        $this->preppedData['contextErrorNotJson'] = true;
+        $this->preppedData['requests'] = [];
+        $this->requests = [];
+        
         if ($this->request->contextInstructions) {
             if ($this->isJson($this->request->contextInstructions)) {
                 $this->requests = json_decode($this->request->contextInstructions, true);
                 $this->preppedData['contextErrorNotJson'] = false;
-            } else {
-                $this->requests = [];
-                $this->preppedData['contextErrorNotJson'] = true;
             }
             $this->preppedData['contextMainError_instructions'] = false;
-        } else {
-            $this->preppedData['contextMainError_instructions'] = true;
-            $this->preppedData['contextErrorNotJson'] = true;
         }
-        $this->preppedData['requests'] = [];
+        
     }
 
     protected function isJson($string) {
@@ -81,12 +80,32 @@ class ContextRequestDataPrepper extends RequestDataPrepper
 
     protected function setParameters()
     {
-        unset(
-            $this->requestData['endpointId'], 
-            $this->requestData['endpoint_id'], 
-            $this->requestData['id'], 
-            $this->requestData['endpoint']
-        );
+        $this->unsetDefaultParameters();
         $this->preppedData['requests'][$this->requestName]['parameters'] = $this->requestData;
+    }
+
+    protected function unsetDefaultParameters()
+    {
+        
+        if ($this->checkIfWeNeedToUnset()) {
+            unset(
+                $this->requestData['endpointId'], 
+                $this->requestData['endpoint_id'], 
+                $this->requestData['id'], 
+                $this->requestData['endpoint']
+            );
+        }
+    }
+
+    protected function checkIfWeNeedToUnset()
+    {
+        $keys = array_keys($this->requestData);
+        $KeysToUnset = ['endpointId', 'endpoint_id', 'id', 'endpoint'];
+
+        foreach ($KeysToUnset as $key) {
+            if (in_array($key, $keys)) { return true; }
+        }
+        
+        return false;
     }
 }
