@@ -36,28 +36,28 @@ class ContextRequestDataPrepperTest extends TestCase
                 "name": "PHP"
             }
         }']);
-        $this->contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $this->contextRequestDataPrepper->prep();
-        $preppedData = $this->contextRequestDataPrepper->getPreppedData();
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
-            "contextErrorNotJson" => false,
-            "contextMainError_instructions" => false,
-            "requests" => [
-                "projects" =>[
-                    "endpoint" => "projects",
-                    "endpointId" => 33,
-                    "parameters" => [
-                        "start_date" => "2020-02-28",
-                        "title" => "Gogo!!!",
+            'contextErrorNotJson' => false,
+            'contextErrorInstructions' => false,
+            'requests' => [
+                'projects' =>[
+                    'endpoint' => 'projects',
+                    'endpointId' => 33,
+                    'parameters' => [
+                        'start_date' => '2020-02-28',
+                        'title' => 'Gogo!!!',
                     ]
                 ],
-                "tags" => [
-                    "endpoint" => "tags",
-                    "endpointId" => 88,
-                    "parameters" => [
-                        "not_a_parameter" => "hjkhjkhkjhkhkjhjk",
-                        "name" => "PHP",
+                'tags' => [
+                    'endpoint' => 'tags',
+                    'endpointId' => 88,
+                    'parameters' => [
+                        'not_a_parameter' => 'hjkhjkhkjhkhkjhjk',
+                        'name' => 'PHP',
                     ]
                 ]
             ]
@@ -78,28 +78,28 @@ class ContextRequestDataPrepperTest extends TestCase
                 "name": "PHP"
             }
         }']);
-        $this->contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $this->contextRequestDataPrepper->prep();
-        $preppedData = $this->contextRequestDataPrepper->getPreppedData();
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
-            "contextErrorNotJson" => false,
-            "contextMainError_instructions" => false,
-            "requests" => [
-                "projects" =>[
-                    "endpoint" => "projects",
-                    "endpointId" => '',
-                    "parameters" => [
-                        "start_date" => "2020-02-28",
-                        "title" => "Gogo!!!",
+            'contextErrorNotJson' => false,
+            'contextErrorInstructions' => false,
+            'requests' => [
+                'projects' =>[
+                    'endpoint' => 'projects',
+                    'endpointId' => '',
+                    'parameters' => [
+                        'start_date' => '2020-02-28',
+                        'title' => 'Gogo!!!',
                     ]
                 ],
-                "tags" => [
-                    "endpoint" => "tags",
-                    "endpointId" => '',
-                    "parameters" => [
-                        "not_a_parameter" => "hjkhjkhkjhkhkjhjk",
-                        "name" => "PHP",
+                'tags' => [
+                    'endpoint' => 'tags',
+                    'endpointId' => '',
+                    'parameters' => [
+                        'not_a_parameter' => 'hjkhjkhkjhkhkjhjk',
+                        'name' => 'PHP',
                     ]
                 ]
             ]
@@ -120,30 +120,43 @@ class ContextRequestDataPrepperTest extends TestCase
                 "not_a_parameter": "hjkhjkhkjhkhkjhjk",
                 "name": "PHP",
                 "endpointId": 22
+            },
+            "tags2": {
+                "not_a_parameter": "hjkhjkhkjhkhkjhjk",
+                "name": "PHP",
+                "id": 99
             }
         }']);
-        $this->contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $this->contextRequestDataPrepper->prep();
-        $preppedData = $this->contextRequestDataPrepper->getPreppedData();
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
-            "contextErrorNotJson" => false,
-            "contextMainError_instructions" => false,
-            "requests" => [
-                "projects" =>[
-                    "endpoint" => "projects",
-                    "endpointId" => 88,
-                    "parameters" => [
-                        "start_date" => "2020-02-28",
-                        "title" => "Gogo!!!",
+            'contextErrorNotJson' => false,
+            'contextErrorInstructions' => false,
+            'requests' => [
+                'projects' =>[
+                    'endpoint' => 'projects',
+                    'endpointId' => 88,
+                    'parameters' => [
+                        'start_date' => '2020-02-28',
+                        'title' => 'Gogo!!!',
                     ]
                 ],
-                "tags" => [
-                    "endpoint" => "tags",
-                    "endpointId" => 22,
-                    "parameters" => [
-                        "not_a_parameter" => "hjkhjkhkjhkhkjhjk",
-                        "name" => "PHP",
+                'tags' => [
+                    'endpoint' => 'tags',
+                    'endpointId' => 22,
+                    'parameters' => [
+                        'not_a_parameter' => 'hjkhjkhkjhkhkjhjk',
+                        'name' => 'PHP',
+                    ]
+                ],
+                'tags2' => [
+                    'endpoint' => 'tags2',
+                    'endpointId' => 99,
+                    'parameters' => [
+                        'not_a_parameter' => 'hjkhjkhkjhkhkjhjk',
+                        'name' => 'PHP',
                     ]
                 ]
             ]
@@ -167,28 +180,28 @@ class ContextRequestDataPrepperTest extends TestCase
                 "endpointId": 22
             }
         ]']);
-        $this->contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $this->contextRequestDataPrepper->prep();
-        $preppedData = $this->contextRequestDataPrepper->getPreppedData();
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
-            "contextErrorNotJson" => false,
-            "contextMainError_instructions" => false,
-            "requests" => [
-                "0" =>[
-                    "endpoint" => "projects",
-                    "endpointId" => 88,
-                    "parameters" => [
-                        "start_date" => "2020-02-28",
-                        "title" => "Gogo!!!",
+            'contextErrorNotJson' => false,
+            'contextErrorInstructions' => false,
+            'requests' => [
+                '0' => [
+                    'endpoint' => 'projects',
+                    'endpointId' => 88,
+                    'parameters' => [
+                        'start_date' => '2020-02-28',
+                        'title' => 'Gogo!!!',
                     ]
                 ],
-                "1" => [
-                    "endpoint" => "index",
-                    "endpointId" => 22,
-                    "parameters" => [
-                        "not_a_parameter" => "hjkhjkhkjhkhkjhjk",
-                        "name" => "PHP",
+                '1' => [
+                    'endpoint' => 1,
+                    'endpointId' => 22,
+                    'parameters' => [
+                        'not_a_parameter' => 'hjkhjkhkjhkhkjhjk',
+                        'name' => 'PHP',
                     ]
                 ]
             ]
@@ -212,28 +225,28 @@ class ContextRequestDataPrepperTest extends TestCase
                 "endpointId": 22
             }
         }']);
-        $this->contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $this->contextRequestDataPrepper->prep();
-        $preppedData = $this->contextRequestDataPrepper->getPreppedData();
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
-            "contextErrorNotJson" => false,
-            "contextMainError_instructions" => false,
-            "requests" => [
-                "0" =>[
-                    "endpoint" => "projects",
-                    "endpointId" => 88,
-                    "parameters" => [
-                        "start_date" => "2020-02-28",
-                        "title" => "Gogo!!!",
+            'contextErrorNotJson' => false,
+            'contextErrorInstructions' => false,
+            'requests' => [
+                '0' =>[
+                    'endpoint' => 'projects',
+                    'endpointId' => 88,
+                    'parameters' => [
+                        'start_date' => '2020-02-28',
+                        'title' => 'Gogo!!!',
                     ]
                 ],
-                "tags" => [
-                    "endpoint" => "tags",
-                    "endpointId" => 22,
-                    "parameters" => [
-                        "not_a_parameter" => "hjkhjkhkjhkhkjhjk",
-                        "name" => "PHP",
+                'tags' => [
+                    'endpoint' => 'tags',
+                    'endpointId' => 22,
+                    'parameters' => [
+                        'not_a_parameter' => 'hjkhjkhkjhkhkjhjk',
+                        'name' => 'PHP',
                     ]
                 ]
             ]
@@ -242,7 +255,7 @@ class ContextRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_result_name_different_the_endpoint()
+    public function test_context_request_data_prepper_returns_expected_result_result_name_different_then_endpoint()
     {
         $this->request->request->add(['contextInstructions' => '{
             "big_projects::projects": {
@@ -254,28 +267,101 @@ class ContextRequestDataPrepperTest extends TestCase
                 "name": "PHP"
             }
         }']);
-        $this->contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $this->contextRequestDataPrepper->prep();
-        $preppedData = $this->contextRequestDataPrepper->getPreppedData();
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
-            "contextErrorNotJson" => false,
-            "contextMainError_instructions" => false,
-            "requests" => [
-                "big_projects" =>[
-                    "endpoint" => "projects",
-                    "endpointId" => '',
-                    "parameters" => [
-                        "start_date" => "2020-02-28",
-                        "title" => "Gogo!!!",
+            'contextErrorNotJson' => false,
+            'contextErrorInstructions' => false,
+            'requests' => [
+                'big_projects' =>[
+                    'endpoint' => 'projects',
+                    'endpointId' => '',
+                    'parameters' => [
+                        'start_date' => '2020-02-28',
+                        'title' => 'Gogo!!!',
                     ]
                 ],
-                "phpTags" => [
-                    "endpoint" => "tags",
-                    "endpointId" => '',
-                    "parameters" => [
-                        "not_a_parameter" => "hjkhjkhkjhkhkjhjk",
-                        "name" => "PHP",
+                'phpTags' => [
+                    'endpoint' => 'tags',
+                    'endpointId' => '',
+                    'parameters' => [
+                        'not_a_parameter' => 'hjkhjkhkjhkhkjhjk',
+                        'name' => 'PHP',
+                    ]
+                ]
+            ]
+        ];
+
+        $this->assertEquals($expectedResponse,$preppedData);
+    }
+
+    public function test_context_request_data_prepper_returns_expected_result_endpoint_name_order_is_correct()
+    {
+        // first two arrays will be combined 
+        $this->request->request->add(['contextInstructions' => '{
+            "big_projects::projects": {
+                "start_date": "2020-02-28",
+                "title": "Gogo!!!"
+            },
+            "big_projects": {
+                "endpoint": "projects",
+                "start_date": "2020-02-29",
+                "title": "Gogo!!!"
+            },
+            "big_projects2::projects": {
+                "start_date": "2020-02-28",
+                "title": "Gogo!!!"
+            },
+            "big_projects3": {
+                "start_date": "2020-02-28",
+                "title": "Gogo!!!"
+            },
+            "phpTags::tags": {
+                "endpoint": "pop",
+                "not_a_parameter": "hjkhjkhkjhkhkjhjk",
+                "name": "PHP"
+            }
+        }']);
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
+
+        $expectedResponse = [
+            'contextErrorNotJson' => false,
+            'contextErrorInstructions' => false,
+            'requests' => [
+                'big_projects' =>[
+                    'endpoint' => 'projects',
+                    'endpointId' => '',
+                    'parameters' => [
+                        'start_date' => '2020-02-29',
+                        'title' => 'Gogo!!!',
+                    ]
+                ],
+                'big_projects2' =>[
+                    'endpoint' => 'projects',
+                    'endpointId' => '',
+                    'parameters' => [
+                        'start_date' => '2020-02-28',
+                        'title' => 'Gogo!!!',
+                    ]
+                ],
+                'big_projects3' =>[
+                    'endpoint' => 'big_projects3',
+                    'endpointId' => '',
+                    'parameters' => [
+                        'start_date' => '2020-02-28',
+                        'title' => 'Gogo!!!',
+                    ]
+                ],
+                'phpTags' => [
+                    'endpoint' => 'pop',
+                    'endpointId' => '',
+                    'parameters' => [
+                        'not_a_parameter' => 'hjkhjkhkjhkhkjhjk',
+                        'name' => 'PHP',
                     ]
                 ]
             ]
@@ -296,28 +382,28 @@ class ContextRequestDataPrepperTest extends TestCase
                 "name": "PHP"
             }
         }']);
-        $this->contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $this->contextRequestDataPrepper->prep();
-        $preppedData = $this->contextRequestDataPrepper->getPreppedData();
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
-            "contextErrorNotJson" => false,
-            "contextMainError_instructions" => false,
-            "requests" => [
-                "big_projects" =>[
-                    "endpoint" => "projects",
-                    "endpointId" => '',
-                    "parameters" => [
-                        "start_date" => "2020-02-28",
-                        "title" => "Gogo!!!",
+            'contextErrorNotJson' => false,
+            'contextErrorInstructions' => false,
+            'requests' => [
+                'big_projects' =>[
+                    'endpoint' => 'projects',
+                    'endpointId' => '',
+                    'parameters' => [
+                        'start_date' => '2020-02-28',
+                        'title' => 'Gogo!!!',
                     ]
                 ],
-                "phpTags" => [
-                    "endpoint" => "tags",
-                    "endpointId" => '',
-                    "parameters" => [
-                        "not_a_parameter" => "hjkhjkhkjhkhkjhjk",
-                        "name" => "PHP",
+                'phpTags' => [
+                    'endpoint' => 'tags',
+                    'endpointId' => '',
+                    'parameters' => [
+                        'not_a_parameter' => 'hjkhjkhkjhkhkjhjk',
+                        'name' => 'PHP',
                     ]
                 ]
             ]
@@ -326,7 +412,73 @@ class ContextRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_unable_to_set_numeric_endpoint()
+    public function test_context_request_data_prepper_returns_expected_result_result_name_without_options()
+    {
+        $this->request->request->add(['contextInstructions' => '{
+            "big_projects::": {
+                "start_date": "2020-02-28",
+                "title": "Gogo!!!"
+            },
+            "::": {
+                "not_a_parameter": "hjkhjkhkjhkhkjhjk",
+                "name": "PHP"
+            },
+            ":": {
+                "not_a_parameter": "hjkhjkhkjhkhkjhjk",
+                "name": "PHP"
+            },
+            "big_projects:projects": {
+                "not_a_parameter": "hjkhjkhkjhkhkjhjk",
+                "name": "PHP"
+            }
+        }']);
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
+
+        $expectedResponse = [
+            'contextErrorNotJson' => false,
+            'contextErrorInstructions' => false,
+            'requests' => [
+                'big_projects' =>[
+                    'endpoint' => '',
+                    'endpointId' => '',
+                    'parameters' => [
+                        'start_date' => '2020-02-28',
+                        'title' => 'Gogo!!!',
+                    ]
+                ],
+                '' => [
+                    'endpoint' => '',
+                    'endpointId' => '',
+                    'parameters' => [
+                        'not_a_parameter' => 'hjkhjkhkjhkhkjhjk',
+                        'name' => 'PHP',
+                    ]
+                ],
+                ':' => [
+                    'endpoint' => ':',
+                    'endpointId' => '',
+                    'parameters' => [
+                        'not_a_parameter' => 'hjkhjkhkjhkhkjhjk',
+                        'name' => 'PHP',
+                    ]
+                ],
+                'big_projects:projects' => [
+                    'endpoint' => 'big_projects:projects',
+                    'endpointId' => '',
+                    'parameters' => [
+                        'not_a_parameter' => 'hjkhjkhkjhkhkjhjk',
+                        'name' => 'PHP',
+                    ]
+                ]
+            ]
+        ];
+
+        $this->assertEquals($expectedResponse,$preppedData);
+    }
+
+    public function test_context_request_data_prepper_returns_expected_result_set_numeric_endpoint()
     {
         $this->request->request->add(['contextInstructions' => '{
             "big_projects::2": {
@@ -338,28 +490,28 @@ class ContextRequestDataPrepperTest extends TestCase
                 "name": "PHP"
             }
         }']);
-        $this->contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $this->contextRequestDataPrepper->prep();
-        $preppedData = $this->contextRequestDataPrepper->getPreppedData();
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
-            "contextErrorNotJson" => false,
-            "contextMainError_instructions" => false,
-            "requests" => [
-                "big_projects" =>[
-                    "endpoint" => "index",
-                    "endpointId" => '',
-                    "parameters" => [
-                        "start_date" => "2020-02-28",
-                        "title" => "Gogo!!!",
+            'contextErrorNotJson' => false,
+            'contextErrorInstructions' => false,
+            'requests' => [
+                'big_projects' =>[
+                    'endpoint' => 2,
+                    'endpointId' => '',
+                    'parameters' => [
+                        'start_date' => '2020-02-28',
+                        'title' => 'Gogo!!!',
                     ]
                 ],
-                "3" => [
-                    "endpoint" => "index",
-                    "endpointId" => '',
-                    "parameters" => [
-                        "not_a_parameter" => "hjkhjkhkjhkhkjhjk",
-                        "name" => "PHP",
+                '3' => [
+                    'endpoint' => 3,
+                    'endpointId' => '',
+                    'parameters' => [
+                        'not_a_parameter' => 'hjkhjkhkjhkhkjhjk',
+                        'name' => 'PHP',
                     ]
                 ]
             ]
@@ -371,14 +523,46 @@ class ContextRequestDataPrepperTest extends TestCase
     public function test_context_request_data_prepper_returns_expected_result_not_json_error()
     {
         $this->request->request->add(['contextInstructions' => 'not_json']);
-        $this->contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $this->contextRequestDataPrepper->prep();
-        $preppedData = $this->contextRequestDataPrepper->getPreppedData();
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
-            "contextErrorNotJson" => true,
-            "contextMainError_instructions" => false,
-            "requests" => []
+            'contextErrorNotJson' => true,
+            'contextErrorInstructions' => false,
+            'requests' => []
+        ];
+
+        $this->assertEquals($expectedResponse,$preppedData);
+    }
+
+    public function test_context_request_data_prepper_returns_expected_result_empty_array()
+    {
+        $this->request->request->add(['contextInstructions' => '[]']);
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
+
+        $expectedResponse = [
+            'contextErrorNotJson' => false,
+            'contextErrorInstructions' => false,
+            'requests' => []
+        ];
+
+        $this->assertEquals($expectedResponse,$preppedData);
+    }
+
+    public function test_context_request_data_prepper_returns_expected_result_empty_object()
+    {
+        $this->request->request->add(['contextInstructions' => '{}']);
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
+
+        $expectedResponse = [
+            'contextErrorNotJson' => false,
+            'contextErrorInstructions' => false,
+            'requests' => []
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
@@ -386,31 +570,94 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_no_instructions()
     {
-        $this->contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $this->contextRequestDataPrepper->prep();
-        $preppedData = $this->contextRequestDataPrepper->getPreppedData();
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
-            "contextErrorNotJson" => true,
-            "contextMainError_instructions" => true,
-            "requests" => []
+            'contextErrorNotJson' => true,
+            'contextErrorInstructions' => true,
+            'requests' => []
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_not_json_error333()
+    public function test_context_request_data_prepper_returns_expected_result_assorted_array_good_and_bad()
     {
-        $this->request->request->add(['contextInstructions' => '["not_json", "red", 44, 77]']);
-        $this->contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $this->contextRequestDataPrepper->prep();
-        $preppedData = $this->contextRequestDataPrepper->getPreppedData();
-        dd($preppedData);
+        $this->request->request->add(['contextInstructions' => '["not_json", "red", 44, 77, {"endpoint": "projects", "name": "Sam", "id": 55}, {"endpoint": "tags", "id": 55},"", [], {}, true, false, null]']);
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
+        // dd($preppedData);
 
         $expectedResponse = [
-            "contextErrorNotJson" => true,
-            "contextMainError_instructions" => false,
-            "requests" => []
+            'contextErrorInstructions' => false,
+            'contextErrorNotJson' => false,
+            'requests' => [
+                [
+                    'endpoint' => 0,
+                    'endpointId' => '',
+                    'parameters' => 'not_json'
+                ],
+                [
+                    'endpoint' => 1,
+                    'endpointId' => '',
+                    'parameters' => 'red'
+                ],
+                [
+                    'endpoint' => 2,
+                    'endpointId' => '',
+                    'parameters' => 44
+                ],
+                [
+                    'endpoint' => 3,
+                    'endpointId' => '',
+                    'parameters' => 77
+                ],
+                [
+                    'endpoint' => 'projects',
+                    'endpointId' => 55,
+                    'parameters' => [
+                      'name' => 'Sam'
+                    ]
+                ],
+                [
+                    'endpoint' => 'tags',
+                    'endpointId' => 55,
+                    'parameters' => []
+                ],
+                [
+                    'endpoint' => 6,
+                    'endpointId' => '',
+                    'parameters' => ''
+                ],
+                [
+                    'endpoint' => 7,
+                    'endpointId' => '',
+                    'parameters' => []
+                ],
+                [
+                    'endpoint' => 8,
+                    'endpointId' => '',
+                    'parameters' => []
+                ],
+                [
+                    'endpoint' => 9,
+                    'endpointId' => '',
+                    'parameters' => true
+                ],
+                [
+                    'endpoint' => 10,
+                    'endpointId' => '',
+                    'parameters' => false
+                ],
+                [
+                    'endpoint' => 11,
+                    'endpointId' => '',
+                    'parameters' => null
+                ]
+            ]
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);

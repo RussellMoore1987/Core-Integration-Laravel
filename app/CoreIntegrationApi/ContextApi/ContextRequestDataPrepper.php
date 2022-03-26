@@ -6,8 +6,6 @@ use App\CoreIntegrationApi\RequestDataPrepper;
 
 class ContextRequestDataPrepper extends RequestDataPrepper
 {
-
-    // TODO: walk through code and make sure it has all tests
     protected $requests;
     protected $requestName;
     protected $endpoint;
@@ -23,7 +21,7 @@ class ContextRequestDataPrepper extends RequestDataPrepper
 
     protected function prepDefaultData()
     {
-        $this->preppedData['contextMainError_instructions'] = true;
+        $this->preppedData['contextErrorInstructions'] = true;
         $this->preppedData['contextErrorNotJson'] = true;
         $this->preppedData['requests'] = [];
         $this->requests = [];
@@ -33,9 +31,8 @@ class ContextRequestDataPrepper extends RequestDataPrepper
                 $this->requests = json_decode($this->request->contextInstructions, true);
                 $this->preppedData['contextErrorNotJson'] = false;
             }
-            $this->preppedData['contextMainError_instructions'] = false;
+            $this->preppedData['contextErrorInstructions'] = false;
         }
-        
     }
 
     protected function isJson($string) {
@@ -69,11 +66,7 @@ class ContextRequestDataPrepper extends RequestDataPrepper
 
     protected function setEndpointDetails()
     {
-        if (!is_numeric($this->endpoint)) {
-            $this->preppedData['requests'][$this->requestName]['endpoint'] = $this->endpoint ?? $this->requestData['endpoint'] ?? 'index';
-        } else {
-            $this->preppedData['requests'][$this->requestName]['endpoint'] = $this->requestData['endpoint'] ?? 'index';
-        }
+        $this->preppedData['requests'][$this->requestName]['endpoint'] = $this->requestData['endpoint'] ?? $this->endpoint ?? 'index';
 
         $this->preppedData['requests'][$this->requestName]['endpointId'] = $this->requestData['endpoint_id'] ?? $this->requestData['endpointId'] ?? $this->requestData['id'] ?? '';
     }
@@ -99,13 +92,14 @@ class ContextRequestDataPrepper extends RequestDataPrepper
 
     protected function checkIfWeNeedToUnset()
     {
-        $keys = array_keys($this->requestData);
-        $KeysToUnset = ['endpointId', 'endpoint_id', 'id', 'endpoint'];
+        if (is_array($this->requestData)) {
+            $keys = array_keys($this->requestData);
+            $KeysToUnset = ['endpointId', 'endpoint_id', 'id', 'endpoint'];
 
-        foreach ($KeysToUnset as $key) {
-            if (in_array($key, $keys)) { return true; }
+            foreach ($KeysToUnset as $key) {
+                if (in_array($key, $keys)) { return true; }
+            }
         }
-        
         return false;
     }
 }
