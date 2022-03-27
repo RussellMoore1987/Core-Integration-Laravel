@@ -24,7 +24,7 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result()
     {
-        $this->request->request->add(['contextInstructions' => '{
+        $preppedData = $this->prepareData(['contextInstructions' => '{
             "projects": {
                 "start_date": "2020-02-28",
                 "id": 33,
@@ -36,9 +36,6 @@ class ContextRequestDataPrepperTest extends TestCase
                 "name": "PHP"
             }
         }']);
-        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $contextRequestDataPrepper->prep();
-        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
             'contextErrorNotJson' => false,
@@ -68,7 +65,7 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_no_endpoint_id()
     {
-        $this->request->request->add(['contextInstructions' => '{
+        $preppedData = $this->prepareData(['contextInstructions' => '{
             "projects": {
                 "start_date": "2020-02-28",
                 "title": "Gogo!!!"
@@ -78,9 +75,6 @@ class ContextRequestDataPrepperTest extends TestCase
                 "name": "PHP"
             }
         }']);
-        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $contextRequestDataPrepper->prep();
-        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
             'contextErrorNotJson' => false,
@@ -110,7 +104,7 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_endpoint_id()
     {
-        $this->request->request->add(['contextInstructions' => '{
+        $preppedData = $this->prepareData(['contextInstructions' => '{
             "projects": {
                 "start_date": "2020-02-28",
                 "title": "Gogo!!!",
@@ -127,9 +121,6 @@ class ContextRequestDataPrepperTest extends TestCase
                 "id": 99
             }
         }']);
-        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $contextRequestDataPrepper->prep();
-        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
             'contextErrorNotJson' => false,
@@ -167,7 +158,7 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_default_numeric_result_name()
     {
-        $this->request->request->add(['contextInstructions' => '[
+        $preppedData = $this->prepareData(['contextInstructions' => '[
             {
                 "start_date": "2020-02-28",
                 "title": "Gogo!!!",
@@ -180,9 +171,6 @@ class ContextRequestDataPrepperTest extends TestCase
                 "endpointId": 22
             }
         ]']);
-        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $contextRequestDataPrepper->prep();
-        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
             'contextErrorNotJson' => false,
@@ -212,7 +200,7 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_one_numeric_result_name()
     {
-        $this->request->request->add(['contextInstructions' => '{
+        $preppedData = $this->prepareData(['contextInstructions' => '{
             "0": {
                 "start_date": "2020-02-28",
                 "title": "Gogo!!!",
@@ -225,9 +213,6 @@ class ContextRequestDataPrepperTest extends TestCase
                 "endpointId": 22
             }
         }']);
-        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $contextRequestDataPrepper->prep();
-        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
             'contextErrorNotJson' => false,
@@ -257,7 +242,7 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_result_name_different_then_endpoint()
     {
-        $this->request->request->add(['contextInstructions' => '{
+        $preppedData = $this->prepareData(['contextInstructions' => '{
             "big_projects::projects": {
                 "start_date": "2020-02-28",
                 "title": "Gogo!!!"
@@ -267,9 +252,6 @@ class ContextRequestDataPrepperTest extends TestCase
                 "name": "PHP"
             }
         }']);
-        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $contextRequestDataPrepper->prep();
-        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
             'contextErrorNotJson' => false,
@@ -300,7 +282,7 @@ class ContextRequestDataPrepperTest extends TestCase
     public function test_context_request_data_prepper_returns_expected_result_endpoint_name_order_is_correct()
     {
         // first two arrays will be combined 
-        $this->request->request->add(['contextInstructions' => '{
+        $preppedData = $this->prepareData(['contextInstructions' => '{
             "big_projects::projects": {
                 "start_date": "2020-02-28",
                 "title": "Gogo!!!"
@@ -324,9 +306,6 @@ class ContextRequestDataPrepperTest extends TestCase
                 "name": "PHP"
             }
         }']);
-        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $contextRequestDataPrepper->prep();
-        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
             'contextErrorNotJson' => false,
@@ -372,7 +351,7 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_result_name_with_many_options()
     {
-        $this->request->request->add(['contextInstructions' => '{
+        $preppedData = $this->prepareData(['contextInstructions' => '{
             "big_projects::projects::444::big": {
                 "start_date": "2020-02-28",
                 "title": "Gogo!!!"
@@ -382,9 +361,6 @@ class ContextRequestDataPrepperTest extends TestCase
                 "name": "PHP"
             }
         }']);
-        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $contextRequestDataPrepper->prep();
-        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
             'contextErrorNotJson' => false,
@@ -414,7 +390,7 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_result_name_without_options()
     {
-        $this->request->request->add(['contextInstructions' => '{
+        $preppedData = $this->prepareData(['contextInstructions' => '{
             "big_projects::": {
                 "start_date": "2020-02-28",
                 "title": "Gogo!!!"
@@ -432,9 +408,6 @@ class ContextRequestDataPrepperTest extends TestCase
                 "name": "PHP"
             }
         }']);
-        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $contextRequestDataPrepper->prep();
-        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
             'contextErrorNotJson' => false,
@@ -480,7 +453,7 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_set_numeric_endpoint()
     {
-        $this->request->request->add(['contextInstructions' => '{
+        $preppedData = $this->prepareData(['contextInstructions' => '{
             "big_projects::2": {
                 "start_date": "2020-02-28",
                 "title": "Gogo!!!"
@@ -490,9 +463,6 @@ class ContextRequestDataPrepperTest extends TestCase
                 "name": "PHP"
             }
         }']);
-        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $contextRequestDataPrepper->prep();
-        $preppedData = $contextRequestDataPrepper->getPreppedData();
 
         $expectedResponse = [
             'contextErrorNotJson' => false,
@@ -522,10 +492,7 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_not_json_error()
     {
-        $this->request->request->add(['contextInstructions' => 'not_json']);
-        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $contextRequestDataPrepper->prep();
-        $preppedData = $contextRequestDataPrepper->getPreppedData();
+        $preppedData = $this->prepareData(['contextInstructions' => 'not_json']);
 
         $expectedResponse = [
             'contextErrorNotJson' => true,
@@ -538,10 +505,7 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_empty_array()
     {
-        $this->request->request->add(['contextInstructions' => '[]']);
-        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $contextRequestDataPrepper->prep();
-        $preppedData = $contextRequestDataPrepper->getPreppedData();
+        $preppedData = $this->prepareData(['contextInstructions' => '[]']);
 
         $expectedResponse = [
             'contextErrorNotJson' => false,
@@ -554,10 +518,7 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_empty_object()
     {
-        $this->request->request->add(['contextInstructions' => '{}']);
-        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $contextRequestDataPrepper->prep();
-        $preppedData = $contextRequestDataPrepper->getPreppedData();
+        $preppedData = $this->prepareData(['contextInstructions' => '{}']);
 
         $expectedResponse = [
             'contextErrorNotJson' => false,
@@ -585,11 +546,7 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_assorted_array_good_and_bad()
     {
-        $this->request->request->add(['contextInstructions' => '["not_json", "red", 44, 77, {"endpoint": "projects", "name": "Sam", "id": 55}, {"endpoint": "tags", "id": 55},"", [], {}, true, false, null]']);
-        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
-        $contextRequestDataPrepper->prep();
-        $preppedData = $contextRequestDataPrepper->getPreppedData();
-        // dd($preppedData);
+        $preppedData = $this->prepareData(['contextInstructions' => '["not_json", "red", 44, 77, {"endpoint": "projects", "name": "Sam", "id": 55}, {"endpoint": "tags", "id": 55},"", [], {}, true, false, null]']);
 
         $expectedResponse = [
             'contextErrorInstructions' => false,
@@ -661,5 +618,15 @@ class ContextRequestDataPrepperTest extends TestCase
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
+    }
+
+    protected function prepareData($parameters)
+    {
+        $this->request->request->add($parameters);
+        $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
+        $contextRequestDataPrepper->prep();
+        $preppedData = $contextRequestDataPrepper->getPreppedData();
+
+        return $preppedData;
     }
 }
