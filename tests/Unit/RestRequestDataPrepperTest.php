@@ -175,9 +175,9 @@ class RestRequestDataPrepperTest extends TestCase
     protected function prepareData(array $parameters = [], $url = 'api/v1/projects', $method = 'GET')
     {
         $request = Request::create($url, $method, $parameters);
-        $RestRequestDataPrepper = new RestRequestDataPrepper($request);
-        $RestRequestDataPrepper->prep();
-        $preppedData = $RestRequestDataPrepper->getPreppedData();
+        $restRequestDataPrepper = new RestRequestDataPrepper($request);
+        $restRequestDataPrepper->prep();
+        $preppedData = $restRequestDataPrepper->getPreppedData();
 
         return $preppedData;
     }
