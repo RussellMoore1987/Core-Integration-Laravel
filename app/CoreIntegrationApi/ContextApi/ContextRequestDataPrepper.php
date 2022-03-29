@@ -11,6 +11,7 @@ class ContextRequestDataPrepper extends RequestDataPrepper
     protected $endpoint;
     protected $requestData;
 
+    // TODO: add request information like URL and HTTP method
     public function prepRequestData()
     {
         $this->prepDefaultData();

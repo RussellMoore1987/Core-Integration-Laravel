@@ -19,7 +19,7 @@ abstract class RequestValidator
     protected $endpoint;
     protected $endpointId;
     protected $endpointError = false;
-    protected $request;
+    protected $extraData = [];
     protected $parameters;
     protected $defaultAcceptableParameters = ['per_page', 'perpage', 'page', 'column_data', 'columndata', 'formdata', 'form_data'];
     protected $getMethodParameterValidatorDefaults = [
@@ -43,7 +43,6 @@ abstract class RequestValidator
         $this->dataTypeDeterminerFactory = $dataTypeDeterminerFactory;
         $this->parameterValidatorFactory = $parameterValidatorFactory;
         $this->validatorDataCollector = $validatorDataCollector;
-        $this->request = request();
     }   
 
     public function validate()
@@ -72,6 +71,8 @@ abstract class RequestValidator
         $this->endpoint = $prepRequestData['endpoint'] ?? '';
         $this->endpointId = $prepRequestData['endpointId']  ?? [];
         $this->parameters = $prepRequestData['parameters'] ?? [];
+        $this->httpMethod = $prepRequestData['httpMethod'] ?? 'GET';
+        $this->url = $prepRequestData['url'] ?? [];
     }
 
     protected function validateEndPoint()
@@ -89,7 +90,7 @@ abstract class RequestValidator
         $this->checkForIdParameterIfThereSetItAppropriately();
         $this->validatorDataCollector->setAcceptedParameter([
             "endpoint" => [
-                'messsage' => "\"$this->endpoint\" is a valid endpoint for this API. You can also review available endpoints at " . $this->getIndexUrl()
+                'message' => "\"$this->endpoint\" is a valid endpoint for this API. You can also review available endpoints at " . $this->getIndexUrl()
             ]
         ]);
     }
@@ -102,8 +103,8 @@ abstract class RequestValidator
             'endpointError' => $this->endpointError, 
             'class' => $this->class, 
             'indexUrl' => $this->getIndexUrl(),
-            'url' => $this->request->url(),
-            'httpMethod' => $this->request->getMethod(),
+            'url' => $this->url,
+            'httpMethod' => $this->httpMethod,
         ];
         if ($this->endpointId) {
             $class = new $this->class();
@@ -116,7 +117,7 @@ abstract class RequestValidator
 
     protected function getIndexUrl()
     {
-        return substr($this->request->url(), 0, strpos($this->request->url(), 'api/v1/') + 7);
+        return substr($this->url, 0, strpos($this->url, 'api/v1/') + 7);
     }
 
     protected function setEndpointError()
@@ -124,13 +125,13 @@ abstract class RequestValidator
         $this->endpointError = true;
         $this->validatorDataCollector->setRejectedParameter([
             'endpoint' => [
-                'messsage' => "\"$this->endpoint\" is not a valid endpoint for this API. Pleaase review available endpoints at " . $this->getIndexUrl()
+                'message' => "\"$this->endpoint\" is not a valid endpoint for this API. Please review available endpoints at " . $this->getIndexUrl()
             ]
         ]);
         if ($this->endpointId) {
             $this->validatorDataCollector->setRejectedParameter([
                 'endpointId' => [
-                    'messsage' => "\"$this->endpoint\" is not a valid endpoint for this API, therefore the endpoint ID is invalid as well. Pleaase review available endpoints at " . $this->getIndexUrl(), 
+                    'message' => "\"$this->endpoint\" is not a valid endpoint for this API, therefore the endpoint ID is invalid as well. Please review available endpoints at " . $this->getIndexUrl(), 
                     'value' => $this->endpointId
                 ]
             ]);
@@ -142,8 +143,8 @@ abstract class RequestValidator
                 'endpointError' => $this->endpointError, 
                 'class' => null, 
                 'indexUrl' => $this->getIndexUrl(),
-                'url' => $this->request->url(),
-                'httpMethod' => $this->request->getMethod(),
+                'url' => $this->url,
+                'httpMethod' => $this->httpMethod,
             ]
         );
     }

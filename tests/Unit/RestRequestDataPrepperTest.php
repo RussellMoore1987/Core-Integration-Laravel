@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class RestRequestDataPrepperTest extends TestCase
 {
-    public function test_context_request_data_prepper_returns_expected_result()
+    public function test_rest_request_data_prepper_returns_expected_result()
     {
         $preppedData = $this->prepareData([
             'endpoint' => 'projects',
@@ -23,13 +23,15 @@ class RestRequestDataPrepperTest extends TestCase
             'parameters' => [
                 'start_date' => '2020-02-28',
                 'title' => 'Gogo!!!'
-            ]
+            ],
+            'url' => 'http://localhost/api/v1/projects',
+            'httpMethod' => 'GET'
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_no_endpointId()
+    public function test_rest_request_data_prepper_returns_expected_result_no_endpointId()
     {
         $preppedData = $this->prepareData([
             'endpoint' => 'projects',
@@ -45,13 +47,15 @@ class RestRequestDataPrepperTest extends TestCase
                 'start_date' => '2020-02-28',
                 'title' => 'Gogo!!!',
                 'ham' => 33
-            ]
+            ],
+            'url' => 'http://localhost/api/v1/projects',
+            'httpMethod' => 'GET'
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_empty_parameters()
+    public function test_rest_request_data_prepper_returns_expected_result_empty_parameters()
     {
         $preppedData = $this->prepareData([
             'endpoint' => 'projects',
@@ -61,20 +65,24 @@ class RestRequestDataPrepperTest extends TestCase
         $expectedResponse = [
             'endpoint' => 'projects',
             'endpointId' => 33,
-            'parameters' => []
+            'parameters' => [],
+            'url' => 'http://localhost/api/v1/projects',
+            'httpMethod' => 'GET'
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_no_parameters()
+    public function test_rest_request_data_prepper_returns_expected_result_no_parameters()
     {
         $preppedData = $this->prepareData();
 
         $expectedResponse = [
             'endpoint' => 'index',
             'endpointId' => '',
-            'parameters' => []
+            'parameters' => [],
+            'url' => 'http://localhost/api/v1/projects',
+            'httpMethod' => 'GET'
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
@@ -83,7 +91,7 @@ class RestRequestDataPrepperTest extends TestCase
     /**
      * @dataProvider endpointIdProvider
      */
-    public function test_context_request_data_prepper_returns_expected_result_endpointId($endpointIdText)
+    public function test_rest_request_data_prepper_returns_expected_result_endpointId($endpointIdText)
     {
         $preppedData = $this->prepareData([
             'endpoint' => 'projects',
@@ -98,7 +106,9 @@ class RestRequestDataPrepperTest extends TestCase
             'parameters' => [
                 'start_date' => '2020-02-28',
                 'title' => 'Gogo!!!'
-            ]
+            ],
+            'url' => 'http://localhost/api/v1/projects',
+            'httpMethod' => 'GET'
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
@@ -115,7 +125,7 @@ class RestRequestDataPrepperTest extends TestCase
     /**
      * @dataProvider httpMethodProvider
      */
-    public function test_context_request_data_prepper_returns_expected_result_http_methods($methodText)
+    public function test_rest_request_data_prepper_returns_expected_result_http_methods($methodText)
     {
         $preppedData = $this->prepareData([
             'endpoint' => 'projects',
@@ -130,7 +140,9 @@ class RestRequestDataPrepperTest extends TestCase
             'parameters' => [
                 'start_date' => '2020-02-28',
                 'title' => 'Gogo!!!'
-            ]
+            ],
+            'url' => 'http://localhost/api/v1/projects',
+            'httpMethod' => $methodText
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
@@ -145,7 +157,7 @@ class RestRequestDataPrepperTest extends TestCase
         ];
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_random_parameters()
+    public function test_rest_request_data_prepper_returns_expected_result_random_parameters()
     {
         $preppedData = $this->prepareData([
             'endpoint' => '$%#@',
@@ -160,6 +172,8 @@ class RestRequestDataPrepperTest extends TestCase
         $expectedResponse = [
             'endpoint' => '$%#@',
             'endpointId' => '1,2,6,8,99,22',
+            'url' => 'http://localhost/api/v1/projects',
+            'httpMethod' => 'GET',
             'parameters' => [
                 '33' => '\'',
                 '::' => 'pwer',
