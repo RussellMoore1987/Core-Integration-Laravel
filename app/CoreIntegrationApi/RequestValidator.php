@@ -230,9 +230,16 @@ abstract class RequestValidator
             $this->setPageParameter($value);
         } elseif (in_array($key, ['columndata', 'column_data'])) {
             $this->validatorDataCollector->setAcceptedParameter([
-                'column_data' => [
+                'columnData' => [
                     'value' => $value,
-                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this endpoint '
+                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this endpoint'
+                ]
+            ]);
+        } elseif (in_array($key, ['formdata', 'form_data'])) {
+            $this->validatorDataCollector->setAcceptedParameter([
+                'formData' => [
+                    'value' => $value,
+                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter form data for this endpoint'
                 ]
             ]);
         }
@@ -242,11 +249,11 @@ abstract class RequestValidator
     {
         if ($this->isInt($value)) {
             $this->validatorDataCollector->setAcceptedParameter([
-                'per_page' => (int) $value
+                'perPage' => (int) $value
             ]);
         } else {
             $this->validatorDataCollector->setRejectedParameter([
-                'per_page' => [
+                'perPage' => [
                     'value' => $value,
                     'parameterError' => 'This parameter\'s value must be an int.'
                 ]

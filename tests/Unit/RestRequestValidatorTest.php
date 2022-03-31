@@ -13,7 +13,7 @@ use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 
 class RestRequestValidatorTest extends TestCase
 {
-    // ! start here ******************************************* look at todo, fix up code, fix context with request info
+    // ! start here ******************************************* make sure we are testing every thing, fix up code, fix context with request info
     // TODO: Test
     // data collection, what it validates***, all data returned, endpoint, endpointId, column validation, default parameters, other
     // other validation done else were***
@@ -21,9 +21,9 @@ class RestRequestValidatorTest extends TestCase
     // rejectedParameters
     // acceptedParameters
 
-    // TODO: testing url***
     // TODO: dynamic index ex: api/v1, api/v2, api/rest/v1, api/context/v3
-    // TODO: 
+
+    // TODO: parameters validate length, setting validation date, string, int, float ect *****
 
     // TODO: Test in other class
     // classDataProvider, also add it to RequestValidator
@@ -75,6 +75,63 @@ class RestRequestValidatorTest extends TestCase
         $this->assertEquals($expectedEndpoint, $validatedMetaData['acceptedParameters']['endpoint']);
     }
 
+
+    /**
+     * @dataProvider httpMethodProvider
+     */
+    public function test_rest_request_data_prepper_returns_expected_result_accepted_endpoint_no_id($url, $httpMethod)
+    {
+        $validatedMetaData = $this->validateRequest([
+            'endpoint' => 'projects',
+            'start_date' => '2020-02-28',
+            'title' => 'Gogo!!!'
+        ], $url, $httpMethod);
+
+        $this->assertArrayHasKey('endpointData', $validatedMetaData);
+        $this->assertArrayHasKey('extraData', $validatedMetaData);
+        $this->assertArrayHasKey('rejectedParameters', $validatedMetaData);
+        $this->assertArrayHasKey('acceptedParameters', $validatedMetaData);
+        $this->assertArrayHasKey('queryArguments', $validatedMetaData);
+
+        $expectedEndpointData = [
+            'endpoint' => 'projects',
+            'endpointId' => '',
+            'endpointError' => false,
+            'class' => 'App\Models\Project',
+            'indexUrl' => 'http://localhost/api/v1/',
+            'url' => 'http://localhost/api/v1/projects',
+            'httpMethod' => $httpMethod,
+        ];
+
+        $this->assertEquals($expectedEndpointData, $validatedMetaData['endpointData']);
+
+        // dd($validatedMetaData);
+
+        $expectedAcceptedParameters = [
+            'endpoint' => [
+                'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/'
+            ],
+            'start_date' => [
+                'dateCoveredTo' => '2020-02-28 00:00:00',
+                'originalDate' => '2020-02-28',
+                'comparisonOperatorCoveredTo' => '=',
+                'originalComparisonOperator' => ''
+            ]
+        ];
+
+        $this->assertEquals($expectedAcceptedParameters, $validatedMetaData['acceptedParameters']);
+    }
+
+    public function httpMethodProvider()
+    {
+        return [
+            'GET' => ['api/v1/projects', 'GET'],
+            'POST' => ['api/v1/projects', 'POST'],
+            'PUT' => ['api/v1/projects', 'PUT'],
+            'PATCH' => ['api/v1/projects', 'PATCH'],
+        ];
+    }
+
     /**
      * @dataProvider httpMethodNotGoodEndpointProvider
      */
@@ -117,12 +174,11 @@ class RestRequestValidatorTest extends TestCase
         $this->assertEquals($expectedEndpoint, $validatedMetaData['rejectedParameters']['endpoint']);
         $this->assertEquals($expectedEndpointId, $validatedMetaData['rejectedParameters']['endpointId']);
     }
-
-
+    
     /**
      * @dataProvider httpMethodNotGoodEndpointProvider
      */
-    public function test_rest_request_data_prepper_returns_expected_result_rejected_endpoint_no_id($url, $httpMethod)
+    public function test_rest_request_data_prepper_returns_expected_result_rejected_endpoint_without_id($url, $httpMethod)
     {
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'notProjects',
@@ -165,14 +221,77 @@ class RestRequestValidatorTest extends TestCase
             'PATCH' => ['api/v1/notProjects', 'PATCH'],
         ];
     }
+    
+    /**
+     * @dataProvider parameterNameProvider
+     */
+    public function test_rest_request_data_prepper_returns_expected_result_parameters_set_in_request_validator($perPageName, $columnDataName, $formDataName)
+    {
+        $validatedMetaData = $this->validateRequest([
+            'endpoint' => 'projects',
+            'page' => 2,
+            $perPageName => 22,
+            $columnDataName => 'yes',
+            $formDataName => 'yes',
+        ]);
 
-    public function httpMethodProvider()
+        $expectedAcceptedParameters = [
+            'endpoint' => [
+              'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/'
+            ],
+            'page' => 2,
+            'perPage' => 22,
+            'columnData' => [
+              'value' => 'yes',
+              'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this endpoint',
+            ],
+            'formData' => [
+              'value' => 'yes',
+              'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter form data for this endpoint',
+            ],
+        ];
+
+        $this->assertEquals($expectedAcceptedParameters, $validatedMetaData['acceptedParameters']);
+    }
+
+    public function parameterNameProvider()
     {
         return [
-            'GET' => ['api/v1/projects', 'GET'],
-            'POST' => ['api/v1/projects', 'POST'],
-            'PUT' => ['api/v1/projects', 'PUT'],
-            'PATCH' => ['api/v1/projects', 'PATCH'],
+            'snake_case_parameter' => ['per_page', 'column_data', 'form_data', 2.6, 22.2],
+            'camelCaseParameter' => ['perPage', 'columnData', 'formData', 'sam', 'fun'],
+        ];
+    }
+
+    /**
+     * @dataProvider parameterValueProvider
+     */
+    public function test_rest_request_data_prepper_returns_expected_result_parameters_rejected($pageValue, $perPageValue)
+    {
+        $validatedMetaData = $this->validateRequest([
+            'endpoint' => 'projects',
+            'page' => $pageValue,
+            'perPage' => $perPageValue,
+        ]);
+
+        $expectedRejectedParameters = [
+            'page' => [
+                'value' => $pageValue,
+                'parameterError' => 'This parameter\'s value must be an int.',
+            ],
+            'perPage' => [
+                'value' => $perPageValue,
+                'parameterError' => 'This parameter\'s value must be an int.',
+            ],
+        ];
+
+        $this->assertEquals($expectedRejectedParameters, $validatedMetaData['rejectedParameters']);
+    }
+
+    public function parameterValueProvider()
+    {
+        return [
+            'float values' => [2.6, 22.2],
+            'string values' => ['sam', 'fun'],
         ];
     }
 
