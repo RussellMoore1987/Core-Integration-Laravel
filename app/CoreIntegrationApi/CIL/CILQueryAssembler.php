@@ -25,8 +25,8 @@ class CILQueryAssembler implements QueryAssembler
             $this->queryBuilder = $clauseBuilder->build($this->queryBuilder, $data);
         }
 
-        if (isset($validatedMetaData['acceptedParameters']['per_page'])) {
-            $this->perPageParameter = $validatedMetaData['acceptedParameters']['per_page'];
+        if (isset($validatedMetaData['acceptedParameters']['perPage'])) {
+            $this->perPageParameter = $validatedMetaData['acceptedParameters']['perPage'];
         }
 
         return $this->queryBuilder->paginate($this->perPageParameter);

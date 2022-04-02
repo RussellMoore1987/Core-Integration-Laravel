@@ -29,7 +29,7 @@ class RestQueryResolver extends QueryResolver
 
     protected function checkEndpointColumnData()
     {
-        if (isset($this->validatedMetaData['acceptedParameters']['column_data'])) {
+        if (isset($this->validatedMetaData['acceptedParameters']['columnData'])) {
             foreach ($this->validatedMetaData['extraData']['acceptableParameters'] as $columnName => $columnArray) {
                 $this->queryResult['availableEndpointParameters'][$columnName] = $columnArray['api_data_type'];
             }
@@ -49,7 +49,7 @@ class RestQueryResolver extends QueryResolver
 
     protected function checkFormData()
     {
-        if (!$this->queryResult && isset($this->validatedMetaData['acceptedParameters']['form_data'])) {
+        if (!$this->queryResult && isset($this->validatedMetaData['acceptedParameters']['formData'])) {
             // TODO: get form data
             $this->queryResult = 'form data';   
         }

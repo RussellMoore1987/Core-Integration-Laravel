@@ -13,13 +13,8 @@ use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 
 class RestRequestValidatorTest extends TestCase
 {
-    // ! start here ******************************************* make sure we are testing every thing, fix up code, fix context with request info
-    // TODO: Test
-    // data collection, what it validates***, all data returned, endpoint, endpointId, column validation, default parameters, other
-    // other validation done else were***
-    // endpointData
-    // rejectedParameters
-    // acceptedParameters
+    // ! start here ******************************************* test $this->extraData in first test and in not good endpoint, fix up code, fix context with request info
+    // TODO: switch everything to one type of case***
 
     // TODO: dynamic index ex: api/v1, api/v2, api/rest/v1, api/context/v3
 
@@ -104,8 +99,6 @@ class RestRequestValidatorTest extends TestCase
         ];
 
         $this->assertEquals($expectedEndpointData, $validatedMetaData['endpointData']);
-
-        // dd($validatedMetaData);
 
         $expectedAcceptedParameters = [
             'endpoint' => [
@@ -257,8 +250,8 @@ class RestRequestValidatorTest extends TestCase
     public function parameterNameProvider()
     {
         return [
-            'snake_case_parameter' => ['per_page', 'column_data', 'form_data', 2.6, 22.2],
-            'camelCaseParameter' => ['perPage', 'columnData', 'formData', 'sam', 'fun'],
+            'snake_case_parameter' => ['per_page', 'column_data', 'form_data'],
+            'camelCaseParameter' => ['perPage', 'columnData', 'formData'],
         ];
     }
 
@@ -293,6 +286,38 @@ class RestRequestValidatorTest extends TestCase
             'float values' => [2.6, 22.2],
             'string values' => ['sam', 'fun'],
         ];
+    }
+
+    public function test_rest_request_data_prepper_returns_expected_result_non_expectable_parameters()
+    {
+        $validatedMetaData = $this->validateRequest([
+            'endpoint' => 'projects',
+            'pageJoe' => 2,
+            'Ham' => 22.99,
+            '' => 'yes',
+            'array' => [],
+        ]);
+
+        $expectedRejectedParameters = [
+            'pagejoe' => [
+                'value' => 2,
+                'parameterError' => 'This is an invalid parameter for this endpoint.',  
+            ],
+              'ham' => [
+                'value' => 22.99,
+                'parameterError' => 'This is an invalid parameter for this endpoint.', 
+              ],
+              '' => [
+                'value' => 'yes',
+                'parameterError' => 'This is an invalid parameter for this endpoint.',  
+              ],
+              'array' => [
+                'value' => [],
+                'parameterError' => 'This is an invalid parameter for this endpoint.',   
+              ]
+        ];
+
+        $this->assertEquals($expectedRejectedParameters, $validatedMetaData['rejectedParameters']);
     }
 
     protected function validateRequest(array $parameters = [], $url = 'api/v1/projects', $method = 'GET')

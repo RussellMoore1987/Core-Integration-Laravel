@@ -171,12 +171,13 @@ class FullRestApiTest extends TestCase
                     'updated_at',
                     'budget'
                 )->etc()
-            )->has('info', fn ($json) =>
-            $json->hasAll(
-                'message',
-                'index_url'
             )
-        )
+            ->has('info', fn ($json) =>
+                $json->hasAll(
+                    'message',
+                    'index_url'
+                )
+            )
         );
     }
 
