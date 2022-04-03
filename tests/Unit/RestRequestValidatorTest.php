@@ -13,18 +13,18 @@ use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 
 class RestRequestValidatorTest extends TestCase
 {
-    // ! start here ******************************************* test $this->extraData in first test and in not good endpoint, fix up code, fix context with request info
-    // TODO: switch everything to one type of case***
-
-    // TODO: dynamic index ex: api/v1, api/v2, api/rest/v1, api/context/v3
-
-    // TODO: parameters validate length, setting validation date, string, int, float ect *****
-
+    // ! start here ******************************************* fix up code, fix context with request info
+    // add id to parameters -> test, and in endpointIdConvertedTo
+    // add test_id (new migration) to parameters -> test, and in endpointIdConvertedTo
+    // endpointIdConvertedTo ??? standard
+    // one test of validating parameters good and bad, because they are set in the validator
     // TODO: Test in other class
     // classDataProvider, also add it to RequestValidator
         // acceptableParameters
         // availableMethodCalls
         // availableIncludes
+        // form info
+
 
 
 
@@ -33,7 +33,7 @@ class RestRequestValidatorTest extends TestCase
     /**
      * @dataProvider httpMethodProvider
      */
-    public function test_rest_request_data_prepper_returns_expected_result($url, $httpMethod)
+    public function test_rest_request_validator_returns_expected_result($url, $httpMethod)
     {
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'projects',
@@ -44,6 +44,9 @@ class RestRequestValidatorTest extends TestCase
 
         $this->assertArrayHasKey('endpointData', $validatedMetaData);
         $this->assertArrayHasKey('extraData', $validatedMetaData);
+        $this->assertArrayHasKey('acceptableParameters', $validatedMetaData['extraData']);
+        $this->assertArrayHasKey('availableMethodCalls', $validatedMetaData['extraData']);
+        $this->assertArrayHasKey('availableIncludes', $validatedMetaData['extraData']);
         $this->assertArrayHasKey('rejectedParameters', $validatedMetaData);
         $this->assertArrayHasKey('acceptedParameters', $validatedMetaData);
         $this->assertArrayHasKey('queryArguments', $validatedMetaData);
@@ -74,19 +77,13 @@ class RestRequestValidatorTest extends TestCase
     /**
      * @dataProvider httpMethodProvider
      */
-    public function test_rest_request_data_prepper_returns_expected_result_accepted_endpoint_no_id($url, $httpMethod)
+    public function test_rest_request_validator_returns_expected_result_accepted_endpoint_no_id($url, $httpMethod)
     {
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'projects',
             'start_date' => '2020-02-28',
             'title' => 'Gogo!!!'
         ], $url, $httpMethod);
-
-        $this->assertArrayHasKey('endpointData', $validatedMetaData);
-        $this->assertArrayHasKey('extraData', $validatedMetaData);
-        $this->assertArrayHasKey('rejectedParameters', $validatedMetaData);
-        $this->assertArrayHasKey('acceptedParameters', $validatedMetaData);
-        $this->assertArrayHasKey('queryArguments', $validatedMetaData);
 
         $expectedEndpointData = [
             'endpoint' => 'projects',
@@ -128,7 +125,7 @@ class RestRequestValidatorTest extends TestCase
     /**
      * @dataProvider httpMethodNotGoodEndpointProvider
      */
-    public function test_rest_request_data_prepper_returns_expected_result_rejected_endpoint_with_id($url, $httpMethod)
+    public function test_rest_request_validator_returns_expected_result_rejected_endpoint_with_id($url, $httpMethod)
     {
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'notProjects',
@@ -139,6 +136,7 @@ class RestRequestValidatorTest extends TestCase
 
         $this->assertArrayHasKey('endpointData', $validatedMetaData);
         $this->assertArrayHasKey('extraData', $validatedMetaData);
+        $this->assertEquals([], $validatedMetaData['extraData']);
         $this->assertArrayHasKey('rejectedParameters', $validatedMetaData);
         $this->assertArrayHasKey('acceptedParameters', $validatedMetaData);
         $this->assertArrayHasKey('queryArguments', $validatedMetaData);
@@ -171,19 +169,13 @@ class RestRequestValidatorTest extends TestCase
     /**
      * @dataProvider httpMethodNotGoodEndpointProvider
      */
-    public function test_rest_request_data_prepper_returns_expected_result_rejected_endpoint_without_id($url, $httpMethod)
+    public function test_rest_request_validator_returns_expected_result_rejected_endpoint_without_id($url, $httpMethod)
     {
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'notProjects',
             'start_date' => '2020-02-28',
             'title' => 'Gogo!!!'
         ], $url, $httpMethod);
-
-        $this->assertArrayHasKey('endpointData', $validatedMetaData);
-        $this->assertArrayHasKey('extraData', $validatedMetaData);
-        $this->assertArrayHasKey('rejectedParameters', $validatedMetaData);
-        $this->assertArrayHasKey('acceptedParameters', $validatedMetaData);
-        $this->assertArrayHasKey('queryArguments', $validatedMetaData);
 
         $expectedEndpointData = [
             'endpoint' => 'notProjects',
@@ -218,7 +210,7 @@ class RestRequestValidatorTest extends TestCase
     /**
      * @dataProvider parameterNameProvider
      */
-    public function test_rest_request_data_prepper_returns_expected_result_parameters_set_in_request_validator($perPageName, $columnDataName, $formDataName)
+    public function test_rest_request_validator_returns_expected_result_parameters_set_in_request_validator($perPageName, $columnDataName, $formDataName)
     {
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'projects',
@@ -258,7 +250,7 @@ class RestRequestValidatorTest extends TestCase
     /**
      * @dataProvider parameterValueProvider
      */
-    public function test_rest_request_data_prepper_returns_expected_result_parameters_rejected($pageValue, $perPageValue)
+    public function test_rest_request_validator_returns_expected_result_parameters_rejected($pageValue, $perPageValue)
     {
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'projects',
@@ -288,7 +280,7 @@ class RestRequestValidatorTest extends TestCase
         ];
     }
 
-    public function test_rest_request_data_prepper_returns_expected_result_non_expectable_parameters()
+    public function test_rest_request_validator_returns_expected_result_non_expectable_parameters()
     {
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'projects',
