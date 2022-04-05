@@ -26,7 +26,8 @@ return [
         'skillTypes' => 'App\Models\SkillType',
         'skills' => 'App\Models\Skill',
         'workHistoryTypes' => 'App\Models\WorkHistoryType',
-        'workHistory' => 'App\Models\WorkHistory'
+        'workHistory' => 'App\Models\WorkHistory',
+        'tests' => 'App\Models\Test',
     ]
 
 ];

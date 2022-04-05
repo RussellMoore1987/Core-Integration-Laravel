@@ -14,7 +14,10 @@ use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 class RestRequestValidatorTest extends TestCase
 {
     // ! start here ******************************************* fix up code, fix context with request info
+    // make tests seeder -> Test model 
+    // try tests with out seeder
     // add id to parameters -> test, and in endpointIdConvertedTo
+    // php artisan make:migration create_test_table --create
     // add test_id (new migration) to parameters -> test, and in endpointIdConvertedTo
     // endpointIdConvertedTo ??? standard
     // one test of validating parameters good and bad, because they are set in the validator
@@ -120,6 +123,32 @@ class RestRequestValidatorTest extends TestCase
             'PUT' => ['api/v1/projects', 'PUT'],
             'PATCH' => ['api/v1/projects', 'PATCH'],
         ];
+    }
+
+    public function test_rest_request_validator_returns_expected_result_use_generic_id_get_back_model_test_id()
+    {
+        $validatedMetaData = $this->validateRequest([
+            'endpoint' => 'tests',
+            'start_date' => '2020-02-28',
+            'id' => 33,
+            'name' => 'Gogo'
+        ], 'api/v1/tests');
+
+        $expectedEndpointData = [
+            'endpoint' => 'tests',
+            'endpointId' => 33,
+            'endpointError' => false,
+            'class' => 'App\Models\Test',
+            'indexUrl' => 'http://localhost/api/v1/',
+            'url' => 'http://localhost/api/v1/tests',
+            'httpMethod' => 'Get',
+            'endpointIdConvertedTo' => [
+                'test_id' => 33
+            ]
+        ];
+
+        $this->assertEquals($expectedEndpointData, $validatedMetaData['endpointData']);
+        $$this->assertArrayHasKey('test_id', $validatedMetaData['acceptedParameters']);
     }
 
     /**
