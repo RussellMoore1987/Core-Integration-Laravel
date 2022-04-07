@@ -9,6 +9,8 @@ class WorkHistoryType extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'work_history_type_id';
+
     public function workHistories()
     {
         return $this->hasMany(WorkHistory::class);

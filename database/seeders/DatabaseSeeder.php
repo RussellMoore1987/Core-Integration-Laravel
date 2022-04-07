@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
         $WorkHistoryTypes = \App\Models\WorkHistoryType::factory(4)->create();
         $WorkHistories = \App\Models\WorkHistory::factory(10)->make()->each(function ($workHistory) use ($WorkHistoryTypes)
         {
-            $workHistory->work_history_type_id = $WorkHistoryTypes->random()->id;
+            $workHistory->work_history_type_id = $WorkHistoryTypes->random()->work_history_type_id;
             $workHistory->save();
         });
         
