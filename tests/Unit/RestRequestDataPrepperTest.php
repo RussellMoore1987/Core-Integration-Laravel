@@ -91,7 +91,7 @@ class RestRequestDataPrepperTest extends TestCase
     /**
      * @dataProvider endpointIdProvider
      */
-    public function test_rest_request_data_prepper_returns_expected_result_endpointId($endpointIdText)
+    public function test_rest_request_data_prepper_returns_expected_result_different_endpoint_id_text($endpointIdText)
     {
         $preppedData = $this->prepareData([
             'endpoint' => 'projects',
@@ -125,7 +125,7 @@ class RestRequestDataPrepperTest extends TestCase
     /**
      * @dataProvider httpMethodProvider
      */
-    public function test_rest_request_data_prepper_returns_expected_result_http_methods($methodText)
+    public function test_rest_request_data_prepper_returns_expected_result_using_different_http_methods($methodText)
     {
         $preppedData = $this->prepareData([
             'endpoint' => 'projects',

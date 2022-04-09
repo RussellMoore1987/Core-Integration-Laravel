@@ -13,7 +13,7 @@ use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 
 class RestRequestValidatorTest extends TestCase
 {
-    // ! start here ******************************************* on -> test_rest_request_validator_returns_expected_result_parameters_rejected, fix up code, review code, and data preppers test titles
+    // ! start here *******************************************
     // TODO: Test in other class
     // classDataProvider, also add it to RequestValidator
         // acceptableParameters
@@ -254,7 +254,7 @@ class RestRequestValidatorTest extends TestCase
     /**
      * @dataProvider parameterValueProvider
      */
-    public function test_rest_request_validator_returns_expected_result_parameters_rejected($pageValue, $perPageValue)
+    public function test_rest_request_validator_returns_expected_result_default_parameters_rejected($pageValue, $perPageValue)
     {
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'projects',
@@ -284,12 +284,11 @@ class RestRequestValidatorTest extends TestCase
         ];
     }
 
-    public function test_rest_request_validator_returns_expected_result_non_expectable_parameters_and_one_acceptable_parameter()
+    public function test_rest_request_validator_returns_expected_result_non_acceptable_parameters()
     {
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'projects',
             'pageJoe' => 2,
-            'PaGe' => 2,
             'Ham' => 22.99,
             '' => 'yes',
             'array' => [],
@@ -314,15 +313,7 @@ class RestRequestValidatorTest extends TestCase
             ]
         ];
 
-        $expectedAcceptedParameters = [
-            'endpoint' => [
-                'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/'
-                ],
-            'page' => 2 
-        ];
-
         $this->assertEquals($expectedRejectedParameters, $validatedMetaData['rejectedParameters']);
-        $this->assertEquals($expectedAcceptedParameters, $validatedMetaData['acceptedParameters']);
     }
 
     protected function validateRequest(array $parameters = [], $url = 'api/v1/projects', $method = 'GET')
@@ -333,7 +324,6 @@ class RestRequestValidatorTest extends TestCase
         $dataTypeDeterminerFactory = App::make(DataTypeDeterminerFactory::class);
         $parameterValidatorFactory = App::make(ParameterValidatorFactory::class);
         $validatorDataCollector = App::make(ValidatorDataCollector::class);
-
 
         $restRequestValidator = new RestRequestValidator($restRequestDataPrepper, $dataTypeDeterminerFactory, $parameterValidatorFactory, $validatorDataCollector);
 

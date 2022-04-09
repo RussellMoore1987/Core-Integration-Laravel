@@ -102,7 +102,7 @@ class ContextRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_endpoint_id()
+    public function test_context_request_data_prepper_returns_expected_result_different_ways_of_setting_endpoint_id()
     {
         $preppedData = $this->prepareData(['contextInstructions' => '{
             "projects": {
@@ -156,7 +156,7 @@ class ContextRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_default_numeric_result_name()
+    public function test_context_request_data_prepper_returns_expected_result_default_numeric_request_names()
     {
         $preppedData = $this->prepareData(['contextInstructions' => '[
             {
@@ -240,7 +240,7 @@ class ContextRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_result_name_different_then_endpoint()
+    public function test_context_request_data_prepper_returns_expected_result_request_names_different_then_endpoint()
     {
         $preppedData = $this->prepareData(['contextInstructions' => '{
             "big_projects::projects": {
@@ -281,7 +281,7 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_endpoint_name_order_is_correct()
     {
-        // first two arrays will be combined 
+        // first two arrays will be combined, duplicated endpoint names will be overwritten 
         $preppedData = $this->prepareData(['contextInstructions' => '{
             "big_projects::projects": {
                 "start_date": "2020-02-28",
@@ -349,7 +349,7 @@ class ContextRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_result_name_with_many_options()
+    public function test_context_request_data_prepper_returns_expected_result_request_names_sent_in_with_many_options()
     {
         $preppedData = $this->prepareData(['contextInstructions' => '{
             "big_projects::projects::444::big": {
@@ -388,7 +388,7 @@ class ContextRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_result_name_without_options()
+    public function test_context_request_data_prepper_returns_expected_result_request_names_without_options_or_set_in_incorrectly()
     {
         $preppedData = $this->prepareData(['contextInstructions' => '{
             "big_projects::": {
@@ -451,8 +451,9 @@ class ContextRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_set_numeric_endpoint()
+    public function test_context_request_data_prepper_returns_expected_result_set_numeric_endpoints()
     {
+        // in the validator, these endpoints will be rejected
         $preppedData = $this->prepareData(['contextInstructions' => '{
             "big_projects::2": {
                 "start_date": "2020-02-28",
@@ -529,7 +530,7 @@ class ContextRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_no_instructions()
+    public function test_context_request_data_prepper_returns_expected_result_no_context_instructions()
     {
         $contextRequestDataPrepper = new ContextRequestDataPrepper($this->request);
         $contextRequestDataPrepper->prep();
