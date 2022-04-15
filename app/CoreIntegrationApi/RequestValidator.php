@@ -3,9 +3,9 @@
 namespace App\CoreIntegrationApi;
 
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
-use App\CoreIntegrationApi\DataTypeDeterminerFactory;
 use App\CoreIntegrationApi\RequestDataPrepper;
 use App\CoreIntegrationApi\ValidatorDataCollector;
+use App\CoreIntegrationApi\ClassDataProvider;
 use Illuminate\Support\Facades\DB;
 
 abstract class RequestValidator 
@@ -13,9 +13,11 @@ abstract class RequestValidator
 
     protected $requestDataPrepper;
     protected $validatorDataCollector;
+    protected $classDataProvider;
     protected $acceptedClasses;
     protected $parameterValidatorFactory;
     protected $class;
+    protected $classInfo;
     protected $endpoint;
     protected $endpointId;
     protected $endpointError = false;
@@ -36,13 +38,13 @@ abstract class RequestValidator
     protected $acceptableParameters = [];
     protected $validatedMetaData;
     
-    function __construct(RequestDataPrepper $requestDataPrepper, DataTypeDeterminerFactory $dataTypeDeterminerFactory, ParameterValidatorFactory $parameterValidatorFactory, ValidatorDataCollector $validatorDataCollector) 
+    function __construct(RequestDataPrepper $requestDataPrepper, ParameterValidatorFactory $parameterValidatorFactory, ValidatorDataCollector $validatorDataCollector, ClassDataProvider $classDataProvider) 
     {
         $this->requestDataPrepper = $requestDataPrepper;
         $this->acceptedClasses = config('coreintegration.acceptedclasses') ?? [];
-        $this->dataTypeDeterminerFactory = $dataTypeDeterminerFactory;
         $this->parameterValidatorFactory = $parameterValidatorFactory;
         $this->validatorDataCollector = $validatorDataCollector;
+        $this->classDataProvider = $classDataProvider;
     }   
 
     public function validate()
@@ -58,8 +60,10 @@ abstract class RequestValidator
     {
         $this->setUpPreppedRequest($prepRequestData);
         
+        // TODO: change these to use new class
         $this->validateEndPoint();
         $this->getAcceptableParameters();
+
         $this->validateParameters();
         
         $this->setExtraData();
@@ -72,21 +76,27 @@ abstract class RequestValidator
         $this->endpointId = $prepRequestData['endpointId']  ?? [];
         $this->parameters = $prepRequestData['parameters'] ?? [];
         $this->httpMethod = $prepRequestData['httpMethod'] ?? 'GET';
-        $this->url = $prepRequestData['url'] ?? [];
+        $this->url = $prepRequestData['url'] ?? '';
     }
 
     protected function validateEndPoint()
     {
         if (array_key_exists($this->endpoint, $this->acceptedClasses) ) {
+            $this->setClassInfo();
             $this->setEndpoint();
         } elseif ($this->endpoint != 'index') {
             $this->setEndpointError();
         } 
     }
 
+    protected function setClassInfo()
+    {
+        $this->classDataProvider->setClass($this->acceptedClasses[$this->endpoint]);
+        $this->classInfo = $this->classDataProvider->getClassInfo();
+    }
+
     protected function setEndpoint()
     {
-        $this->class = $this->acceptedClasses[$this->endpoint]; 
         $this->checkForIdParameterIfThereSetItAppropriately();
         $this->validatorDataCollector->setAcceptedParameter([
             "endpoint" => [
@@ -101,14 +111,13 @@ abstract class RequestValidator
             'endpoint' => $this->endpoint, 
             'endpointId' => $this->endpointId,  
             'endpointError' => $this->endpointError, 
-            'class' => $this->class, 
+            'class' => $this->classInfo['path'], 
             'indexUrl' => $this->getIndexUrl(),
             'url' => $this->url,
             'httpMethod' => $this->httpMethod,
         ];
         if ($this->endpointId) {
-            $class = new $this->class();
-            $primaryKeyName = $class->getKeyName() ? $class->getKeyName() : 'id';
+            $primaryKeyName = $this->classInfo['primaryKeyName'];
             $this->parameters[$primaryKeyName] = $this->endpointId;
             $endpointData['endpointIdConvertedTo'] = [$primaryKeyName => $this->endpointId];
         }
@@ -149,8 +158,21 @@ abstract class RequestValidator
         );
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
     protected function getAcceptableParameters()
     {
+        // ! start here ******************************************* setting $this->classInfo['path'], run tests, and make tests for ClassDataProvider
         if (!$this->endpointError) {
             $tempClass = new $this->class();
             $classTableName = $tempClass->gettable();
@@ -190,6 +212,19 @@ abstract class RequestValidator
         }
         $this->extraData['acceptableParameters'] = $this->acceptableParameters;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     // TODO: get validation but what about the others put patch post
     protected function validateParameters()

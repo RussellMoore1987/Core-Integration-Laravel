@@ -6,21 +6,13 @@ use Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\CoreIntegrationApi\ValidatorDataCollector;
-use App\CoreIntegrationApi\DataTypeDeterminerFactory;
+use App\CoreIntegrationApi\ClassDataProvider;
 use App\CoreIntegrationApi\RestApi\RestRequestValidator;
 use App\CoreIntegrationApi\RestApi\RestRequestDataPrepper;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 
 class RestRequestValidatorTest extends TestCase
 {
-    // ! start here *******************************************
-    // TODO: Test in other class
-    // classDataProvider, also add it to RequestValidator
-        // acceptableParameters
-        // availableMethodCalls
-        // availableIncludes
-        // form info
-
     // ===============================================================================================
     // these tests for the most part should only test what the validator class it's self produces***
     // ===============================================================================================
@@ -320,12 +312,11 @@ class RestRequestValidatorTest extends TestCase
     {
         $request = Request::create($url, $method, $parameters);
         $restRequestDataPrepper = new RestRequestDataPrepper($request);
-
-        $dataTypeDeterminerFactory = App::make(DataTypeDeterminerFactory::class);
         $parameterValidatorFactory = App::make(ParameterValidatorFactory::class);
         $validatorDataCollector = App::make(ValidatorDataCollector::class);
+        $classDataProvider = App::make(ClassDataProvider::class);
 
-        $restRequestValidator = new RestRequestValidator($restRequestDataPrepper, $dataTypeDeterminerFactory, $parameterValidatorFactory, $validatorDataCollector);
+        $restRequestValidator = new RestRequestValidator($restRequestDataPrepper, $parameterValidatorFactory, $validatorDataCollector, $classDataProvider);
 
         return $restRequestValidator->validate();
     }

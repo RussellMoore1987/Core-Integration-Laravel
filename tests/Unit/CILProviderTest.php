@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\CoreIntegrationApi\CIL\CILQueryAssembler;
-
+use App\CoreIntegrationApi\ClassDataProvider;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
@@ -33,6 +33,7 @@ class CILProviderTest extends TestCase
     {
         return [
             'CILQueryAssembler' => [CILQueryAssembler::class],
+            'ClassDataProvider' => [ClassDataProvider::class],
         ];
     }
 }
