@@ -6,7 +6,6 @@ use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use App\CoreIntegrationApi\RequestDataPrepper;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\CoreIntegrationApi\ClassDataProvider;
-use Illuminate\Support\Facades\DB;
 
 abstract class RequestValidator 
 {
@@ -35,7 +34,6 @@ abstract class RequestValidator
         'relationships' => 'includes',
         'includes' => 'includes',
     ];
-    protected $acceptableParameters = [];
     protected $validatedMetaData;
     
     function __construct(RequestDataPrepper $requestDataPrepper, ParameterValidatorFactory $parameterValidatorFactory, ValidatorDataCollector $validatorDataCollector, ClassDataProvider $classDataProvider) 
@@ -60,9 +58,8 @@ abstract class RequestValidator
     {
         $this->setUpPreppedRequest($prepRequestData);
         
-        // TODO: change these to use new class
         $this->validateEndPoint();
-        $this->getAcceptableParameters();
+        $this->setClassInfo();
 
         $this->validateParameters();
         
@@ -82,14 +79,14 @@ abstract class RequestValidator
     protected function validateEndPoint()
     {
         if (array_key_exists($this->endpoint, $this->acceptedClasses) ) {
-            $this->setClassInfo();
+            $this->setRequestClass();
             $this->setEndpoint();
         } elseif ($this->endpoint != 'index') {
             $this->setEndpointError();
         } 
     }
 
-    protected function setClassInfo()
+    protected function setRequestClass()
     {
         $this->classDataProvider->setClass($this->acceptedClasses[$this->endpoint]);
         $this->classInfo = $this->classDataProvider->getClassInfo();
@@ -158,73 +155,14 @@ abstract class RequestValidator
         );
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    protected function getAcceptableParameters()
+    protected function setClassInfo()
     {
-        // ! start here ******************************************* setting $this->classInfo['path'], run tests, and make tests for ClassDataProvider
         if (!$this->endpointError) {
-            $tempClass = new $this->class();
-            $classTableName = $tempClass->gettable();
-            $columnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$classTableName}"));
-            $this->setAcceptableParameters($columnData);
-            $this->addApiDataTypeToAcceptableParameters();
-            $this->extraData['availableMethodCalls'] = $tempClass->availableMethodCalls ?? [];
-            $this->extraData['availableIncludes'] = $tempClass->availableIncludes ?? [];
+            $this->extraData['availableMethodCalls'] = $this->classInfo['classParameterOptions']['availableMethodCalls'];
+            $this->extraData['availableIncludes'] = $this->classInfo['classParameterOptions']['availableIncludes'];
+            $this->extraData['acceptableParameters'] = $this->classInfo['classParameterOptions']['acceptableParameters'];
         }
     }
-
-    protected function arrayOfObjectsToArrayOfArrays(array $arrayOfObjects)
-    {
-        foreach ($arrayOfObjects as $object) {
-            $arrayOfArrays[] = (array) $object;
-        }
-
-        return $arrayOfArrays;
-    }
-
-    protected function setAcceptableParameters(array $classDBData)
-    {
-        foreach ($classDBData as $columnArray) {
-            foreach ($columnArray as $column_data_name => $value) {
-                $column_data_name = strtolower($column_data_name);
-                $value = $value === Null ? $value : strtolower($value);
-
-                $this->acceptableParameters[$columnArray['Field']][$column_data_name] = $value; 
-            }
-        }
-    }
-
-    protected function addApiDataTypeToAcceptableParameters()
-    {
-        foreach ($this->acceptableParameters as $key => $columnArray) {
-            $this->acceptableParameters[$key]['api_data_type'] = $this->dataTypeDeterminerFactory->getFactoryItem($columnArray['type']);   
-        }
-        $this->extraData['acceptableParameters'] = $this->acceptableParameters;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
     
     // TODO: get validation but what about the others put patch post
     protected function validateParameters()
@@ -232,8 +170,8 @@ abstract class RequestValidator
         foreach ($this->parameters as $key => $value) {
             $key = strtolower($key);
             $data = [$key => $value];
-            if (array_key_exists($key, $this->acceptableParameters)) {
-                $dataType = $this->acceptableParameters[$key]['type'];
+            if (array_key_exists($key, $this->extraData['acceptableParameters'])) {
+                $dataType = $this->extraData['acceptableParameters'][$key]['type'];
                 $this->getMethodParameterValidator($dataType, $data);
             } elseif (array_key_exists($key, $this->getMethodParameterValidatorDefaults)) {
                 $dataType = $this->getMethodParameterValidatorDefaults[$key];

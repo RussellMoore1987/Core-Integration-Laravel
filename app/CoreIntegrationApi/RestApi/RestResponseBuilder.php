@@ -112,7 +112,6 @@ class RestResponseBuilder implements ResponseBuilder
 
 // TODO: add ability to ask for methodcalls and includes, like columndata
 // TODO: add default Parameters
-// ! start here and test them
 // TODO: documentation builder
 // // TODO: move to separate class to ues in many places, formData, columnData, index, Get response - test it - set in validator
 // $paginateObj['availableEndpointParameters']['defaultParameters']['columns'] = [

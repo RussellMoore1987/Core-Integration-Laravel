@@ -20,7 +20,6 @@ class ClassDataProvider
 
     public function setClass(string $class)
     {
-        // dd($class, class_exists($class), is_subclass_of($class, 'Illuminate\Database\Eloquent\Model'));
         if (class_exists($class) && is_subclass_of($class, 'Illuminate\Database\Eloquent\Model')) {
             $this->class = $class;
             $this->classObject = new $class();
@@ -52,6 +51,7 @@ class ClassDataProvider
         $this->columnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$this->classTableName}"));
         $this->setAcceptableParameters();
         $this->addApiDataTypeToAcceptableParameters();
+        $this->addFormDataToAcceptableParameters();
         $this->availableParameters['availableMethodCalls'] = $this->classObject->availableMethodCalls ?? [];
         $this->availableParameters['availableIncludes'] = $this->classObject->availableIncludes ?? [];
     }
@@ -67,7 +67,7 @@ class ClassDataProvider
 
     protected function setAcceptableParameters()
     {
-        foreach ($this->classDBData as $columnArray) {
+        foreach ($this->columnData as $columnArray) {
             foreach ($columnArray as $column_data_name => $value) {
                 $column_data_name = strtolower($column_data_name);
                 $value = $value === Null ? $value : strtolower($value);
@@ -84,12 +84,28 @@ class ClassDataProvider
         }
     }
 
+    protected function addFormDataToAcceptableParameters()
+    {
+        // ! start here ********************************************************
+        foreach ($this->availableParameters['acceptableParameters'] as $key => $columnArray) {
+            // $parameterFormDataProcessor = $this->parameterFormDataProcessorFactory->getFactoryItem($columnArray['type']);
+            // $this->availableParameters['acceptableParameters'][$key]['formData'] = $parameterFormDataProcessor->getFormData($columnArray['type']);
+
+            // TODO: up date uml diagram
+            // send in db data type to data type factory
+            // get back correct data type processor  
+                // send in db data type to data type processor  
+                    // prosses -> get form data -> send it back 
+            // add it to the acceptable parameter
+        }
+    }
+
     public function getClassInfo()
     {
         $classInfo = [
             'primaryKeyName' => $this->getClassPrimaryKeyName(),
             'path' => $this->getClassPath(),
-            'acceptableParameters' => $this->getClassAcceptableParameters(),
+            'classParameterOptions' => $this->getClassAcceptableParameters(),
         ];
         return $classInfo;
     }
