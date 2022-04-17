@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\CoreIntegrationApi\CIL\ClauseBuilderFactory;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilderFactory;
 use App\CoreIntegrationApi\CIL\CILQueryAssembler;
 use App\CoreIntegrationApi\ClassDataProvider;
-use App\CoreIntegrationApi\DataTypeDeterminerFactory;
+use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFactory;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -33,7 +33,7 @@ class CILProvider extends ServiceProvider
     private function bindClassDataProvider() {
         $this->app->bind(ClassDataProvider::class, function ($app) {
             return new ClassDataProvider(
-                $app->make(DataTypeDeterminerFactory::class),
+                $app->make(ParameterDataProviderFactory::class),
             );
         });
     }

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\ClauseBuilder;
 
-use App\CoreIntegrationApi\CIL\ClauseBuilder\DateWhereClauseBuilder;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\DateWhereClauseBuilder;
 use App\Models\Project;
 use Tests\TestCase;
 

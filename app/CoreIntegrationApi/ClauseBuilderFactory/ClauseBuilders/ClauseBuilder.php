@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CoreIntegrationApi\CIL\ClauseBuilder;
+namespace App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders;
 
 use Illuminate\Database\Eloquent\Builder;
 

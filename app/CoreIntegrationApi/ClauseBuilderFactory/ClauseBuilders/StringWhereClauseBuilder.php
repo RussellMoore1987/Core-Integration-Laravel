@@ -1,9 +1,9 @@
 <?php
 
-namespace App\CoreIntegrationApi\CIL\ClauseBuilder;
+namespace App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders;
 
 use Illuminate\Database\Eloquent\Builder;
-use App\CoreIntegrationApi\CIL\ClauseBuilder\ClauseBuilder;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\ClauseBuilder;
 
 class StringWhereClauseBuilder implements ClauseBuilder
 {

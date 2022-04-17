@@ -4,7 +4,7 @@
 
     use App\CoreIntegrationApi\CIL\CILDataTypeDeterminerFactory;
 
-    class DataTypeDeterminerFactory extends CILDataTypeDeterminerFactory
+    class ParameterDataProviderFactory extends CILDataTypeDeterminerFactory
     {
         
     }

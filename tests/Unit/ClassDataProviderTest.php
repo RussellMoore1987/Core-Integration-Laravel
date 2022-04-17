@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\CoreIntegrationApi\ClassDataProvider;
-use App\CoreIntegrationApi\DataTypeDeterminerFactory;
+use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFactory;
 use Tests\TestCase;
 
 class ClassDataProviderTest extends TestCase
@@ -14,7 +14,7 @@ class ClassDataProviderTest extends TestCase
     {
         parent::setUp();
 
-        $this->classDataProvider = new ClassDataProvider(new DataTypeDeterminerFactory());
+        $this->classDataProvider = new ClassDataProvider(new ParameterDataProviderFactory());
     }
 
     /**
@@ -49,6 +49,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => 'auto_increment',
                                 'api_data_type' => 'int',
+                                'formData' => [],
                             ],
                             'title' => [
                                 'field' => 'title',
@@ -58,6 +59,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'string',
+                                'formData' => [],
                             ],
                             'roles' => [
                                 'field' => 'roles',
@@ -67,6 +69,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'string',
+                                'formData' => [],
                             ],
                             'client' => [
                                 'field' => 'client',
@@ -76,6 +79,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'string',
+                                'formData' => [],
                             ],
                             'description' => [
                                 'field' => 'description',
@@ -85,6 +89,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'string',
+                                'formData' => [],
                             ],
                             'content' => [
                                 'field' => 'content',
@@ -94,6 +99,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'json',
+                                'formData' => [],
                             ],
                             'video_link' => [
                                 'field' => 'video_link',
@@ -103,6 +109,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'string',
+                                'formData' => [],
                             ],
                             'code_link' => [
                                 'field' => 'code_link',
@@ -112,6 +119,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'string',
+                                'formData' => [],
                             ],
                             'demo_link' => [
                                 'field' => 'demo_link',
@@ -121,6 +129,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'string',
+                                'formData' => [],
                             ],
                             'start_date' => [
                                 'field' => 'start_date',
@@ -130,6 +139,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'date',
+                                'formData' => [],
                             ],
                             'end_date' => [
                                 'field' => 'end_date',
@@ -139,6 +149,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'date',
+                                'formData' => [],
                             ],
                             'is_published' => [
                                 'field' => 'is_published',
@@ -148,6 +159,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => '0',
                                 'extra' => '',
                                 'api_data_type' => 'int',
+                                'formData' => [],
                             ],
                             'created_at' => [
                                 'field' => 'created_at',
@@ -157,6 +169,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'date',
+                                'formData' => [],
                             ],
                             'updated_at' => [
                                 'field' => 'updated_at',
@@ -166,6 +179,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'date',
+                                'formData' => [],
                             ],
                             'budget' => [
                                 'field' => 'budget',
@@ -175,6 +189,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'float',
+                                'formData' => [],
                             ],
                         ],
                         'availableMethodCalls' => [
@@ -204,6 +219,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => 'auto_increment',
                                 'api_data_type' => 'int',
+                                'formData' => [],
                               ],
                               'name' => [
                                 'field' => 'name',
@@ -213,6 +229,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'string',
+                                'formData' => [],
                               ],
                               'icon' => [
                                 'field' => 'icon',
@@ -222,6 +239,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'string',
+                                'formData' => [],
                               ],
                               'created_at' => [
                                 'field' => 'created_at',
@@ -231,6 +249,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'date',
+                                'formData' => [],
                               ],
                               'updated_at' => [
                                 'field' => 'updated_at',
@@ -240,6 +259,7 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => '',
                                 'api_data_type' => 'date',
+                                'formData' => [],
                               ],
                         ],
                         'availableMethodCalls' => [],

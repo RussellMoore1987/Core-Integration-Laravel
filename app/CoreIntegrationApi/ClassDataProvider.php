@@ -2,7 +2,7 @@
 
 namespace App\CoreIntegrationApi;
 
-use App\CoreIntegrationApi\DataTypeDeterminerFactory;
+use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFactory;
 use Illuminate\Support\Facades\DB;
 
 class ClassDataProvider 
@@ -13,9 +13,9 @@ class ClassDataProvider
     protected $columnData;
     protected $availableParameters;
 
-    public function __construct(DataTypeDeterminerFactory $dataTypeDeterminerFactory)
+    public function __construct(ParameterDataProviderFactory $parameterDataProviderFactory)
     {
-        $this->dataTypeDeterminerFactory = $dataTypeDeterminerFactory;
+        $this->parameterDataProviderFactory = $parameterDataProviderFactory;
     }
 
     public function setClass(string $class)
@@ -50,7 +50,6 @@ class ClassDataProvider
     {
         $this->columnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$this->classTableName}"));
         $this->setAcceptableParameters();
-        $this->addApiDataTypeToAcceptableParameters();
         $this->addFormDataToAcceptableParameters();
         $this->availableParameters['availableMethodCalls'] = $this->classObject->availableMethodCalls ?? [];
         $this->availableParameters['availableIncludes'] = $this->classObject->availableIncludes ?? [];
@@ -77,26 +76,18 @@ class ClassDataProvider
         }
     }
 
-    protected function addApiDataTypeToAcceptableParameters()
-    {
-        foreach ($this->availableParameters['acceptableParameters'] as $key => $columnArray) {
-            $this->availableParameters['acceptableParameters'][$key]['api_data_type'] = $this->dataTypeDeterminerFactory->getFactoryItem($columnArray['type']);   
-        }
-    }
-
     protected function addFormDataToAcceptableParameters()
     {
-        // ! start here ********************************************************
+        // ! start here ******************************************************** date and int parameterDataProvider formData, and date and int end to end testing API
+        // TODO:
+        // form info
+        // Test Exception
+        // Test class formData, and db formData
         foreach ($this->availableParameters['acceptableParameters'] as $key => $columnArray) {
-            // $parameterFormDataProcessor = $this->parameterFormDataProcessorFactory->getFactoryItem($columnArray['type']);
-            // $this->availableParameters['acceptableParameters'][$key]['formData'] = $parameterFormDataProcessor->getFormData($columnArray['type']);
-
-            // TODO: up date uml diagram
-            // send in db data type to data type factory
-            // get back correct data type processor  
-                // send in db data type to data type processor  
-                    // prosses -> get form data -> send it back 
-            // add it to the acceptable parameter
+            $parameterFormDataProvider = $this->parameterDataProviderFactory->getFactoryItem($columnArray['type']);
+            $parameterData = $parameterFormDataProvider->getData($columnArray['type']);
+            $this->availableParameters['acceptableParameters'][$key]['formData'] = $parameterData['formData'];
+            $this->availableParameters['acceptableParameters'][$key]['api_data_type'] = $parameterData['apiDataType'];
         }
     }
 
@@ -109,9 +100,4 @@ class ClassDataProvider
         ];
         return $classInfo;
     }
-
-    
-    // TODO: Test in other class
-    // ClassDataProvider, also add it to RequestValidator
-        // form info
 }

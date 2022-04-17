@@ -3,7 +3,7 @@
 namespace App\CoreIntegrationApi\CIL;
 
 use App\CoreIntegrationApi\QueryAssembler;
-use App\CoreIntegrationApi\CIL\ClauseBuilderFactory;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilderFactory;
 
 class CILQueryAssembler implements QueryAssembler
 {

@@ -16,8 +16,6 @@ use Tests\TestCase;
 
 class ParameterValidatorFactoryTest extends TestCase
 {
-    private $endpointData;
-
     protected function setUp(): void
     {
         parent::setUp();
