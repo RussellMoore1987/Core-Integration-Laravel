@@ -43,6 +43,7 @@ class ClassDataProvider
     {
         $this->classTableName = $this->classObject->gettable();
         $this->getAcceptableParameters();
+        dd($this->availableParameters);
         return $this->availableParameters;
     }
 
@@ -50,7 +51,7 @@ class ClassDataProvider
     {
         $this->columnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$this->classTableName}"));
         $this->setAcceptableParameters();
-        $this->addFormDataToAcceptableParameters();
+        // $this->addFormDataToAcceptableParameters();
         $this->availableParameters['availableMethodCalls'] = $this->classObject->availableMethodCalls ?? [];
         $this->availableParameters['availableIncludes'] = $this->classObject->availableIncludes ?? [];
     }
@@ -81,8 +82,14 @@ class ClassDataProvider
         // ! start here ******************************************************** date and int parameterDataProvider formData, and date and int end to end testing API
         // TODO:
         // form info
-        // Test Exception
         // Test class formData, and db formData
+            // min
+            // max
+            // minlength
+            // maxlength
+            // required
+            // unique
+            // others laravel validation rules
         foreach ($this->availableParameters['acceptableParameters'] as $key => $columnArray) {
             $parameterFormDataProvider = $this->parameterDataProviderFactory->getFactoryItem($columnArray['type']);
             $parameterData = $parameterFormDataProvider->getData($columnArray['type']);

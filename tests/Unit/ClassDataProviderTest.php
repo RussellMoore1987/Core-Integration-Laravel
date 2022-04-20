@@ -17,6 +17,14 @@ class ClassDataProviderTest extends TestCase
         $this->classDataProvider = new ClassDataProvider(new ParameterDataProviderFactory());
     }
 
+    public function test_classDataProvider_setClass_function_for_exception()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectErrorMessage('Class does not exist or is not a subclass of the Model class');
+
+        $this->classDataProvider->setClass('NotAClass');
+    }
+
     /**
      * @dataProvider classDataProvider
      */

@@ -2,11 +2,14 @@
 
 namespace App\CoreIntegrationApi\CIL;
 
+use Illuminate\Support\Facades\App;
+
 abstract class CILDataTypeDeterminerFactory
 {
     protected $factoryItem;
     protected $factoryItemTrigger;
     protected $dataType;
+    // Just placeholder strings, should be replaced by paths to the actual classes, see app\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilderFactory.php for example
     protected $factoryReturnArray = [
         'string' => 'string',
         'json' => 'json',
@@ -145,6 +148,6 @@ abstract class CILDataTypeDeterminerFactory
 
     protected function returnValue($dataTypeValue)
     {
-        return $dataTypeValue;
+        return App::make($dataTypeValue);
     }
 }

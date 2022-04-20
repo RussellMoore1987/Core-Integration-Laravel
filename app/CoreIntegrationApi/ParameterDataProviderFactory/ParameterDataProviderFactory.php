@@ -3,7 +3,6 @@
 namespace App\CoreIntegrationApi\ParameterDataProviderFactory;
 
 use App\CoreIntegrationApi\CIL\CILDataTypeDeterminerFactory;
-use Illuminate\Support\Facades\App;
 
 class ParameterDataProviderFactory extends CILDataTypeDeterminerFactory
 {
@@ -18,10 +17,5 @@ class ParameterDataProviderFactory extends CILDataTypeDeterminerFactory
         ];
 
         return parent::getFactoryItem($dataType);
-    }
-
-    protected function returnValue($dataTypeValue)
-    {
-        return App::make($dataTypeValue);
     }
 }
