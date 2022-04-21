@@ -57,7 +57,12 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => 'auto_increment',
                                 'api_data_type' => 'int',
-                                'formData' => [],
+                                'formData' => [
+                                    'min' => 0,
+                                    'max' => 18446744073709551615,
+                                    'maxCharacters' => 20,
+                                    'type' => 'number',
+                                ],
                             ],
                             'title' => [
                                 'field' => 'title',
@@ -167,7 +172,12 @@ class ClassDataProviderTest extends TestCase
                                 'default' => '0',
                                 'extra' => '',
                                 'api_data_type' => 'int',
-                                'formData' => [],
+                                'formData' => [
+                                    'min' => -128,
+                                    'max' => 127,
+                                    'maxCharacters' => 3,
+                                    'type' => 'number',
+                                ],
                             ],
                             'created_at' => [
                                 'field' => 'created_at',
@@ -227,7 +237,12 @@ class ClassDataProviderTest extends TestCase
                                 'default' => null,
                                 'extra' => 'auto_increment',
                                 'api_data_type' => 'int',
-                                'formData' => [],
+                                'formData' => [
+                                    'min' => 1,
+                                    'max' => 999999,
+                                    'maxCharacters' => 6,
+                                    'type' => 'number',
+                                ],
                               ],
                               'name' => [
                                 'field' => 'name',

@@ -4,15 +4,12 @@ namespace App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProvi
 
 use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders\ParameterDataProvider;
 
-class JsonParameterDataProvider implements ParameterDataProvider
+class JsonParameterDataProvider extends ParameterDataProvider
 {
     protected $apiDataType = 'json';
 
-    public function getData($dataType) : array
+    protected function getFormData()
     {
-        return [
-            'apiDataType' => $this->apiDataType,
-            'formData' => [],
-        ];
+        $this->formData = [];
     }
 }

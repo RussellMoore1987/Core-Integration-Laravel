@@ -10,6 +10,15 @@ class WorkHistoryType extends Model
     use HasFactory;
 
     protected $primaryKey = 'work_history_type_id';
+    public $formData = [
+        'work_history_type_id' => [
+            'min' => 1,
+            'max' => 999999,
+            'maxCharacters' => 6,
+            'type' => 'number',
+        ],
+        
+    ];
 
     public function workHistories()
     {

@@ -43,7 +43,6 @@ class ClassDataProvider
     {
         $this->classTableName = $this->classObject->gettable();
         $this->getAcceptableParameters();
-        dd($this->availableParameters);
         return $this->availableParameters;
     }
 
@@ -51,7 +50,7 @@ class ClassDataProvider
     {
         $this->columnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$this->classTableName}"));
         $this->setAcceptableParameters();
-        // $this->addFormDataToAcceptableParameters();
+        $this->addFormDataToAcceptableParameters();
         $this->availableParameters['availableMethodCalls'] = $this->classObject->availableMethodCalls ?? [];
         $this->availableParameters['availableIncludes'] = $this->classObject->availableIncludes ?? [];
     }
@@ -79,7 +78,7 @@ class ClassDataProvider
 
     protected function addFormDataToAcceptableParameters()
     {
-        // ! start here ******************************************************** date and int parameterDataProvider formData, and date and int end to end testing API
+        // ! ******************************************************** date and int parameterDataProvider formData, and date and int end to end testing API
         // TODO:
         // form info
         // Test class formData, and db formData
@@ -92,7 +91,7 @@ class ClassDataProvider
             // others laravel validation rules
         foreach ($this->availableParameters['acceptableParameters'] as $key => $columnArray) {
             $parameterFormDataProvider = $this->parameterDataProviderFactory->getFactoryItem($columnArray['type']);
-            $parameterData = $parameterFormDataProvider->getData($columnArray['type']);
+            $parameterData = $parameterFormDataProvider->getData($columnArray['type'], $key, $this->classObject);
             $this->availableParameters['acceptableParameters'][$key]['formData'] = $parameterData['formData'];
             $this->availableParameters['acceptableParameters'][$key]['api_data_type'] = $parameterData['apiDataType'];
         }

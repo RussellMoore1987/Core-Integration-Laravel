@@ -4,15 +4,12 @@ namespace App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProvi
 
 use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders\ParameterDataProvider;
 
-class FloatParameterDataProvider implements ParameterDataProvider
+class FloatParameterDataProvider extends ParameterDataProvider
 {
     protected $apiDataType = 'float';
 
-    public function getData($dataType) : array
+    protected function getFormData()
     {
-        return [
-            'apiDataType' => $this->apiDataType,
-            'formData' => [],
-        ];
+        $this->formData = [];
     }
 }
