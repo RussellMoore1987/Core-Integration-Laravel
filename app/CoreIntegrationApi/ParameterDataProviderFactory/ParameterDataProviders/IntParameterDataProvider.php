@@ -163,15 +163,4 @@ class IntParameterDataProvider extends ParameterDataProvider
 
         return false;
     }
-
-
-// ! start here --- https://dev.mysql.com/doc/refman/8.0/en/integer-types.html
-// TODO: test other exseption
-    // (
-    //     (
-    //         str_contains($this->dataType, $intString) && 
-    //         str_contains($this->dataType, 'unsigned')
-    //     ) || 
-    //     str_contains($this->dataType, $intString)
-    // )
 }

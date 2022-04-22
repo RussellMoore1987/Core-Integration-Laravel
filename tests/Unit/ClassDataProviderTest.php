@@ -173,9 +173,9 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'int',
                                 'formData' => [
-                                    'min' => -128,
-                                    'max' => 127,
-                                    'maxCharacters' => 3,
+                                    'min' => 0,
+                                    'max' => 1,
+                                    'maxCharacters' => 1,
                                     'type' => 'number',
                                 ],
                             ],

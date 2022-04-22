@@ -38,13 +38,12 @@ abstract class ParameterDataProvider
 
     protected function checkForClassFormData()
     {
-        // ! start here php artisan test --filter ClassDataProviderTest not working
         if (
             is_array($this->formData) && 
             $this->parameterClass->formData && 
             isset($this->parameterClass->formData[$this->parameterName])
             ) {
-            $this->formData = array_merge($this->formData, $this->parameterClass->formData);
+            $this->formData = array_merge($this->formData, $this->parameterClass->formData[$this->parameterName]);
         }
     }
 

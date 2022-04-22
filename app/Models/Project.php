@@ -13,6 +13,14 @@ class Project extends Model
 
     public $availableIncludes = ['images', 'tags', 'categories'];
 
+    public $formData = [
+        'is_published' => [
+            'min' => 0,
+            'max' => 1,
+            'maxCharacters' => 1,  
+        ],
+    ];
+
     public function images()
     {
         return $this->belongsToMany(Image::class)->withPivot('is_featured_img', 'sort_order');
