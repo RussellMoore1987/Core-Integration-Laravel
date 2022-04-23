@@ -28,7 +28,7 @@ class IntParameterDataProvider extends ParameterDataProvider
             $this->formData = [
                 'min' => -128,
                 'max' => 127,
-                'maxCharacters' => 3,
+                'maxlength' => 3,
                 'type' => 'number',
             ];
 
@@ -50,9 +50,8 @@ class IntParameterDataProvider extends ParameterDataProvider
             $this->formData = [
                 'min' => -32768,
                 'max' => 32767,
-                'maxCharacters' => 5,
+                'maxlength' => 5,
                 'type' => 'number',
-                'decimal' => false,
             ];
 
             if ($this->isUnsignedInt()) {
@@ -71,14 +70,14 @@ class IntParameterDataProvider extends ParameterDataProvider
             $this->formData = [
                 'min' => -8388608,
                 'max' => 8388607,
-                'maxCharacters' => 7,
+                'maxlength' => 7,
                 'type' => 'number',
             ];
 
             if ($this->isUnsignedInt()) {
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 16777215;
-                $this->formData['maxCharacters'] = 8;
+                $this->formData['maxlength'] = 8;
             }
         }
     }
@@ -92,9 +91,8 @@ class IntParameterDataProvider extends ParameterDataProvider
             $this->formData = [
                 'min' => -2147483648,
                 'max' => 2147483647,
-                'maxCharacters' => 10,
+                'maxlength' => 10,
                 'type' => 'number',
-                'decimal' => false,
             ];
 
             if ($this->isUnsignedInt()) {
@@ -113,14 +111,14 @@ class IntParameterDataProvider extends ParameterDataProvider
             $this->formData = [
                 'min' => -9223372036854775808,
                 'max' => 9223372036854775807,
-                'maxCharacters' => 19,
+                'maxlength' => 19,
                 'type' => 'number',
             ];
 
             if ($this->isUnsignedInt()) {
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 18446744073709551615;
-                $this->formData['maxCharacters'] = 20;
+                $this->formData['maxlength'] = 20;
             }
         }
     }
@@ -134,9 +132,8 @@ class IntParameterDataProvider extends ParameterDataProvider
             $this->formData = [
                 'min' => -2147483648,
                 'max' => 2147483647,
-                'maxCharacters' => 10,
+                'maxlength' => 10,
                 'type' => 'number',
-                'decimal' => false,
             ];
 
             if ($this->isUnsignedInt()) {

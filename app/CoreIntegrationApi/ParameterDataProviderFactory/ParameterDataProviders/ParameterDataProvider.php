@@ -9,10 +9,10 @@ abstract class ParameterDataProvider
     protected $apiDataType;
     protected $formData = []; 
 
-    public function getApiDataType() : string
+    protected function getApiDataType() : string
     {
         if (!$this->apiDataType) {
-            throw new \Exception('No apiDataType class property set, must be set in the child class');
+            throw new \Exception('No apiDataType class property set, this must be set in the child class');
         }
 
         return $this->apiDataType;
