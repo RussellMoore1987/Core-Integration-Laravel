@@ -14,7 +14,7 @@ class WorkHistoryType extends Model
         'work_history_type_id' => [
             'min' => 1,
             'max' => 999999,
-            'maxCharacters' => 6,
+            'maxlength' => 6,
             'type' => 'number',
         ],
         

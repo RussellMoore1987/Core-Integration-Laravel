@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\CoreIntegrationApi\CIL\CILModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
     use HasFactory;
+    // use CILModel;
 
     public $availableMethodCalls = ['pluse1_5', 'budgetTimeTwo', 'newTitle'];
 
@@ -17,7 +19,34 @@ class Project extends Model
         'is_published' => [
             'min' => 0,
             'max' => 1,
-            'maxCharacters' => 1,  
+            'maxlength' => 1,  
+        ],
+    ];
+
+    // TODO: apply sometimes validation rules to all updateValidation rules
+    protected $validationRules = [
+        'updateValidation' => [
+            'title' => [
+                'string',
+                'max:255',
+            ],
+            'description' => [
+                'string',
+                'max:255',
+            ],
+            'is_published' => [
+                'integer',
+                'min:0',
+                'max:1',
+            ],
+        ],
+        'createValidation' => [
+            'name' => [
+                'required',
+            ],
+            'description' => [
+                'required',
+            ],
         ],
     ];
 

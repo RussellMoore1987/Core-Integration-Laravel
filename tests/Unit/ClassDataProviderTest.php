@@ -60,7 +60,7 @@ class ClassDataProviderTest extends TestCase
                                 'formData' => [
                                     'min' => 0,
                                     'max' => 18446744073709551615,
-                                    'maxCharacters' => 20,
+                                    'maxlength' => 20,
                                     'type' => 'number',
                                 ],
                             ],
@@ -175,7 +175,7 @@ class ClassDataProviderTest extends TestCase
                                 'formData' => [
                                     'min' => 0,
                                     'max' => 1,
-                                    'maxCharacters' => 1,
+                                    'maxlength' => 1,
                                     'type' => 'number',
                                 ],
                             ],
@@ -240,7 +240,7 @@ class ClassDataProviderTest extends TestCase
                                 'formData' => [
                                     'min' => 1,
                                     'max' => 999999,
-                                    'maxCharacters' => 6,
+                                    'maxlength' => 6,
                                     'type' => 'number',
                                 ],
                               ],

@@ -30,7 +30,7 @@ class ClassDataProvider
 
     public function getClassPrimaryKeyName()
     {
-        $primaryKeyName = $this->classObject->getKeyName() ? $this->classObject->getKeyName() : 'id';
+        $primaryKeyName = $this->classObject->getKeyName() ?? 'id';
         return $primaryKeyName;
     }
 
@@ -79,6 +79,7 @@ class ClassDataProvider
     protected function addFormDataToAcceptableParameters()
     {
         // ! working here ******************************************************** date parameterDataProvider formData, and date and int end to end testing API
+        // https://laravel.com/docs/8.x/validation#manually-creating-validators
         // TODO:
         // form info
         // Test class formData, and db formData
