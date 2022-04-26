@@ -16,3 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/test', function () {
+    // ! testing output **********************************************************************
+    $project = App\Models\Project::first();
+    $data = ['title' => 'test', 'description' => 'test', 'is_published'=> 1];
+    $project->validateAndSave($data);
+    dd($project);
+    return view('welcome');
+});

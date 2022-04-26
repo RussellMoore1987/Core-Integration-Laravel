@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
     use HasFactory;
-    // use CILModel;
+    use CILModel;
 
     public $availableMethodCalls = ['pluse1_5', 'budgetTimeTwo', 'newTitle'];
 
@@ -27,14 +27,17 @@ class Project extends Model
     protected $validationRules = [
         'updateValidation' => [
             'title' => [
+                'sometimes',
                 'string',
                 'max:255',
             ],
             'description' => [
+                'sometimes',
                 'string',
                 'max:255',
             ],
             'is_published' => [
+                'sometimes',
                 'integer',
                 'min:0',
                 'max:1',

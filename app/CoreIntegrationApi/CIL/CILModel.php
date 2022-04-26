@@ -14,16 +14,15 @@
         public function validateAndSave(array $data = [], $redirect = false)
         {
             // TODO: $this->id set correctly ClassDataProvider::getClassPrimaryKeyName()
-            $keyName = $this->classObject->getKeyName();
-            $this->validationRulesToValidate = $this->$keyName ? $this->getValidationRules('update') : $this->getValidationRules('create');
-            $this->data = $data;
+            $keyName = $this->getKeyName();
+            $validationRulesToValidate = $this->$keyName ? $this->getValidationRules('update') : $this->getValidationRules('create');
+            $data;
 
             // TODO: add validation messages
             // just validate and give back the errors
             // create parameters required for validation
             // update parameters optional for validation
-            $validator = Validator::make($data, $this->validationRulesToValidate);
-     
+            $validator = $this->validate($data, $validationRulesToValidate);
             if ($validator->fails()) {
                 if ($redirect) {
                     return redirect('post/create')
@@ -33,6 +32,7 @@
 
                 return $validator->errors();
             }
+            
 
             dd($data, $validator->validated(), $validator->safe(), $validator->safe()->only(['name', 'email']));
 
@@ -41,9 +41,12 @@
             $this->save();
         }
 
-        protected function validate()
+        public function validate($data, $validationRulesToValidate = null)
         {
-            
+            $validationRulesToValidate = $validationRulesToValidate ?? $this->getValidationRules('update');
+            $validator = Validator::make($data, $validationRulesToValidate);
+
+            return $validator;
         }
 
         protected function getValidationRules($actionType = 'update')
