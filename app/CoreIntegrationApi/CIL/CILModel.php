@@ -11,21 +11,21 @@
         protected $redirect;
         protected $data;
 
+        // https://laravel.com/docs/8.x/validation#available-validation-rules
+
         public function validateAndSave(array $data = [], $redirect = false)
         {
-            // TODO: $this->id set correctly ClassDataProvider::getClassPrimaryKeyName()
             $keyName = $this->getKeyName();
             $validationRulesToValidate = $this->$keyName ? $this->getValidationRules('update') : $this->getValidationRules('create');
             $data;
 
+            // ! start on required sometimes validation rules
             // TODO: add validation messages
-            // just validate and give back the errors
-            // create parameters required for validation
-            // update parameters optional for validation
             $validator = $this->validate($data, $validationRulesToValidate);
             if ($validator->fails()) {
                 if ($redirect) {
-                    return redirect('post/create')
+                    // TODO: Not tested, need to test
+                    return redirect($redirect)
                         ->withErrors($validator)
                         ->withInput();
                 }
@@ -34,11 +34,15 @@
             }
             
 
-            dd($data, $validator->validated(), $validator->safe(), $validator->safe()->only(['name', 'email']));
+            // dd($data, $validator->validated(), $validator->safe(), $validator->safe()->only(['title', 'email']));
 
-            $this->fill($validator->validated());
+            // TODO: test all non class properties
+            // test mix and mach
+            $this->setValidatedProperties($validator->validated());
 
             $this->save();
+
+            return [];
         }
 
         public function validate($data, $validationRulesToValidate = null)
@@ -64,9 +68,23 @@
                         $validationRulesToReturn[$columnName] = array_merge($validationRules, $this->validationRules['createValidation'][$columnName]);
                     }
                 }
+            } else {
+                // add 'sometimes' to validation options
+                $keyName = $this->getKeyName();
+                foreach ($validationRulesToReturn as $columnName => $validationRules) {
+                    if ($columnName == $keyName) { continue; }
+                    $validationRulesToReturn[$columnName][] = 'sometimes';
+                }
             }
 
             return $validationRulesToReturn;
+        }
+
+        protected function setValidatedProperties(array $validatedProperties = [])
+        {
+            foreach ($validatedProperties as $property => $value) {
+                $this->$property = $value;
+            }
         }
     }
     

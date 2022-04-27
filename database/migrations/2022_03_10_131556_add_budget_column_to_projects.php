@@ -14,7 +14,7 @@ class AddBudgetColumnToProjects extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->decimal('budget', 8, 2); // 999,999.99
+            $table->decimal('budget', 8, 2)->default(0); // 999,999.99
         });
     }
 

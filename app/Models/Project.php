@@ -23,33 +23,76 @@ class Project extends Model
         ],
     ];
 
-    // TODO: apply sometimes validation rules to all updateValidation rules
     protected $validationRules = [
         'updateValidation' => [
             'title' => [
-                'sometimes',
                 'string',
-                'max:255',
+                'max:75',
+                'min:2',
+            ],
+            'roles' => [
+                'string',
+                'max:50',
+            ],
+            'client' => [
+                'string',
+                'max:50',
             ],
             'description' => [
-                'sometimes',
+                'string',
+                'max:255',
+                'min:10',
+            ],
+            'content' => [
+                'string',
+                'json',
+            ],
+            'video_link' => [
                 'string',
                 'max:255',
             ],
+            'code_link' => [
+                'string',
+                'max:255',
+            ],
+            'demo_link' => [
+                'string',
+                'max:255',
+            ],
+            'start_date' => [
+                'date',
+            ],
+            'end_date' => [
+                'date',
+            ],
             'is_published' => [
-                'sometimes',
                 'integer',
                 'min:0',
                 'max:1',
             ],
+            'budget' => [
+                'numeric',
+                'max:999999.99',
+                'min:0',
+            ],
         ],
         'createValidation' => [
-            'name' => [
+            'title' => [
+                'required',
+            ],
+            'roles' => [
                 'required',
             ],
             'description' => [
                 'required',
             ],
+            'start_date' => [
+                'required',
+            ],
+            'budget' => [
+                'required',
+            ],
+
         ],
     ];
 
