@@ -40,10 +40,10 @@ class WorkHistoryType extends Model
                 'max:50',
                 'min:2',
             ],
-            'createValidation' => [
-                'name' => [
-                    'required',
-                ],
+        ],
+        'createValidation' => [
+            'name' => [
+                'required',
             ],
         ],
     ];

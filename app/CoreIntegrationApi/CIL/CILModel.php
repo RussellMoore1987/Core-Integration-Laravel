@@ -29,7 +29,7 @@
                         ->withInput();
                 }
 
-                return $validator->errors();
+                return $validator->errors()->toArray();
             }
             
 
@@ -52,13 +52,17 @@
 
         protected function getValidationRules($actionType = 'update')
         {
-            if (!$this->validationRules || !isset($this->validationRules['updateValidation'])) {
-               return [];
+            if (
+                !$this->validationRules || 
+                (!isset($this->validationRules['updateValidation']) || !is_array($this->validationRules['updateValidation'])) || 
+                (!isset($this->validationRules['createValidation']) || !is_array($this->validationRules['createValidation']))
+            ) {
+                throw new \Exception('validationRules rules not set. A class utilizing the CILModel trait must have validationRules, see the documentation located at app\CoreIntegrationApi\docs\CILModel.php');
             }
-
+            
             $validationRulesToReturn = $this->validationRules['updateValidation'];
 
-            if ($actionType != 'update' && isset($this->validationRules['createValidation'])) {
+            if ($actionType != 'update') {
                 // merge update and create validation rules
                 foreach ($validationRulesToReturn as $columnName => $validationRules) {
                     if (isset($this->validationRules['createValidation'][$columnName])) {

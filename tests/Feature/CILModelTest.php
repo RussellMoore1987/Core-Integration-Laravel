@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
 class CILModelTest extends TestCase
@@ -17,7 +18,7 @@ class CILModelTest extends TestCase
         $project = new \App\Models\Project();
         $errors = $project->validateAndSave($data);
 
-        $this->assertEquals($expectedErrors, $errors->toArray());
+        $this->assertEquals($expectedErrors, $errors);
     }
 
     public function validationDataProvider()
@@ -83,7 +84,7 @@ class CILModelTest extends TestCase
         $workHistoryType = new \App\Models\WorkHistoryType();
         $errors = $workHistoryType->validateAndSave($data);
 
-        $this->assertEquals($expectedErrors, $errors->toArray());
+        $this->assertEquals($expectedErrors, $errors);
     }
 
     public function validationDataProvider2()
@@ -117,6 +118,64 @@ class CILModelTest extends TestCase
                     ],
                 ],
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider validationDataProvider3
+     */
+    public function test_validateAndSave_function_class_returns_expected_error_results_with_uncompleted_validation($classPath, $data, $expectedErrors)
+    {
+        // $class = new \App\Models\$class();
+        $class = App::make($classPath);
+        $errors = $class->validateAndSave($data);
+        
+        $this->assertEquals($expectedErrors, $errors);
+    }
+
+    public function validationDataProvider3()
+    {
+        return [
+            // create validation test validates all the fields that are in the createValidation, create is triggered by no class id
+            // saves a new record with db default values, no validation accrued
+            'error set one - create validation test with uncompleted validation' => [
+                'classPath' => 'App\Models\CaseStudy',
+                'data' => [
+                    'test' => 1,
+                    'title' => 't',
+                ],
+                'expectedData' => [],
+            ],
+            
+            // update validation test validates only the fields that are being updated, update is triggered by class id
+            'error set one - update validation test with uncompleted validation' => [
+                'classPath' => 'App\Models\CaseStudy',
+                'data' => [
+                    'id' => 1,
+                    'title' => 'test',
+                ],
+                'expectedData' => [],
+            ],
+
+
+
+
+            // 'error set two - update validation test' => [
+            //     'classPath' => 'App\Models\Skill',
+            //     'data' => [
+            //         'work_history_type_id' => 1,
+            //         'name' => 't',
+            //         'icon' => 't',
+            //     ],
+            //     'expectedData' => [
+            //         'name' => [
+            //             'The name must be at least 2 characters.'
+            //         ],
+            //         'icon' => [
+            //             'The icon must be at least 2 characters.'
+            //         ],
+            //     ],
+            // ],
         ];
     }
 }

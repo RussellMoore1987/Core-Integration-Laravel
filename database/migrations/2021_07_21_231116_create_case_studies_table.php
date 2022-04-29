@@ -15,7 +15,7 @@ class CreateCaseStudiesTable extends Migration
     {
         Schema::create('case_studies', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 75);
+            $table->string('title', 75)->default('unnamed case studies');
             $table->string('roles', 50)->nullable();
             $table->string('client', 50)->nullable();
             $table->string('description', 255)->nullable();
