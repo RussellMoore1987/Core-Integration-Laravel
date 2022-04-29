@@ -25,6 +25,11 @@ class Project extends Model
 
     protected $validationRules = [
         'updateValidation' => [
+            'id' => [
+                'integer',
+                'min:1',
+                'max:18446744073709551615',
+            ],
             'title' => [
                 'string',
                 'max:75',

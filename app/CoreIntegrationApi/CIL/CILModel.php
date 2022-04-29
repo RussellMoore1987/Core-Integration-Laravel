@@ -16,8 +16,7 @@
         public function validateAndSave(array $data = [], $redirect = false)
         {
             $keyName = $this->getKeyName();
-            $validationRulesToValidate = $this->$keyName ? $this->getValidationRules('update') : $this->getValidationRules('create');
-            $data;
+            $validationRulesToValidate = isset($data[$keyName]) ? $this->getValidationRules('update') : $this->getValidationRules('create');
 
             // ! start on required sometimes validation rules
             // TODO: add validation messages
@@ -33,8 +32,6 @@
                 return $validator->errors();
             }
             
-
-            // dd($data, $validator->validated(), $validator->safe(), $validator->safe()->only(['title', 'email']));
 
             // TODO: test all non class properties
             // test mix and mach
@@ -55,13 +52,13 @@
 
         protected function getValidationRules($actionType = 'update')
         {
-            if (!$this->validationRules) {
+            if (!$this->validationRules || !isset($this->validationRules['updateValidation'])) {
                return [];
             }
 
             $validationRulesToReturn = $this->validationRules['updateValidation'];
 
-            if ($actionType != 'update') {
+            if ($actionType != 'update' && isset($this->validationRules['createValidation'])) {
                 // merge update and create validation rules
                 foreach ($validationRulesToReturn as $columnName => $validationRules) {
                     if (isset($this->validationRules['createValidation'][$columnName])) {
