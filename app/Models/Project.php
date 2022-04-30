@@ -38,37 +38,46 @@ class Project extends Model
             'roles' => [
                 'string',
                 'max:50',
+                'nullable',
             ],
             'client' => [
                 'string',
                 'max:50',
+                'nullable',
             ],
             'description' => [
                 'string',
                 'max:255',
                 'min:10',
+                'nullable',
             ],
             'content' => [
                 'string',
                 'json',
+                'nullable',
             ],
             'video_link' => [
                 'string',
                 'max:255',
+                'nullable',
             ],
             'code_link' => [
                 'string',
                 'max:255',
+                'nullable',
             ],
             'demo_link' => [
                 'string',
                 'max:255',
+                'nullable',
             ],
             'start_date' => [
                 'date',
+                'nullable',
             ],
             'end_date' => [
                 'date',
+                'nullable',
             ],
             'is_published' => [
                 'integer',

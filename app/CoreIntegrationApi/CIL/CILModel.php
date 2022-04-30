@@ -6,17 +6,40 @@
 
     trait CILModel
     {
-        protected $validator;
-        protected $validationRulesToValidate;
-        protected $redirect;
-        protected $data;
-
         // https://laravel.com/docs/8.x/validation#available-validation-rules
+
+        // TODO: make static method ???
+        // ! start here ******************************************************************
+        static function validateAndCreate(array $data = [], $redirect = false)
+        {
+            dd(self::getKeyName());
+            // $validationRulesToValidate = self::getValidationRules('create');
+            // $validator = self::validate($data, $validationRulesToValidate);
+            // if ($validator->fails()) {
+            //     if ($redirect) {
+            //         // TODO: Not tested, need to test
+            //         return redirect($redirect)
+            //             ->withErrors($validator)
+            //             ->withInput();
+            //     }
+
+            //     return $validator->errors()->toArray();
+            // }
+
+            // $class = new $class();
+            // $class->save();
+            // return $class;
+        }
 
         public function validateAndSave(array $data = [], $redirect = false)
         {
             $keyName = $this->getKeyName();
             $validationRulesToValidate = isset($data[$keyName]) ? $this->getValidationRules('update') : $this->getValidationRules('create');
+
+            // if id is already set validate what we have plus incoming data and then save
+            if ($this->$keyName) {
+                $data = array_merge($this->getAttributes(), $data);
+            }
 
             // ! start on required sometimes validation rules
             // TODO: add validation messages

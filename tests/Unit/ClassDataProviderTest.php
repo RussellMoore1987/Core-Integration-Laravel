@@ -204,7 +204,7 @@ class ClassDataProviderTest extends TestCase
                                 'type' => 'decimal(8,2)',
                                 'null' => 'no',
                                 'key' => '',
-                                'default' => null,
+                                'default' => '0.00',
                                 'extra' => '',
                                 'api_data_type' => 'float',
                                 'formData' => [],

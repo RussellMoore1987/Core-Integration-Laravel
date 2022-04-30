@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Project;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
@@ -9,6 +10,53 @@ use Tests\TestCase;
 class CILModelTest extends TestCase
 {
     use DatabaseTransactions;
+
+    /**
+     * @group db
+     * @return void
+     */
+    public function test_validateAndSave_function_create_and_then_update()
+    {
+        // create
+        $project = new Project();
+
+        $data = [
+            'title' => 'test1', // required
+            'roles' => 'test1', // required
+            'description' => 'test5678910-1', // required
+            'start_date' => '2020-12-21 00:00:00', // required
+            'is_published' => 1,
+            'budget' => 2222.33, // required
+        ];
+
+        $errors = $project->validateAndSave($data);
+
+        $projectComparison = Project::find($project->id);
+
+        $this->assertEquals('test1', $projectComparison->title);
+        $this->assertEquals('test1', $projectComparison->roles);
+        $this->assertEquals('test5678910-1', $projectComparison->description);
+        $this->assertEquals('2020-12-21 00:00:00', $projectComparison->start_date);
+        $this->assertEquals(1, $projectComparison->is_published);
+        $this->assertEquals(2222.33, $projectComparison->budget);
+
+        // update
+        $data = [
+            'title' => 'test2', 
+            'roles' => 'test2', 
+            'is_published' => 0,
+            'budget' => 3333.22, 
+        ];
+
+        $projectComparison->validateAndSave($data);
+
+        $this->assertEquals('test2', $projectComparison->title);
+        $this->assertEquals('test2', $projectComparison->roles);
+        $this->assertEquals('test5678910-1', $projectComparison->description);
+        $this->assertEquals('2020-12-21 00:00:00', $projectComparison->start_date);
+        $this->assertEquals(0, $projectComparison->is_published);
+        $this->assertEquals(3333.22, $projectComparison->budget);
+    }
 
     /**
      * @dataProvider validationDataProvider
@@ -123,6 +171,9 @@ class CILModelTest extends TestCase
 
     /**
      * @dataProvider validationDataProvider3
+     * 
+     * @group db
+     * @return void
      */
     public function test_validateAndSave_function_class_returns_expected_error_results_with_uncompleted_validation($classPath, $data, $expectedErrors)
     {
