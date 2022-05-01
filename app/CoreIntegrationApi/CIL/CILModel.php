@@ -8,42 +8,10 @@
     {
         // https://laravel.com/docs/8.x/validation#available-validation-rules
 
-        // TODO: make static method ???
-        // ! start here ******************************************************************
-        static function validateAndCreate(array $data = [], $redirect = false)
-        {
-            dd(self::getKeyName());
-            // $validationRulesToValidate = self::getValidationRules('create');
-            // $validator = self::validate($data, $validationRulesToValidate);
-            // if ($validator->fails()) {
-            //     if ($redirect) {
-            //         // TODO: Not tested, need to test
-            //         return redirect($redirect)
-            //             ->withErrors($validator)
-            //             ->withInput();
-            //     }
-
-            //     return $validator->errors()->toArray();
-            // }
-
-            // $class = new $class();
-            // $class->save();
-            // return $class;
-        }
-
         public function validateAndSave(array $data = [], $redirect = false)
         {
-            $keyName = $this->getKeyName();
-            $validationRulesToValidate = isset($data[$keyName]) ? $this->getValidationRules('update') : $this->getValidationRules('create');
-
-            // if id is already set validate what we have plus incoming data and then save
-            if ($this->$keyName) {
-                $data = array_merge($this->getAttributes(), $data);
-            }
-
-            // ! start on required sometimes validation rules
             // TODO: add validation messages
-            $validator = $this->validate($data, $validationRulesToValidate);
+            $validator = $this->validate($data, $this->getValidationRules());
             if ($validator->fails()) {
                 if ($redirect) {
                     // TODO: Not tested, need to test
@@ -54,10 +22,7 @@
 
                 return $validator->errors()->toArray();
             }
-            
 
-            // TODO: test all non class properties
-            // test mix and mach
             $this->setValidatedProperties($validator->validated());
 
             $this->save();
@@ -67,23 +32,26 @@
 
         public function validate($data, $validationRulesToValidate = null)
         {
-            $validationRulesToValidate = $validationRulesToValidate ?? $this->getValidationRules('update');
+            $validationRulesToValidate = $validationRulesToValidate ?? $this->getValidationRules();
             $validator = Validator::make($data, $validationRulesToValidate);
 
             return $validator;
         }
 
-        protected function getValidationRules($actionType = 'update')
+        protected function getValidationRules()
         {
             if (
                 !$this->validationRules || 
-                (!isset($this->validationRules['updateValidation']) || !is_array($this->validationRules['updateValidation'])) || 
+                (!isset($this->validationRules['modelValidation']) || !is_array($this->validationRules['modelValidation'])) || 
                 (!isset($this->validationRules['createValidation']) || !is_array($this->validationRules['createValidation']))
             ) {
                 throw new \Exception('validationRules rules not set. A class utilizing the CILModel trait must have validationRules, see the documentation located at app\CoreIntegrationApi\docs\CILModel.php');
             }
             
-            $validationRulesToReturn = $this->validationRules['updateValidation'];
+            $validationRulesToReturn = $this->validationRules['modelValidation'];
+
+            $keyName = $this->getKeyName();
+            $actionType = $this->$keyName != null ? 'update' : 'create';
 
             if ($actionType != 'update') {
                 // merge update and create validation rules
@@ -91,13 +59,6 @@
                     if (isset($this->validationRules['createValidation'][$columnName])) {
                         $validationRulesToReturn[$columnName] = array_merge($validationRules, $this->validationRules['createValidation'][$columnName]);
                     }
-                }
-            } else {
-                // add 'sometimes' to validation options
-                $keyName = $this->getKeyName();
-                foreach ($validationRulesToReturn as $columnName => $validationRules) {
-                    if ($columnName == $keyName) { continue; }
-                    $validationRulesToReturn[$columnName][] = 'sometimes';
                 }
             }
 

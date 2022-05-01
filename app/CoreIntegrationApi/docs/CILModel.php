@@ -1,16 +1,33 @@
 <?php 
+    // @availableMethodCalls
+        // validateAndSave
+        // validate
+
+    // @relevantFiles
+        // app\CoreIntegrationApi\CIL\CILModel.php
+        // tests\Feature\CILModelTest.php
+        
+    // @create
+        // $project = new Project();
+        // $project->validateAndSave($data);
+
+    // @update
+        // $project = Project::find($project->id);
+        // $project->validateAndSave($data);
+
     // @validationRules
         // ! warning empty validationRules will throw an error 
-        // ! warning empty createValidation & updateValidation will not allow records to be created properly 
+        // ! warning empty createValidation & modelValidation will not allow records to be created properly 
             // will create records with DB default values or throw an error if DB columns don't have default values
-        // ! warning empty createValidation & updateValidation may cause unexpected behavior 
+        // ! warning empty createValidation & modelValidation may cause unexpected behavior 
+        // ! warning validationRules need to be set thoroughly to avoid miss use https://laravel.com/docs/9.x/eloquent#mass-assignment
 
-        // All columns you want to be able to update in the database must be listed in the updateValidation array
-        // Aplyy extra validation rules that you would like on creation in the createValidation array
+        // All columns you want to be able to update in the database must be listed in the modelValidation array
+        // Apply extra validation rules that you would like on creation in the createValidation array
 
         // validationRules need to be set on a class that utilizing the CILModel trait. It must have a validationRules property set with the following structure:
             // protected $validationRules = [
-            //     'updateValidation' => [
+            //     'modelValidation' => [
             //         'column_name' => [
             //             'laravel_validation_rules',
             //         ],
@@ -24,7 +41,7 @@
             // 
             // project example:
             // protected $validationRules = [
-            //     'updateValidation' => [
+            //     'modelValidation' => [
             //         'id' => [
             //             'integer',
             //             'min:1',

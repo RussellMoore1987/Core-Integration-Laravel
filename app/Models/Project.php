@@ -24,7 +24,7 @@ class Project extends Model
     ];
 
     protected $validationRules = [
-        'updateValidation' => [
+        'modelValidation' => [
             'id' => [
                 'integer',
                 'min:1',

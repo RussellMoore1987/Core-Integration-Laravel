@@ -24,7 +24,7 @@ class WorkHistoryType extends Model
     ];
 
     protected $validationRules = [
-        'updateValidation' => [
+        'modelValidation' => [
             'work_history_type_id' => [
                 'integer',
                 'min:1',

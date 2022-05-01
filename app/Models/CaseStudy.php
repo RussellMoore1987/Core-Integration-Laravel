@@ -12,7 +12,7 @@ class CaseStudy extends Model
     use CILModel;
 
     protected $validationRules = [
-        'updateValidation' => [],
+        'modelValidation' => [],
         'createValidation' => [],
     ];
 

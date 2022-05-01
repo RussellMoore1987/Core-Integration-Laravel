@@ -15,65 +15,132 @@ class CILModelTest extends TestCase
      * @group db
      * @return void
      */
-    public function test_validateAndSave_function_create_and_then_update()
+    public function test_validateAndSave_function_create_and_then_update_in_different_ways()
     {
+        // just making sure that the validateAndSave function works as expected
         // create
-        $project = new Project();
+        $project = new Project(); // this syntax is for creating
+
+        $titleText = 'test1';
+        $rolesText = 'test1';
+        $descriptionText = 'test5678910-1';
+        $startDate = '2020-12-21 00:00:00';
+        $isPublishedNumber = 1;
+        $budgetNumber = 2222.33;
 
         $data = [
-            'title' => 'test1', // required
-            'roles' => 'test1', // required
-            'description' => 'test5678910-1', // required
-            'start_date' => '2020-12-21 00:00:00', // required
-            'is_published' => 1,
-            'budget' => 2222.33, // required
+            'title' => $titleText, // required
+            'roles' => $rolesText, // required
+            'description' => $descriptionText, // required
+            'start_date' => $startDate, // required
+            'is_published' => $isPublishedNumber,
+            'budget' => $budgetNumber, // required
+            'test_field' => 'test_value', // extra field should be ignored
         ];
 
-        $errors = $project->validateAndSave($data);
+        $project->validateAndSave($data);
 
         $projectComparison = Project::find($project->id);
 
-        $this->assertEquals('test1', $projectComparison->title);
-        $this->assertEquals('test1', $projectComparison->roles);
-        $this->assertEquals('test5678910-1', $projectComparison->description);
-        $this->assertEquals('2020-12-21 00:00:00', $projectComparison->start_date);
-        $this->assertEquals(1, $projectComparison->is_published);
-        $this->assertEquals(2222.33, $projectComparison->budget);
+        $this->assertEquals($titleText, $projectComparison->title);
+        $this->assertEquals($rolesText, $projectComparison->roles);
+        $this->assertEquals($descriptionText, $projectComparison->description);
+        $this->assertEquals($startDate, $projectComparison->start_date);
+        $this->assertEquals($isPublishedNumber, $projectComparison->is_published);
+        $this->assertEquals($budgetNumber, $projectComparison->budget);
 
-        // update
+        // update version 1 - using the created model
+        $titleText = 'test2';
+        $rolesText = 'test2';
+        $isPublishedNumber = 0;
+        $budgetNumber = 3333.22;
+
         $data = [
-            'title' => 'test2', 
-            'roles' => 'test2', 
-            'is_published' => 0,
-            'budget' => 3333.22, 
+            'title' => $titleText,
+            'roles' => $rolesText,
+            'is_published' => $isPublishedNumber,
+            'budget' => $budgetNumber,
         ];
 
         $projectComparison->validateAndSave($data);
 
-        $this->assertEquals('test2', $projectComparison->title);
-        $this->assertEquals('test2', $projectComparison->roles);
-        $this->assertEquals('test5678910-1', $projectComparison->description);
-        $this->assertEquals('2020-12-21 00:00:00', $projectComparison->start_date);
-        $this->assertEquals(0, $projectComparison->is_published);
-        $this->assertEquals(3333.22, $projectComparison->budget);
+        $this->assertEquals($titleText, $projectComparison->title);
+        $this->assertEquals($rolesText, $projectComparison->roles);
+        $this->assertEquals($descriptionText, $projectComparison->description);
+        $this->assertEquals($startDate, $projectComparison->start_date);
+        $this->assertEquals($isPublishedNumber, $projectComparison->is_published);
+        $this->assertEquals($budgetNumber, $projectComparison->budget);
+
+        // update version 2 - finding the model and then updating
+        // changing just a few fields and making sure that the other fields are not changed
+        $titleText = 'test3';
+        $rolesText = 'test3';
+
+        $project = Project::find($project->id);
+
+        $data = [
+            'title' => $titleText,
+            'roles' => $rolesText,
+        ];
+
+        $project->validateAndSave($data);
+
+        $newProjectComparison = Project::find($project->id);
+
+        $this->assertEquals($titleText, $newProjectComparison->title);
+        $this->assertEquals($rolesText, $newProjectComparison->roles);
+        $this->assertEquals($descriptionText, $newProjectComparison->description);
+        $this->assertEquals($startDate, $newProjectComparison->start_date);
+        $this->assertEquals($isPublishedNumber, $newProjectComparison->is_published);
+        $this->assertEquals($budgetNumber, $newProjectComparison->budget);
+    }
+
+    public function test_validateAndSave_exception_is_thrown()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectErrorMessage('validationRules rules not set. A class utilizing the CILModel trait must have validationRules, see the documentation located at app\CoreIntegrationApi\docs\CILModel.php');
+
+        $tag = new \App\Models\Tag();
+        $tag->validateAndSave([]);
+    }
+
+    public function test_validate_exception_is_thrown()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectErrorMessage('validationRules rules not set. A class utilizing the CILModel trait must have validationRules, see the documentation located at app\CoreIntegrationApi\docs\CILModel.php');
+
+        $tag = new \App\Models\Tag();
+        $tag->validate([]);
     }
 
     /**
-     * @dataProvider validationDataProvider
+     * @dataProvider createValidationDataProvider
      */
-    public function test_validateAndSave_function_class_returns_expected_error_results($data, $expectedErrors)
+    public function test_validateAndSave_function_class_returns_expected_error_results_for_creates($classPath, $data, $expectedErrors)
     {
-        $project = new \App\Models\Project();
-        $errors = $project->validateAndSave($data);
+        $class = new $classPath();
+        $errors = $class->validateAndSave($data);
 
         $this->assertEquals($expectedErrors, $errors);
     }
 
-    public function validationDataProvider()
+    /**
+     * @dataProvider createValidationDataProvider
+     */
+    public function test_validate_function_class_returns_expected_error_results_for_creates($classPath, $data, $expectedErrors)
+    {
+        $class = new $classPath();
+        $validator = $class->validate($data);
+        $errors = $validator->errors()->toArray();
+
+        $this->assertEquals($expectedErrors, $errors);
+    }
+
+    public function createValidationDataProvider()
     {
         return [
-            // create validation test validates all the fields that are in the createValidation, create is triggered by no class id
-            'error set one - create validation test' => [
+            'App\Models\Project' => [
+                'classPath' => 'App\Models\Project',
                 'data' => [
                     'title' => 'test',
                     'description' => 'test',
@@ -98,10 +165,78 @@ class CILModelTest extends TestCase
                     ],
                 ],
             ],
-            // update validation test validates only the fields that are being updated, update is triggered by class id
-            'error set two - update validation test' => [
+            'App\Models\Project - no data sent' => [
+                'classPath' => 'App\Models\Project',
+                'data' => [],
+                'expectedData' => [
+                    'title' => [
+                        'The title field is required.',
+                    ],
+                    'roles' => [
+                        'The roles field is required.',
+                    ],
+                    'description' => [
+                        'The description field is required.',
+                    ],
+                    'start_date' => [
+                        'The start date field is required.',
+                    ],
+                    'budget' => [
+                        'The budget field is required.',
+                    ],
+                ],
+            ],
+            'App\Models\WorkHistoryType' => [
+                'classPath' => 'App\Models\WorkHistoryType',
                 'data' => [
-                    'id' => 1,
+                    'name' => 't',
+                    'icon' => 'test',
+                ],
+                'expectedData' => [
+                    'name' => [
+                        'The name must be at least 2 characters.'
+                    ],
+                ],
+            ],
+            
+        ];
+    }
+
+    /**
+     * @dataProvider updateValidationDataProvider
+     * 
+     * @group db
+     * @return void
+     */
+    public function test_validateAndSave_function_class_returns_expected_error_results_for_updates($classPath, $data, $expectedErrors)
+    {
+        $class = $classPath::factory()->create();
+        $errors = $class->validateAndSave($data);
+
+        $this->assertEquals($expectedErrors, $errors);
+    }
+
+    /**
+     * @dataProvider updateValidationDataProvider
+     * 
+     * @group db
+     * @return void
+     */
+    public function test_validate_function_class_returns_expected_error_results_for_updates($classPath, $data, $expectedErrors)
+    {
+        $class = $classPath::factory()->create();
+        $validator = $class->validate($data);
+        $errors = $validator->errors()->toArray();
+
+        $this->assertEquals($expectedErrors, $errors);
+    }
+
+    public function updateValidationDataProvider()
+    {
+        return [
+            'App\Models\Project' => [
+                'classPath' => 'App\Models\Project',
+                'data' => [
                     'title' => 'test',
                     'description' => 'test',
                     'is_published' => 2.2,
@@ -116,44 +251,14 @@ class CILModelTest extends TestCase
                     ],
                 ],
             ],
-        ];
-    }
-
-    // ! start here **********************************************************************
-    // TODO: 
-    // test also a class with no validation rules
-    // test if it saves the data
-    // test just the public function validate method
-    /**
-     * @dataProvider validationDataProvider2
-     */
-    public function test_validateAndSave_function_class_returns_expected_error_results_with_different_class_id($data, $expectedErrors)
-    {
-        $workHistoryType = new \App\Models\WorkHistoryType();
-        $errors = $workHistoryType->validateAndSave($data);
-
-        $this->assertEquals($expectedErrors, $errors);
-    }
-
-    public function validationDataProvider2()
-    {
-        return [
-            // create validation test validates all the fields that are in the createValidation, create is triggered by no class id
-            'error set one - create validation test' => [
-                'data' => [
-                    'name' => 't',
-                    'icon' => 'test',
-                ],
-                'expectedData' => [
-                    'name' => [
-                        'The name must be at least 2 characters.'
-                    ],
-                ],
+            'App\Models\Project - no data sent' => [
+                'classPath' => 'App\Models\Project',
+                'data' => [],
+                'expectedData' => [],
             ],
-            // update validation test validates only the fields that are being updated, update is triggered by class id
-            'error set two - update validation test' => [
+            'App\Models\WorkHistoryType' => [
+                'classPath' => 'App\Models\WorkHistoryType',
                 'data' => [
-                    'work_history_type_id' => 1,
                     'name' => 't',
                     'icon' => 't',
                 ],
@@ -166,67 +271,6 @@ class CILModelTest extends TestCase
                     ],
                 ],
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider validationDataProvider3
-     * 
-     * @group db
-     * @return void
-     */
-    public function test_validateAndSave_function_class_returns_expected_error_results_with_uncompleted_validation($classPath, $data, $expectedErrors)
-    {
-        // $class = new \App\Models\$class();
-        $class = App::make($classPath);
-        $errors = $class->validateAndSave($data);
-        
-        $this->assertEquals($expectedErrors, $errors);
-    }
-
-    public function validationDataProvider3()
-    {
-        return [
-            // create validation test validates all the fields that are in the createValidation, create is triggered by no class id
-            // saves a new record with db default values, no validation accrued
-            'error set one - create validation test with uncompleted validation' => [
-                'classPath' => 'App\Models\CaseStudy',
-                'data' => [
-                    'test' => 1,
-                    'title' => 't',
-                ],
-                'expectedData' => [],
-            ],
-            
-            // update validation test validates only the fields that are being updated, update is triggered by class id
-            'error set one - update validation test with uncompleted validation' => [
-                'classPath' => 'App\Models\CaseStudy',
-                'data' => [
-                    'id' => 1,
-                    'title' => 'test',
-                ],
-                'expectedData' => [],
-            ],
-
-
-
-
-            // 'error set two - update validation test' => [
-            //     'classPath' => 'App\Models\Skill',
-            //     'data' => [
-            //         'work_history_type_id' => 1,
-            //         'name' => 't',
-            //         'icon' => 't',
-            //     ],
-            //     'expectedData' => [
-            //         'name' => [
-            //             'The name must be at least 2 characters.'
-            //         ],
-            //         'icon' => [
-            //             'The icon must be at least 2 characters.'
-            //         ],
-            //     ],
-            // ],
         ];
     }
 }
