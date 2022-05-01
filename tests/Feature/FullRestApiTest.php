@@ -22,6 +22,10 @@ class FullRestApiTest extends TestCase
         $this->makeProjects();
     }
 
+    /**
+     * @group db
+     * @return void
+     */
     public function test_that_what_I_get_back_is_what_I_would_exsect_from_this_endpoint_testing_json_structure()
     {
         $projectIds = implode(',',$this->projects->pluck('id')->toArray());
@@ -98,6 +102,10 @@ class FullRestApiTest extends TestCase
         $this->assertTrue(count($response_array['data']) <= 4);
     }
 
+    /**
+     * @group db
+     * @return void
+     */
     public function test_return_of_one_record()
     {
         $projectId = $this->projects[0]->id;
@@ -130,6 +138,10 @@ class FullRestApiTest extends TestCase
         );
     }
 
+    /**
+     * @group db
+     * @return void
+     */
     public function test_return_404_response()
     {
         $response = $this->get('/api/v1/projects/9999999999');
@@ -138,6 +150,10 @@ class FullRestApiTest extends TestCase
         $response->assertJsonPath('message', 'The record with the id of 9999999999 at the "projects" endpoint was not found');
     }
 
+    /**
+     * @group db
+     * @return void
+     */
     public function test_return_of_empty_data_set()
     {
         $response = $this->get('/api/v1/projects/?start_date=1000-02-01');
@@ -147,6 +163,10 @@ class FullRestApiTest extends TestCase
         $this->assertTrue(count($response_array['data']) == 0);
     }
 
+    /**
+     * @group db
+     * @return void
+     */
     public function test_return_of_column_data()
     {
         $response = $this->get('/api/v1/projects/?columnData=yes');
@@ -227,7 +247,7 @@ class FullRestApiTest extends TestCase
         $this->projects = collect($this->projects);
     }
 
-    // Test
+    // TODO: Test
     // GET with out authentication 
     // GET with authentication 
     // PUT, POST, PAtCH with authentication 
