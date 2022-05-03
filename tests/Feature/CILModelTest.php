@@ -4,22 +4,28 @@ namespace Tests\Feature;
 
 use App\Models\Project;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
 class CILModelTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->createProject();
+    }
+
     /**
      * @group db
      * @return void
      */
-    public function test_validateAndSave_function_create_and_then_update_in_different_ways()
+    public function test_validateAndSave_function_creates_record_and_then_updates_it_in_different_ways()
     {
         // just making sure that the validateAndSave function works as expected
-        // create
-        $project = new Project(); // this syntax is for creating
+        // create record
+        $project = $this->project; // this syntax is for creating
 
         $titleText = 'test1';
         $rolesText = 'test1';
@@ -95,31 +101,52 @@ class CILModelTest extends TestCase
         $this->assertEquals($budgetNumber, $newProjectComparison->budget);
     }
 
-    public function test_validateAndSave_exception_is_thrown()
+    /**
+     * @dataProvider exceptionDataProvider
+     */
+    public function test_validateAndSave_exception_is_thrown($validationRules)
     {
         $this->expectException(\Exception::class);
         $this->expectErrorMessage('validationRules rules not set. A class utilizing the CILModel trait must have validationRules, see the documentation located at app\CoreIntegrationApi\docs\CILModel.php');
 
-        $tag = new \App\Models\Tag();
-        $tag->validateAndSave([]);
+        $this->project->validationRules = $validationRules;
+        $this->project->validateAndSave([]);
     }
 
-    public function test_validate_exception_is_thrown()
+    /**
+     * @dataProvider exceptionDataProvider
+     */
+    public function test_validate_exception_is_thrown($validationRules)
     {
         $this->expectException(\Exception::class);
         $this->expectErrorMessage('validationRules rules not set. A class utilizing the CILModel trait must have validationRules, see the documentation located at app\CoreIntegrationApi\docs\CILModel.php');
 
-        $tag = new \App\Models\Tag();
-        $tag->validate([]);
+        $this->project->validationRules = $validationRules;
+        $this->project->validate([]);
+    }
+
+    public function exceptionDataProvider()
+    {
+        return [
+            'noValidationRules' => [null],
+            'validationRulesOnlyModelValidation' => [['modelValidation' => []]],
+            'validationRulesOnlyCreateValidation' => [['createValidation' => []]],
+        ];
+    }
+
+    public function test_validateAndSave_method_passes_back_redirect_object()
+    {
+        $redirectObject = $this->project->validateAndSave(['title' => 't'], '/test/redirect');
+
+        $this->assertInstanceOf('Illuminate\Http\RedirectResponse', $redirectObject);
     }
 
     /**
      * @dataProvider createValidationDataProvider
      */
-    public function test_validateAndSave_function_class_returns_expected_error_results_for_creates($classPath, $data, $expectedErrors)
+    public function test_validateAndSave_function_class_returns_expected_error_results_for_creates($data, $expectedErrors)
     {
-        $class = new $classPath();
-        $errors = $class->validateAndSave($data);
+        $errors = $this->project->validateAndSave($data);
 
         $this->assertEquals($expectedErrors, $errors);
     }
@@ -127,10 +154,9 @@ class CILModelTest extends TestCase
     /**
      * @dataProvider createValidationDataProvider
      */
-    public function test_validate_function_class_returns_expected_error_results_for_creates($classPath, $data, $expectedErrors)
+    public function test_validate_function_class_returns_expected_error_results_for_creates($data, $expectedErrors)
     {
-        $class = new $classPath();
-        $validator = $class->validate($data);
+        $validator = $this->project->validate($data);
         $errors = $validator->errors()->toArray();
 
         $this->assertEquals($expectedErrors, $errors);
@@ -140,7 +166,6 @@ class CILModelTest extends TestCase
     {
         return [
             'App\Models\Project' => [
-                'classPath' => 'App\Models\Project',
                 'data' => [
                     'title' => 'test',
                     'description' => 'test',
@@ -166,7 +191,6 @@ class CILModelTest extends TestCase
                 ],
             ],
             'App\Models\Project - no data sent' => [
-                'classPath' => 'App\Models\Project',
                 'data' => [],
                 'expectedData' => [
                     'title' => [
@@ -185,20 +209,7 @@ class CILModelTest extends TestCase
                         'The budget field is required.',
                     ],
                 ],
-            ],
-            'App\Models\WorkHistoryType' => [
-                'classPath' => 'App\Models\WorkHistoryType',
-                'data' => [
-                    'name' => 't',
-                    'icon' => 'test',
-                ],
-                'expectedData' => [
-                    'name' => [
-                        'The name must be at least 2 characters.'
-                    ],
-                ],
-            ],
-            
+            ]
         ];
     }
 
@@ -208,24 +219,21 @@ class CILModelTest extends TestCase
      * @group db
      * @return void
      */
-    public function test_validateAndSave_function_class_returns_expected_error_results_for_updates($classPath, $data, $expectedErrors)
+    public function test_validateAndSave_function_class_returns_expected_error_results_for_updates($data, $expectedErrors)
     {
-        $class = $classPath::factory()->create();
-        $errors = $class->validateAndSave($data);
+        $project = Project::factory()->create();
+        $errors = $project->validateAndSave($data);
 
         $this->assertEquals($expectedErrors, $errors);
     }
 
     /**
      * @dataProvider updateValidationDataProvider
-     * 
-     * @group db
-     * @return void
      */
-    public function test_validate_function_class_returns_expected_error_results_for_updates($classPath, $data, $expectedErrors)
+    public function test_validate_function_class_returns_expected_error_results_for_updates($data, $expectedErrors)
     {
-        $class = $classPath::factory()->create();
-        $validator = $class->validate($data);
+        $project = Project::factory()->create();
+        $validator = $project->validate($data);
         $errors = $validator->errors()->toArray();
 
         $this->assertEquals($expectedErrors, $errors);
@@ -235,7 +243,6 @@ class CILModelTest extends TestCase
     {
         return [
             'App\Models\Project' => [
-                'classPath' => 'App\Models\Project',
                 'data' => [
                     'title' => 'test',
                     'description' => 'test',
@@ -251,24 +258,99 @@ class CILModelTest extends TestCase
                     ],
                 ],
             ],
-            'App\Models\Project - no data sent' => [
-                'classPath' => 'App\Models\Project',
+            'App\Models\Project - no data sent' => [ // saves with db defaults
                 'data' => [],
                 'expectedData' => [],
             ],
-            'App\Models\WorkHistoryType' => [
-                'classPath' => 'App\Models\WorkHistoryType',
-                'data' => [
-                    'name' => 't',
-                    'icon' => 't',
+        ];
+    }
+
+    protected function createProject()
+    {
+        $this->project = new Project();
+
+        $this->project->validationRules = [
+            'modelValidation' => [
+                'id' => [
+                    'integer',
+                    'min:1',
+                    'max:18446744073709551615',
                 ],
-                'expectedData' => [
-                    'name' => [
-                        'The name must be at least 2 characters.'
-                    ],
-                    'icon' => [
-                        'The icon must be at least 2 characters.'
-                    ],
+                'title' => [
+                    'string',
+                    'max:75',
+                    'min:2',
+                ],
+                'roles' => [
+                    'string',
+                    'max:50',
+                    'nullable',
+                ],
+                'client' => [
+                    'string',
+                    'max:50',
+                    'nullable',
+                ],
+                'description' => [
+                    'string',
+                    'max:255',
+                    'min:10',
+                    'nullable',
+                ],
+                'content' => [
+                    'string',
+                    'json',
+                    'nullable',
+                ],
+                'video_link' => [
+                    'string',
+                    'max:255',
+                    'nullable',
+                ],
+                'code_link' => [
+                    'string',
+                    'max:255',
+                    'nullable',
+                ],
+                'demo_link' => [
+                    'string',
+                    'max:255',
+                    'nullable',
+                ],
+                'start_date' => [
+                    'date',
+                    'nullable',
+                ],
+                'end_date' => [
+                    'date',
+                    'nullable',
+                ],
+                'is_published' => [
+                    'integer',
+                    'min:0',
+                    'max:1',
+                ],
+                'budget' => [
+                    'numeric',
+                    'max:999999.99',
+                    'min:0',
+                ],
+            ],
+            'createValidation' => [
+                'title' => [
+                    'required',
+                ],
+                'roles' => [
+                    'required',
+                ],
+                'description' => [
+                    'required',
+                ],
+                'start_date' => [
+                    'required',
+                ],
+                'budget' => [
+                    'required',
                 ],
             ],
         ];

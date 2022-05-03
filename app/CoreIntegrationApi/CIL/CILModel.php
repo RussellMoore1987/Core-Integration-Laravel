@@ -14,7 +14,6 @@
             $validator = $this->validate($data, $this->getValidationRules());
             if ($validator->fails()) {
                 if ($redirect) {
-                    // TODO: Not tested, need to test
                     return redirect($redirect)
                         ->withErrors($validator)
                         ->withInput();

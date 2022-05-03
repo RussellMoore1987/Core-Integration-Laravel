@@ -23,7 +23,7 @@ class Project extends Model
         ],
     ];
 
-    protected $validationRules = [
+    public $validationRules = [
         'modelValidation' => [
             'id' => [
                 'integer',
@@ -106,7 +106,6 @@ class Project extends Model
             'budget' => [
                 'required',
             ],
-
         ],
     ];
 
