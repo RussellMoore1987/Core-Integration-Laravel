@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\CoreIntegrationApi\ClassDataProvider;
 use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFactory;
+use App\Models\Project;
 use Tests\TestCase;
 
 class ClassDataProviderTest extends TestCase
@@ -41,6 +42,8 @@ class ClassDataProviderTest extends TestCase
 
     public function classDataProvider()
     {
+        // ! Start here *************************************************
+        // $project = new Project();
 
         return [
             'App\Models\Project' => [
@@ -63,6 +66,7 @@ class ClassDataProviderTest extends TestCase
                                     'maxlength' => 20,
                                     'type' => 'number',
                                 ],
+                                // 'validationRules' => $project->validationRules
                             ],
                             'title' => [
                                 'field' => 'title',

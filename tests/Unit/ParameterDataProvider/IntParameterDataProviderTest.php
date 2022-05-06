@@ -10,6 +10,7 @@ class IntParameterDataProviderTest extends TestCase
 {
     protected $project;
     protected $intParameterDataProvider;
+    protected $expectedResult;
 
     protected function setUp(): void
     {
@@ -25,6 +26,8 @@ class IntParameterDataProviderTest extends TestCase
      */
     public function test_IntParameterDataProvider_default_return_values($dataType, $parameterName, $expectedResult)
     {
+        unset($this->project->formData);
+        unset($this->project->validationRules);
         $result = $this->intParameterDataProvider->getData($dataType, $parameterName, $this->project);
 
         $this->assertEquals($expectedResult, $result);
@@ -44,6 +47,11 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 3,
                         'type' => 'number',
                     ],
+                    'validationRules' => [
+                        'integer',
+                        'min:-128',
+                        'max:127',
+                    ],
                 ]
             ],
             'tinyint unsigned' => [
@@ -56,6 +64,11 @@ class IntParameterDataProviderTest extends TestCase
                         'max' => 255,
                         'maxlength' => 3,
                         'type' => 'number',
+                    ],
+                    'validationRules' => [
+                        'integer',
+                        'min:0',
+                        'max:255',
                     ],
                 ]
             ],
@@ -70,6 +83,11 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 5,
                         'type' => 'number',
                     ],
+                    'validationRules' => [
+                        'integer',
+                        'min:-32768',
+                        'max:32767',
+                    ],
                 ]
             ],
             'smallint unsigned' => [
@@ -82,6 +100,11 @@ class IntParameterDataProviderTest extends TestCase
                         'max' => 65535,
                         'maxlength' => 5,
                         'type' => 'number',
+                    ],
+                    'validationRules' => [
+                        'integer',
+                        'min:0',
+                        'max:65535',
                     ],
                 ]
             ],
@@ -96,6 +119,11 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 7,
                         'type' => 'number',
                     ],
+                    'validationRules' => [
+                        'integer',
+                        'min:-8388608',
+                        'max:8388607',
+                    ],
                 ]
             ],
             'mediumint unsigned' => [
@@ -108,6 +136,11 @@ class IntParameterDataProviderTest extends TestCase
                         'max' => 16777215,
                         'maxlength' => 8,
                         'type' => 'number',
+                    ],
+                    'validationRules' => [
+                        'integer',
+                        'min:0',
+                        'max:16777215',
                     ],
                 ]
             ],
@@ -122,6 +155,11 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 10,
                         'type' => 'number',
                     ],
+                    'validationRules' => [
+                        'integer',
+                        'min:-2147483648',
+                        'max:2147483647',
+                    ],
                 ]
             ],
             'integer unsigned' => [
@@ -134,6 +172,11 @@ class IntParameterDataProviderTest extends TestCase
                         'max' => 4294967295,
                         'maxlength' => 10,
                         'type' => 'number',
+                    ],
+                    'validationRules' => [
+                        'integer',
+                        'min:0',
+                        'max:4294967295',
                     ],
                 ]
             ],
@@ -148,6 +191,11 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 19,
                         'type' => 'number',
                     ],
+                    'validationRules' => [
+                        'integer',
+                        'min:-9223372036854775808',
+                        'max:9223372036854775807',
+                    ],
                 ]
             ],
             'bigint unsigned' => [
@@ -160,6 +208,11 @@ class IntParameterDataProviderTest extends TestCase
                         'max' => 18446744073709551615,
                         'maxlength' => 20,
                         'type' => 'number',
+                    ],
+                    'validationRules' => [
+                        'integer',
+                        'min:0',
+                        'max:18446744073709551615',
                     ],
                 ]
             ],
@@ -174,6 +227,11 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 10,
                         'type' => 'number',
                     ],
+                    'validationRules' => [
+                        'integer',
+                        'min:-2147483648',
+                        'max:2147483647',
+                    ],
                 ]
             ],
             'int unsigned' => [
@@ -187,6 +245,11 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 10,
                         'type' => 'number',
                     ],
+                    'validationRules' => [
+                        'integer',
+                        'min:0',
+                        'max:4294967295',
+                    ],
                 ]
             ],
         ];
@@ -198,10 +261,43 @@ class IntParameterDataProviderTest extends TestCase
     public function test_IntParameterDataProvider_with_class_form_data_returned($dataType, $formData, $expectedResult)
     {
         $this->project->formData['fakeParameterName'] = $formData;
+        $this->expectedResult = $expectedResult;
+
+        $this->setupValidationRulesInfo();
 
         $result = $this->intParameterDataProvider->getData($dataType, 'fakeParameterName', $this->project);
 
-        $this->assertEquals($expectedResult, $result);
+        $this->assertEquals($this->expectedResult, $result);
+    }
+
+    protected function setupValidationRulesInfo()
+    {
+        // validation rules from the class will just overwrite the other array so no other testing is needed
+        $this->project->validationRules = [
+            'modelValidation' => [
+                'fakeParameterName' => [
+                    'integer',
+                    'min:0',
+                    'max:1',
+                ]
+            ],
+            'createValidation' => [
+                'fakeParameterName' => [
+                    'required',
+                ],
+            ],
+        ];
+
+        $this->expectedResult['validationRules'] = [
+            'modelValidation' => [
+                'integer',
+                'min:0',
+                'max:1',
+            ],
+            'createValidation' => [
+                'required',
+            ],
+        ];
     }
 
     public function classFormDataProvider()

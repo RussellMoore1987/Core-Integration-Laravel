@@ -3,7 +3,7 @@
 namespace App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders;
 
 use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders\ParameterDataProvider;
-
+// TODO: add validation rules to test
 class IntParameterDataProvider extends ParameterDataProvider
 {
     protected $apiDataType = 'int';
@@ -25,6 +25,12 @@ class IntParameterDataProvider extends ParameterDataProvider
             
             $this->intType = true;
 
+            $this->validationRules = [
+                'integer',
+                'min:-128',
+                'max:127',
+            ];
+
             $this->formData = [
                 'min' => -128,
                 'max' => 127,
@@ -35,9 +41,10 @@ class IntParameterDataProvider extends ParameterDataProvider
             if ($this->isUnsignedInt()) {
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 255;
-            }
 
-            $this->checkForClassFormData();
+                $this->validationRules[1] = 'min:0';
+                $this->validationRules[2] = 'max:255';
+            }
         }
     }
 
@@ -46,6 +53,12 @@ class IntParameterDataProvider extends ParameterDataProvider
         if (!$this->intType && $this->isIntType('smallint')) {
             
             $this->intType = true;
+
+            $this->validationRules = [
+                'integer',
+                'min:-32768',
+                'max:32767',
+            ];
 
             $this->formData = [
                 'min' => -32768,
@@ -57,6 +70,9 @@ class IntParameterDataProvider extends ParameterDataProvider
             if ($this->isUnsignedInt()) {
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 65535;
+
+                $this->validationRules[1] = 'min:0';
+                $this->validationRules[2] = 'max:65535';
             }
         }
     }
@@ -66,6 +82,12 @@ class IntParameterDataProvider extends ParameterDataProvider
         if (!$this->intType && $this->isIntType('mediumint')) {
             
             $this->intType = true;
+
+            $this->validationRules = [
+                'integer',
+                'min:-8388608',
+                'max:8388607',
+            ];
 
             $this->formData = [
                 'min' => -8388608,
@@ -78,6 +100,9 @@ class IntParameterDataProvider extends ParameterDataProvider
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 16777215;
                 $this->formData['maxlength'] = 8;
+
+                $this->validationRules[1] = 'min:0';
+                $this->validationRules[2] = 'max:16777215';
             }
         }
     }
@@ -87,6 +112,12 @@ class IntParameterDataProvider extends ParameterDataProvider
         if (!$this->intType && $this->isIntType('integer')) {
             
             $this->intType = true;
+
+            $this->validationRules = [
+                'integer',
+                'min:-2147483648',
+                'max:2147483647',
+            ];
 
             $this->formData = [
                 'min' => -2147483648,
@@ -98,6 +129,9 @@ class IntParameterDataProvider extends ParameterDataProvider
             if ($this->isUnsignedInt()) {
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 4294967295;
+
+                $this->validationRules[1] = 'min:0';
+                $this->validationRules[2] = 'max:4294967295';
             }
         }
     }
@@ -107,6 +141,12 @@ class IntParameterDataProvider extends ParameterDataProvider
         if (!$this->intType && $this->isIntType('bigint')) {
             
             $this->intType = true;
+
+            $this->validationRules = [
+                'integer',
+                'min:-9223372036854775808',
+                'max:9223372036854775807',
+            ];
 
             $this->formData = [
                 'min' => -9223372036854775808,
@@ -119,6 +159,9 @@ class IntParameterDataProvider extends ParameterDataProvider
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 18446744073709551615;
                 $this->formData['maxlength'] = 20;
+
+                $this->validationRules[1] = 'min:0';
+                $this->validationRules[2] = 'max:18446744073709551615';
             }
         }
     }
@@ -128,6 +171,12 @@ class IntParameterDataProvider extends ParameterDataProvider
         if (!$this->intType && $this->isIntType('int')) {
             
             $this->intType = true;
+
+            $this->validationRules = [
+                'integer',
+                'min:-2147483648',
+                'max:2147483647',
+            ];
 
             $this->formData = [
                 'min' => -2147483648,
@@ -139,6 +188,9 @@ class IntParameterDataProvider extends ParameterDataProvider
             if ($this->isUnsignedInt()) {
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 4294967295;
+
+                $this->validationRules[1] = 'min:0';
+                $this->validationRules[2] = 'max:4294967295';
             }
         }
     }

@@ -93,8 +93,9 @@ class ClassDataProvider
         foreach ($this->availableParameters['acceptableParameters'] as $key => $columnArray) {
             $parameterFormDataProvider = $this->parameterDataProviderFactory->getFactoryItem($columnArray['type']);
             $parameterData = $parameterFormDataProvider->getData($columnArray['type'], $key, $this->classObject);
-            $this->availableParameters['acceptableParameters'][$key]['formData'] = $parameterData['formData'];
             $this->availableParameters['acceptableParameters'][$key]['api_data_type'] = $parameterData['apiDataType'];
+            $this->availableParameters['acceptableParameters'][$key]['validationRules'] = $parameterData['validationRules'];
+            $this->availableParameters['acceptableParameters'][$key]['formData'] = $parameterData['formData'];
         }
     }
 
