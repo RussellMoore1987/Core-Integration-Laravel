@@ -31,7 +31,7 @@ class ClassDataProviderTest extends TestCase
      */
     public function test_classDataProvider_functions_results_as_expected_from_data_provider($expectedClassInfo)
     {
-        $this->classDataProvider->setClass($expectedClassInfo['path']);
+        $this->classDataProvider->setClass(new $expectedClassInfo['path']());
 
         $this->assertEquals($expectedClassInfo['primaryKeyName'], $this->classDataProvider->getClassPrimaryKeyName());
         $this->assertEquals($expectedClassInfo['path'], $this->classDataProvider->getClassPath());

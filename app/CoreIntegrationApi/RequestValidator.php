@@ -88,7 +88,7 @@ abstract class RequestValidator
 
     protected function setRequestClass()
     {
-        $this->classDataProvider->setClass($this->acceptedClasses[$this->endpoint]);
+        $this->classDataProvider->setClass(new $this->acceptedClasses[$this->endpoint]());
         $this->classInfo = $this->classDataProvider->getClassInfo();
     }
 

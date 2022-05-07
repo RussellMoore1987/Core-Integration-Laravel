@@ -3,11 +3,12 @@
 namespace App\CoreIntegrationApi;
 
 use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class ClassDataProvider 
 {   
-    protected $class;
+    protected $classPath;
     protected $classObject;
     protected $classTableName;
     protected $columnData;
@@ -18,14 +19,11 @@ class ClassDataProvider
         $this->parameterDataProviderFactory = $parameterDataProviderFactory;
     }
 
-    public function setClass(string $class)
+    // TODO: should this be a class
+    public function setClass(Model $class)
     {
-        if (class_exists($class) && is_subclass_of($class, 'Illuminate\Database\Eloquent\Model')) {
-            $this->class = $class;
-            $this->classObject = new $class();
-        } else {
-            throw new \Exception('Class does not exist or is not a subclass of the Model class');
-        }   
+        $this->classObject = $class;
+        $this->classPath = get_class($class);
     }
 
     public function getClassPrimaryKeyName()
@@ -36,7 +34,7 @@ class ClassDataProvider
 
     public function getClassPath()
     {
-        return $this->class;
+        return $this->classPath;
     }
 
     public function getClassAcceptableParameters()
@@ -50,7 +48,7 @@ class ClassDataProvider
     {
         $this->columnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$this->classTableName}"));
         $this->setAcceptableParameters();
-        $this->addFormDataToAcceptableParameters();
+        $this->addAdditionalInfoToAcceptableParameters();
         $this->availableParameters['availableMethodCalls'] = $this->classObject->availableMethodCalls ?? [];
         $this->availableParameters['availableIncludes'] = $this->classObject->availableIncludes ?? [];
     }
@@ -76,7 +74,7 @@ class ClassDataProvider
         }
     }
 
-    protected function addFormDataToAcceptableParameters()
+    protected function addAdditionalInfoToAcceptableParameters()
     {
         // ! working here ******************************************************** date parameterDataProvider formData, validation data as well, and date and int end to end testing API, update uml diagram with cil trait
         // https://laravel.com/docs/8.x/validation#manually-creating-validators
