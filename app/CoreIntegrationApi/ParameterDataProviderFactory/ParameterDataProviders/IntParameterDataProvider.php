@@ -25,7 +25,7 @@ class IntParameterDataProvider extends ParameterDataProvider
             
             $this->intType = true;
 
-            $this->validationRules = [
+            $this->defaultValidationRules = [
                 'integer',
                 'min:-128',
                 'max:127',
@@ -42,8 +42,8 @@ class IntParameterDataProvider extends ParameterDataProvider
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 255;
 
-                $this->validationRules[1] = 'min:0';
-                $this->validationRules[2] = 'max:255';
+                $this->defaultValidationRules[1] = 'min:0';
+                $this->defaultValidationRules[2] = 'max:255';
             }
         }
     }
@@ -54,7 +54,7 @@ class IntParameterDataProvider extends ParameterDataProvider
             
             $this->intType = true;
 
-            $this->validationRules = [
+            $this->defaultValidationRules = [
                 'integer',
                 'min:-32768',
                 'max:32767',
@@ -71,8 +71,8 @@ class IntParameterDataProvider extends ParameterDataProvider
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 65535;
 
-                $this->validationRules[1] = 'min:0';
-                $this->validationRules[2] = 'max:65535';
+                $this->defaultValidationRules[1] = 'min:0';
+                $this->defaultValidationRules[2] = 'max:65535';
             }
         }
     }
@@ -83,7 +83,7 @@ class IntParameterDataProvider extends ParameterDataProvider
             
             $this->intType = true;
 
-            $this->validationRules = [
+            $this->defaultValidationRules = [
                 'integer',
                 'min:-8388608',
                 'max:8388607',
@@ -101,8 +101,8 @@ class IntParameterDataProvider extends ParameterDataProvider
                 $this->formData['max'] = 16777215;
                 $this->formData['maxlength'] = 8;
 
-                $this->validationRules[1] = 'min:0';
-                $this->validationRules[2] = 'max:16777215';
+                $this->defaultValidationRules[1] = 'min:0';
+                $this->defaultValidationRules[2] = 'max:16777215';
             }
         }
     }
@@ -113,7 +113,7 @@ class IntParameterDataProvider extends ParameterDataProvider
             
             $this->intType = true;
 
-            $this->validationRules = [
+            $this->defaultValidationRules = [
                 'integer',
                 'min:-2147483648',
                 'max:2147483647',
@@ -130,8 +130,8 @@ class IntParameterDataProvider extends ParameterDataProvider
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 4294967295;
 
-                $this->validationRules[1] = 'min:0';
-                $this->validationRules[2] = 'max:4294967295';
+                $this->defaultValidationRules[1] = 'min:0';
+                $this->defaultValidationRules[2] = 'max:4294967295';
             }
         }
     }
@@ -142,7 +142,7 @@ class IntParameterDataProvider extends ParameterDataProvider
             
             $this->intType = true;
 
-            $this->validationRules = [
+            $this->defaultValidationRules = [
                 'integer',
                 'min:-9223372036854775808',
                 'max:9223372036854775807',
@@ -160,8 +160,8 @@ class IntParameterDataProvider extends ParameterDataProvider
                 $this->formData['max'] = 18446744073709551615;
                 $this->formData['maxlength'] = 20;
 
-                $this->validationRules[1] = 'min:0';
-                $this->validationRules[2] = 'max:18446744073709551615';
+                $this->defaultValidationRules[1] = 'min:0';
+                $this->defaultValidationRules[2] = 'max:18446744073709551615';
             }
         }
     }
@@ -172,7 +172,7 @@ class IntParameterDataProvider extends ParameterDataProvider
             
             $this->intType = true;
 
-            $this->validationRules = [
+            $this->defaultValidationRules = [
                 'integer',
                 'min:-2147483648',
                 'max:2147483647',
@@ -189,8 +189,8 @@ class IntParameterDataProvider extends ParameterDataProvider
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 4294967295;
 
-                $this->validationRules[1] = 'min:0';
-                $this->validationRules[2] = 'max:4294967295';
+                $this->defaultValidationRules[1] = 'min:0';
+                $this->defaultValidationRules[2] = 'max:4294967295';
             }
         }
     }

@@ -3,10 +3,11 @@
 namespace App\CoreIntegrationApi\ClauseBuilderFactory;
 
 use App\CoreIntegrationApi\CIL\CILDataTypeDeterminerFactory;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\ClauseBuilder;
 
 class ClauseBuilderFactory extends CILDataTypeDeterminerFactory
 {
-    public function getFactoryItem($dataType)
+    public function getFactoryItem($dataType) : ClauseBuilder
     {
         $this->factoryReturnArray = [
             'string' => 'App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\StringWhereClauseBuilder',

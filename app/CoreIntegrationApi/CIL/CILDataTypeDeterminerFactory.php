@@ -23,7 +23,7 @@ abstract class CILDataTypeDeterminerFactory
         'methodcalls' => 'methodcalls',
     ];
 
-    public function getFactoryItem($dataType)
+    public function getFactoryItem($dataType) : object
     {
         $this->dataType = strtolower($dataType);
         $this->factoryItem = null;

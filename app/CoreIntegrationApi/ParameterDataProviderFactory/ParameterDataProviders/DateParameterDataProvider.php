@@ -11,5 +11,6 @@ class DateParameterDataProvider extends ParameterDataProvider
     protected function getFormData()
     {
         $this->formData = [];
+        $this->defaultValidationRules = [];
     }
 }

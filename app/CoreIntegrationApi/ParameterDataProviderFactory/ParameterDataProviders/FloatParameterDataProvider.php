@@ -11,5 +11,6 @@ class FloatParameterDataProvider extends ParameterDataProvider
     protected function getFormData()
     {
         $this->formData = [];
+        $this->defaultValidationRules = [];
     }
 }

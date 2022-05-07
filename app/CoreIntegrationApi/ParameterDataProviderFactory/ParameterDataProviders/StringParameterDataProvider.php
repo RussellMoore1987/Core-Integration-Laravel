@@ -11,5 +11,6 @@ class StringParameterDataProvider extends ParameterDataProvider
     protected function getFormData()
     {
         $this->formData = [];
+        $this->defaultValidationRules = [];
     }
 }

@@ -42,9 +42,6 @@ class ClassDataProviderTest extends TestCase
 
     public function classDataProvider()
     {
-        // ! Start here *************************************************
-        // $project = new Project();
-
         return [
             'App\Models\Project' => [
                 [
@@ -66,7 +63,11 @@ class ClassDataProviderTest extends TestCase
                                     'maxlength' => 20,
                                     'type' => 'number',
                                 ],
-                                // 'validationRules' => $project->validationRules
+                                'defaultValidationRules' => [
+                                    'integer',
+                                    'min:0',
+                                    'max:18446744073709551615',
+                                ]
                             ],
                             'title' => [
                                 'field' => 'title',
@@ -77,6 +78,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'string',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                             ],
                             'roles' => [
                                 'field' => 'roles',
@@ -87,6 +89,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'string',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                             ],
                             'client' => [
                                 'field' => 'client',
@@ -97,6 +100,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'string',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                             ],
                             'description' => [
                                 'field' => 'description',
@@ -107,6 +111,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'string',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                             ],
                             'content' => [
                                 'field' => 'content',
@@ -117,6 +122,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'json',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                             ],
                             'video_link' => [
                                 'field' => 'video_link',
@@ -127,6 +133,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'string',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                             ],
                             'code_link' => [
                                 'field' => 'code_link',
@@ -137,6 +144,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'string',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                             ],
                             'demo_link' => [
                                 'field' => 'demo_link',
@@ -147,6 +155,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'string',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                             ],
                             'start_date' => [
                                 'field' => 'start_date',
@@ -157,6 +166,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'date',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                             ],
                             'end_date' => [
                                 'field' => 'end_date',
@@ -167,6 +177,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'date',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                             ],
                             'is_published' => [
                                 'field' => 'is_published',
@@ -182,6 +193,11 @@ class ClassDataProviderTest extends TestCase
                                     'maxlength' => 1,
                                     'type' => 'number',
                                 ],
+                                'defaultValidationRules' => [
+                                    'integer',
+                                    'min:-128',
+                                    'max:127',
+                                ],
                             ],
                             'created_at' => [
                                 'field' => 'created_at',
@@ -192,6 +208,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'date',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                             ],
                             'updated_at' => [
                                 'field' => 'updated_at',
@@ -202,6 +219,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'date',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                             ],
                             'budget' => [
                                 'field' => 'budget',
@@ -212,6 +230,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'float',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                             ],
                         ],
                         'availableMethodCalls' => [
@@ -247,6 +266,11 @@ class ClassDataProviderTest extends TestCase
                                     'maxlength' => 6,
                                     'type' => 'number',
                                 ],
+                                'defaultValidationRules' => [
+                                    'integer',
+                                    'min:0',
+                                    'max:18446744073709551615',
+                                ],
                               ],
                               'name' => [
                                 'field' => 'name',
@@ -257,6 +281,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'string',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                               ],
                               'icon' => [
                                 'field' => 'icon',
@@ -267,6 +292,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'string',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                               ],
                               'created_at' => [
                                 'field' => 'created_at',
@@ -277,6 +303,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'date',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                               ],
                               'updated_at' => [
                                 'field' => 'updated_at',
@@ -287,6 +314,7 @@ class ClassDataProviderTest extends TestCase
                                 'extra' => '',
                                 'api_data_type' => 'date',
                                 'formData' => [],
+                                'defaultValidationRules' => [],
                               ],
                         ],
                         'availableMethodCalls' => [],

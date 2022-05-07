@@ -3,10 +3,11 @@
 namespace App\CoreIntegrationApi\ParameterValidatorFactory;
 
 use App\CoreIntegrationApi\CIL\CILDataTypeDeterminerFactory;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ParameterValidator;
 
 class ParameterValidatorFactory extends CILDataTypeDeterminerFactory
 {
-    public function getFactoryItem($dataType)
+    public function getFactoryItem($dataType) : ParameterValidator
     {
         $this->factoryReturnArray = [
             'string' => 'App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\StringParameterValidator',

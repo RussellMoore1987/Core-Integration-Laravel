@@ -80,21 +80,11 @@ class ClassDataProvider
     {
         // ! working here ******************************************************** date parameterDataProvider formData, validation data as well, and date and int end to end testing API, update uml diagram with cil trait
         // https://laravel.com/docs/8.x/validation#manually-creating-validators
-        // TODO:
-        // form info
-        // Test class formData, and db formData
-            // min
-            // max
-            // minlength
-            // maxlength
-            // required
-            // unique
-            // others laravel validation rules
         foreach ($this->availableParameters['acceptableParameters'] as $key => $columnArray) {
             $parameterFormDataProvider = $this->parameterDataProviderFactory->getFactoryItem($columnArray['type']);
             $parameterData = $parameterFormDataProvider->getData($columnArray['type'], $key, $this->classObject);
             $this->availableParameters['acceptableParameters'][$key]['api_data_type'] = $parameterData['apiDataType'];
-            $this->availableParameters['acceptableParameters'][$key]['validationRules'] = $parameterData['validationRules'];
+            $this->availableParameters['acceptableParameters'][$key]['defaultValidationRules'] = $parameterData['defaultValidationRules'];
             $this->availableParameters['acceptableParameters'][$key]['formData'] = $parameterData['formData'];
         }
     }

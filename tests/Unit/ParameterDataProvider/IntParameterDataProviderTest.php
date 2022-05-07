@@ -18,7 +18,7 @@ class IntParameterDataProviderTest extends TestCase
 
         $this->intParameterDataProvider = new IntParameterDataProvider();
 
-        $this->project = new Project();
+        $this->createProject();
     }
 
     /**
@@ -47,7 +47,7 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 3,
                         'type' => 'number',
                     ],
-                    'validationRules' => [
+                    'defaultValidationRules' => [
                         'integer',
                         'min:-128',
                         'max:127',
@@ -65,7 +65,7 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 3,
                         'type' => 'number',
                     ],
-                    'validationRules' => [
+                    'defaultValidationRules' => [
                         'integer',
                         'min:0',
                         'max:255',
@@ -83,7 +83,7 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 5,
                         'type' => 'number',
                     ],
-                    'validationRules' => [
+                    'defaultValidationRules' => [
                         'integer',
                         'min:-32768',
                         'max:32767',
@@ -101,7 +101,7 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 5,
                         'type' => 'number',
                     ],
-                    'validationRules' => [
+                    'defaultValidationRules' => [
                         'integer',
                         'min:0',
                         'max:65535',
@@ -119,7 +119,7 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 7,
                         'type' => 'number',
                     ],
-                    'validationRules' => [
+                    'defaultValidationRules' => [
                         'integer',
                         'min:-8388608',
                         'max:8388607',
@@ -137,7 +137,7 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 8,
                         'type' => 'number',
                     ],
-                    'validationRules' => [
+                    'defaultValidationRules' => [
                         'integer',
                         'min:0',
                         'max:16777215',
@@ -155,7 +155,7 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 10,
                         'type' => 'number',
                     ],
-                    'validationRules' => [
+                    'defaultValidationRules' => [
                         'integer',
                         'min:-2147483648',
                         'max:2147483647',
@@ -173,7 +173,7 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 10,
                         'type' => 'number',
                     ],
-                    'validationRules' => [
+                    'defaultValidationRules' => [
                         'integer',
                         'min:0',
                         'max:4294967295',
@@ -191,7 +191,7 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 19,
                         'type' => 'number',
                     ],
-                    'validationRules' => [
+                    'defaultValidationRules' => [
                         'integer',
                         'min:-9223372036854775808',
                         'max:9223372036854775807',
@@ -209,7 +209,7 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 20,
                         'type' => 'number',
                     ],
-                    'validationRules' => [
+                    'defaultValidationRules' => [
                         'integer',
                         'min:0',
                         'max:18446744073709551615',
@@ -227,7 +227,7 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 10,
                         'type' => 'number',
                     ],
-                    'validationRules' => [
+                    'defaultValidationRules' => [
                         'integer',
                         'min:-2147483648',
                         'max:2147483647',
@@ -245,7 +245,7 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 10,
                         'type' => 'number',
                     ],
-                    'validationRules' => [
+                    'defaultValidationRules' => [
                         'integer',
                         'min:0',
                         'max:4294967295',
@@ -263,41 +263,9 @@ class IntParameterDataProviderTest extends TestCase
         $this->project->formData['fakeParameterName'] = $formData;
         $this->expectedResult = $expectedResult;
 
-        $this->setupValidationRulesInfo();
-
         $result = $this->intParameterDataProvider->getData($dataType, 'fakeParameterName', $this->project);
 
         $this->assertEquals($this->expectedResult, $result);
-    }
-
-    protected function setupValidationRulesInfo()
-    {
-        // validation rules from the class will just overwrite the other array so no other testing is needed
-        $this->project->validationRules = [
-            'modelValidation' => [
-                'fakeParameterName' => [
-                    'integer',
-                    'min:0',
-                    'max:1',
-                ]
-            ],
-            'createValidation' => [
-                'fakeParameterName' => [
-                    'required',
-                ],
-            ],
-        ];
-
-        $this->expectedResult['validationRules'] = [
-            'modelValidation' => [
-                'integer',
-                'min:0',
-                'max:1',
-            ],
-            'createValidation' => [
-                'required',
-            ],
-        ];
     }
 
     public function classFormDataProvider()
@@ -318,6 +286,11 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 1,
                         'type' => 'number',
                     ],
+                    'defaultValidationRules' => [
+                        'integer',
+                        'min:-128',
+                        'max:127',
+                    ],
                 ]
             ],
             'tinyint unsigned' => [
@@ -337,6 +310,11 @@ class IntParameterDataProviderTest extends TestCase
                         'type' => 'select',
                         'required' => true,
                     ],
+                    'defaultValidationRules' => [
+                        'integer',
+                        'min:0',
+                        'max:255',
+                    ],
                 ]
             ],
             'smallint' => [
@@ -352,6 +330,11 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 5,
                         'type' => 'number',
                     ],
+                    'defaultValidationRules' => [
+                        'integer',
+                        'min:-32768',
+                        'max:32767',
+                    ],
                 ]
             ],
             'smallint unsigned' => [
@@ -364,6 +347,11 @@ class IntParameterDataProviderTest extends TestCase
                         'max' => 65535,
                         'maxlength' => 5,
                         'type' => 'number',
+                    ],
+                    'defaultValidationRules' => [
+                        'integer',
+                        'min:0',
+                        'max:65535',
                     ],
                 ]
             ],
@@ -385,6 +373,11 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 7,
                         'type' => 'Range',
                     ],
+                    'defaultValidationRules' => [
+                        'integer',
+                        'min:-8388608',
+                        'max:8388607',
+                    ],
                 ]
             ],
             'mediumint unsigned' => [
@@ -399,6 +392,11 @@ class IntParameterDataProviderTest extends TestCase
                         'max' => 16777215,
                         'maxlength' => 8,
                         'type' => 'number',
+                    ],
+                    'defaultValidationRules' => [
+                        'integer',
+                        'min:0',
+                        'max:16777215',
                     ],
                 ]
             ],
@@ -422,6 +420,11 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength2' => 10,
                         'type2' => 'number',
                     ],
+                    'defaultValidationRules' => [
+                        'integer',
+                        'min:-2147483648',
+                        'max:2147483647',
+                    ],
                 ]
             ],
             'integer unsigned' => [
@@ -437,6 +440,11 @@ class IntParameterDataProviderTest extends TestCase
                         'minlength' => 3,
                         'maxlength' => 10,
                         'type' => 'number',
+                    ],
+                    'defaultValidationRules' => [
+                        'integer',
+                        'min:0',
+                        'max:4294967295',
                     ],
                 ]
             ],
@@ -454,6 +462,11 @@ class IntParameterDataProviderTest extends TestCase
                         'max' => 9223372036854775807,
                         'maxlength' => 19,
                         'type' => 'number',
+                    ],
+                    'defaultValidationRules' => [
+                        'integer',
+                        'min:-9223372036854775808',
+                        'max:9223372036854775807',
                     ],
                 ]
             ],
@@ -473,6 +486,11 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => '',
                         'type' => '',
                     ],
+                    'defaultValidationRules' => [
+                        'integer',
+                        'min:0',
+                        'max:18446744073709551615',
+                    ],
                 ]
             ],
             'int' => [
@@ -487,6 +505,11 @@ class IntParameterDataProviderTest extends TestCase
                         'max' => 2147483647,
                         'maxlength' => 5,
                         'type' => 'number',
+                    ],
+                    'defaultValidationRules' => [
+                        'integer',
+                        'min:-2147483648',
+                        'max:2147483647',
                     ],
                 ]
             ],
@@ -505,7 +528,111 @@ class IntParameterDataProviderTest extends TestCase
                         'maxlength' => 2,
                         'type' => 'text',
                     ],
+                    'defaultValidationRules' => [
+                        'integer',
+                        'min:0',
+                        'max:4294967295',
+                    ],
                 ]
+            ],
+        ];
+    }
+
+    protected function createProject()
+    {
+        $this->project = new Project();
+
+        $this->project->formData = [
+            'is_published' => [
+                'min' => 0,
+                'max' => 1,
+                'maxlength' => 1,  
+            ],
+        ];
+    
+        $this->project->validationRules = [
+            'modelValidation' => [
+                'id' => [
+                    'integer',
+                    'min:1',
+                    'max:18446744073709551615',
+                ],
+                'title' => [
+                    'string',
+                    'max:75',
+                    'min:2',
+                ],
+                'roles' => [
+                    'string',
+                    'max:50',
+                    'nullable',
+                ],
+                'client' => [
+                    'string',
+                    'max:50',
+                    'nullable',
+                ],
+                'description' => [
+                    'string',
+                    'max:255',
+                    'min:10',
+                    'nullable',
+                ],
+                'content' => [
+                    'string',
+                    'json',
+                    'nullable',
+                ],
+                'video_link' => [
+                    'string',
+                    'max:255',
+                    'nullable',
+                ],
+                'code_link' => [
+                    'string',
+                    'max:255',
+                    'nullable',
+                ],
+                'demo_link' => [
+                    'string',
+                    'max:255',
+                    'nullable',
+                ],
+                'start_date' => [
+                    'date',
+                    'nullable',
+                ],
+                'end_date' => [
+                    'date',
+                    'nullable',
+                ],
+                'is_published' => [
+                    'integer',
+                    'min:0',
+                    'max:1',
+                ],
+                'budget' => [
+                    'numeric',
+                    'max:999999.99',
+                    'min:0',
+                ],
+            ],
+            'createValidation' => [
+                'title' => [
+                    'required',
+                ],
+                'roles' => [
+                    'required',
+                ],
+                'description' => [
+                    'required',
+                ],
+                'start_date' => [
+                    'required',
+                ],
+                'budget' => [
+                    'required',
+                ],
             ],
         ];
     }

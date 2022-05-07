@@ -3,10 +3,11 @@
 namespace App\CoreIntegrationApi\ParameterDataProviderFactory;
 
 use App\CoreIntegrationApi\CIL\CILDataTypeDeterminerFactory;
+use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders\ParameterDataProvider;
 
 class ParameterDataProviderFactory extends CILDataTypeDeterminerFactory
 {
-    public function getFactoryItem($dataType)
+    public function getFactoryItem($dataType) : ParameterDataProvider
     {
         $this->factoryReturnArray = [
             'string' => 'App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders\StringParameterDataProvider',

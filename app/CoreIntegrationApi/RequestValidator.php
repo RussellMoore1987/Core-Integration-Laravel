@@ -165,6 +165,9 @@ abstract class RequestValidator
     }
     
     // TODO: get validation but what about the others put patch post
+        // Validate them here, maybe in a separate class
+        // get validate
+        // post, put, patch, delete validate
     protected function validateParameters()
     {
         foreach ($this->parameters as $key => $value) {

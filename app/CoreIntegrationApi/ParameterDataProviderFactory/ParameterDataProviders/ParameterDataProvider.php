@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 abstract class ParameterDataProvider 
 {
     protected $apiDataType;
-    protected $validationRules = [];
+    protected $defaultValidationRules = [];
     protected $formData = []; 
 
     protected function getApiDataType() : string
@@ -28,16 +28,15 @@ abstract class ParameterDataProvider
         $this->getFormData();
 
         $this->checkForClassParameterFormData();
-        $this->checkForClassParameterValidationRules();
 
         return [
             'apiDataType' => $this->getApiDataType(),
-            'validationRules' => $this->validationRules,
+            'defaultValidationRules' => $this->defaultValidationRules,
             'formData' => $this->formData,
         ];
     }
 
-    abstract protected function getFormData(); // needs to set $this->apiDataType, $this->validationRules, $this->formData  : array
+    abstract protected function getFormData(); // needs to set $this->apiDataType, $this->defaultValidationRules, $this->formData  : array
 
     protected function checkForClassParameterFormData() // merge arrays
     {
@@ -47,16 +46,6 @@ abstract class ParameterDataProvider
             isset($this->parameterClass->formData[$this->parameterName])
             ) {
             $this->formData = array_merge($this->formData, $this->parameterClass->formData[$this->parameterName]); 
-        }
-    }
-
-    protected function checkForClassParameterValidationRules() // replace array
-    {
-        if ($this->parameterClass->validationRules) {
-            $this->validationRules = [
-                'modelValidation' => $this->parameterClass->validationRules['modelValidation'][$this->parameterName] ?? [],
-                'createValidation' => $this->parameterClass->validationRules['createValidation'][$this->parameterName] ?? [],
-            ];
         }
     }
 }
