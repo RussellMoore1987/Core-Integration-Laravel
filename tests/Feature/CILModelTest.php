@@ -21,12 +21,13 @@ class CILModelTest extends TestCase
      * @group db
      * @return void
      */
+    // TODO: look at this test fix if needed may have to many assertions
     public function test_validateAndSave_function_creates_record_and_then_updates_it_in_different_ways()
     {
         // just making sure that the validateAndSave function works as expected
         // create record
         $project = $this->project; // this syntax is for creating
-
+        
         $titleText = 'test1';
         $rolesText = 'test1';
         $descriptionText = 'test5678910-1';
@@ -68,6 +69,7 @@ class CILModelTest extends TestCase
             'budget' => $budgetNumber,
         ];
 
+        $projectComparison->validationRules = $this->project->validationRules;
         $projectComparison->validateAndSave($data);
 
         $this->assertEquals($titleText, $projectComparison->title);
@@ -83,6 +85,7 @@ class CILModelTest extends TestCase
         $rolesText = 'test3';
 
         $project = Project::find($project->id);
+        $project->validationRules = $this->project->validationRules;
 
         $data = [
             'title' => $titleText,
@@ -156,6 +159,7 @@ class CILModelTest extends TestCase
      */
     public function test_validate_function_class_returns_expected_error_results_for_creates($data, $expectedErrors)
     {
+        // dd($this->project->validationRules);
         $validator = $this->project->validate($data);
         $errors = $validator->errors()->toArray();
 
@@ -222,6 +226,7 @@ class CILModelTest extends TestCase
     public function test_validateAndSave_function_class_returns_expected_error_results_for_updates($data, $expectedErrors)
     {
         $project = Project::factory()->create();
+        $project->validationRules = $this->project->validationRules;
         $errors = $project->validateAndSave($data);
 
         $this->assertEquals($expectedErrors, $errors);
@@ -233,6 +238,7 @@ class CILModelTest extends TestCase
     public function test_validate_function_class_returns_expected_error_results_for_updates($data, $expectedErrors)
     {
         $project = Project::factory()->create();
+        $project->validationRules = $this->project->validationRules;
         $validator = $project->validate($data);
         $errors = $validator->errors()->toArray();
 

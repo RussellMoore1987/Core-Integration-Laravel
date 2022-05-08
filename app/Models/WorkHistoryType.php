@@ -19,11 +19,10 @@ class WorkHistoryType extends Model
             'max' => 999999,
             'maxlength' => 6,
             'type' => 'number',
-        ],
-        
+        ], 
     ];
 
-    protected $validationRules = [
+    public $validationRules = [
         'modelValidation' => [
             'work_history_type_id' => [
                 'integer',

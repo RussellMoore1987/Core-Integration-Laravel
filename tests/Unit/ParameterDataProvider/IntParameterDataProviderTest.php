@@ -18,7 +18,7 @@ class IntParameterDataProviderTest extends TestCase
 
         $this->intParameterDataProvider = new IntParameterDataProvider();
 
-        $this->createProject();
+        $this->project = new Project();
     }
 
     /**
@@ -534,105 +534,6 @@ class IntParameterDataProviderTest extends TestCase
                         'max:4294967295',
                     ],
                 ]
-            ],
-        ];
-    }
-
-    protected function createProject()
-    {
-        $this->project = new Project();
-
-        $this->project->formData = [
-            'is_published' => [
-                'min' => 0,
-                'max' => 1,
-                'maxlength' => 1,  
-            ],
-        ];
-    
-        $this->project->validationRules = [
-            'modelValidation' => [
-                'id' => [
-                    'integer',
-                    'min:1',
-                    'max:18446744073709551615',
-                ],
-                'title' => [
-                    'string',
-                    'max:75',
-                    'min:2',
-                ],
-                'roles' => [
-                    'string',
-                    'max:50',
-                    'nullable',
-                ],
-                'client' => [
-                    'string',
-                    'max:50',
-                    'nullable',
-                ],
-                'description' => [
-                    'string',
-                    'max:255',
-                    'min:10',
-                    'nullable',
-                ],
-                'content' => [
-                    'string',
-                    'json',
-                    'nullable',
-                ],
-                'video_link' => [
-                    'string',
-                    'max:255',
-                    'nullable',
-                ],
-                'code_link' => [
-                    'string',
-                    'max:255',
-                    'nullable',
-                ],
-                'demo_link' => [
-                    'string',
-                    'max:255',
-                    'nullable',
-                ],
-                'start_date' => [
-                    'date',
-                    'nullable',
-                ],
-                'end_date' => [
-                    'date',
-                    'nullable',
-                ],
-                'is_published' => [
-                    'integer',
-                    'min:0',
-                    'max:1',
-                ],
-                'budget' => [
-                    'numeric',
-                    'max:999999.99',
-                    'min:0',
-                ],
-            ],
-            'createValidation' => [
-                'title' => [
-                    'required',
-                ],
-                'roles' => [
-                    'required',
-                ],
-                'description' => [
-                    'required',
-                ],
-                'start_date' => [
-                    'required',
-                ],
-                'budget' => [
-                    'required',
-                ],
             ],
         ];
     }

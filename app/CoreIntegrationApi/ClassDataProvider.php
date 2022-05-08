@@ -20,6 +20,7 @@ class ClassDataProvider
     }
 
     // TODO: should this be a class
+    // ! start here ************************************************************
     public function setClass(Model $class)
     {
         $this->classObject = $class;
