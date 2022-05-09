@@ -112,7 +112,10 @@ class DateParameterDataProviderTest extends TestCase
      */
     public function test_DateParameterDataProvider_with_class_form_data_returned($dataType, $formData, $expectedResult)
     {
-        $this->project->formData['fakeParameterName'] = $formData;
+        $this->project->formData = [
+            'fakeParameterName' => $formData,
+        ];
+        
         $this->expectedResult = $expectedResult;
 
         $result = $this->dateParameterDataProvider->getData($dataType, 'fakeParameterName', $this->project);

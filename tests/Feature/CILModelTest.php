@@ -21,7 +21,6 @@ class CILModelTest extends TestCase
      * @group db
      * @return void
      */
-    // TODO: look at this test fix if needed may have to many assertions
     public function test_validateAndSave_function_creates_record_and_then_updates_it_in_different_ways()
     {
         // just making sure that the validateAndSave function works as expected
@@ -69,8 +68,8 @@ class CILModelTest extends TestCase
             'budget' => $budgetNumber,
         ];
 
-        $projectComparison->validationRules = $this->project->validationRules;
-        $projectComparison->validateAndSave($data);
+        $project->validateAndSave($data);
+        $projectComparison = Project::find($project->id);
 
         $this->assertEquals($titleText, $projectComparison->title);
         $this->assertEquals($rolesText, $projectComparison->roles);

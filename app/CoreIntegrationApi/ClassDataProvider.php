@@ -19,8 +19,6 @@ class ClassDataProvider
         $this->parameterDataProviderFactory = $parameterDataProviderFactory;
     }
 
-    // TODO: should this be a class
-    // ! start here ************************************************************
     public function setClass(Model $class)
     {
         $this->classObject = $class;
@@ -77,7 +75,7 @@ class ClassDataProvider
 
     protected function addAdditionalInfoToAcceptableParameters()
     {
-        // ! working here ******************************************************** date parameterDataProvider formData, validation data as well, and date and int end to end testing API, update uml diagram with cil trait
+        // ! working here ******************************************************** and date and int end to end testing API
         // https://laravel.com/docs/8.x/validation#manually-creating-validators
         foreach ($this->availableParameters['acceptableParameters'] as $key => $columnArray) {
             $parameterFormDataProvider = $this->parameterDataProviderFactory->getFactoryItem($columnArray['type']);

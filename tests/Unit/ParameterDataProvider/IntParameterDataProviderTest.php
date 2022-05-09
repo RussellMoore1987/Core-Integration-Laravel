@@ -260,7 +260,10 @@ class IntParameterDataProviderTest extends TestCase
      */
     public function test_IntParameterDataProvider_with_class_form_data_returned($dataType, $formData, $expectedResult)
     {
-        $this->project->formData['fakeParameterName'] = $formData;
+        $this->project->formData = [
+            'fakeParameterName' => $formData,
+        ];
+
         $this->expectedResult = $expectedResult;
 
         $result = $this->intParameterDataProvider->getData($dataType, 'fakeParameterName', $this->project);

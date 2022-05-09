@@ -23,7 +23,7 @@ class Project extends Model
         ],
     ];
 
-    public $validationRules = [
+    public $validationRules = [ // keeps at least the variable stab (public $validationRules). The framework throws weird errors without it, it thinks I'm setting a property for a database update in some tests if I don't set it.
         'modelValidation' => [
             'id' => [
                 'integer',
