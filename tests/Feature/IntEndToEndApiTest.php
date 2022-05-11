@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 // TODO: Test additional endpoint with id like post_id with id parameter
-// list of ids
 // set up testing database
 // post
 // put
@@ -41,6 +40,26 @@ class IntEndToEndApiTest extends TestCase
             'title' => 'Test Project 1',
             'is_published' => 1,
         ]);;
+    }
+
+    /**
+     * @group db
+     * @return void
+     */
+    public function test_get_back_ints_with_list_of_ids()
+    {
+        $projectIds = $this->projects->pluck('id')->join(',');
+        $response = $this->get("/api/v1/projects/{$projectIds}");
+        $res_array = json_decode($response->content(), true);
+        
+        $projects = collect($res_array['data']);
+
+        $response->assertStatus(200);
+        $this->assertEquals(4, count($res_array['data']));
+        $this->assertTrue((boolean) $projects->where('is_published', 1)->first());
+        $this->assertTrue((boolean) $projects->where('is_published', 2)->first());
+        $this->assertTrue((boolean) $projects->where('is_published', 3)->first());
+        $this->assertTrue((boolean) $projects->where('is_published', 4)->first());
     }
 
     /**
