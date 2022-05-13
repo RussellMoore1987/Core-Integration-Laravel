@@ -13,6 +13,8 @@ class DateWhereClauseBuilder implements ClauseBuilder
         
         if ($comparisonOperator == 'bt') {
             $queryBuilder->whereBetween($columnName, $date);
+        } elseif (str_contains($date, ':') && !str_contains($date, '00:00:00')) {
+            $queryBuilder->where($columnName, $comparisonOperator, $date);
         } else {
             $queryBuilder->whereDate($columnName, $comparisonOperator, $date);
         }
