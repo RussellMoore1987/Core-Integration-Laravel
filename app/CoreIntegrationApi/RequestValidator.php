@@ -61,6 +61,8 @@ abstract class RequestValidator
         $this->validateEndPoint();
         $this->setClassInfo();
 
+        // TODO: Validate based on http method
+        // ! start here *******************************************************
         $this->validateParameters();
         
         $this->setExtraData();

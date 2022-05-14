@@ -250,12 +250,12 @@ class FullRestApiTest extends TestCase
     // TODO: Test
     // GET with out authentication 
     // GET with authentication 
-    // PUT, POST, PAtCH with authentication 
-    // PUT, POST, PAtCH with out authentication, must fail 
-    // PUT, POST, PAtCH response
+    // PUT, POST, PATCH with authentication 
+    // PUT, POST, PATCH with out authentication, must fail 
+    // PUT, POST, PATCH response
     // PUT response code
     // POST response code
-    // PAtCH response code
+    // PATCH response code
     // available includes / method calls in first test in this file
     // separate test file
         // ids - the many ways

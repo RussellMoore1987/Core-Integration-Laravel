@@ -3,11 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\Project;
+use App\Models\WorkHistoryType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 // TODO: 
-// Test additional endpoint with id like post_id with id parameter***
 // set up testing database
 // post
 // put
@@ -40,6 +40,50 @@ class IntEndToEndApiTest extends TestCase
         $response->assertJson([
             'title' => 'Test Project 1',
             'is_published' => 1,
+        ]);;
+    }
+
+    /**
+     * @group db
+     * @return void
+     */
+    public function test_get_back_record_with_not_normal_id()
+    {
+        $WorkHistoryType = WorkHistoryType::factory()->create(
+            [
+                'name' => 'Test Work History Type 1',
+                'icon' => 'Test Icon 1',
+            ]
+        );
+        $response = $this->get("/api/v1/workHistoryTypes/{$WorkHistoryType->work_history_type_id}");
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'work_history_type_id' => $WorkHistoryType->work_history_type_id,
+            'name' => $WorkHistoryType->name,
+            'icon' => $WorkHistoryType->icon,
+        ]);;
+    }
+
+    /**
+     * @group db
+     * @return void
+     */
+    public function test_get_back_record_with_not_normal_id_set_by_normal_id_parameter()
+    {
+        $WorkHistoryType = WorkHistoryType::factory()->create(
+            [
+                'name' => 'Test Work History Type 1',
+                'icon' => 'Test Icon 1',
+            ]
+        );
+        $response = $this->get("/api/v1/workHistoryTypes/?id={$WorkHistoryType->work_history_type_id}");
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'work_history_type_id' => $WorkHistoryType->work_history_type_id,
+            'name' => $WorkHistoryType->name,
+            'icon' => $WorkHistoryType->icon,
         ]);;
     }
 
