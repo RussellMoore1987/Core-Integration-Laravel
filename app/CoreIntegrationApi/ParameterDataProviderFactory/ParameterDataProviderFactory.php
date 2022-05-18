@@ -9,12 +9,14 @@ class ParameterDataProviderFactory extends CILDataTypeDeterminerFactory
 {
     public function getFactoryItem($dataType) : ParameterDataProvider
     {
+        $classPath = 'App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders';
+
         $this->factoryReturnArray = [
-            'string' => 'App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders\StringParameterDataProvider',
-            'json' => 'App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders\JsonParameterDataProvider',
-            'date' => 'App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders\DateParameterDataProvider',
-            'int' => 'App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders\IntParameterDataProvider',
-            'float' => 'App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders\FloatParameterDataProvider',
+            'string' => "{$classPath}\StringParameterDataProvider",
+            'json' => "{$classPath}\JsonParameterDataProvider",
+            'date' => "{$classPath}\DateParameterDataProvider",
+            'int' => "{$classPath}\IntParameterDataProvider",
+            'float' => "{$classPath}\FloatParameterDataProvider",
         ];
 
         return parent::getFactoryItem($dataType);

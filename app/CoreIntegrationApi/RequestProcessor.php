@@ -19,6 +19,7 @@ abstract class RequestProcessor
         $this->responseBuilder = $responseBuilder;
     }
 
+    // TODO: fix doc block
     /**
      * @return The return string is a JSON string
      */

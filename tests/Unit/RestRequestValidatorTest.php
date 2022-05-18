@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\CoreIntegrationApi\ClassDataProvider;
+use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
 use App\CoreIntegrationApi\RestApi\RestRequestValidator;
 use App\CoreIntegrationApi\RestApi\RestRequestDataPrepper;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
@@ -18,9 +19,9 @@ class RestRequestValidatorTest extends TestCase
     // ===============================================================================================
 
     /**
-     * @dataProvider httpMethodProvider
+     * @dataProvider ReturnsExpectedResultProvider
      */
-    public function test_rest_request_validator_returns_expected_result($httpMethod)
+    public function test_rest_request_validator_returns_expected_result($httpMethod, $expectedAcceptedParameters)
     {
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'projects',
@@ -51,19 +52,33 @@ class RestRequestValidatorTest extends TestCase
 
         $this->assertEquals($expectedEndpointData, $validatedMetaData['endpointData']);
 
-        $expectedAcceptedParameters = [
+        $this->assertEquals($expectedAcceptedParameters, $validatedMetaData['acceptedParameters']);
+    }
+
+    public function ReturnsExpectedResultProvider()
+    {
+        $otherAcceptedParameters = [
             'endpoint' => [
                 'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/'
             ],
-            'id' => [
-                'intCoveredTo' => 33,
-                'originalIntString' => '33',
-                'comparisonOperatorCoveredTo' => '=',
-                'originalComparisonOperator' => '',
-            ],
         ];
-
-        $this->assertEquals($expectedAcceptedParameters, $validatedMetaData['acceptedParameters']);
+         
+        return [
+            'GET' => ['GET', [
+                'endpoint' => [
+                    'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/'
+                ],
+                'id' => [
+                    'intCoveredTo' => 33,
+                    'originalIntString' => '33',
+                    'comparisonOperatorCoveredTo' => '=',
+                    'originalComparisonOperator' => '',
+                ],
+            ]],
+            'POST' => ['POST', $otherAcceptedParameters],
+            'PUT' => ['PUT', $otherAcceptedParameters],
+            'PATCH' => ['PATCH', $otherAcceptedParameters],
+        ];
     }
 
 
@@ -312,11 +327,11 @@ class RestRequestValidatorTest extends TestCase
     {
         $request = Request::create($url, $method, $parameters);
         $restRequestDataPrepper = new RestRequestDataPrepper($request);
-        $parameterValidatorFactory = App::make(ParameterValidatorFactory::class);
         $validatorDataCollector = App::make(ValidatorDataCollector::class);
         $classDataProvider = App::make(ClassDataProvider::class);
+        $httpMethodTypeValidatorFactory = App::make(HttpMethodTypeValidatorFactory::class);
 
-        $restRequestValidator = new RestRequestValidator($restRequestDataPrepper, $parameterValidatorFactory, $validatorDataCollector, $classDataProvider);
+        $restRequestValidator = new RestRequestValidator($restRequestDataPrepper, $validatorDataCollector, $classDataProvider, $httpMethodTypeValidatorFactory);
 
         return $restRequestValidator->validate();
     }

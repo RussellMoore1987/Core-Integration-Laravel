@@ -9,16 +9,18 @@ class ClauseBuilderFactory extends CILDataTypeDeterminerFactory
 {
     public function getFactoryItem($dataType) : ClauseBuilder
     {
+        $classPath = 'App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders';
+
         $this->factoryReturnArray = [
-            'string' => 'App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\StringWhereClauseBuilder',
-            'json' => 'App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\JsonWhereClauseBuilder',
-            'date' => 'App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\DateWhereClauseBuilder',
-            'int' => 'App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\IntWhereClauseBuilder',
-            'float' => 'App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\FloatWhereClauseBuilder',
-            'orderby' => 'App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\OrderByClauseBuilder',
-            'select' => 'App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\SelectClauseBuilder',
-            'includes' => 'App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\IncludesClauseBuilder',
-            'methodcalls' => 'App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\MethodCallsClauseBuilder',
+            'string' => "{$classPath}\StringWhereClauseBuilder",
+            'json' => "{$classPath}\JsonWhereClauseBuilder",
+            'date' => "{$classPath}\DateWhereClauseBuilder",
+            'int' => "{$classPath}\IntWhereClauseBuilder",
+            'float' => "{$classPath}\FloatWhereClauseBuilder",
+            'orderby' => "{$classPath}\OrderByClauseBuilder",
+            'select' => "{$classPath}\SelectClauseBuilder",
+            'includes' => "{$classPath}\IncludesClauseBuilder",
+            'methodcalls' => "{$classPath}\MethodCallsClauseBuilder",
         ];
 
         return parent::getFactoryItem($dataType);

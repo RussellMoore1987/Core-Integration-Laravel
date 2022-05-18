@@ -75,8 +75,6 @@ class ClassDataProvider
 
     protected function addAdditionalInfoToAcceptableParameters()
     {
-        // ! working here ******************************************************** and *date* end to end testing API, testing db
-        // https://laravel.com/docs/8.x/validation#manually-creating-validators
         foreach ($this->availableParameters['acceptableParameters'] as $key => $columnArray) {
             $parameterFormDataProvider = $this->parameterDataProviderFactory->getFactoryItem($columnArray['type']);
             $parameterData = $parameterFormDataProvider->getData($columnArray['type'], $key, $this->classObject);

@@ -2,10 +2,10 @@
 
 namespace App\CoreIntegrationApi;
 
-use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use App\CoreIntegrationApi\RequestDataPrepper;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\CoreIntegrationApi\ClassDataProvider;
+use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
 
 abstract class RequestValidator 
 {
@@ -13,36 +13,25 @@ abstract class RequestValidator
     protected $requestDataPrepper;
     protected $validatorDataCollector;
     protected $classDataProvider;
-    protected $acceptedClasses;
-    protected $parameterValidatorFactory;
-    protected $class;
+    protected $httpMethodTypeValidatorFactory;
+
+    protected $classObject;
     protected $classInfo;
+    protected $acceptedClasses;
     protected $endpoint;
     protected $endpointId;
     protected $endpointError = false;
     protected $extraData = [];
     protected $parameters;
-    protected $defaultAcceptableParameters = ['per_page', 'perpage', 'page', 'column_data', 'columndata', 'formdata', 'form_data'];
-    protected $getMethodParameterValidatorDefaults = [
-        'columns' => 'select', 
-        'select' => 'select', 
-        'orderby' => 'orderby', 
-        'order_by' => 'orderby', 
-        'methodcalls' => 'methodcalls',
-        'method_calls' => 'methodcalls',
-        // TODO: add to documentation relationships
-        'relationships' => 'includes',
-        'includes' => 'includes',
-    ];
     protected $validatedMetaData;
-    
-    function __construct(RequestDataPrepper $requestDataPrepper, ParameterValidatorFactory $parameterValidatorFactory, ValidatorDataCollector $validatorDataCollector, ClassDataProvider $classDataProvider) 
+
+    function __construct(RequestDataPrepper $requestDataPrepper, ValidatorDataCollector $validatorDataCollector, ClassDataProvider $classDataProvider, HttpMethodTypeValidatorFactory $httpMethodTypeValidatorFactory) 
     {
         $this->requestDataPrepper = $requestDataPrepper;
         $this->acceptedClasses = config('coreintegration.acceptedclasses') ?? [];
-        $this->parameterValidatorFactory = $parameterValidatorFactory;
         $this->validatorDataCollector = $validatorDataCollector;
         $this->classDataProvider = $classDataProvider;
+        $this->httpMethodTypeValidatorFactory = $httpMethodTypeValidatorFactory;
     }   
 
     public function validate()
@@ -61,9 +50,7 @@ abstract class RequestValidator
         $this->validateEndPoint();
         $this->setClassInfo();
 
-        // TODO: Validate based on http method
-        // ! start here *******************************************************
-        $this->validateParameters();
+        $this->validateHttpRequest();
         
         $this->setExtraData();
         $this->setValidatedMetaData();
@@ -90,7 +77,8 @@ abstract class RequestValidator
 
     protected function setRequestClass()
     {
-        $this->classDataProvider->setClass(new $this->acceptedClasses[$this->endpoint]());
+        $this->classObject = new $this->acceptedClasses[$this->endpoint]();
+        $this->classDataProvider->setClass($this->classObject);
         $this->classInfo = $this->classDataProvider->getClassInfo();
     }
 
@@ -165,99 +153,17 @@ abstract class RequestValidator
             $this->extraData['acceptableParameters'] = $this->classInfo['classParameterOptions']['acceptableParameters'];
         }
     }
-    
-    // TODO: get validation but what about the others put patch post
-        // Validate them here, maybe in a separate class
-        // get validate
-        // post, put, patch, delete validate
-    protected function validateParameters()
-    {
-        foreach ($this->parameters as $key => $value) {
-            $key = strtolower($key);
-            $data = [$key => $value];
-            if (array_key_exists($key, $this->extraData['acceptableParameters'])) {
-                $dataType = $this->extraData['acceptableParameters'][$key]['type'];
-                $this->getMethodParameterValidator($dataType, $data);
-            } elseif (array_key_exists($key, $this->getMethodParameterValidatorDefaults)) {
-                $dataType = $this->getMethodParameterValidatorDefaults[$key];
-                $this->getMethodParameterValidator($dataType, $data);
-            } elseif (in_array($key ,$this->defaultAcceptableParameters)) {
-                $this->handleDefaultParameters($key, $value);
-            } else {
-                $this->validatorDataCollector->setRejectedParameter([
-                    $key => [
-                        'value' => $value,
-                        'parameterError' => 'This is an invalid parameter for this endpoint.'
-                    ]
-                ]);
-            }
-        }
-    }
 
-    protected function getMethodParameterValidator($dataType, $data)
+    public function validateHttpRequest()
     {
-        $parameterValidator = $this->parameterValidatorFactory->getFactoryItem($dataType);
-        $this->validatorDataCollector = $parameterValidator->validate($this->validatorDataCollector, $data);
-    }
+        $requestData = [
+            'parameters' => $this->parameters,
+            'extraData' => $this->extraData,
+            'classObject' => $this->classObject,
+        ];
 
-    protected function handleDefaultParameters($key, $value)
-    {
-        if (in_array($key, ['perpage', 'per_page'])) {
-            $this->setPerPageParameter($value);
-        } elseif ($key == 'page') {
-            $this->setPageParameter($value);
-        } elseif (in_array($key, ['columndata', 'column_data'])) {
-            $this->validatorDataCollector->setAcceptedParameter([
-                'columnData' => [
-                    'value' => $value,
-                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this endpoint'
-                ]
-            ]);
-        } elseif (in_array($key, ['formdata', 'form_data'])) {
-            $this->validatorDataCollector->setAcceptedParameter([
-                'formData' => [
-                    'value' => $value,
-                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter form data for this endpoint'
-                ]
-            ]);
-        }
-    }
-
-    protected function setPerPageParameter($value)
-    {
-        if ($this->isInt($value)) {
-            $this->validatorDataCollector->setAcceptedParameter([
-                'perPage' => (int) $value
-            ]);
-        } else {
-            $this->validatorDataCollector->setRejectedParameter([
-                'perPage' => [
-                    'value' => $value,
-                    'parameterError' => 'This parameter\'s value must be an int.'
-                ]
-            ]);
-        }
-    }
-    
-    protected function setPageParameter($value)
-    {
-        if ($this->isInt($value)) {
-            $this->validatorDataCollector->setAcceptedParameter([
-                'page' => (int) $value
-            ]);
-        } else {
-            $this->validatorDataCollector->setRejectedParameter([
-                'page' => [
-                    'value' => $value,
-                    'parameterError' => 'This parameter\'s value must be an int.'
-                ]
-            ]);
-        }
-    }
-
-    protected function isInt($value)
-    {
-        return is_numeric($value) && !str_contains($value, '.');
+        $httpMethodTypeValidator = $this->httpMethodTypeValidatorFactory->getFactoryItem($this->httpMethod);
+        $this->validatorDataCollector = $httpMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
     }
 
     protected function setExtraData()
@@ -270,7 +176,7 @@ abstract class RequestValidator
         $this->validatedMetaData = $this->validatorDataCollector->getAllData();
     }
 
-    public function getValidatedQueryData() 
+    public function getValidatedMetaData() 
     {
         return $this->validatedMetaData;
     }
