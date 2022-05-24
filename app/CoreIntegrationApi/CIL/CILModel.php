@@ -37,7 +37,8 @@
             return $validator;
         }
 
-        protected function getValidationRules()
+        // TODO: add testing for this
+        public function getValidationRules()
         {
             if (
                 !$this->validationRules || 

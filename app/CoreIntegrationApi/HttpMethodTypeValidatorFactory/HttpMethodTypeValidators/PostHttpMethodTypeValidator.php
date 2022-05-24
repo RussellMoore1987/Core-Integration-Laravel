@@ -4,13 +4,13 @@ namespace App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeVa
 
 use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidators\HttpMethodTypeValidator;
 use App\CoreIntegrationApi\ValidatorDataCollector;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Validator;
 
 class PostHttpMethodTypeValidator implements HttpMethodTypeValidator
 {
     public function validateRequest(ValidatorDataCollector $validatorDataCollector, $requestData) : ValidatorDataCollector
     {
-        // dd($requestData);
-
         $this->validatorDataCollector = $validatorDataCollector;
 
         $this->parameters = $requestData['parameters'];
@@ -25,16 +25,35 @@ class PostHttpMethodTypeValidator implements HttpMethodTypeValidator
     protected function validateParameters() : void
     {
         $this->setUpValidationRules();
-        // $this->validate();
+        $this->validate();
     }
 
     protected function setUpValidationRules() : void
     {
-        // ! start here ********************************************** getting validation rules from class or default validation rules
-        // set required earlier
-        $validationRules = $this->classObject;
-        foreach ($this->parameters as $key => $value) {
-            # code...
+        $validationRules = $this->classObject->validationRules && method_exists($this->classObject, 'getValidationRules') ? $this->classObject->getValidationRules() : [];
+
+        if (!$validationRules) {
+            foreach ($this->extraData['acceptableParameters'] as $parameterName => $parameterDetails) {
+                $validationRules[$parameterName] = $parameterDetails['defaultValidationRules'];
+            }
         }
+
+        $this->validationRules = $validationRules;
+    }
+
+    protected function validate() : void
+    {
+        // ! start here ************************************************************ see if I can get $validator->validated() with out redirecting, see if can stop redirect
+        $validator = Validator::make($this->parameters, $this->validationRules);
+        $this->validatorDataCollector->setRejectedParameter($validator->errors()->toArray());
+        if ($validator->fails()) {
+            throw new HttpResponseException(response()->json($validator->errors(), 422));
+        }
+        dd($validator->safe()->collect());
+        dd($validator->fails());
+        dd($this->validationRules, $this->validatorDataCollector, $validator);
+        $this->validatorDataCollector->setAcceptedParameter($validator->validated());
+        $this->validatorDataCollector->setQueryArgument($validator->validated());
+        dd($this->validationRules, $this->validatorDataCollector);
     }
 }
