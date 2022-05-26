@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\App;
 abstract class CILDataTypeDeterminerFactory
 {
     protected $factoryItem;
-    protected $factoryItemTrigger;
     protected $dataType;
     // Just placeholder strings, should be replaced by paths to the actual classes, see app\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilderFactory.php for example
     protected $factoryReturnArray = [
@@ -28,25 +27,23 @@ abstract class CILDataTypeDeterminerFactory
         $this->dataType = strtolower($dataType);
         $this->factoryItem = null;
 
-        $this->checkForString();
-        $this->checkForJson();
-        $this->checkForDate();
-        $this->checkForInt();
-        $this->checkForFloat();
-        $this->checkForOrderBy();
-        $this->checkForSelect();
-        $this->checkForIncludes();
-        $this->checkForMethodCalls();
-
-        $this->factoryItemTrigger = null;
+        $this->checkForStringIfThereSetFactoryItem();
+        $this->checkForJsonIfThereSetFactoryItem();
+        $this->checkForDateIfThereSetFactoryItem();
+        $this->checkForIntIfThereSetFactoryItem();
+        $this->checkForFloatIfThereSetFactoryItem();
+        $this->checkForOrderByIfThereSetFactoryItem();
+        $this->checkForSelectIfThereSetFactoryItem();
+        $this->checkForIncludesIfThereSetFactoryItem();
+        $this->checkForMethodCallsIfThereSetFactoryItem();
 
         return $this->factoryItem;
     }  
 
-    protected function checkForString()
+    protected function checkForStringIfThereSetFactoryItem()
     {
         if (
-            !$this->factoryItemTrigger && 
+            !$this->factoryItem &&
             (
                 str_contains($this->dataType, 'varchar') || 
                 str_contains($this->dataType, 'char') || 
@@ -59,17 +56,17 @@ abstract class CILDataTypeDeterminerFactory
         }
     }
 
-    protected function checkForJson()
+    protected function checkForJsonIfThereSetFactoryItem()
     {
-        if (!$this->factoryItemTrigger && str_contains($this->dataType, 'json')) {
+        if (!$this->factoryItem && str_contains($this->dataType, 'json')) {
             $this->factoryItem = $this->returnValue($this->factoryReturnArray['json']);
         }
     }
 
-    protected function checkForDate()
+    protected function checkForDateIfThereSetFactoryItem()
     {
         if (
-            !$this->factoryItemTrigger && 
+            !$this->factoryItem && 
             (
                 $this->dataType == 'date' || 
                 $this->dataType == 'timestamp' || 
@@ -81,10 +78,10 @@ abstract class CILDataTypeDeterminerFactory
         }
     }
 
-    protected function checkForInt()
+    protected function checkForIntIfThereSetFactoryItem()
     {
         if (
-            !$this->factoryItemTrigger && 
+            !$this->factoryItem && 
             (
                 $this->dataType == 'integer' ||
                 $this->dataType == 'int' ||
@@ -99,10 +96,10 @@ abstract class CILDataTypeDeterminerFactory
         }
     }
 
-    protected function checkForFloat()
+    protected function checkForFloatIfThereSetFactoryItem()
     {
         if (
-            !$this->factoryItemTrigger && 
+            !$this->factoryItem && 
             (
                 $this->dataType == 'decimal' || str_contains($this->dataType, 'decimal') ||
                 $this->dataType == 'numeric' || str_contains($this->dataType, 'numeric') ||
@@ -114,33 +111,33 @@ abstract class CILDataTypeDeterminerFactory
         }
     }
 
-    protected function checkForOrderBy()
+    protected function checkForOrderByIfThereSetFactoryItem()
     {
-        if (!$this->factoryItemTrigger && $this->dataType == 'orderby') 
+        if (!$this->factoryItem && $this->dataType == 'orderby') 
         {
             $this->factoryItem = $this->returnValue($this->factoryReturnArray['orderby']);
         }
     }
 
-    protected function checkForSelect()
+    protected function checkForSelectIfThereSetFactoryItem()
     {
-        if (!$this->factoryItemTrigger && $this->dataType == 'select') 
+        if (!$this->factoryItem && $this->dataType == 'select') 
         {
             $this->factoryItem = $this->returnValue($this->factoryReturnArray['select']);
         }
     }
 
-    protected function checkForIncludes()
+    protected function checkForIncludesIfThereSetFactoryItem()
     {
-        if (!$this->factoryItemTrigger && $this->dataType == 'includes') 
+        if (!$this->factoryItem && $this->dataType == 'includes') 
         {
             $this->factoryItem = $this->returnValue($this->factoryReturnArray['includes']);
         }
     }
 
-    protected function checkForMethodCalls()
+    protected function checkForMethodCallsIfThereSetFactoryItem()
     {
-        if (!$this->factoryItemTrigger && $this->dataType == 'methodcalls') 
+        if (!$this->factoryItem && $this->dataType == 'methodcalls') 
         {
             $this->factoryItem = $this->returnValue($this->factoryReturnArray['methodcalls']);
         }

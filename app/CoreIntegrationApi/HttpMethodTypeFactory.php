@@ -19,53 +19,14 @@ abstract class HttpMethodTypeFactory
 
     public function getFactoryItem($httpMethod) : object
     {
-        $this->httpMethod = strtolower($httpMethod);
+        $httpMethod = strtolower($httpMethod);
         
-        $this->factoryItem = null;
+        if (!array_key_exists($httpMethod, $this->factoryReturnArray)) {
+            throw new \Exception('HttpMethodTypeFactory: Invalid http method type');
+        }
 
-        $this->checkForGetRequest();
-        $this->checkForPostRequest();
-        $this->checkForPutRequest();
-        $this->checkForPatchRequest();
-        $this->checkForDeleteRequest();
-
-        return $this->factoryItem;
+        return $this->returnValue($this->factoryReturnArray[$httpMethod]);
     }  
-
-    protected function checkForGetRequest()
-    {
-        if ($this->httpMethod == 'get') {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['get']);
-        }
-    }
-
-    protected function checkForPostRequest()
-    {
-        if ($this->httpMethod == 'post') {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['post']);
-        }
-    }
-
-    protected function checkForPutRequest()
-    {
-        if ($this->httpMethod == 'put') {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['put']);
-        }
-    }
-
-    protected function checkForPatchRequest()
-    {
-        if ($this->httpMethod == 'patch') {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['patch']);
-        }
-    }
-
-    protected function checkForDeleteRequest()
-    {
-        if ($this->httpMethod == 'delete') {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['delete']);
-        }
-    }
 
     protected function returnValue($httpMethodObjectPath)
     {
