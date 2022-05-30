@@ -174,8 +174,10 @@ class ClassDataProviderTest extends TestCase
                         'default' => null,
                         'extra' => '',
                         'api_data_type' => 'string',
-                        'formData' => [],
-                        'defaultValidationRules' => [],
+                        'formData' => [
+                            'required' => true
+                        ],
+                        'defaultValidationRules' => ['required'],
                     ],
                     'roles' => [
                         'field' => 'roles',
@@ -459,8 +461,10 @@ class ClassDataProviderTest extends TestCase
                         'default' => null,
                         'extra' => '',
                         'api_data_type' => 'string',
-                        'formData' => [],
-                        'defaultValidationRules' => [],
+                        'formData' => [
+                            'required' => true
+                        ],
+                        'defaultValidationRules' => ['required'],
                       ],
                       'icon' => [
                         'field' => 'icon',

@@ -13,6 +13,9 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     g++
 
+# Install pcov for code coverage
+RUN pecl install pcov
+RUN docker-php-ext-enable pcov
 
 # install php extensions
 RUN docker-php-ext-install pdo pdo_mysql pcntl intl zip

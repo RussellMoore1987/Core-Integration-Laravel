@@ -24,11 +24,27 @@ class DateParameterDataProviderTest extends TestCase
     /**
      * @dataProvider dateParameterDataProvider
      */
-    public function test_DateParameterDataProvider_default_return_values($dataType, $parameterName, $expectedResult)
+    public function test_DateParameterDataProvider_default_return_values($parameterDataInfo, $expectedResult)
     {
         unset($this->project->formData);
         unset($this->project->validationRules);
-        $result = $this->dateParameterDataProvider->getData($dataType, $parameterName, $this->project);
+        $result = $this->dateParameterDataProvider->getData($parameterDataInfo, $this->project);
+
+        $this->assertEquals($expectedResult, $result);
+    }
+
+    /**
+     * @dataProvider dateParameterDataProvider
+     */
+    public function test_DateParameterDataProvider_default_return_values_with_requires($parameterDataInfo, $expectedResult)
+    {
+        unset($this->project->formData);
+        unset($this->project->validationRules);
+        $parameterDataInfo['default'] = null;
+        $expectedResult['formData']['required'] = true;
+        $expectedResult['defaultValidationRules'][] = 'required';
+
+        $result = $this->dateParameterDataProvider->getData($parameterDataInfo, $this->project);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -37,8 +53,14 @@ class DateParameterDataProviderTest extends TestCase
     {
         return [
             'datetime' => [
-                'datetime',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'datetime',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '2022-05-17 00:00:00',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'date',
                     'formData' => [
@@ -54,8 +76,14 @@ class DateParameterDataProviderTest extends TestCase
                 ],
             ],
             'timestamp' => [
-                'timestamp',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'timestamp',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '2022-05-17 00:00:00',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'date',
                     'formData' => [
@@ -71,8 +99,14 @@ class DateParameterDataProviderTest extends TestCase
                 ],
             ],
             'year' => [
-                'year',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'year',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '2022-05-17 00:00:00',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'date',
                     'formData' => [
@@ -88,8 +122,14 @@ class DateParameterDataProviderTest extends TestCase
                 ],
             ],
             'date' => [
-                'date',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'date',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '2022-05-17 00:00:00',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'date',
                     'formData' => [
@@ -110,7 +150,7 @@ class DateParameterDataProviderTest extends TestCase
     /**
      * @dataProvider classFormDataProvider
      */
-    public function test_DateParameterDataProvider_with_class_form_data_returned($dataType, $formData, $expectedResult)
+    public function test_DateParameterDataProvider_with_class_form_data_returned($parameterDataInfo, $formData, $expectedResult)
     {
         $this->project->formData = [
             'fakeParameterName' => $formData,
@@ -118,7 +158,7 @@ class DateParameterDataProviderTest extends TestCase
         
         $this->expectedResult = $expectedResult;
 
-        $result = $this->dateParameterDataProvider->getData($dataType, 'fakeParameterName', $this->project);
+        $result = $this->dateParameterDataProvider->getData($parameterDataInfo,  $this->project);
 
         $this->assertEquals($this->expectedResult, $result);
     }
@@ -127,7 +167,14 @@ class DateParameterDataProviderTest extends TestCase
     {
         return [
             'datetime' => [
-                'datetime',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'datetime',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '2022-05-17 00:00:00',
+                    'extra' => '',
+                ],
                 [],
                 [
                     'apiDataType' => 'date',
@@ -144,7 +191,14 @@ class DateParameterDataProviderTest extends TestCase
                 ],
             ],
             'timestamp' => [
-                'timestamp',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'timestamp',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '2022-05-17 00:00:00',
+                    'extra' => '',
+                ],
                 [
                     'min' => '1979-01-01 00:00:01',
                     'max' => '2030-01-19 23:59:59',
@@ -166,7 +220,14 @@ class DateParameterDataProviderTest extends TestCase
                 ],
             ],
             'year' => [
-                'year',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'year',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '2022-05-17 00:00:00',
+                    'extra' => '',
+                ],
                 [
                     'max' => '2050',
                 ],
@@ -185,7 +246,14 @@ class DateParameterDataProviderTest extends TestCase
                 ],
             ],
             'date' => [
-                'date',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'date',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '2022-05-17 00:00:00',
+                    'extra' => '',
+                ],
                 [
                     'min' => '1979-01-01',
                     'max' => '2050-12-31',

@@ -21,6 +21,7 @@ abstract class HttpMethodTypeFactory
     {
         $httpMethod = strtolower($httpMethod);
         
+        // TODO: test this
         if (!array_key_exists($httpMethod, $this->factoryReturnArray)) {
             throw new \Exception('HttpMethodTypeFactory: Invalid http method type');
         }

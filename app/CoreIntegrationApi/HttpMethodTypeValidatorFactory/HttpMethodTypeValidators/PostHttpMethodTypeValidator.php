@@ -12,7 +12,7 @@ class PostHttpMethodTypeValidator implements HttpMethodTypeValidator
 
     public function validateRequest(ValidatorDataCollector $validatorDataCollector, $requestData) : ValidatorDataCollector
     {
-        return $validatorDataCollector; // Just to make test work for now
+        // return $validatorDataCollector; // Just to make test work for now
 
         $this->validatorDataCollector = $validatorDataCollector;
 
@@ -22,7 +22,7 @@ class PostHttpMethodTypeValidator implements HttpMethodTypeValidator
 
         $this->validateParameters();
 
-        return $validatorDataCollector;
+        return  $this->validatorDataCollector;
     }
 
     protected function validateParameters() : void
@@ -46,17 +46,27 @@ class PostHttpMethodTypeValidator implements HttpMethodTypeValidator
 
     protected function validate() : void
     {
-        // ! start here ************************************************************ see if I can get $validator->validated() with out redirecting, see if can stop redirect, run coverage report
         $validator = Validator::make($this->parameters, $this->validationRules);
-        $this->validatorDataCollector->setRejectedParameter($validator->errors()->toArray());
+        // TODO: do this in the other HttpMethodTypeValidators
         if ($validator->fails()) {
-            throw new HttpResponseException(response()->json($validator->errors(), 422));
+            $this->throwValidationException($validator);
         }
-        dd($validator->safe()->collect());
-        dd($validator->fails());
-        dd($this->validationRules, $this->validatorDataCollector, $validator);
+        
+        $this->validatorDataCollector->setRejectedParameter(array_diff($this->parameters, $validator->validated()) );
         $this->validatorDataCollector->setAcceptedParameter($validator->validated());
         $this->validatorDataCollector->setQueryArgument($validator->validated());
-        dd($this->validationRules, $this->validatorDataCollector);
+    }
+
+    // ! start on failing test **********************************************************************
+    // TODO: Test this method.
+    protected function throwValidationException($validator) : void
+    {
+        $response = response()->json([
+            'error' => 'Validation failed',
+            'errors' => $validator->errors(),
+            'message' => 'Validation failed, resend request after adjustments have been made.',
+            'status_code' => 422,
+        ], 422);
+        throw new HttpResponseException($response);
     }
 }

@@ -10,23 +10,16 @@ abstract class ParameterDataProvider
     protected $defaultValidationRules = [];
     protected $formData = []; 
 
-    protected function getApiDataType() : string
+    public function getData(array $parameterDataInfo,  Model $parameterClass) : array
     {
-        if (!$this->apiDataType) {
-            throw new \Exception('No apiDataType class property set, this must be set in the child class');
-        }
-
-        return $this->apiDataType;
-    }
-
-    public function getData($dataType, $parameterName, Model $parameterClass) : array
-    {
-        $this->dataType = $dataType;
+        $this->parameterName = $parameterDataInfo['field'];
+        $this->parameterDataInfo = $parameterDataInfo;
+        $this->dataType = $parameterDataInfo['type'];
         $this->parameterClass = $parameterClass;
-        $this->parameterName = $parameterName;
-
+        
         $this->getFormData();
-
+        $this->checkToSeeIfFormDataIsRequired();
+        
         $this->checkForClassParameterFormData();
 
         return [
@@ -38,6 +31,18 @@ abstract class ParameterDataProvider
 
     abstract protected function getFormData(); // needs to set $this->apiDataType, $this->defaultValidationRules, $this->formData  : array
 
+    protected function checkToSeeIfFormDataIsRequired()
+    {
+        if (
+            $this->parameterDataInfo['null'] == 'no' && 
+            $this->parameterDataInfo['default'] == null &&
+            $this->parameterDataInfo['extra'] != 'auto_increment'
+        ) {
+            $this->formData['required'] = true;
+            $this->defaultValidationRules[] = 'required';
+        }
+    }
+
     protected function checkForClassParameterFormData() // merge arrays
     {
         if (
@@ -47,5 +52,14 @@ abstract class ParameterDataProvider
             ) {
             $this->formData = array_merge($this->formData, $this->parameterClass->formData[$this->parameterName]); 
         }
+    }
+
+    protected function getApiDataType() : string
+    {
+        if (!$this->apiDataType) {
+            throw new \Exception('No apiDataType class property set, this must be set in the child class');
+        }
+
+        return $this->apiDataType;
     }
 }

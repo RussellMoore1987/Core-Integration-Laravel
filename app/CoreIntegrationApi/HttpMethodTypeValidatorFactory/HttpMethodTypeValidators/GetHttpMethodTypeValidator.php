@@ -5,6 +5,7 @@ namespace App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeVa
 use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidators\HttpMethodTypeValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use App\CoreIntegrationApi\ValidatorDataCollector;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class GetHttpMethodTypeValidator implements HttpMethodTypeValidator
 {
@@ -121,5 +122,17 @@ class GetHttpMethodTypeValidator implements HttpMethodTypeValidator
     protected function isInt($value)
     {
         return is_numeric($value) && !str_contains($value, '.');
+    }
+
+    // TODO: Test this method.
+    protected function throwValidationException($validator) : void
+    {
+        $response = response()->json([
+            'error' => 'Validation failed',
+            'errors' => $validator->errors(),
+            'message' => 'Validation failed, resend request after adjustments have been made.',
+            'status_code' => 422,
+        ], 422);
+        throw new HttpResponseException($response);
     }
 }

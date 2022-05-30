@@ -24,11 +24,11 @@ class IntParameterDataProviderTest extends TestCase
     /**
      * @dataProvider intParameterDataProvider
      */
-    public function test_IntParameterDataProvider_default_return_values($dataType, $parameterName, $expectedResult)
+    public function test_IntParameterDataProvider_default_return_values($parameterDataInfo, $expectedResult)
     {
         unset($this->project->formData);
         unset($this->project->validationRules);
-        $result = $this->intParameterDataProvider->getData($dataType, $parameterName, $this->project);
+        $result = $this->intParameterDataProvider->getData($parameterDataInfo, $this->project);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -37,8 +37,14 @@ class IntParameterDataProviderTest extends TestCase
     {
         return [
             'tinyint' => [
-                'tinyint',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'tinyint',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -55,8 +61,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'tinyint unsigned' => [
-                'tinyint unsigned',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'tinyint unsigned',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -73,8 +85,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'smallint' => [
-                'smallint',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'smallint',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -91,8 +109,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'smallint unsigned' => [
-                'smallint unsigned',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'smallint unsigned',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -109,8 +133,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'mediumint' => [
-                'mediumint',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'mediumint',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -127,8 +157,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'mediumint unsigned' => [
-                'mediumint unsigned',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'mediumint unsigned',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -145,8 +181,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'integer' => [
-                'integer',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'integer',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -163,8 +205,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'integer unsigned' => [
-                'integer unsigned',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'integer unsigned',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -181,8 +229,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'bigint' => [
-                'bigint',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'bigint',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -199,8 +253,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'bigint unsigned' => [
-                'bigint unsigned',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'bigint unsigned',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -217,8 +277,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'int' => [
-                'int',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'int',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -235,8 +301,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'int unsigned' => [
-                'int unsigned',
-                'fakeParameterName',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'int unsigned',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -258,7 +330,7 @@ class IntParameterDataProviderTest extends TestCase
     /**
      * @dataProvider classFormDataProvider
      */
-    public function test_IntParameterDataProvider_with_class_form_data_returned($dataType, $formData, $expectedResult)
+    public function test_IntParameterDataProvider_with_class_form_data_returned($parameterDataInfo, $formData, $expectedResult)
     {
         $this->project->formData = [
             'fakeParameterName' => $formData,
@@ -266,7 +338,7 @@ class IntParameterDataProviderTest extends TestCase
 
         $this->expectedResult = $expectedResult;
 
-        $result = $this->intParameterDataProvider->getData($dataType, 'fakeParameterName', $this->project);
+        $result = $this->intParameterDataProvider->getData($parameterDataInfo, $this->project);
 
         $this->assertEquals($this->expectedResult, $result);
     }
@@ -275,7 +347,14 @@ class IntParameterDataProviderTest extends TestCase
     {
         return [
             'tinyint' => [
-                'tinyint',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'tinyint',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'min' => 0,
                     'max' => 1,
@@ -297,7 +376,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'tinyint unsigned' => [
-                'tinyint unsigned',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'tinyint unsigned',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'max' => 1,
                     'maxlength' => 1,
@@ -321,7 +407,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'smallint' => [
-                'smallint',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'smallint',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'min' => -33,
                 ],
@@ -341,7 +434,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'smallint unsigned' => [
-                'smallint unsigned',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'smallint unsigned',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [],
                 [
                     'apiDataType' => 'int',
@@ -359,7 +459,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'mediumint' => [
-                'mediumint',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'mediumint',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'min' => 100,
                     'max' => 8388607,
@@ -384,7 +491,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'mediumint unsigned' => [
-                'mediumint unsigned',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'mediumint unsigned',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'min' => 100,
                 ],
@@ -404,7 +518,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'integer' => [
-                'integer',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'integer',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'min2' => -2147483648,
                     'max2' => 2147483647,
@@ -431,7 +552,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'integer unsigned' => [
-                'integer unsigned',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'integer unsigned',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'minlength' => 3,
                 ],
@@ -452,7 +580,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'bigint' => [
-                'bigint',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'bigint',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'min' => 0,
                     'min2' => -9223372036854775808,
@@ -474,7 +609,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'bigint unsigned' => [
-                'bigint unsigned',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'bigint unsigned',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'min' => '',
                     'max' => '',
@@ -497,7 +639,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'int' => [
-                'int',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'int',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'maxlength' => 5,
                 ],
@@ -517,7 +666,14 @@ class IntParameterDataProviderTest extends TestCase
                 ]
             ],
             'int unsigned' => [
-                'int unsigned',
+                [
+                    'field' => 'fakeParameterName',
+                    'type' => 'int unsigned',
+                    'null' => 'no',
+                    'key' => '',
+                    'default' => '0',
+                    'extra' => '',
+                ],
                 [
                     'min' => 12,
                     'maxlength' => 2,
