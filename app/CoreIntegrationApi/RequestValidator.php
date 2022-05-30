@@ -6,6 +6,7 @@ use App\CoreIntegrationApi\RequestDataPrepper;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\CoreIntegrationApi\ClassDataProvider;
 use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 abstract class RequestValidator 
 {
@@ -118,31 +119,26 @@ abstract class RequestValidator
 
     protected function setEndpointError()
     {
-        $this->endpointError = true;
-        $this->validatorDataCollector->setRejectedParameter([
-            'endpoint' => [
-                'message' => "\"$this->endpoint\" is not a valid endpoint for this API. Please review available endpoints at " . $this->getIndexUrl()
-            ]
-        ]);
+        // TODO: remove this else were
+        // $this->endpointError = true;
+
+        $errors = [];
         if ($this->endpointId) {
-            $this->validatorDataCollector->setRejectedParameter([
+            $errors = [
                 'endpointId' => [
                     'message' => "\"$this->endpoint\" is not a valid endpoint for this API, therefore the endpoint ID is invalid as well. Please review available endpoints at " . $this->getIndexUrl(), 
                     'value' => $this->endpointId
                 ]
-            ]);
+            ];
         }
-        $this->validatorDataCollector->setEndpointData(
-            [
-                'endpoint' => $this->endpoint, 
-                'endpointId' => $this->endpointId,
-                'endpointError' => $this->endpointError, 
-                'class' => null, 
-                'indexUrl' => $this->getIndexUrl(),
-                'url' => $this->url,
-                'httpMethod' => $this->httpMethod,
-            ]
-        );
+
+        $response = response()->json([
+            'error' => 'Invalid Endpoint',
+            'errors' => $errors,
+            'message' => "\"$this->endpoint\" is not a valid endpoint for this API. Please review available endpoints at " . $this->getIndexUrl(),
+            'status_code' => 400,
+        ], 400);
+        throw new HttpResponseException($response);
     }
 
     protected function setClassInfo()

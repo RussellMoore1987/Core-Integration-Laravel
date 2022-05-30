@@ -10,7 +10,7 @@ use App\CoreIntegrationApi\ClassDataProvider;
 use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
 use App\CoreIntegrationApi\RestApi\RestRequestValidator;
 use App\CoreIntegrationApi\RestApi\RestRequestDataPrepper;
-use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class RestRequestValidatorTest extends TestCase
 {
@@ -26,6 +26,7 @@ class RestRequestValidatorTest extends TestCase
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'projects',
             'id' => 33,
+            'title' => 'Test Project',
         ], 'api/v1/projects', $httpMethod);
 
         $this->assertArrayHasKey('endpointData', $validatedMetaData);
@@ -59,7 +60,7 @@ class RestRequestValidatorTest extends TestCase
     {
         $otherAcceptedParameters = [
             'endpoint' => [
-                'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/'
+                'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/',
             ],
         ];
          
@@ -75,20 +76,26 @@ class RestRequestValidatorTest extends TestCase
                     'originalComparisonOperator' => '',
                 ],
             ]],
-            'POST' => ['POST', $otherAcceptedParameters],
+            'POST' => ['POST', [
+                'id' => 33,
+                'title' => 'Test Project',
+                'endpoint' => [
+                    'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/',
+                ],
+            ]],
             'PUT' => ['PUT', $otherAcceptedParameters],
             'PATCH' => ['PATCH', $otherAcceptedParameters],
         ];
     }
 
-
     /**
-     * @dataProvider httpMethodProvider
+     * @dataProvider ReturnsExpectedResultNoIdProvider
      */
-    public function test_rest_request_validator_returns_expected_result_accepted_endpoint_no_id($httpMethod)
+    public function test_rest_request_validator_returns_expected_result_accepted_endpoint_no_id($httpMethod, $expectedAcceptedParameters)
     {
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'projects',
+            'title' => 'Test Project',
         ], 'api/v1/projects', $httpMethod);
 
         $expectedEndpointData = [
@@ -103,13 +110,37 @@ class RestRequestValidatorTest extends TestCase
 
         $this->assertEquals($expectedEndpointData, $validatedMetaData['endpointData']);
 
-        $expectedAcceptedParameters = [
-            'endpoint' => [
-                'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/'
-            ],
-        ];
+        // $expectedAcceptedParameters = [
+        //     'endpoint' => [
+        //         'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/'
+        //     ],
+
+        // ];
+
+        // $httpMethod == 'POST' ? dd($httpMethod, $expectedAcceptedParameters, $validatedMetaData['acceptedParameters']) : null;
 
         $this->assertEquals($expectedAcceptedParameters, $validatedMetaData['acceptedParameters']);
+    }
+
+    public function ReturnsExpectedResultNoIdProvider()
+    {
+        $otherAcceptedParameters = [
+            'endpoint' => [
+                'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/',
+            ],
+        ];
+         
+        return [
+            'GET' => ['GET', $otherAcceptedParameters],
+            'POST' => ['POST', [
+                'title' => 'Test Project',
+                'endpoint' => [
+                    'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/',
+                ],
+            ]],
+            'PUT' => ['PUT', $otherAcceptedParameters],
+            'PATCH' => ['PATCH', $otherAcceptedParameters],
+        ];
     }
 
     public function test_rest_request_validator_returns_expected_result_use_generic_id_get_back_model_WorkHistoryType_id()
@@ -141,41 +172,15 @@ class RestRequestValidatorTest extends TestCase
      */
     public function test_rest_request_validator_returns_expected_result_rejected_endpoint_with_id($httpMethod)
     {
+        $this->expectException(HttpResponseException::class);
+
+        // TODO: get message from exception
+
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'notProjects',
             'id' => 33,
         ], 'api/v1/notProjects', $httpMethod);
 
-        $this->assertArrayHasKey('endpointData', $validatedMetaData);
-        $this->assertArrayHasKey('extraData', $validatedMetaData);
-        $this->assertEquals([], $validatedMetaData['extraData']);
-        $this->assertArrayHasKey('rejectedParameters', $validatedMetaData);
-        $this->assertArrayHasKey('acceptedParameters', $validatedMetaData);
-        $this->assertArrayHasKey('queryArguments', $validatedMetaData);
-
-        $expectedEndpointData = [
-            'endpoint' => 'notProjects',
-            'endpointId' => 33,
-            'endpointError' => true,
-            'class' => null,
-            'indexUrl' => 'http://localhost/api/v1/',
-            'url' => 'http://localhost/api/v1/notProjects',
-            'httpMethod' => $httpMethod,
-        ];
-
-        $this->assertEquals($expectedEndpointData, $validatedMetaData['endpointData']);
-
-        $expectedRejectedParameters = [
-            'endpoint' => [
-                'message' => '"notProjects" is not a valid endpoint for this API. Please review available endpoints at http://localhost/api/v1/'
-            ],
-            'endpointId' => [
-                'message' => '"notProjects" is not a valid endpoint for this API, therefore the endpoint ID is invalid as well. Please review available endpoints at http://localhost/api/v1/',
-                'value' => 33
-            ],
-        ];
-
-        $this->assertEquals($expectedRejectedParameters, $validatedMetaData['rejectedParameters']);
     }
     
     /**
@@ -183,29 +188,13 @@ class RestRequestValidatorTest extends TestCase
      */
     public function test_rest_request_validator_returns_expected_result_rejected_endpoint_without_id($httpMethod)
     {
+        $this->expectException(HttpResponseException::class);
+
+        // TODO: get message from exception
+
         $validatedMetaData = $this->validateRequest([
             'endpoint' => 'notProjects',
         ], 'api/v1/notProjects', $httpMethod);
-
-        $expectedEndpointData = [
-            'endpoint' => 'notProjects',
-            'endpointId' => '',
-            'endpointError' => true,
-            'class' => null,
-            'indexUrl' => 'http://localhost/api/v1/',
-            'url' => 'http://localhost/api/v1/notProjects',
-            'httpMethod' => $httpMethod,
-        ];
-
-        $this->assertEquals($expectedEndpointData, $validatedMetaData['endpointData']);
-
-        $expectedRejectedParameters = [
-            'endpoint' => [
-                'message' => '"notProjects" is not a valid endpoint for this API. Please review available endpoints at http://localhost/api/v1/'
-            ],
-        ];
-
-        $this->assertEquals($expectedRejectedParameters, $validatedMetaData['rejectedParameters']);
     }
 
     public function httpMethodProvider()
