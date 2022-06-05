@@ -174,13 +174,10 @@ class RestRequestValidatorTest extends TestCase
     {
         $this->expectException(HttpResponseException::class);
 
-        // TODO: get message from exception
-
-        $validatedMetaData = $this->validateRequest([
+        $this->validateRequest([
             'endpoint' => 'notProjects',
             'id' => 33,
         ], 'api/v1/notProjects', $httpMethod);
-
     }
     
     /**
@@ -190,9 +187,7 @@ class RestRequestValidatorTest extends TestCase
     {
         $this->expectException(HttpResponseException::class);
 
-        // TODO: get message from exception
-
-        $validatedMetaData = $this->validateRequest([
+        $this->validateRequest([
             'endpoint' => 'notProjects',
         ], 'api/v1/notProjects', $httpMethod);
     }

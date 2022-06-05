@@ -4,6 +4,7 @@ namespace Tests\Unit\HttpMethodTypeValidator;
 
 use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
 use Tests\TestCase;
+
 class HttpMethodTypeValidatorFactoryTest extends TestCase
 {
     protected $classPath = 'App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidators';

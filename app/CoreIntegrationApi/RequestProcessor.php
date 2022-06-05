@@ -36,7 +36,7 @@ abstract class RequestProcessor
         $this->responseBuilder->setValidatedMetaData($this->validatedMetaData);
     }
 
-    protected function resolve() 
+    protected function resolve()
     {
         $queryResult = $this->queryResolver->resolve($this->validatedMetaData);
         $this->responseBuilder->setResponseData($queryResult);

@@ -68,8 +68,8 @@ abstract class RequestValidator
 
     protected function validateEndPoint()
     {
-        if (array_key_exists($this->endpoint, $this->acceptedClasses) ) {
-            $this->setRequestClass();
+        if (array_key_exists($this->endpoint, $this->acceptedClasses) ) { // $this->acceptedEndpoints 
+            $this->setRequestClass(); // setRequestClass, setModel, setEndpointModel, setEndpointClass
             $this->setEndpoint();
         } elseif ($this->endpoint != 'index') {
             $this->setEndpointError();
@@ -103,7 +103,7 @@ abstract class RequestValidator
             'indexUrl' => $this->getIndexUrl(),
             'url' => $this->url,
             'httpMethod' => $this->httpMethod,
-        ];
+        ]; // possibly create new function for this, allow setting to be easier
         if ($this->endpointId) {
             $primaryKeyName = $this->classInfo['primaryKeyName'];
             $this->parameters[$primaryKeyName] = $this->endpointId;
