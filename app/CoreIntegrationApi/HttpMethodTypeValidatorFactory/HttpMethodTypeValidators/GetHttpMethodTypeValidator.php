@@ -10,7 +10,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 class GetHttpMethodTypeValidator implements HttpMethodTypeValidator
 {
     protected $parameterValidatorFactory;
-    protected $defaultAcceptableParameters = ['per_page', 'perpage', 'page', 'column_data', 'columndata', 'formdata', 'form_data'];
+    protected $defaultAcceptableParameters = ['per_page', 'perpage', 'page', 'column_data', 'columndata', 'form_data', 'formdata'];
     protected $getMethodParameterValidatorDefaults = [
         'columns' => 'select', 
         'select' => 'select', 

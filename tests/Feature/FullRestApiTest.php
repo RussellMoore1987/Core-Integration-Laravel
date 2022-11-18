@@ -104,9 +104,8 @@ class FullRestApiTest extends TestCase
 
     /**
      * @group db
-     * @return void
      */
-    public function test_return_of_one_record()
+    public function test_return_of_one_record() : void
     {
         $projectId = $this->projects[0]->id;
         $response = $this->get("/api/v1/projects/$projectId");
@@ -140,9 +139,8 @@ class FullRestApiTest extends TestCase
 
     /**
      * @group db
-     * @return void
      */
-    public function test_return_404_response()
+    public function test_return_404_response() : void
     {
         $response = $this->get('/api/v1/projects/9999999999');
 
@@ -152,9 +150,8 @@ class FullRestApiTest extends TestCase
 
     /**
      * @group db
-     * @return void
      */
-    public function test_return_of_empty_data_set()
+    public function test_return_of_empty_data_set() : void
     {
         $response = $this->get('/api/v1/projects/?start_date=1000-02-01');
 
