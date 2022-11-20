@@ -16,9 +16,9 @@ class RestQueryResolver extends QueryResolver
         $this->validatedMetaData = $validatedMetaData;
         
         if (!$this->validatedMetaData['endpointData']['endpointError']) {
-            $this->checkEndpointColumnData();
-            $this->checkIndex();
-            $this->checkFormData();
+            $this->checkEndpointColumnData(); // get
+            $this->checkIndex(); // get 
+            $this->checkFormData(); // get
             $this->checkGetRequest();
             $this->checkPersistRequest();
             $this->checkDeleteRequest();

@@ -13,7 +13,7 @@ class FullRestApiTest extends TestCase
 {
     use DatabaseTransactions;
 
-    private $projects = [];
+    private $projects;
 
     protected function setUp(): void
     {

@@ -12,11 +12,7 @@ class PostHttpMethodTypeValidator implements HttpMethodTypeValidator
 
     public function validateRequest(ValidatorDataCollector $validatorDataCollector, $requestData) : ValidatorDataCollector
     {
-        // return $validatorDataCollector; // Just to make test work for now
-
         $this->validatorDataCollector = $validatorDataCollector;
-
-        // dd($requestData);
 
         $this->parameters = $requestData['parameters'];
         $this->extraData = $requestData['extraData'];
@@ -59,7 +55,6 @@ class PostHttpMethodTypeValidator implements HttpMethodTypeValidator
         $this->validatorDataCollector->setQueryArgument($validator->validated());
     }
 
-    // ! start on PostHttpMethodTypeValidatorTest, ***Have I tested everything yet*** validateRequest, validate, setUpValidationRules(), and end to end that can be done **********************************************************************
     protected function throwValidationException($validator) : void
     {
         $response = response()->json([

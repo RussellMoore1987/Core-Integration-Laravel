@@ -17,7 +17,7 @@ abstract class HttpMethodTypeFactory
         'delete' => 'delete',
     ];
 
-    public function getFactoryItem($httpMethod) : object
+    public function getFactoryItem(string $httpMethod) : object
     {
         $httpMethod = strtolower($httpMethod);
         
