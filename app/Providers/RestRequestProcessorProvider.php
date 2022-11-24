@@ -10,6 +10,7 @@ use App\CoreIntegrationApi\RestApi\RestQueryResolver;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\CoreIntegrationApi\ClassDataProvider;
 use App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryResolverFactory;
+use App\CoreIntegrationApi\HttpMethodResponseBuilderFactory\HttpMethodResponseBuilderFactory;
 use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
 use Illuminate\Http\Request;
 
@@ -60,7 +61,9 @@ class RestRequestProcessorProvider extends ServiceProvider
 
     private function bindResponseBuilder() {
         $this->app->bind(RestResponseBuilder::class, function ($app) {
-            return new RestResponseBuilder;
+            return new RestResponseBuilder(
+                $app->make(HttpMethodResponseBuilderFactory::class),
+            );
         });
     }
 

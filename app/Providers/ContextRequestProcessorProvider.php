@@ -10,6 +10,7 @@ use App\CoreIntegrationApi\ContextApi\ContextQueryResolver;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\CoreIntegrationApi\ClassDataProvider;
 use App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryResolverFactory;
+use App\CoreIntegrationApi\HttpMethodResponseBuilderFactory\HttpMethodResponseBuilderFactory;
 use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
 use Illuminate\Http\Request;
 
@@ -62,7 +63,9 @@ class ContextRequestProcessorProvider extends ServiceProvider
 
     private function bindResponseBuilder() {
         $this->app->bind(ContextResponseBuilder::class, function ($app) {
-            return new ContextResponseBuilder;
+            return new ContextResponseBuilder(
+                $app->make(HttpMethodResponseBuilderFactory::class),
+            );
         });
     }
 
