@@ -3,6 +3,10 @@
 namespace Tests\Unit\HttpMethodQueryResolver;
 
 use App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryResolverFactory;
+// use App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryResolvers\GetHttpMethodQueryResolver;
+// use App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryResolvers\PostHttpMethodQueryResolver;
+// use App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryResolvers\PutHttpMethodQueryResolver;
+// use App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryResolvers\DeleteHttpMethodQueryResolver;
 use Tests\TestCase;
 
 class HttpMethodQueryResolverFactoryTest extends TestCase

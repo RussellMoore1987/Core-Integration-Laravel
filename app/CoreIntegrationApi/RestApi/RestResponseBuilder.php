@@ -8,7 +8,6 @@ class RestResponseBuilder implements ResponseBuilder
 {
     protected $validatedMetaData;
     protected $queryResult;
-    protected $response;
 
     public function setValidatedMetaData($validatedMetaData)
     {
@@ -27,22 +26,22 @@ class RestResponseBuilder implements ResponseBuilder
 
     protected function makeRequest()
     {
-        $this->checkForEndpointError();
         $this->checkGetRequest();
+
+        // ! start here ********************************************************************** make it work, resarch best rest proticals
+        // $httpMethodResponseBuilder = $this->httpMethodResponseBuilderFactory->getFactoryItem($this->validatedMetaData['endpointData']['httpMethod']);
+        // $response = $httpMethodResponseBuilder->buildResponse($this->validatedMetaData, $this->queryResult);
+
+        // return $response;
+        // TODO: see if I can't merge these two lines
+        // return $httpMethodResponseBuilder->buildResponse($this->validatedMetaData, $this->queryResult);
 
         return $this->response;
     }
 
-    protected function checkForEndpointError()
-    {
-        if ($this->validatedMetaData['endpointData']['endpointError']) {
-            $this->response = response()->json($this->validatedMetaData['rejectedParameters'], 404);
-        }
-    }
-
     protected function checkGetRequest()
     {
-        if (!$this->response && $this->validatedMetaData['endpointData']['httpMethod'] == 'GET') {
+        if ($this->validatedMetaData['endpointData']['httpMethod'] == 'GET') {
             if (is_array($this->queryResult)) {
                 // form data or column data
                 $this->response = response()->json($this->queryResult, 200);

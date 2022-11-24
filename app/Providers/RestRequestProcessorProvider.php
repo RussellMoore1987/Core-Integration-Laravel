@@ -6,13 +6,10 @@ use App\CoreIntegrationApi\RestApi\RestRequestDataPrepper;
 use App\CoreIntegrationApi\RestApi\RestRequestProcessor;
 use App\CoreIntegrationApi\RestApi\RestRequestValidator;
 use App\CoreIntegrationApi\RestApi\RestResponseBuilder;
-use App\CoreIntegrationApi\RestApi\RestQueryIndex;
 use App\CoreIntegrationApi\RestApi\RestQueryResolver;
-use App\CoreIntegrationApi\CIL\CILQueryAssembler;
-use App\CoreIntegrationApi\CIL\CILQueryDeleter;
-use App\CoreIntegrationApi\CIL\CILQueryPersister;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\CoreIntegrationApi\ClassDataProvider;
+use App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryResolverFactory;
 use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
 use Illuminate\Http\Request;
 
@@ -56,10 +53,7 @@ class RestRequestProcessorProvider extends ServiceProvider
     private function bindQueryResolver() {
         $this->app->bind(RestQueryResolver::class, function ($app) {
             return new RestQueryResolver(
-                $app->make(CILQueryAssembler::class),
-                $app->make(CILQueryPersister::class),
-                $app->make(RestQueryIndex::class),
-                $app->make(CILQueryDeleter::class),
+                $app->make(HttpMethodQueryResolverFactory::class),
             );
         });
     }

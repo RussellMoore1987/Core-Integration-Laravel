@@ -4,5 +4,5 @@ namespace App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryR
 
 interface HttpMethodQueryResolver
 {
-    public function resolveQuery($validatedMetaData) : array;
+    public function resolveQuery($validatedMetaData);
 }

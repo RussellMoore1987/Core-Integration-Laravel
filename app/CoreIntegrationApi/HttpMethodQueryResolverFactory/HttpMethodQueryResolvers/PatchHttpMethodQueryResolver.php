@@ -6,7 +6,7 @@ use App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryResolve
 
 class PatchHttpMethodQueryResolver implements HttpMethodQueryResolver
 {
-    public function resolveQuery($validatedMetaData) : array
+    public function resolveQuery($validatedMetaData)
     {
         return [];
     }

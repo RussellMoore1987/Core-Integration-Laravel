@@ -40,6 +40,7 @@
         // TODO: add testing for this
         public function getValidationRules()
         {
+            // get default validation
             if (
                 !$this->validationRules || 
                 (!isset($this->validationRules['modelValidation']) || !is_array($this->validationRules['modelValidation'])) || 

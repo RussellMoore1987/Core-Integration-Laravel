@@ -181,6 +181,7 @@ return [
         App\Providers\CILProvider::class,
         App\Providers\RestRequestProcessorProvider::class,
         App\Providers\ContextRequestProcessorProvider::class,
+        App\Providers\HttpMethodQueryResolverProvider::class,
     ],
 
     /*
