@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 // TODO: PATCH =======================================
 // Update existing record (just parts sent in)
 // 200
-// Resource record???
+// Resource record, old -> new
 // Status
 // What changed
 // update validation

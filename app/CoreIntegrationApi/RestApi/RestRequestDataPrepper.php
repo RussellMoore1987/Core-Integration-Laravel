@@ -4,6 +4,8 @@ namespace App\CoreIntegrationApi\RestApi;
 
 use App\CoreIntegrationApi\RequestDataPrepper;
 
+// TODO: fix url case sensetivity, and camelCase and snake_case, Context API as well
+
 class RestRequestDataPrepper extends RequestDataPrepper
 { 
     public function prepRequestData()

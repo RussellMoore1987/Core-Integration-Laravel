@@ -14,6 +14,10 @@ class PostHttpMethodQueryResolver implements HttpMethodQueryResolver
             $class->$property = $value;
         }
         $class->save(); // TODO: fix date format 2/2/1979 to 1979-02-02
+
+        // send back full new resource
+        $resourcePrimaryKey = $class->getKeyName(); 
+        $class = $validatedMetaData['endpointData']['class']::find($class->$resourcePrimaryKey);
         return $class; 
         // // dd($class, $validatedMetaData);
         // $redirect = false;

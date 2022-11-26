@@ -50,7 +50,7 @@ class PostHttpMethodTest extends TestCase
      * @integration
      * @dataProvider parameterToValidateProvider
      */
-    public function test_post_request_creates_new_record($endpoint, $parameters, $classPath) : void
+    public function test_post_request_creates_new_record($endpoint, $primaryKey, $parameters, $classPath) : void
     {
         $response = $this->post("/api/v1/$endpoint", $parameters);
 
@@ -58,11 +58,11 @@ class PostHttpMethodTest extends TestCase
 
         $responseArray = json_decode($response->content(), true);
 
+        $newRecordId = $responseArray['newRecord'][$primaryKey];
         $expectedResponse = [
-            'error' => 'Validation failed',
-            'recordId' => 66,
-            'message' => 'Validation failed, resend request after adjustments have been made.',
-            'status_code' => 422,
+            'status' => 201,
+            'newRecord' => $responseArray['newRecord'],
+            'newRecordLocation' => "http://localhost:8000/api/v1/{$endpoint}/{$newRecordId}",
         ];
 
         $classObjects = $classPath::all();
@@ -74,9 +74,9 @@ class PostHttpMethodTest extends TestCase
     public function parameterToValidateProvider()
     {
         return [
-            'projects' => ['projects', ['title' => 'Test Project'], 'App\Models\Project'],
-            'categories' => ['categories', ['name' => 'Test Category'], 'App\Models\Category'],
-            'workHistoryTypes' => ['WorkHistoryTypes', ['name' => 'Test WorkHistoryType', 'icon' => 'fa-user'], 'App\Models\WorkHistoryType'],
+            'projects' => ['projects', 'id', ['title' => 'Test Project'], 'App\Models\Project'],
+            'categories' => ['categories', 'id', ['name' => 'Test Category'], 'App\Models\Category'],
+            'workHistoryTypes' => ['workHistoryTypes', 'work_history_type_id', ['name' => 'Test WorkHistoryType', 'icon' => 'fa-user'], 'App\Models\WorkHistoryType'],
         ];
     }
 

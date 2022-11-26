@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// debugging
 Route::any("projects", function () {
     // $r = new Request;
     // $c = new ContextRequestDataPrepper($r);
@@ -36,11 +37,15 @@ Route::any("projects", function () {
     return Project::all();
 });
 
-Route::any("v1/{endpoint?}/{endpointId?}", [GlobalAPIController::class, 'processRequest']);
+// ! Start here ****************************************************************** refine prosses, rename, refactor, UML*** read up on testing names, end-to-end, integration, unit, ect. ability to add images
+// TODO: GlobalAPIController -> CoreIntegrationAPIController
 
-Route::any("rest/v1/{endpoint?}/{endpointId?}", [GlobalAPIController::class, 'processRestRequest']);
+Route::any("v1/{endpoint?}/{endpointId?}", [GlobalAPIController::class, 'processRequest']); // generic route -> both REST and Context
 
-Route::any("context/v1", [GlobalAPIController::class, 'processContextRequest']);
+Route::any("rest/v1/{endpoint?}/{endpointId?}", [GlobalAPIController::class, 'processRestRequest']); // REST only route
+
+Route::any("context/v1", [GlobalAPIController::class, 'processContextRequest']); // Context only route
 
 // TODO: To utilize leader for perhaps building out a more complex pathing rest request
 // Route::any("rest/v1/{class?}/{id?}/{path?}", [GlobalAPIController::class, 'processRestRequest'])->where('path', '.+');
+// last endpoint valid then work up

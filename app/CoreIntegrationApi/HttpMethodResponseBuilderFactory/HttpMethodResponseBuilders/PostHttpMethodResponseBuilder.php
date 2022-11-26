@@ -5,17 +5,16 @@ namespace App\CoreIntegrationApi\HttpMethodResponseBuilderFactory\HttpMethodResp
 use App\CoreIntegrationApi\HttpMethodResponseBuilderFactory\HttpMethodResponseBuilders\HttpMethodResponseBuilder;
 use Illuminate\Http\JsonResponse;
 
-// TODO: POST =======================================
-// Record created
-// 201 
-// Resource record
-// http Status
-// location to find the new record
-
 class PostHttpMethodResponseBuilder implements HttpMethodResponseBuilder
 {
     public function buildResponse($validatedMetaData, $queryResult) : JsonResponse
     {
-        return response()->json([], 201);
+        $resourcePrimaryKey = $queryResult->getKeyName(); // TODO: perhaps set higher up in class info
+        $response = [
+            'status' => 201,
+            'newRecord' => $queryResult->toArray(),
+            'newRecordLocation' => $validatedMetaData['endpointData']['url'] . '/' . $queryResult->$resourcePrimaryKey,
+        ];
+        return response()->json($response, 201);
     }
 }

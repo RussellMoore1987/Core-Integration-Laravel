@@ -14,6 +14,7 @@ use Illuminate\Http\JsonResponse;
 // TODO: just pagination data
 // TODO: form data with data types
 // TODO: add default Parameters
+// TODO: resourceData add not default, pagination is default 
 
 class GetHttpMethodResponseBuilder implements HttpMethodResponseBuilder
 {
