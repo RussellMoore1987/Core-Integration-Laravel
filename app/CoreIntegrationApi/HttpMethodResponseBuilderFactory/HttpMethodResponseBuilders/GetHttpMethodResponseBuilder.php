@@ -5,6 +5,16 @@ namespace App\CoreIntegrationApi\HttpMethodResponseBuilderFactory\HttpMethodResp
 use App\CoreIntegrationApi\HttpMethodResponseBuilderFactory\HttpMethodResponseBuilders\HttpMethodResponseBuilder;
 use Illuminate\Http\JsonResponse;
 
+// TODO: GET =======================================
+// Bad request
+// 400 (GET request itself is not correctly formed)
+
+// TODO: add ability to ask for methodcalls and includes, like columndata
+// TODO: just data
+// TODO: just pagination data
+// TODO: form data with data types
+// TODO: add default Parameters
+
 class GetHttpMethodResponseBuilder implements HttpMethodResponseBuilder
 {
     private $validatedMetaData;
@@ -20,26 +30,24 @@ class GetHttpMethodResponseBuilder implements HttpMethodResponseBuilder
 
     protected function makeGetRequest()
     {
-        if ($this->validatedMetaData['endpointData']['httpMethod'] == 'GET') {
-            if (is_array($this->queryResult)) {
-                // form data or column data
-                $this->response = response()->json($this->queryResult, 200);
-            } else {
-                $paginateObj = json_decode($this->queryResult->toJson(), true);
-                $paginateObj = $this->setGetResponse($paginateObj);
-    
-                $endpointId = $this->validatedMetaData['endpointData']['endpointId'];
-    
-                if ($endpointId && !str_contains($endpointId, ',')) {
-                    if (count($paginateObj['data']) == 0) {
-                        $endpoint = $this->validatedMetaData['endpointData']['endpoint'];
-                        $this->response = response()->json(['message' => "The record with the id of $endpointId at the \"$endpoint\" endpoint was not found"], 404);
-                    } else {
-                        $this->response = response()->json($paginateObj['data'][0], 200);
-                    }
+        if (is_array($this->queryResult)) {
+            // form data or column data
+            $this->response = response()->json($this->queryResult, 200);
+        } else {
+            $paginateObj = json_decode($this->queryResult->toJson(), true);
+            $paginateObj = $this->setGetResponse($paginateObj);
+
+            $endpointId = $this->validatedMetaData['endpointData']['endpointId'];
+
+            if ($endpointId && !str_contains($endpointId, ',')) {
+                if (count($paginateObj['data']) == 0) {
+                    $endpoint = $this->validatedMetaData['endpointData']['endpoint'];
+                    $this->response = response()->json(['message' => "The record with the id of $endpointId at the \"$endpoint\" endpoint was not found"], 404);
                 } else {
-                    $this->response = response()->json($paginateObj, 200);
+                    $this->response = response()->json($paginateObj['data'][0], 200);
                 }
+            } else {
+                $this->response = response()->json($paginateObj, 200);
             }
         }
     }

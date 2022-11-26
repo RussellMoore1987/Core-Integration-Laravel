@@ -54,7 +54,7 @@ class PostHttpMethodTest extends TestCase
     {
         $response = $this->post("/api/v1/$endpoint", $parameters);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $responseArray = json_decode($response->content(), true);
 
