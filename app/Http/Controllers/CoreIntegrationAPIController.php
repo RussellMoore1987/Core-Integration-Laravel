@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\CoreIntegrationApi\RequestProcessRouter;
 use Illuminate\Support\Facades\App;
 
-class GlobalAPIController extends Controller
+class CoreIntegrationAPIController extends Controller
 {
     function __construct() 
     {
