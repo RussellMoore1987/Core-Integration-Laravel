@@ -49,7 +49,7 @@ class GetHttpMethodTypeValidator implements HttpMethodTypeValidator
                 $this->validatorDataCollector->setRejectedParameter([
                     $key => [
                         'value' => $value,
-                        'parameterError' => 'This is an invalid parameter for this endpoint.'
+                        'parameterError' => 'This is an invalid parameter for this resource/endpoint.'
                     ]
                 ]);
             }
@@ -74,14 +74,14 @@ class GetHttpMethodTypeValidator implements HttpMethodTypeValidator
             $this->validatorDataCollector->setAcceptedParameter([
                 'columnData' => [
                     'value' => $value,
-                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this endpoint'
+                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this resource/endpoint'
                 ]
             ]);
         } elseif (in_array($key, ['formdata', 'form_data'])) {
             $this->validatorDataCollector->setAcceptedParameter([
                 'formData' => [
                     'value' => $value,
-                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter form data for this endpoint'
+                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter form data for this resource/endpoint'
                 ]
             ]);
         }

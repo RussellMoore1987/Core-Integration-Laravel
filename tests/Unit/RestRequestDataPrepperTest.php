@@ -11,15 +11,15 @@ class RestRequestDataPrepperTest extends TestCase
     public function test_rest_request_data_prepper_returns_expected_result()
     {
         $preppedData = $this->prepareData([
-            'endpoint' => 'projects',
+            'resource' => 'projects',
             'start_date' => '2020-02-28',
             'id' => 33,
             'title' => 'Gogo!!!'
         ]);
 
         $expectedResponse = [
-            'endpoint' => 'projects',
-            'endpointId' => 33,
+            'resource' => 'projects',
+            'resourceId' => 33,
             'parameters' => [
                 'start_date' => '2020-02-28',
                 'title' => 'Gogo!!!'
@@ -31,18 +31,18 @@ class RestRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_rest_request_data_prepper_returns_expected_result_no_endpointId()
+    public function test_rest_request_data_prepper_returns_expected_result_no_resourceId()
     {
         $preppedData = $this->prepareData([
-            'endpoint' => 'projects',
+            'resource' => 'projects',
             'start_date' => '2020-02-28',
             'ham' => 33,
             'title' => 'Gogo!!!'
         ]);
 
         $expectedResponse = [
-            'endpoint' => 'projects',
-            'endpointId' => '',
+            'resource' => 'projects',
+            'resourceId' => '',
             'parameters' => [
                 'start_date' => '2020-02-28',
                 'title' => 'Gogo!!!',
@@ -58,13 +58,13 @@ class RestRequestDataPrepperTest extends TestCase
     public function test_rest_request_data_prepper_returns_expected_result_empty_parameters()
     {
         $preppedData = $this->prepareData([
-            'endpoint' => 'projects',
+            'resource' => 'projects',
             'id' => 33,
         ]);
 
         $expectedResponse = [
-            'endpoint' => 'projects',
-            'endpointId' => 33,
+            'resource' => 'projects',
+            'resourceId' => 33,
             'parameters' => [],
             'url' => 'http://localhost/api/v1/projects',
             'httpMethod' => 'GET'
@@ -78,8 +78,8 @@ class RestRequestDataPrepperTest extends TestCase
         $preppedData = $this->prepareData();
 
         $expectedResponse = [
-            'endpoint' => 'index',
-            'endpointId' => '',
+            'resource' => 'index',
+            'resourceId' => '',
             'parameters' => [],
             'url' => 'http://localhost/api/v1/projects',
             'httpMethod' => 'GET'
@@ -89,20 +89,20 @@ class RestRequestDataPrepperTest extends TestCase
     }
 
     /**
-     * @dataProvider endpointIdProvider
+     * @dataProvider resourceIdProvider
      */
-    public function test_rest_request_data_prepper_returns_expected_result_different_endpoint_id_text($endpointIdText)
+    public function test_rest_request_data_prepper_returns_expected_result_different_resource_id_text($resourceIdText)
     {
         $preppedData = $this->prepareData([
-            'endpoint' => 'projects',
+            'resource' => 'projects',
             'start_date' => '2020-02-28',
-            $endpointIdText => 33,
+            $resourceIdText => 33,
             'title' => 'Gogo!!!'
         ]);
 
         $expectedResponse = [
-            'endpoint' => 'projects',
-            'endpointId' => 33,
+            'resource' => 'projects',
+            'resourceId' => 33,
             'parameters' => [
                 'start_date' => '2020-02-28',
                 'title' => 'Gogo!!!'
@@ -113,12 +113,12 @@ class RestRequestDataPrepperTest extends TestCase
 
         $this->assertEquals($expectedResponse,$preppedData);
     }
-    public function endpointIdProvider()
+    public function resourceIdProvider()
     {
         return [
             'id' => ['id'],
-            'endpointId' => ['endpointId'],
-            'endpoint_id' => ['endpoint_id'],
+            'resourceId' => ['resourceId'],
+            'resource_id' => ['resource_id'],
         ];
     }
 
@@ -128,15 +128,15 @@ class RestRequestDataPrepperTest extends TestCase
     public function test_rest_request_data_prepper_returns_expected_result_using_different_http_methods($methodText)
     {
         $preppedData = $this->prepareData([
-            'endpoint' => 'projects',
+            'resource' => 'projects',
             'start_date' => '2020-02-28',
-            'endpointId' => 33,
+            'resourceId' => 33,
             'title' => 'Gogo!!!'
         ], 'api/v1/projects', $methodText);
 
         $expectedResponse = [
-            'endpoint' => 'projects',
-            'endpointId' => 33,
+            'resource' => 'projects',
+            'resourceId' => 33,
             'parameters' => [
                 'start_date' => '2020-02-28',
                 'title' => 'Gogo!!!'
@@ -160,8 +160,8 @@ class RestRequestDataPrepperTest extends TestCase
     public function test_rest_request_data_prepper_returns_expected_result_random_parameters()
     {
         $preppedData = $this->prepareData([
-            'endpoint' => '$%#@',
-            'endpointId' => '1,2,6,8,99,22',
+            'resource' => '$%#@',
+            'resourceId' => '1,2,6,8,99,22',
             '33' => '\'',
             '::' => 'pwer',
             '\'' => 33,
@@ -170,8 +170,8 @@ class RestRequestDataPrepperTest extends TestCase
         ]);
 
         $expectedResponse = [
-            'endpoint' => '$%#@',
-            'endpointId' => '1,2,6,8,99,22',
+            'resource' => '$%#@',
+            'resourceId' => '1,2,6,8,99,22',
             'url' => 'http://localhost/api/v1/projects',
             'httpMethod' => 'GET',
             'parameters' => [

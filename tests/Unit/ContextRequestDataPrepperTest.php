@@ -42,16 +42,16 @@ class ContextRequestDataPrepperTest extends TestCase
             'contextErrorInstructions' => false,
             'requests' => [
                 'projects' =>[
-                    'endpoint' => 'projects',
-                    'endpointId' => 33,
+                    'resource' => 'projects',
+                    'resourceId' => 33,
                     'parameters' => [
                         'start_date' => '2020-02-28',
                         'title' => 'Gogo!!!',
                     ]
                 ],
                 'tags' => [
-                    'endpoint' => 'tags',
-                    'endpointId' => 88,
+                    'resource' => 'tags',
+                    'resourceId' => 88,
                     'parameters' => [
                         'not_a_parameter' => 'Told You!',
                         'name' => 'PHP',
@@ -63,7 +63,7 @@ class ContextRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_no_endpoint_id()
+    public function test_context_request_data_prepper_returns_expected_result_no_resource_id()
     {
         $preppedData = $this->prepareData(['contextInstructions' => '{
             "projects": {
@@ -81,16 +81,16 @@ class ContextRequestDataPrepperTest extends TestCase
             'contextErrorInstructions' => false,
             'requests' => [
                 'projects' =>[
-                    'endpoint' => 'projects',
-                    'endpointId' => '',
+                    'resource' => 'projects',
+                    'resourceId' => '',
                     'parameters' => [
                         'start_date' => '2020-02-28',
                         'title' => 'Gogo!!!',
                     ]
                 ],
                 'tags' => [
-                    'endpoint' => 'tags',
-                    'endpointId' => '',
+                    'resource' => 'tags',
+                    'resourceId' => '',
                     'parameters' => [
                         'not_a_parameter' => 'Told You!',
                         'name' => 'PHP',
@@ -102,18 +102,18 @@ class ContextRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse,$preppedData);
     }
 
-    public function test_context_request_data_prepper_returns_expected_result_different_ways_of_setting_endpoint_id()
+    public function test_context_request_data_prepper_returns_expected_result_different_ways_of_setting_resource_id()
     {
         $preppedData = $this->prepareData(['contextInstructions' => '{
             "projects": {
                 "start_date": "2020-02-28",
                 "title": "Gogo!!!",
-                "endpoint_id": 88
+                "resource_id": 88
             },
             "tags": {
                 "not_a_parameter": "Told You!",
                 "name": "PHP",
-                "endpointId": 22
+                "resourceId": 22
             },
             "tags2": {
                 "not_a_parameter": "Told You!",
@@ -127,24 +127,24 @@ class ContextRequestDataPrepperTest extends TestCase
             'contextErrorInstructions' => false,
             'requests' => [
                 'projects' =>[
-                    'endpoint' => 'projects',
-                    'endpointId' => 88,
+                    'resource' => 'projects',
+                    'resourceId' => 88,
                     'parameters' => [
                         'start_date' => '2020-02-28',
                         'title' => 'Gogo!!!',
                     ]
                 ],
                 'tags' => [
-                    'endpoint' => 'tags',
-                    'endpointId' => 22,
+                    'resource' => 'tags',
+                    'resourceId' => 22,
                     'parameters' => [
                         'not_a_parameter' => 'Told You!',
                         'name' => 'PHP',
                     ]
                 ],
                 'tags2' => [
-                    'endpoint' => 'tags2',
-                    'endpointId' => 99,
+                    'resource' => 'tags2',
+                    'resourceId' => 99,
                     'parameters' => [
                         'not_a_parameter' => 'Told You!',
                         'name' => 'PHP',
@@ -162,13 +162,13 @@ class ContextRequestDataPrepperTest extends TestCase
             {
                 "start_date": "2020-02-28",
                 "title": "Gogo!!!",
-                "endpoint_id": 88,
-                "endpoint": "projects"
+                "resource_id": 88,
+                "resource": "projects"
             },
             {
                 "not_a_parameter": "Told You!",
                 "name": "PHP",
-                "endpointId": 22
+                "resourceId": 22
             }
         ]']);
 
@@ -177,16 +177,16 @@ class ContextRequestDataPrepperTest extends TestCase
             'contextErrorInstructions' => false,
             'requests' => [
                 '0' => [
-                    'endpoint' => 'projects',
-                    'endpointId' => 88,
+                    'resource' => 'projects',
+                    'resourceId' => 88,
                     'parameters' => [
                         'start_date' => '2020-02-28',
                         'title' => 'Gogo!!!',
                     ]
                 ],
                 '1' => [
-                    'endpoint' => 1,
-                    'endpointId' => 22,
+                    'resource' => 1,
+                    'resourceId' => 22,
                     'parameters' => [
                         'not_a_parameter' => 'Told You!',
                         'name' => 'PHP',
@@ -204,13 +204,13 @@ class ContextRequestDataPrepperTest extends TestCase
             "0": {
                 "start_date": "2020-02-28",
                 "title": "Gogo!!!",
-                "endpoint_id": 88,
-                "endpoint": "projects"
+                "resource_id": 88,
+                "resource": "projects"
             },
             "tags": {
                 "not_a_parameter": "Told You!",
                 "name": "PHP",
-                "endpointId": 22
+                "resourceId": 22
             }
         }']);
 
@@ -219,16 +219,16 @@ class ContextRequestDataPrepperTest extends TestCase
             'contextErrorInstructions' => false,
             'requests' => [
                 '0' =>[
-                    'endpoint' => 'projects',
-                    'endpointId' => 88,
+                    'resource' => 'projects',
+                    'resourceId' => 88,
                     'parameters' => [
                         'start_date' => '2020-02-28',
                         'title' => 'Gogo!!!',
                     ]
                 ],
                 'tags' => [
-                    'endpoint' => 'tags',
-                    'endpointId' => 22,
+                    'resource' => 'tags',
+                    'resourceId' => 22,
                     'parameters' => [
                         'not_a_parameter' => 'Told You!',
                         'name' => 'PHP',
@@ -258,16 +258,16 @@ class ContextRequestDataPrepperTest extends TestCase
             'contextErrorInstructions' => false,
             'requests' => [
                 'big_projects' =>[
-                    'endpoint' => 'projects',
-                    'endpointId' => '',
+                    'resource' => 'projects',
+                    'resourceId' => '',
                     'parameters' => [
                         'start_date' => '2020-02-28',
                         'title' => 'Gogo!!!',
                     ]
                 ],
                 'phpTags' => [
-                    'endpoint' => 'tags',
-                    'endpointId' => '',
+                    'resource' => 'tags',
+                    'resourceId' => '',
                     'parameters' => [
                         'not_a_parameter' => 'Told You!',
                         'name' => 'PHP',
@@ -288,7 +288,7 @@ class ContextRequestDataPrepperTest extends TestCase
                 "title": "Gogo!!!"
             },
             "big_projects": {
-                "endpoint": "projects",
+                "resource": "projects",
                 "start_date": "2020-02-29",
                 "title": "Gogo!!!"
             },
@@ -301,7 +301,7 @@ class ContextRequestDataPrepperTest extends TestCase
                 "title": "Gogo!!!"
             },
             "phpTags::tags": {
-                "endpoint": "pop",
+                "resource": "pop",
                 "not_a_parameter": "Told You!",
                 "name": "PHP"
             }
@@ -312,32 +312,32 @@ class ContextRequestDataPrepperTest extends TestCase
             'contextErrorInstructions' => false,
             'requests' => [
                 'big_projects' =>[
-                    'endpoint' => 'projects',
-                    'endpointId' => '',
+                    'resource' => 'projects',
+                    'resourceId' => '',
                     'parameters' => [
                         'start_date' => '2020-02-29',
                         'title' => 'Gogo!!!',
                     ]
                 ],
                 'big_projects2' =>[
-                    'endpoint' => 'projects',
-                    'endpointId' => '',
+                    'resource' => 'projects',
+                    'resourceId' => '',
                     'parameters' => [
                         'start_date' => '2020-02-28',
                         'title' => 'Gogo!!!',
                     ]
                 ],
                 'big_projects3' =>[
-                    'endpoint' => 'big_projects3',
-                    'endpointId' => '',
+                    'resource' => 'big_projects3',
+                    'resourceId' => '',
                     'parameters' => [
                         'start_date' => '2020-02-28',
                         'title' => 'Gogo!!!',
                     ]
                 ],
                 'phpTags' => [
-                    'endpoint' => 'pop',
-                    'endpointId' => '',
+                    'resource' => 'pop',
+                    'resourceId' => '',
                     'parameters' => [
                         'not_a_parameter' => 'Told You!',
                         'name' => 'PHP',
@@ -367,16 +367,16 @@ class ContextRequestDataPrepperTest extends TestCase
             'contextErrorInstructions' => false,
             'requests' => [
                 'big_projects' =>[
-                    'endpoint' => 'projects',
-                    'endpointId' => '',
+                    'resource' => 'projects',
+                    'resourceId' => '',
                     'parameters' => [
                         'start_date' => '2020-02-28',
                         'title' => 'Gogo!!!',
                     ]
                 ],
                 'phpTags' => [
-                    'endpoint' => 'tags',
-                    'endpointId' => '',
+                    'resource' => 'tags',
+                    'resourceId' => '',
                     'parameters' => [
                         'not_a_parameter' => 'Told You!',
                         'name' => 'PHP',
@@ -414,32 +414,32 @@ class ContextRequestDataPrepperTest extends TestCase
             'contextErrorInstructions' => false,
             'requests' => [
                 'big_projects' =>[
-                    'endpoint' => '',
-                    'endpointId' => '',
+                    'resource' => '',
+                    'resourceId' => '',
                     'parameters' => [
                         'start_date' => '2020-02-28',
                         'title' => 'Gogo!!!',
                     ]
                 ],
                 '' => [
-                    'endpoint' => '',
-                    'endpointId' => '',
+                    'resource' => '',
+                    'resourceId' => '',
                     'parameters' => [
                         'not_a_parameter' => 'Told You!',
                         'name' => 'PHP',
                     ]
                 ],
                 ':' => [
-                    'endpoint' => ':',
-                    'endpointId' => '',
+                    'resource' => ':',
+                    'resourceId' => '',
                     'parameters' => [
                         'not_a_parameter' => 'Told You!',
                         'name' => 'PHP',
                     ]
                 ],
                 'big_projects:projects' => [
-                    'endpoint' => 'big_projects:projects',
-                    'endpointId' => '',
+                    'resource' => 'big_projects:projects',
+                    'resourceId' => '',
                     'parameters' => [
                         'not_a_parameter' => 'Told You!',
                         'name' => 'PHP',
@@ -470,16 +470,16 @@ class ContextRequestDataPrepperTest extends TestCase
             'contextErrorInstructions' => false,
             'requests' => [
                 'big_projects' =>[
-                    'endpoint' => 2,
-                    'endpointId' => '',
+                    'resource' => 2,
+                    'resourceId' => '',
                     'parameters' => [
                         'start_date' => '2020-02-28',
                         'title' => 'Gogo!!!',
                     ]
                 ],
                 '3' => [
-                    'endpoint' => 3,
-                    'endpointId' => '',
+                    'resource' => 3,
+                    'resourceId' => '',
                     'parameters' => [
                         'not_a_parameter' => 'Told You!',
                         'name' => 'PHP',
@@ -547,72 +547,72 @@ class ContextRequestDataPrepperTest extends TestCase
 
     public function test_context_request_data_prepper_returns_expected_result_assorted_array_good_and_bad()
     {
-        $preppedData = $this->prepareData(['contextInstructions' => '["not_json", "red", 44, 77, {"endpoint": "projects", "name": "Sam", "id": 55}, {"endpoint": "tags", "id": 55},"", [], {}, true, false, null]']);
+        $preppedData = $this->prepareData(['contextInstructions' => '["not_json", "red", 44, 77, {"resource": "projects", "name": "Sam", "id": 55}, {"resource": "tags", "id": 55},"", [], {}, true, false, null]']);
 
         $expectedResponse = [
             'contextErrorInstructions' => false,
             'contextErrorNotJson' => false,
             'requests' => [
                 [
-                    'endpoint' => 0,
-                    'endpointId' => '',
+                    'resource' => 0,
+                    'resourceId' => '',
                     'parameters' => 'not_json'
                 ],
                 [
-                    'endpoint' => 1,
-                    'endpointId' => '',
+                    'resource' => 1,
+                    'resourceId' => '',
                     'parameters' => 'red'
                 ],
                 [
-                    'endpoint' => 2,
-                    'endpointId' => '',
+                    'resource' => 2,
+                    'resourceId' => '',
                     'parameters' => 44
                 ],
                 [
-                    'endpoint' => 3,
-                    'endpointId' => '',
+                    'resource' => 3,
+                    'resourceId' => '',
                     'parameters' => 77
                 ],
                 [
-                    'endpoint' => 'projects',
-                    'endpointId' => 55,
+                    'resource' => 'projects',
+                    'resourceId' => 55,
                     'parameters' => [
                       'name' => 'Sam'
                     ]
                 ],
                 [
-                    'endpoint' => 'tags',
-                    'endpointId' => 55,
+                    'resource' => 'tags',
+                    'resourceId' => 55,
                     'parameters' => []
                 ],
                 [
-                    'endpoint' => 6,
-                    'endpointId' => '',
+                    'resource' => 6,
+                    'resourceId' => '',
                     'parameters' => ''
                 ],
                 [
-                    'endpoint' => 7,
-                    'endpointId' => '',
+                    'resource' => 7,
+                    'resourceId' => '',
                     'parameters' => []
                 ],
                 [
-                    'endpoint' => 8,
-                    'endpointId' => '',
+                    'resource' => 8,
+                    'resourceId' => '',
                     'parameters' => []
                 ],
                 [
-                    'endpoint' => 9,
-                    'endpointId' => '',
+                    'resource' => 9,
+                    'resourceId' => '',
                     'parameters' => true
                 ],
                 [
-                    'endpoint' => 10,
-                    'endpointId' => '',
+                    'resource' => 10,
+                    'resourceId' => '',
                     'parameters' => false
                 ],
                 [
-                    'endpoint' => 11,
-                    'endpointId' => '',
+                    'resource' => 11,
+                    'resourceId' => '',
                     'parameters' => null
                 ]
             ]

@@ -23,7 +23,7 @@ class GetHttpMethodQueryResolver implements HttpMethodQueryResolver
     {
         $this->validatedMetaData = $validatedMetaData;
 
-        $this->checkEndpointColumnData();
+        $this->checkResourceColumnData();
         $this->checkIndex(); 
         $this->checkFormData();
         $this->checkGetRequest();
@@ -31,11 +31,11 @@ class GetHttpMethodQueryResolver implements HttpMethodQueryResolver
         return $this->queryResult; // TODO: test if casting to an array brakes anything, if not make array the correct return
     }
 
-    protected function checkEndpointColumnData()
+    protected function checkResourceColumnData()
     {
         if (isset($this->validatedMetaData['acceptedParameters']['columnData'])) {
             foreach ($this->validatedMetaData['extraData']['acceptableParameters'] as $columnName => $columnArray) {
-                $this->queryResult['availableEndpointParameters'][$columnName] = $columnArray['api_data_type'];
+                $this->queryResult['availableResourceParameters'][$columnName] = $columnArray['api_data_type'];
             }
             $this->queryResult['info'] = [
                 'message' => 'Documentation on how to utilize parameter data types can be found in the index response, in the ApiDocumentation section.', 
@@ -46,7 +46,7 @@ class GetHttpMethodQueryResolver implements HttpMethodQueryResolver
 
     protected function checkIndex()
     {
-        if (!$this->queryResult && $this->validatedMetaData['endpointData']['endpoint'] == 'index') {
+        if (!$this->queryResult && $this->validatedMetaData['endpointData']['resource'] == 'index') {
             $this->queryResult = $this->queryIndex->get();   
         }
     }

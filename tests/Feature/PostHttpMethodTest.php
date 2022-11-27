@@ -50,9 +50,9 @@ class PostHttpMethodTest extends TestCase
      * @integration
      * @dataProvider parameterToValidateProvider
      */
-    public function test_post_request_creates_new_record($endpoint, $primaryKey, $parameters, $classPath) : void
+    public function test_post_request_creates_new_record($resource, $primaryKey, $parameters, $classPath) : void
     {
-        $response = $this->post("/api/v1/$endpoint", $parameters);
+        $response = $this->post("/api/v1/$resource", $parameters);
 
         $response->assertStatus(201);
 
@@ -62,7 +62,7 @@ class PostHttpMethodTest extends TestCase
         $expectedResponse = [
             'status' => 201,
             'newRecord' => $responseArray['newRecord'],
-            'newRecordLocation' => "http://localhost:8000/api/v1/{$endpoint}/{$newRecordId}",
+            'newRecordLocation' => "http://localhost:8000/api/v1/{$resource}/{$newRecordId}",
         ];
 
         $classObjects = $classPath::all();

@@ -18,9 +18,9 @@ abstract class RequestValidator
 
     protected $classObject;
     protected $classInfo;
-    protected $acceptedClasses;
-    protected $endpoint;
-    protected $endpointId;
+    protected $acceptedClasses; // TODO: chang name availableResourceEndpoints***, exposedResource, acceptedEndpoints, resourceEndpoints, resourceRoutes
+    protected $resource;
+    protected $resourceId;
     protected $endpointError = false;
     protected $extraData = [];
     protected $parameters;
@@ -59,8 +59,8 @@ abstract class RequestValidator
 
     protected function setUpPreppedRequest($prepRequestData)
     {
-        $this->endpoint = $prepRequestData['endpoint'] ?? '';
-        $this->endpointId = $prepRequestData['endpointId']  ?? [];
+        $this->resource = $prepRequestData['resource'] ?? '';
+        $this->resourceId = $prepRequestData['resourceId']  ?? [];
         $this->parameters = $prepRequestData['parameters'] ?? [];
         $this->httpMethod = $prepRequestData['httpMethod'] ?? 'GET';
         $this->url = $prepRequestData['url'] ?? '';
@@ -68,17 +68,17 @@ abstract class RequestValidator
 
     protected function validateEndPoint()
     {
-        if (array_key_exists($this->endpoint, $this->acceptedClasses) ) { // $this->acceptedEndpoints 
+        if (array_key_exists($this->resource, $this->acceptedClasses) ) { // $this->acceptedEndpoints 
             $this->setRequestClass(); // setRequestClass, setModel, setEndpointModel, setEndpointClass
             $this->setEndpoint();
-        } elseif ($this->endpoint != 'index') {
+        } elseif ($this->resource != 'index') {
             $this->setEndpointError();
         } 
     }
 
     protected function setRequestClass()
     {
-        $this->classObject = new $this->acceptedClasses[$this->endpoint]();
+        $this->classObject = new $this->acceptedClasses[$this->resource]();
         $this->classDataProvider->setClass($this->classObject);
         $this->classInfo = $this->classDataProvider->getClassInfo();
     }
@@ -88,7 +88,7 @@ abstract class RequestValidator
         $this->checkForIdParameterIfThereSetItAppropriately();
         $this->validatorDataCollector->setAcceptedParameter([
             "endpoint" => [
-                'message' => "\"$this->endpoint\" is a valid endpoint for this API. You can also review available endpoints at " . $this->getIndexUrl()
+                'message' => "\"{$this->resource}\" is a valid resource/endpoint for this API. You can also review available resources/endpoints at " . $this->getIndexUrl()
             ]
         ]);
     }
@@ -96,18 +96,18 @@ abstract class RequestValidator
     protected function checkForIdParameterIfThereSetItAppropriately()
     {
         $endpointData = [
-            'endpoint' => $this->endpoint, 
-            'endpointId' => $this->endpointId,  
+            'resource' => $this->resource, 
+            'resourceId' => $this->resourceId,  
             'endpointError' => $this->endpointError, 
             'class' => $this->classInfo['path'], 
             'indexUrl' => $this->getIndexUrl(),
             'url' => $this->url,
             'httpMethod' => $this->httpMethod,
         ]; // possibly create new function for this, allow setting to be easier
-        if ($this->endpointId) {
+        if ($this->resourceId) {
             $primaryKeyName = $this->classInfo['primaryKeyName'];
-            $this->parameters[$primaryKeyName] = $this->endpointId;
-            $endpointData['endpointIdConvertedTo'] = [$primaryKeyName => $this->endpointId];
+            $this->parameters[$primaryKeyName] = $this->resourceId;
+            $endpointData['resourceIdConvertedTo'] = [$primaryKeyName => $this->resourceId];
         }
         $this->validatorDataCollector->setEndpointData($endpointData);
     }
@@ -123,11 +123,11 @@ abstract class RequestValidator
         // $this->endpointError = true;
 
         $errors = [];
-        if ($this->endpointId) {
+        if ($this->resourceId) {
             $errors = [
-                'endpointId' => [
-                    'message' => "\"$this->endpoint\" is not a valid endpoint for this API, therefore the endpoint ID is invalid as well. Please review available endpoints at " . $this->getIndexUrl(), 
-                    'value' => $this->endpointId
+                'resourceId' => [
+                    'message' => "\"{$this->resource}\" is not a valid resource/endpoint for this API, therefore the resource id is invalid as well. Please review available resources/endpoints at " . $this->getIndexUrl(), 
+                    'value' => $this->resourceId
                 ]
             ];
         }
@@ -135,7 +135,7 @@ abstract class RequestValidator
         $response = response()->json([
             'error' => 'Invalid Endpoint',
             'errors' => $errors,
-            'message' => "\"$this->endpoint\" is not a valid endpoint for this API. Please review available endpoints at " . $this->getIndexUrl(),
+            'message' => "\"{$this->resource}\" is not a valid resource/endpoint for this API. Please review available resources/endpoints at " . $this->getIndexUrl(),
             'status_code' => 400,
         ], 400);
         throw new HttpResponseException($response);

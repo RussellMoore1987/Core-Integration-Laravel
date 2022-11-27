@@ -38,12 +38,12 @@ class GetHttpMethodResponseBuilder implements HttpMethodResponseBuilder
             $paginateObj = json_decode($this->queryResult->toJson(), true);
             $paginateObj = $this->setGetResponse($paginateObj);
 
-            $endpointId = $this->validatedMetaData['endpointData']['endpointId'];
+            $resourceId = $this->validatedMetaData['endpointData']['resourceId'];
 
-            if ($endpointId && !str_contains($endpointId, ',')) {
+            if ($resourceId && !str_contains($resourceId, ',')) {
                 if (count($paginateObj['data']) == 0) {
-                    $endpoint = $this->validatedMetaData['endpointData']['endpoint'];
-                    $this->response = response()->json(['message' => "The record with the id of $endpointId at the \"$endpoint\" endpoint was not found"], 404);
+                    $resource = $this->validatedMetaData['endpointData']['resource'];
+                    $this->response = response()->json(['message' => "The record with the id of $resourceId at the \"$resource\" endpoint was not found"], 404);
                 } else {
                     $this->response = response()->json($paginateObj['data'][0], 200);
                 }
@@ -57,21 +57,21 @@ class GetHttpMethodResponseBuilder implements HttpMethodResponseBuilder
     {
         if (isset($this->validatedMetaData['extraData']['acceptableParameters'])) {
             foreach ($this->validatedMetaData['extraData']['acceptableParameters'] as $columnName => $columnArray) {
-                $paginateObj['availableEndpointParameters']['parameters'][$columnName] = $columnArray['api_data_type'];
+                $paginateObj['availableResourceParameters']['parameters'][$columnName] = $columnArray['api_data_type'];
             }
-            $paginateObj['availableEndpointParameters']['parameters']['info'] = [
+            $paginateObj['availableResourceParameters']['parameters']['info'] = [
                 'message' => 'Documentation on how to utilize parameter data types can be found in the index response, in the apiDocumentation.parameterDataTypes section.', 
                 'index_url' => $this->validatedMetaData['endpointData']['indexUrl']
             ];
-            $paginateObj['availableEndpointParameters']['defaultParameters'] = [
-                'columns' => 'endpoint parameters',
-                'orderBy' => 'endpoint parameters',
+            $paginateObj['availableResourceParameters']['defaultParameters'] = [
+                'columns' => 'resource parameters',
+                'orderBy' => 'resource parameters',
                 'methodCalls' => [
-                    'value' => 'endpoint methods',
+                    'value' => 'resource methods',
                     'availableMethodCalls' => $this->validatedMetaData['extraData']['availableMethodCalls'],
                 ],
                 'includes' => [
-                    'value' => 'endpoint includes/relationships',
+                    'value' => 'resource includes/relationships',
                     'availableIncludes' => $this->validatedMetaData['extraData']['availableIncludes'],
                 ],
                 'page' => 'int',

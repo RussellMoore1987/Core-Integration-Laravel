@@ -24,7 +24,7 @@ class RestRequestValidatorTest extends TestCase
     public function test_rest_request_validator_returns_expected_result($httpMethod, $expectedAcceptedParameters)
     {
         $validatedMetaData = $this->validateRequest([
-            'endpoint' => 'projects',
+            'resource' => 'projects',
             'id' => 33,
             'title' => 'Test Project',
         ], 'api/v1/projects', $httpMethod);
@@ -39,14 +39,14 @@ class RestRequestValidatorTest extends TestCase
         $this->assertArrayHasKey('queryArguments', $validatedMetaData);
 
         $expectedEndpointData = [
-            'endpoint' => 'projects',
-            'endpointId' => '33',
+            'resource' => 'projects',
+            'resourceId' => '33',
             'endpointError' => false,
             'class' => 'App\Models\Project',
             'indexUrl' => 'http://localhost/api/v1/',
             'url' => 'http://localhost/api/v1/projects',
             'httpMethod' => $httpMethod,
-            'endpointIdConvertedTo' => [
+            'resourceIdConvertedTo' => [
                 'id' => 33
             ]
         ];
@@ -60,14 +60,14 @@ class RestRequestValidatorTest extends TestCase
     {
         $otherAcceptedParameters = [
             'endpoint' => [
-                'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/',
+                'message' => '"projects" is a valid resource/endpoint for this API. You can also review available resources/endpoints at http://localhost/api/v1/',
             ],
         ];
          
         return [
             'GET' => ['GET', [
                 'endpoint' => [
-                    'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/'
+                    'message' => '"projects" is a valid resource/endpoint for this API. You can also review available resources/endpoints at http://localhost/api/v1/'
                 ],
                 'id' => [
                     'intCoveredTo' => 33,
@@ -80,7 +80,7 @@ class RestRequestValidatorTest extends TestCase
                 'id' => 33,
                 'title' => 'Test Project',
                 'endpoint' => [
-                    'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/',
+                    'message' => '"projects" is a valid resource/endpoint for this API. You can also review available resources/endpoints at http://localhost/api/v1/',
                 ],
             ]],
             'PUT' => ['PUT', $otherAcceptedParameters],
@@ -94,13 +94,13 @@ class RestRequestValidatorTest extends TestCase
     public function test_rest_request_validator_returns_expected_result_accepted_endpoint_no_id($httpMethod, $expectedAcceptedParameters)
     {
         $validatedMetaData = $this->validateRequest([
-            'endpoint' => 'projects',
+            'resource' => 'projects',
             'title' => 'Test Project',
         ], 'api/v1/projects', $httpMethod);
 
         $expectedEndpointData = [
-            'endpoint' => 'projects',
-            'endpointId' => '',
+            'resource' => 'projects',
+            'resourceId' => '',
             'endpointError' => false,
             'class' => 'App\Models\Project',
             'indexUrl' => 'http://localhost/api/v1/',
@@ -126,7 +126,7 @@ class RestRequestValidatorTest extends TestCase
     {
         $otherAcceptedParameters = [
             'endpoint' => [
-                'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/',
+                'message' => '"projects" is a valid resource/endpoint for this API. You can also review available resources/endpoints at http://localhost/api/v1/',
             ],
         ];
          
@@ -135,7 +135,7 @@ class RestRequestValidatorTest extends TestCase
             'POST' => ['POST', [
                 'title' => 'Test Project',
                 'endpoint' => [
-                    'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/',
+                    'message' => '"projects" is a valid resource/endpoint for this API. You can also review available resources/endpoints at http://localhost/api/v1/',
                 ],
             ]],
             'PUT' => ['PUT', $otherAcceptedParameters],
@@ -146,19 +146,19 @@ class RestRequestValidatorTest extends TestCase
     public function test_rest_request_validator_returns_expected_result_use_generic_id_get_back_model_WorkHistoryType_id()
     {
         $validatedMetaData = $this->validateRequest([
-            'endpoint' => 'workHistoryTypes',
+            'resource' => 'workHistoryTypes',
             'id' => 33,
         ], 'api/v1/workHistoryTypes');
 
         $expectedEndpointData = [
-            'endpoint' => 'workHistoryTypes',
-            'endpointId' => 33,
+            'resource' => 'workHistoryTypes',
+            'resourceId' => 33,
             'endpointError' => false,
             'class' => 'App\Models\WorkHistoryType',
             'indexUrl' => 'http://localhost/api/v1/',
             'url' => 'http://localhost/api/v1/workHistoryTypes',
             'httpMethod' => 'GET',
-            'endpointIdConvertedTo' => [
+            'resourceIdConvertedTo' => [
                 'work_history_type_id' => 33
             ]
         ];
@@ -175,7 +175,7 @@ class RestRequestValidatorTest extends TestCase
         $this->expectException(HttpResponseException::class);
 
         $this->validateRequest([
-            'endpoint' => 'notProjects',
+            'resource' => 'notProjects',
             'id' => 33,
         ], 'api/v1/notProjects', $httpMethod);
     }
@@ -188,7 +188,7 @@ class RestRequestValidatorTest extends TestCase
         $this->expectException(HttpResponseException::class);
 
         $this->validateRequest([
-            'endpoint' => 'notProjects',
+            'resource' => 'notProjects',
         ], 'api/v1/notProjects', $httpMethod);
     }
 
@@ -208,7 +208,7 @@ class RestRequestValidatorTest extends TestCase
     public function test_rest_request_validator_returns_expected_result_default_parameters_set_in_request_validator($perPageName, $columnDataName, $formDataName)
     {
         $validatedMetaData = $this->validateRequest([
-            'endpoint' => 'projects',
+            'resource' => 'projects',
             'page' => 2,
             $perPageName => 22,
             $columnDataName => 'yes',
@@ -217,17 +217,17 @@ class RestRequestValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'endpoint' => [
-              'message' => '"projects" is a valid endpoint for this API. You can also review available endpoints at http://localhost/api/v1/'
+              'message' => '"projects" is a valid resource/endpoint for this API. You can also review available resources/endpoints at http://localhost/api/v1/'
             ],
             'page' => 2,
             'perPage' => 22,
             'columnData' => [
               'value' => 'yes',
-              'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this endpoint',
+              'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this resource/endpoint',
             ],
             'formData' => [
               'value' => 'Fun',
-              'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter form data for this endpoint',
+              'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter form data for this resource/endpoint',
             ],
         ];
 
@@ -248,7 +248,7 @@ class RestRequestValidatorTest extends TestCase
     public function test_rest_request_validator_returns_expected_result_default_parameters_rejected($pageValue, $perPageValue)
     {
         $validatedMetaData = $this->validateRequest([
-            'endpoint' => 'projects',
+            'resource' => 'projects',
             'page' => $pageValue,
             'perPage' => $perPageValue,
         ]);
@@ -278,7 +278,7 @@ class RestRequestValidatorTest extends TestCase
     public function test_rest_request_validator_returns_expected_result_non_acceptable_parameters()
     {
         $validatedMetaData = $this->validateRequest([
-            'endpoint' => 'projects',
+            'resource' => 'projects',
             'pageJoe' => 2,
             'Ham' => 22.99,
             '' => 'yes',
@@ -288,19 +288,19 @@ class RestRequestValidatorTest extends TestCase
         $expectedRejectedParameters = [
             'pagejoe' => [
                 'value' => 2,
-                'parameterError' => 'This is an invalid parameter for this endpoint.',  
+                'parameterError' => 'This is an invalid parameter for this resource/endpoint.',  
             ],
             'ham' => [
                 'value' => 22.99,
-                'parameterError' => 'This is an invalid parameter for this endpoint.', 
+                'parameterError' => 'This is an invalid parameter for this resource/endpoint.', 
             ],
             '' => [
                 'value' => 'yes',
-                'parameterError' => 'This is an invalid parameter for this endpoint.',  
+                'parameterError' => 'This is an invalid parameter for this resource/endpoint.',  
             ],
             'array' => [
                 'value' => [],
-                'parameterError' => 'This is an invalid parameter for this endpoint.',   
+                'parameterError' => 'This is an invalid parameter for this resource/endpoint.',   
             ]
         ];
 

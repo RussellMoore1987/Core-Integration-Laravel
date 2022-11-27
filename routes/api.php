@@ -15,11 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 // ! Start here ****************************************************************** refine prosses, rename, refactor, UML*** read up on testing names, end-to-end, integration, unit, ect. ability to add images
-// TODO: endpoint or resource
+// TODO: endpoint or resource ???
 
-Route::any("v1/{endpoint?}/{endpointId?}", [CoreIntegrationAPIController::class, 'processRequest']); // generic route -> both REST and Context
+Route::any("v1/{resource?}/{resourceId?}", [CoreIntegrationAPIController::class, 'processRequest']); // generic route -> both REST and Context
 
-Route::any("rest/v1/{endpoint?}/{endpointId?}", [CoreIntegrationAPIController::class, 'processRestRequest']); // REST only route
+Route::any("rest/v1/{resource?}/{resourceId?}", [CoreIntegrationAPIController::class, 'processRestRequest']); // REST only route
 
 Route::any("context/v1", [CoreIntegrationAPIController::class, 'processContextRequest']); // Context only route
 

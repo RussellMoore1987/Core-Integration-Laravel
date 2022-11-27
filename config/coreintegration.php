@@ -7,8 +7,8 @@ return [
     | Accepted Classes For the Core integration REST API
     |--------------------------------------------------------------------------
     |
-    | Specify the path/endpoint and the corresponding model
-    | 'path/endpoint' => 'path\to\model'
+    | Specify the resource/endpoint and the corresponding model
+    | 'resource/endpoint' => 'path\to\model'
     | ex: 'caseStudies' => 'App\Models\CaseStudy'
     |
     */

@@ -50,24 +50,24 @@ class FullRestApiTest extends TestCase
                 'prev_page_url',
                 'to',
                 'total',
-                'availableEndpointParameters',
-                'availableEndpointParameters.parameters',
-                'availableEndpointParameters.parameters.info',
-                'availableEndpointParameters.defaultParameters.columns',
-                'availableEndpointParameters.defaultParameters.orderBy',
-                'availableEndpointParameters.defaultParameters.methodCalls',
-                'availableEndpointParameters.defaultParameters.methodCalls.value',
-                'availableEndpointParameters.defaultParameters.methodCalls.availableMethodCalls',
-                'availableEndpointParameters.defaultParameters.includes',
-                'availableEndpointParameters.defaultParameters.includes.value',
-                'availableEndpointParameters.defaultParameters.includes.availableIncludes',
-                'availableEndpointParameters.defaultParameters.page',
-                'availableEndpointParameters.defaultParameters.perPage',
-                'availableEndpointParameters.defaultParameters.columnData',
-                'availableEndpointParameters.defaultParameters.formData',
-                'availableEndpointParameters.defaultParameters.includeData',
-                'availableEndpointParameters.defaultParameters.methodCallData',
-                'availableEndpointParameters.defaultParameters.info',
+                'availableResourceParameters',
+                'availableResourceParameters.parameters',
+                'availableResourceParameters.parameters.info',
+                'availableResourceParameters.defaultParameters.columns',
+                'availableResourceParameters.defaultParameters.orderBy',
+                'availableResourceParameters.defaultParameters.methodCalls',
+                'availableResourceParameters.defaultParameters.methodCalls.value',
+                'availableResourceParameters.defaultParameters.methodCalls.availableMethodCalls',
+                'availableResourceParameters.defaultParameters.includes',
+                'availableResourceParameters.defaultParameters.includes.value',
+                'availableResourceParameters.defaultParameters.includes.availableIncludes',
+                'availableResourceParameters.defaultParameters.page',
+                'availableResourceParameters.defaultParameters.perPage',
+                'availableResourceParameters.defaultParameters.columnData',
+                'availableResourceParameters.defaultParameters.formData',
+                'availableResourceParameters.defaultParameters.includeData',
+                'availableResourceParameters.defaultParameters.methodCallData',
+                'availableResourceParameters.defaultParameters.info',
                 'rejectedParameters',
                 'acceptedParameters',
                 'endpointData'
@@ -77,7 +77,7 @@ class FullRestApiTest extends TestCase
         );
 
         // test that parameters are set right
-        $parameters = 'availableEndpointParameters.parameters.';
+        $parameters = 'availableResourceParameters.parameters.';
         $response->assertJsonPath($parameters . 'id', 'int');
         $response->assertJsonPath($parameters . 'title', 'string');
         $response->assertJsonPath($parameters . 'start_date', 'date');
@@ -85,13 +85,13 @@ class FullRestApiTest extends TestCase
         $response->assertJsonPath($parameters . 'budget', 'float');
         
         // test that endpoint data is correct
-        $response->assertJsonPath('endpointData.endpoint', 'projects');
-        $response->assertJsonPath('endpointData.endpointId', $projectIds);
+        $response->assertJsonPath('endpointData.resource', 'projects');
+        $response->assertJsonPath('endpointData.resourceId', $projectIds);
         $response->assertJsonPath('endpointData.endpointError', false);
         $response->assertJsonPath('endpointData.indexUrl', 'http://localhost:8000/api/v1/');
         $response->assertJsonPath('endpointData.url', 'http://localhost:8000/api/v1/projects/' . $projectIds);
         $response->assertJsonPath('endpointData.httpMethod', 'GET');
-        $response->assertJsonPath('endpointData.endpointIdConvertedTo', ['id' => $projectIds]);
+        $response->assertJsonPath('endpointData.resourceIdConvertedTo', ['id' => $projectIds]);
 
         // test page and per_page work
         $response->assertJsonPath('per_page', 1);
@@ -127,9 +127,9 @@ class FullRestApiTest extends TestCase
                 'prev_page_url',
                 'to',
                 'total',
-                'availableEndpointParameters',
-                'availableEndpointParameters.parameters',
-                'availableEndpointParameters.info',
+                'availableResourceParameters',
+                'availableResourceParameters.parameters',
+                'availableResourceParameters.info',
                 'rejectedParameters',
                 'acceptedParameters',
                 'endpointData'
@@ -170,7 +170,7 @@ class FullRestApiTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJson(fn (AssertableJson $json) =>
-            $json->has('availableEndpointParameters', fn ($json) =>
+            $json->has('availableResourceParameters', fn ($json) =>
                 $json->hasAll(
                     'id',
                     'title',

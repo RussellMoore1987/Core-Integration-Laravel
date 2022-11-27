@@ -8,7 +8,7 @@ class ContextRequestDataPrepper extends RequestDataPrepper
 {
     protected $requests;
     protected $requestName;
-    protected $endpoint;
+    protected $resource;
     protected $requestData;
 
     // TODO: add request information like URL and HTTP method
@@ -46,7 +46,7 @@ class ContextRequestDataPrepper extends RequestDataPrepper
         if (is_array($this->requests)) {
             foreach ($this->requests as $requestName => $requestData) {
                 $this->requestName = $requestName;
-                $this->endpoint = $requestName;
+                $this->resource = $requestName;
                 $this->requestData = $requestData;
 
                 $this->checkSplitRequestName();
@@ -61,15 +61,15 @@ class ContextRequestDataPrepper extends RequestDataPrepper
         if (str_contains($this->requestName, '::')) {
             $requestNameArray = explode('::', $this->requestName);
             $this->requestName = $requestNameArray[0];
-            $this->endpoint = $requestNameArray[1];
+            $this->resource = $requestNameArray[1];
         }
     }
 
     protected function setEndpointDetails()
     {
-        $this->preppedData['requests'][$this->requestName]['endpoint'] = $this->requestData['endpoint'] ?? $this->endpoint ?? 'index';
+        $this->preppedData['requests'][$this->requestName]['resource'] = $this->requestData['resource'] ?? $this->resource ?? 'index';
 
-        $this->preppedData['requests'][$this->requestName]['endpointId'] = $this->requestData['endpoint_id'] ?? $this->requestData['endpointId'] ?? $this->requestData['id'] ?? '';
+        $this->preppedData['requests'][$this->requestName]['resourceId'] = $this->requestData['resource_id'] ?? $this->requestData['resourceId'] ?? $this->requestData['id'] ?? '';
     }
 
     protected function setParameters()
@@ -83,10 +83,10 @@ class ContextRequestDataPrepper extends RequestDataPrepper
         
         if ($this->checkIfWeNeedToUnset()) {
             unset(
-                $this->requestData['endpointId'], 
-                $this->requestData['endpoint_id'], 
+                $this->requestData['resourceId'], 
+                $this->requestData['resource_id'], 
                 $this->requestData['id'], 
-                $this->requestData['endpoint']
+                $this->requestData['resource']
             );
         }
     }
@@ -95,7 +95,7 @@ class ContextRequestDataPrepper extends RequestDataPrepper
     {
         if (is_array($this->requestData)) {
             $keys = array_keys($this->requestData);
-            $KeysToUnset = ['endpointId', 'endpoint_id', 'id', 'endpoint'];
+            $KeysToUnset = ['resourceId', 'resource_id', 'id', 'resource'];
 
             foreach ($KeysToUnset as $key) {
                 if (in_array($key, $keys)) { return true; }

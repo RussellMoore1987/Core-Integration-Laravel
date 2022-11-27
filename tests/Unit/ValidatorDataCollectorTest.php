@@ -16,7 +16,7 @@ class ValidatorDataCollectorTest extends TestCase
         $this->ValidatorDataCollector = new ValidatorDataCollector();
 
         $this->endpointData = [
-            'endpoint' => 'projects',
+            'resource' => 'projects',
             'endpointValid' => true,
         ];
 
