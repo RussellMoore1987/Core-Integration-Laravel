@@ -22,18 +22,19 @@ abstract class RequestProcessor
 
     public function process() : JsonResponse
     {
-        $this->validate();
-        $this->resolve();
+        $this->validateRequest();
+        $this->getRequestedData();
         return $this->respond();
     }
 
-    protected function validate() : void
+    protected function validateRequest() : void
     {
         $this->validatedMetaData = $this->requestValidator->validate();
         $this->responseBuilder->setValidatedMetaData($this->validatedMetaData);
+        // * if validation fails request will be sent back to the user as a HttpResponseException (a 400, 422 response)
     }
 
-    protected function resolve() : void
+    protected function getRequestedData() : void
     {
         $queryResult = $this->queryResolver->resolve($this->validatedMetaData);
         $this->responseBuilder->setResponseData($queryResult);

@@ -4,34 +4,37 @@ namespace App\CoreIntegrationApi;
 
 use App\CoreIntegrationApi\RequestDataPrepper;
 use App\CoreIntegrationApi\ValidatorDataCollector;
-use App\CoreIntegrationApi\ClassDataProvider;
+use App\CoreIntegrationApi\ResourceDataProvider;
 use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
 use Illuminate\Http\Exceptions\HttpResponseException;
+
+// ! start here ********************************************************* readability, uml
 
 abstract class RequestValidator 
 {
 
     protected $requestDataPrepper;
     protected $validatorDataCollector;
-    protected $classDataProvider;
+    protected $resourceDataProvider;
     protected $httpMethodTypeValidatorFactory;
 
-    protected $classObject;
-    protected $classInfo;
-    protected $acceptedClasses; // TODO: chang name availableResourceEndpoints***, exposedResource, acceptedEndpoints, resourceEndpoints, resourceRoutes
+    protected $classObject; // TODO: to resourceObject
+    protected $classInfo; // TODO: to resourceInfo, combine resourceInfo and extraResourceData ???
     protected $resource;
     protected $resourceId;
-    protected $endpointError = false;
-    protected $extraData = [];
+    protected $extraData = []; // TODO: to extraResourceData
     protected $parameters;
+    
+    protected $acceptedClasses; // TODO: to availableResourceEndpoints***
+    protected $endpointError = false;
     protected $validatedMetaData;
 
-    function __construct(RequestDataPrepper $requestDataPrepper, ValidatorDataCollector $validatorDataCollector, ClassDataProvider $classDataProvider, HttpMethodTypeValidatorFactory $httpMethodTypeValidatorFactory) 
+    function __construct(RequestDataPrepper $requestDataPrepper, ValidatorDataCollector $validatorDataCollector, ResourceDataProvider $resourceDataProvider, HttpMethodTypeValidatorFactory $httpMethodTypeValidatorFactory) 
     {
         $this->requestDataPrepper = $requestDataPrepper;
         $this->acceptedClasses = config('coreintegration.acceptedclasses') ?? [];
         $this->validatorDataCollector = $validatorDataCollector;
-        $this->classDataProvider = $classDataProvider;
+        $this->resourceDataProvider = $resourceDataProvider;
         $this->httpMethodTypeValidatorFactory = $httpMethodTypeValidatorFactory;
     }   
 
@@ -79,8 +82,8 @@ abstract class RequestValidator
     protected function setRequestClass()
     {
         $this->classObject = new $this->acceptedClasses[$this->resource]();
-        $this->classDataProvider->setClass($this->classObject);
-        $this->classInfo = $this->classDataProvider->getClassInfo();
+        $this->resourceDataProvider->setClass($this->classObject);
+        $this->classInfo = $this->resourceDataProvider->getClassInfo();
     }
 
     protected function setEndpoint()
@@ -105,7 +108,7 @@ abstract class RequestValidator
             'httpMethod' => $this->httpMethod,
         ]; // possibly create new function for this, allow setting to be easier
         if ($this->resourceId) {
-            $primaryKeyName = $this->classInfo['primaryKeyName'];
+            $primaryKeyName = $this->classInfo['primaryKeyName']; // TODO: set this for latter, maybe in extraResourceData
             $this->parameters[$primaryKeyName] = $this->resourceId;
             $endpointData['resourceIdConvertedTo'] = [$primaryKeyName => $this->resourceId];
         }

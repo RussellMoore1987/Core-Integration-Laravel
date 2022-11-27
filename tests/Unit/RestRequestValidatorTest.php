@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\CoreIntegrationApi\ValidatorDataCollector;
-use App\CoreIntegrationApi\ClassDataProvider;
+use App\CoreIntegrationApi\ResourceDataProvider;
 use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
 use App\CoreIntegrationApi\RestApi\RestRequestValidator;
 use App\CoreIntegrationApi\RestApi\RestRequestDataPrepper;
@@ -312,10 +312,10 @@ class RestRequestValidatorTest extends TestCase
         $request = Request::create($url, $method, $parameters);
         $restRequestDataPrepper = new RestRequestDataPrepper($request);
         $validatorDataCollector = App::make(ValidatorDataCollector::class);
-        $classDataProvider = App::make(ClassDataProvider::class);
+        $resourceDataProvider = App::make(ResourceDataProvider::class);
         $httpMethodTypeValidatorFactory = App::make(HttpMethodTypeValidatorFactory::class);
 
-        $restRequestValidator = new RestRequestValidator($restRequestDataPrepper, $validatorDataCollector, $classDataProvider, $httpMethodTypeValidatorFactory);
+        $restRequestValidator = new RestRequestValidator($restRequestDataPrepper, $validatorDataCollector, $resourceDataProvider, $httpMethodTypeValidatorFactory);
 
         return $restRequestValidator->validate();
     }

@@ -2,32 +2,32 @@
 
 namespace Tests\Unit;
 
-use App\CoreIntegrationApi\ClassDataProvider;
+use App\CoreIntegrationApi\ResourceDataProvider;
 use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFactory;
 use App\Models\Project;
 use App\Models\WorkHistoryType;
 use Tests\TestCase;
 
-class ClassDataProviderTest extends TestCase
+class ResourceDataProviderTest extends TestCase
 {
-    private $classDataProvider;
+    private $resourceDataProvider;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->classDataProvider = new ClassDataProvider(new ParameterDataProviderFactory());
+        $this->resourceDataProvider = new ResourceDataProvider(new ParameterDataProviderFactory());
     }
 
-    public function test_classDataProvider_functions_results_as_expected_from_project_class()
+    public function test_resourceDataProvider_functions_results_as_expected_from_project_class()
     {
         $this->createProjectClassTestInfo();
-        $this->classDataProvider->setClass($this->project);
+        $this->resourceDataProvider->setClass($this->project);
 
-        $this->assertEquals($this->expectedClassInfo['primaryKeyName'], $this->classDataProvider->getClassPrimaryKeyName());
-        $this->assertEquals($this->expectedClassInfo['path'], $this->classDataProvider->getClassPath());
-        $this->assertEquals($this->expectedClassInfo['classParameterOptions'], $this->classDataProvider->getClassAcceptableParameters());
-        $this->assertEquals($this->expectedClassInfo, $this->classDataProvider->getClassInfo());
+        $this->assertEquals($this->expectedClassInfo['primaryKeyName'], $this->resourceDataProvider->getClassPrimaryKeyName());
+        $this->assertEquals($this->expectedClassInfo['path'], $this->resourceDataProvider->getClassPath());
+        $this->assertEquals($this->expectedClassInfo['classParameterOptions'], $this->resourceDataProvider->getClassAcceptableParameters());
+        $this->assertEquals($this->expectedClassInfo, $this->resourceDataProvider->getClassInfo());
 
     }
 
@@ -378,15 +378,15 @@ class ClassDataProviderTest extends TestCase
         ];
     }
 
-    public function test_classDataProvider_functions_results_as_expected_from_WorkHistoryType_class()
+    public function test_resourceDataProvider_functions_results_as_expected_from_WorkHistoryType_class()
     {
         $this->createWorkHistoryTypeClassTestInfo();
-        $this->classDataProvider->setClass($this->workHistoryType);
+        $this->resourceDataProvider->setClass($this->workHistoryType);
 
-        $this->assertEquals($this->expectedClassInfo['primaryKeyName'], $this->classDataProvider->getClassPrimaryKeyName());
-        $this->assertEquals($this->expectedClassInfo['path'], $this->classDataProvider->getClassPath());
-        $this->assertEquals($this->expectedClassInfo['classParameterOptions'], $this->classDataProvider->getClassAcceptableParameters());
-        $this->assertEquals($this->expectedClassInfo, $this->classDataProvider->getClassInfo());
+        $this->assertEquals($this->expectedClassInfo['primaryKeyName'], $this->resourceDataProvider->getClassPrimaryKeyName());
+        $this->assertEquals($this->expectedClassInfo['path'], $this->resourceDataProvider->getClassPath());
+        $this->assertEquals($this->expectedClassInfo['classParameterOptions'], $this->resourceDataProvider->getClassAcceptableParameters());
+        $this->assertEquals($this->expectedClassInfo, $this->resourceDataProvider->getClassInfo());
 
     }
 

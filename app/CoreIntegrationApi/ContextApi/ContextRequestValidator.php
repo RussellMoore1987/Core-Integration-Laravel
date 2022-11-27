@@ -6,9 +6,9 @@ use App\CoreIntegrationApi\RequestValidator;
 
 class ContextRequestValidator extends RequestValidator
 {
+    // @ uses serves a provider for dependency injection, Located app\Providers\ContextRequestProcessorProvider.php
+    
     protected $validatedMetaData = [];
-
-    // uses serves a provider for dependency injection, Located app\Providers\ContextRequestProcessorProvider.php
 
     public function validate()
     {

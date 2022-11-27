@@ -6,7 +6,7 @@ use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFac
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class ClassDataProvider 
+class resourceDataProvider 
 {   
     protected $classPath;
     protected $classObject;

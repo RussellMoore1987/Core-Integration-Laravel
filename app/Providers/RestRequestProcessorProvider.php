@@ -8,7 +8,7 @@ use App\CoreIntegrationApi\RestApi\RestRequestValidator;
 use App\CoreIntegrationApi\RestApi\RestResponseBuilder;
 use App\CoreIntegrationApi\RestApi\RestQueryResolver;
 use App\CoreIntegrationApi\ValidatorDataCollector;
-use App\CoreIntegrationApi\ClassDataProvider;
+use App\CoreIntegrationApi\ResourceDataProvider;
 use App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryResolverFactory;
 use App\CoreIntegrationApi\HttpMethodResponseBuilderFactory\HttpMethodResponseBuilderFactory;
 use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
@@ -45,7 +45,7 @@ class RestRequestProcessorProvider extends ServiceProvider
             return new RestRequestValidator(
                 $app->make(RestRequestDataPrepper::class),
                 $app->make(ValidatorDataCollector::class),
-                $app->make(ClassDataProvider::class),
+                $app->make(ResourceDataProvider::class),
                 $app->make(HttpMethodTypeValidatorFactory::class),
             );
         });

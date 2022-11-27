@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\HttpMethodTypeValidator;
 
-use App\CoreIntegrationApi\ClassDataProvider;
+use App\CoreIntegrationApi\ResourceDataProvider;
 use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidators\PostHttpMethodTypeValidator;
 use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFactory;
 use App\CoreIntegrationApi\ValidatorDataCollector;
@@ -133,9 +133,9 @@ class PostHttpMethodTypeValidatorTest extends TestCase
     {
         // TODO: rename things to make more sens
         // TODO: make it so I can mercilessly refactor it
-        $classDataProvider = new ClassDataProvider(new ParameterDataProviderFactory());
-        $classDataProvider->setClass($class);
-        $classInfo = $classDataProvider->getClassInfo();
+        $resourceDataProvider = new ResourceDataProvider(new ParameterDataProviderFactory());
+        $resourceDataProvider->setClass($class);
+        $classInfo = $resourceDataProvider->getClassInfo();
 
         $extraData['availableMethodCalls'] = $classInfo['classParameterOptions']['availableMethodCalls'];
         $extraData['availableIncludes'] = $classInfo['classParameterOptions']['availableIncludes'];

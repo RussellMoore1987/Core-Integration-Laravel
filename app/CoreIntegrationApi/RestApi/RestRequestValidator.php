@@ -6,5 +6,5 @@ use App\CoreIntegrationApi\RequestValidator;
 
 class RestRequestValidator extends RequestValidator
 {
-    // uses serves a provider for dependency injection, Located app\Providers\RestRequestProcessorProvider.php
+    // @ uses a serves provider for dependency injection, Located app\Providers\RestRequestProcessorProvider.php
 }

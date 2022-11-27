@@ -8,7 +8,7 @@ use App\CoreIntegrationApi\ContextApi\ContextRequestValidator;
 use App\CoreIntegrationApi\ContextApi\ContextResponseBuilder;
 use App\CoreIntegrationApi\ContextApi\ContextQueryResolver;
 use App\CoreIntegrationApi\ValidatorDataCollector;
-use App\CoreIntegrationApi\ClassDataProvider;
+use App\CoreIntegrationApi\ResourceDataProvider;
 use App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryResolverFactory;
 use App\CoreIntegrationApi\HttpMethodResponseBuilderFactory\HttpMethodResponseBuilderFactory;
 use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
@@ -39,7 +39,7 @@ class ContextRequestProcessorProvider extends ServiceProvider
             return new ContextRequestValidator(
                 $app->make(ContextRequestDataPrepper::class),
                 $app->make(ValidatorDataCollector::class),
-                $app->make(ClassDataProvider::class),
+                $app->make(ResourceDataProvider::class),
                 $app->make(HttpMethodTypeValidatorFactory::class),
             );
         });

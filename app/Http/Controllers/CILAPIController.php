@@ -24,3 +24,8 @@ class CILApiController extends Controller
         return $this->CILRequestRouter->processContextRequest();
     }
 }
+
+// TODO-TEST: full end-to-end testing for each route
+// processRequest
+// processRestRequest
+// processContextRequest

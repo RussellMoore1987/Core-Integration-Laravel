@@ -37,3 +37,8 @@ class CILRequestRouter
         return $this->contextRequestProcessor->process(); // TODO: validate, must be post request
     }
 }
+
+// TODO-TEST: full end-to-end testing for each route
+// processRequest
+// processRestRequest
+// processContextRequest
