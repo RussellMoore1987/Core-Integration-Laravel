@@ -5,6 +5,7 @@ namespace App\CoreIntegrationApi;
 use App\CoreIntegrationApi\RequestValidator;
 use App\CoreIntegrationApi\QueryResolver;
 use App\CoreIntegrationApi\ResponseBuilder;
+use Illuminate\Http\JsonResponse;
 
 abstract class RequestProcessor
 {
@@ -19,30 +20,26 @@ abstract class RequestProcessor
         $this->responseBuilder = $responseBuilder;
     }
 
-    // TODO: fix doc block
-    /**
-     * @return The return string is a JSON string
-     */
-    public function process()
+    public function process() : JsonResponse
     {
         $this->validate();
         $this->resolve();
         return $this->respond();
     }
 
-    protected function validate() 
+    protected function validate() : void
     {
         $this->validatedMetaData = $this->requestValidator->validate();
         $this->responseBuilder->setValidatedMetaData($this->validatedMetaData);
     }
 
-    protected function resolve()
+    protected function resolve() : void
     {
         $queryResult = $this->queryResolver->resolve($this->validatedMetaData);
         $this->responseBuilder->setResponseData($queryResult);
     }
 
-    protected function respond()
+    protected function respond() : JsonResponse
     {
         return $this->responseBuilder->make();
     }

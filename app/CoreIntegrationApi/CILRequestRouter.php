@@ -5,7 +5,7 @@ namespace App\CoreIntegrationApi;
 use App\CoreIntegrationApi\RestApi\RestRequestProcessor;
 use App\CoreIntegrationApi\ContextApi\ContextRequestProcessor;
 
-class RequestProcessRouter
+class CILRequestRouter
 {
     private $restRequestProcessor;
     private $contextRequestProcessor;
@@ -18,7 +18,8 @@ class RequestProcessRouter
     
     public function processRequest()
     {
-        if (request()->contextInstructions) {
+        $request = request();
+        if ($request->contextInstructions && $request->method() == 'POST') {
             return $this->processContextRequest();
         } else {
             return $this->processRestRequest();
@@ -33,6 +34,6 @@ class RequestProcessRouter
     public function processContextRequest() 
     {
         // return ["Message" => "Got Here!!! " . request()->contextInstructions]; // TODO: needs to be removed
-        return $this->contextRequestProcessor->process();
+        return $this->contextRequestProcessor->process(); // TODO: validate, must be post request
     }
 }

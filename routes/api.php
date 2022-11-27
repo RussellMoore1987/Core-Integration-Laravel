@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\CoreIntegrationAPIController;
+use App\Http\Controllers\CILApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,15 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// TODO: clean up notes
+
 // ! Start here ****************************************************************** refine prosses, rename, refactor, UML*** read up on testing names, end-to-end, integration, unit, ect. ability to add images
-// TODO: endpoint or resource ???
 
-Route::any("v1/{resource?}/{resourceId?}", [CoreIntegrationAPIController::class, 'processRequest']); // generic route -> both REST and Context
+Route::any("v1/{resource?}/{resourceId?}", [CILApiController::class, 'processRequest']); // generic route -> both REST and Context
 
-Route::any("rest/v1/{resource?}/{resourceId?}", [CoreIntegrationAPIController::class, 'processRestRequest']); // REST only route
+Route::any("rest/v1/{resource?}/{resourceId?}", [CILApiController::class, 'processRestRequest']); // REST only route
 
-Route::any("context/v1", [CoreIntegrationAPIController::class, 'processContextRequest']); // Context only route
+Route::post("context/v1", [CILApiController::class, 'processContextRequest']); // Context only route
 
 // TODO: To utilize leader for perhaps building out a more complex pathing rest request
-// Route::any("rest/v1/{class?}/{id?}/{path?}", [CoreIntegrationAPIController::class, 'processRestRequest'])->where('path', '.+');
+// Route::any("rest/v1/{class?}/{id?}/{path?}", [CILApiController::class, 'processRestRequest'])->where('path', '.+');
 // last endpoint valid then work up

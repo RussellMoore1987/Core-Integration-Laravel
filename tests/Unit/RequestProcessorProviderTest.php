@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\CoreIntegrationApi\RequestProcessRouter;
+use App\CoreIntegrationApi\CILRequestRouter;
 
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
@@ -31,7 +31,7 @@ class RequestProcessorProviderTest extends TestCase
     public function classDataProvider()
     {
         return [
-            'RequestProcessRouter' => [RequestProcessRouter::class],
+            'CILRequestRouter' => [CILRequestRouter::class],
         ];
     }
 }
