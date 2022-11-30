@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'acceptedclasses' => [
+    'availableResourceEndpoints' => [
         'caseStudies' => 'App\Models\CaseStudy',
         'projects' => 'App\Models\Project',
         'content' => 'App\Models\Content',

@@ -17,9 +17,9 @@
             // Route::any("v1/{class?}/{id?}", [GlobalAPIController::class, 'processRequest']);
 
         // * Index is built off of
-            // config('coreintegration.acceptedclasses')
+            // config('coreintegration.availableResourceEndpoints')
                 // ex 
-                // 'acceptedclasses' => [
+                // 'availableResourceEndpoints' => [
                 //     'caseStudies' => 'App\Models\CaseStudy',
                 //     'projects' => 'App\Models\Project',
                 //     'content' => 'App\Models\Content',

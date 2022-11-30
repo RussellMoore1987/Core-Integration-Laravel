@@ -16,23 +16,23 @@ abstract class RequestValidator
     protected $requestDataPrepper;
     protected $validatorDataCollector;
     protected $resourceDataProvider;
-    protected $httpMethodTypeValidatorFactory;
+    protected $httpMethodTypeValidatorFactory; // TODO: name might need to change when we add in the context api accessMethodTypeValidatorFactor structure
 
-    protected $classObject; // TODO: to resourceObject
-    protected $classInfo; // TODO: to resourceInfo, combine resourceInfo and extraResourceData ???
+    protected $resourceObject;
+    protected $resourceInfo; // TODO: combine resourceInfo and extraResourceData ???
     protected $resource;
     protected $resourceId;
     protected $extraData = []; // TODO: to extraResourceData
     protected $parameters;
     
-    protected $acceptedClasses; // TODO: to availableResourceEndpoints***
+    protected $availableResourceEndpoints;
     protected $endpointError = false;
     protected $validatedMetaData;
 
     function __construct(RequestDataPrepper $requestDataPrepper, ValidatorDataCollector $validatorDataCollector, ResourceDataProvider $resourceDataProvider, HttpMethodTypeValidatorFactory $httpMethodTypeValidatorFactory) 
     {
         $this->requestDataPrepper = $requestDataPrepper;
-        $this->acceptedClasses = config('coreintegration.acceptedclasses') ?? [];
+        $this->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? [];
         $this->validatorDataCollector = $validatorDataCollector;
         $this->resourceDataProvider = $resourceDataProvider;
         $this->httpMethodTypeValidatorFactory = $httpMethodTypeValidatorFactory;
@@ -52,7 +52,7 @@ abstract class RequestValidator
         $this->setUpPreppedRequest($prepRequestData);
         
         $this->validateEndPoint();
-        $this->setClassInfo();
+        $this->setResourceInfo();
 
         $this->validateHttpRequest();
         
@@ -71,7 +71,7 @@ abstract class RequestValidator
 
     protected function validateEndPoint()
     {
-        if (array_key_exists($this->resource, $this->acceptedClasses) ) { // $this->acceptedEndpoints 
+        if (array_key_exists($this->resource, $this->availableResourceEndpoints) ) { // $this->acceptedEndpoints 
             $this->setRequestClass(); // setRequestClass, setModel, setEndpointModel, setEndpointClass
             $this->setEndpoint();
         } elseif ($this->resource != 'index') {
@@ -81,9 +81,9 @@ abstract class RequestValidator
 
     protected function setRequestClass()
     {
-        $this->classObject = new $this->acceptedClasses[$this->resource]();
-        $this->resourceDataProvider->setClass($this->classObject);
-        $this->classInfo = $this->resourceDataProvider->getClassInfo();
+        $this->resourceObject = new $this->availableResourceEndpoints[$this->resource]();
+        $this->resourceDataProvider->setClass($this->resourceObject);
+        $this->resourceInfo = $this->resourceDataProvider->getResourceInfo();
     }
 
     protected function setEndpoint()
@@ -102,13 +102,13 @@ abstract class RequestValidator
             'resource' => $this->resource, 
             'resourceId' => $this->resourceId,  
             'endpointError' => $this->endpointError, 
-            'class' => $this->classInfo['path'], 
+            'class' => $this->resourceInfo['path'], 
             'indexUrl' => $this->getIndexUrl(),
             'url' => $this->url,
             'httpMethod' => $this->httpMethod,
         ]; // possibly create new function for this, allow setting to be easier
         if ($this->resourceId) {
-            $primaryKeyName = $this->classInfo['primaryKeyName']; // TODO: set this for latter, maybe in extraResourceData
+            $primaryKeyName = $this->resourceInfo['primaryKeyName']; // TODO: set this for latter, maybe in extraResourceData
             $this->parameters[$primaryKeyName] = $this->resourceId;
             $endpointData['resourceIdConvertedTo'] = [$primaryKeyName => $this->resourceId];
         }
@@ -144,12 +144,12 @@ abstract class RequestValidator
         throw new HttpResponseException($response);
     }
 
-    protected function setClassInfo()
+    protected function setResourceInfo()
     {
         if (!$this->endpointError) {
-            $this->extraData['availableMethodCalls'] = $this->classInfo['classParameterOptions']['availableMethodCalls'];
-            $this->extraData['availableIncludes'] = $this->classInfo['classParameterOptions']['availableIncludes'];
-            $this->extraData['acceptableParameters'] = $this->classInfo['classParameterOptions']['acceptableParameters'];
+            $this->extraData['availableMethodCalls'] = $this->resourceInfo['availableMethodCalls'];
+            $this->extraData['availableIncludes'] = $this->resourceInfo['availableIncludes'];
+            $this->extraData['acceptableParameters'] = $this->resourceInfo['acceptableParameters'];
         }
     }
 
@@ -158,7 +158,7 @@ abstract class RequestValidator
         $requestData = [
             'parameters' => $this->parameters,
             'extraData' => $this->extraData,
-            'classObject' => $this->classObject,
+            'resourceObject' => $this->resourceObject,
         ];
 
         $httpMethodTypeValidator = $this->httpMethodTypeValidatorFactory->getFactoryItem($this->httpMethod);

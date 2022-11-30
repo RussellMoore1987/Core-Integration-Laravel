@@ -50,13 +50,13 @@ class GlobalAPIControllerOld extends Controller
     protected $errors = [];
     protected $message = [];
 
-    public $acceptedClasses;
+    public $availableResourceEndpoints;
 
     public function processRequest($endpointKey = null, $classId = null, Request $request){
         // Initial set up of key variables
         $this->endpointKey = $endpointKey;
         $this->classId = $classId;
-        $this->acceptedClasses = config('coreintegration.acceptedclasses');
+        $this->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints');
         $this->indexUrlPath = $endpointKey !== NULL ? substr($request->url(), 0, strpos($request->url(), $this->endpointKey)) : $request->url();
         $this->httpMethod = $_SERVER['REQUEST_METHOD'] ?? request()->method() ?? null;
         $this->url = $request->url();
@@ -94,8 +94,8 @@ class GlobalAPIControllerOld extends Controller
     }
 
     protected function validateMainEndpoint() {
-        if(array_key_exists($this->endpointKey, $this->acceptedClasses)){
-            $this->class = $this->acceptedClasses[$this->endpointKey];
+        if(array_key_exists($this->endpointKey, $this->availableResourceEndpoints)){
+            $this->class = $this->availableResourceEndpoints[$this->endpointKey];
             return true;
         }
         return false;

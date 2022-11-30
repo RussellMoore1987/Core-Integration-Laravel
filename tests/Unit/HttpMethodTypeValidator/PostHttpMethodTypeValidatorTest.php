@@ -135,11 +135,11 @@ class PostHttpMethodTypeValidatorTest extends TestCase
         // TODO: make it so I can mercilessly refactor it
         $resourceDataProvider = new ResourceDataProvider(new ParameterDataProviderFactory());
         $resourceDataProvider->setClass($class);
-        $classInfo = $resourceDataProvider->getClassInfo();
+        $resourceInfo = $resourceDataProvider->getResourceInfo();
 
-        $extraData['availableMethodCalls'] = $classInfo['classParameterOptions']['availableMethodCalls'];
-        $extraData['availableIncludes'] = $classInfo['classParameterOptions']['availableIncludes'];
-        $extraData['acceptableParameters'] = $classInfo['classParameterOptions']['acceptableParameters'];
+        $extraData['availableMethodCalls'] = $resourceInfo['availableMethodCalls'];
+        $extraData['availableIncludes'] = $resourceInfo['availableIncludes'];
+        $extraData['acceptableParameters'] = $resourceInfo['acceptableParameters'];
 
         $this->extraData = $extraData;
 
@@ -149,7 +149,7 @@ class PostHttpMethodTypeValidatorTest extends TestCase
                 'icon' => 'fa-user',
             ],
             'extraData' => $this->extraData,
-            'classObject' => $class,
+            'resourceObject' => $class,
         ];
     }
 }

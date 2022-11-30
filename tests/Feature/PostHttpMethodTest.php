@@ -65,9 +65,9 @@ class PostHttpMethodTest extends TestCase
             'newRecordLocation' => "http://localhost:8000/api/v1/{$resource}/{$newRecordId}",
         ];
 
-        $classObjects = $classPath::all();
+        $resourceObjects = $classPath::all();
 
-        $this->assertEquals(1,$classObjects->count());
+        $this->assertEquals(1,$resourceObjects->count());
         $this->assertEquals($expectedResponse,$responseArray);
     }
 
