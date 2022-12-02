@@ -27,7 +27,7 @@ class PostHttpMethodTypeValidatorTest extends TestCase
 
         $expectedResult = [
             'endpointData' => [],
-            'extraData' => [],
+            'resourceInfo' => [],
             'rejectedParameters' => [],
             'acceptedParameters' => [
                 'name' => 'Test WorkHistoryType',
@@ -72,7 +72,7 @@ class PostHttpMethodTypeValidatorTest extends TestCase
 
         $expectedResult = [
             'endpointData' => [],
-            'extraData' => [],
+            'resourceInfo' => [],
             'rejectedParameters' => [],
             'acceptedParameters' => [
                 'name' => 'Web Development',
@@ -95,7 +95,7 @@ class PostHttpMethodTypeValidatorTest extends TestCase
 
         $expectedResult = [
             'endpointData' => [],
-            'extraData' => [],
+            'resourceInfo' => [],
             'rejectedParameters' => [
                 'NotGoodParameter' => 'Yep! Not good!',
                 'so_not_good' => 12345,
@@ -137,18 +137,14 @@ class PostHttpMethodTypeValidatorTest extends TestCase
         $resourceDataProvider->setClass($class);
         $resourceInfo = $resourceDataProvider->getResourceInfo();
 
-        $extraData['availableMethodCalls'] = $resourceInfo['availableMethodCalls'];
-        $extraData['availableIncludes'] = $resourceInfo['availableIncludes'];
-        $extraData['acceptableParameters'] = $resourceInfo['acceptableParameters'];
-
-        $this->extraData = $extraData;
+        $this->resourceInfo = $resourceInfo;
 
         return [
             'parameters' => [
                 'name' => 'Test WorkHistoryType',
                 'icon' => 'fa-user',
             ],
-            'extraData' => $this->extraData,
+            'resourceInfo' => $this->resourceInfo,
             'resourceObject' => $class,
         ];
     }

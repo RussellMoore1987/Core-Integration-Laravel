@@ -34,7 +34,7 @@ class GetHttpMethodQueryResolver implements HttpMethodQueryResolver
     protected function checkResourceColumnData()
     {
         if (isset($this->validatedMetaData['acceptedParameters']['columnData'])) {
-            foreach ($this->validatedMetaData['extraData']['acceptableParameters'] as $columnName => $columnArray) {
+            foreach ($this->validatedMetaData['resourceInfo']['acceptableParameters'] as $columnName => $columnArray) {
                 $this->queryResult['availableResourceParameters'][$columnName] = $columnArray['api_data_type'];
             }
             $this->queryResult['info'] = [

@@ -799,7 +799,7 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedGetAllData = [
             'endpointData' => [],
-            'extraData' => [],
+            'resourceInfo' => [],
             'acceptedParameters' => $expectedAcceptedParameters,
             'rejectedParameters' => [],
             'queryArguments' => $expectedQueryArguments,

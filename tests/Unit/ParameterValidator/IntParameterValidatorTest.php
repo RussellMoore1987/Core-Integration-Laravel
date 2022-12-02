@@ -1031,7 +1031,7 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedGetAllData = [
             'endpointData' => [],
-            'extraData' => [],
+            'resourceInfo' => [],
             'acceptedParameters' => $expectedAcceptedParameters,
             'rejectedParameters' => $expectedRejectedParameters,
             'queryArguments' => $expectedQueryArguments,

@@ -32,13 +32,13 @@ class GetHttpMethodTypeValidator implements HttpMethodTypeValidator
     {
         $this->validatorDataCollector = $validatorDataCollector;
         $parameters = $requestData['parameters'];
-        $extraData = $requestData['extraData'];
+        $resourceInfo = $requestData['resourceInfo'];
 
         foreach ($parameters as $key => $value) {
             $key = strtolower($key);
             $data = [$key => $value];
-            if (array_key_exists($key, $extraData['acceptableParameters'])) {
-                $dataType = $extraData['acceptableParameters'][$key]['type'];
+            if (array_key_exists($key, $resourceInfo['acceptableParameters'])) {
+                $dataType = $resourceInfo['acceptableParameters'][$key]['type'];
                 $this->getMethodParameterValidator($dataType, $data);
             } elseif (array_key_exists($key, $this->getMethodParameterValidatorDefaults)) {
                 $dataType = $this->getMethodParameterValidatorDefaults[$key];

@@ -19,10 +19,9 @@ abstract class RequestValidator
     protected $httpMethodTypeValidatorFactory; // TODO: name might need to change when we add in the context api accessMethodTypeValidatorFactor structure
 
     protected $resourceObject;
-    protected $resourceInfo; // TODO: combine resourceInfo and extraResourceData ???
+    protected $resourceInfo; // TODO: combine resourceInfo and extraResourceData ??? // see if we are exposing to much information
     protected $resource;
     protected $resourceId;
-    protected $extraData = []; // TODO: to extraResourceData
     protected $parameters;
     
     protected $availableResourceEndpoints;
@@ -56,7 +55,7 @@ abstract class RequestValidator
 
         $this->validateHttpRequest();
         
-        $this->setExtraData();
+        $this->setResourceInfo();
         $this->setValidatedMetaData();
     }
 
@@ -144,20 +143,11 @@ abstract class RequestValidator
         throw new HttpResponseException($response);
     }
 
-    protected function setResourceInfo()
-    {
-        if (!$this->endpointError) {
-            $this->extraData['availableMethodCalls'] = $this->resourceInfo['availableMethodCalls'];
-            $this->extraData['availableIncludes'] = $this->resourceInfo['availableIncludes'];
-            $this->extraData['acceptableParameters'] = $this->resourceInfo['acceptableParameters'];
-        }
-    }
-
     public function validateHttpRequest()
     {
         $requestData = [
             'parameters' => $this->parameters,
-            'extraData' => $this->extraData,
+            'resourceInfo' => $this->resourceInfo,
             'resourceObject' => $this->resourceObject,
         ];
 
@@ -165,9 +155,9 @@ abstract class RequestValidator
         $this->validatorDataCollector = $httpMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
     }
 
-    protected function setExtraData()
+    protected function setResourceInfo()
     {
-        $this->validatorDataCollector->setExtraData($this->extraData);
+        $this->validatorDataCollector->setResourceInfo($this->resourceInfo);
     }
 
     protected function setValidatedMetaData()

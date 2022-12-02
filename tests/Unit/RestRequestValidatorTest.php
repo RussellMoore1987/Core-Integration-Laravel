@@ -30,10 +30,10 @@ class RestRequestValidatorTest extends TestCase
         ], 'api/v1/projects', $httpMethod);
 
         $this->assertArrayHasKey('endpointData', $validatedMetaData);
-        $this->assertArrayHasKey('extraData', $validatedMetaData);
-        $this->assertArrayHasKey('acceptableParameters', $validatedMetaData['extraData']);
-        $this->assertArrayHasKey('availableMethodCalls', $validatedMetaData['extraData']);
-        $this->assertArrayHasKey('availableIncludes', $validatedMetaData['extraData']);
+        $this->assertArrayHasKey('resourceInfo', $validatedMetaData);
+        $this->assertArrayHasKey('acceptableParameters', $validatedMetaData['resourceInfo']);
+        $this->assertArrayHasKey('availableMethodCalls', $validatedMetaData['resourceInfo']);
+        $this->assertArrayHasKey('availableIncludes', $validatedMetaData['resourceInfo']);
         $this->assertArrayHasKey('rejectedParameters', $validatedMetaData);
         $this->assertArrayHasKey('acceptedParameters', $validatedMetaData);
         $this->assertArrayHasKey('queryArguments', $validatedMetaData);

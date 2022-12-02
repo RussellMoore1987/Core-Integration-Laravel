@@ -15,7 +15,7 @@ class PostHttpMethodTypeValidator implements HttpMethodTypeValidator
         $this->validatorDataCollector = $validatorDataCollector;
 
         $this->parameters = $requestData['parameters'];
-        $this->extraData = $requestData['extraData'];
+        $this->resourceInfo = $requestData['resourceInfo'];
         $this->resourceObject = $requestData['resourceObject'];
 
         $this->validateParameters();
@@ -34,7 +34,7 @@ class PostHttpMethodTypeValidator implements HttpMethodTypeValidator
         $validationRules = $this->resourceObject->validationRules && method_exists($this->resourceObject, 'getValidationRules') ? $this->resourceObject->getValidationRules() : [];
 
         if (!$validationRules) {
-            foreach ($this->extraData['acceptableParameters'] as $parameterName => $parameterDetails) {
+            foreach ($this->resourceInfo['acceptableParameters'] as $parameterName => $parameterDetails) {
                 $validationRules[$parameterName] = $parameterDetails['defaultValidationRules'];
             }
         }

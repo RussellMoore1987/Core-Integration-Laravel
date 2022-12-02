@@ -55,8 +55,8 @@ class GetHttpMethodResponseBuilder implements HttpMethodResponseBuilder
 
     protected function setGetResponse($paginateObj)
     {
-        if (isset($this->validatedMetaData['extraData']['acceptableParameters'])) {
-            foreach ($this->validatedMetaData['extraData']['acceptableParameters'] as $columnName => $columnArray) {
+        if (isset($this->validatedMetaData['resourceInfo']['acceptableParameters'])) {
+            foreach ($this->validatedMetaData['resourceInfo']['acceptableParameters'] as $columnName => $columnArray) {
                 $paginateObj['availableResourceParameters']['parameters'][$columnName] = $columnArray['api_data_type'];
             }
             $paginateObj['availableResourceParameters']['parameters']['info'] = [
@@ -68,11 +68,11 @@ class GetHttpMethodResponseBuilder implements HttpMethodResponseBuilder
                 'orderBy' => 'resource parameters',
                 'methodCalls' => [
                     'value' => 'resource methods',
-                    'availableMethodCalls' => $this->validatedMetaData['extraData']['availableMethodCalls'],
+                    'availableMethodCalls' => $this->validatedMetaData['resourceInfo']['availableMethodCalls'],
                 ],
                 'includes' => [
                     'value' => 'resource includes/relationships',
-                    'availableIncludes' => $this->validatedMetaData['extraData']['availableIncludes'],
+                    'availableIncludes' => $this->validatedMetaData['resourceInfo']['availableIncludes'],
                 ],
                 'page' => 'int',
                 'perPage' => 'int',
