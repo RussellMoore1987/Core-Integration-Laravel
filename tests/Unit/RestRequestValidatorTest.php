@@ -41,7 +41,6 @@ class RestRequestValidatorTest extends TestCase
         $expectedEndpointData = [
             'resource' => 'projects',
             'resourceId' => '33',
-            'endpointError' => false,
             'class' => 'App\Models\Project',
             'indexUrl' => 'http://localhost/api/v1/',
             'url' => 'http://localhost/api/v1/projects',
@@ -101,7 +100,6 @@ class RestRequestValidatorTest extends TestCase
         $expectedEndpointData = [
             'resource' => 'projects',
             'resourceId' => '',
-            'endpointError' => false,
             'class' => 'App\Models\Project',
             'indexUrl' => 'http://localhost/api/v1/',
             'url' => 'http://localhost/api/v1/projects',
@@ -153,7 +151,6 @@ class RestRequestValidatorTest extends TestCase
         $expectedEndpointData = [
             'resource' => 'workHistoryTypes',
             'resourceId' => 33,
-            'endpointError' => false,
             'class' => 'App\Models\WorkHistoryType',
             'indexUrl' => 'http://localhost/api/v1/',
             'url' => 'http://localhost/api/v1/workHistoryTypes',

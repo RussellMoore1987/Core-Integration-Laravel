@@ -87,7 +87,6 @@ class FullRestApiTest extends TestCase
         // test that endpoint data is correct
         $response->assertJsonPath('endpointData.resource', 'projects');
         $response->assertJsonPath('endpointData.resourceId', $projectIds);
-        $response->assertJsonPath('endpointData.endpointError', false);
         $response->assertJsonPath('endpointData.indexUrl', 'http://localhost:8000/api/v1/');
         $response->assertJsonPath('endpointData.url', 'http://localhost:8000/api/v1/projects/' . $projectIds);
         $response->assertJsonPath('endpointData.httpMethod', 'GET');

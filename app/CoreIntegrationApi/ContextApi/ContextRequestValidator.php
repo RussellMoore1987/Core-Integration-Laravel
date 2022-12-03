@@ -22,9 +22,9 @@ class ContextRequestValidator extends RequestValidator
         return $this->validatedMetaData;
     }
 
-    protected function setUpPreppedRequest($prepRequestData)
+    protected function setUpPreppedDataForValidation($prepRequestData)
     {
-        parent::setUpPreppedRequest($prepRequestData);
+        parent::setUpPreppedDataForValidation($prepRequestData);
         
         $this->validatorDataCollector->reset();
     }
