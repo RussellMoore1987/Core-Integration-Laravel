@@ -25,7 +25,7 @@ class RestRequestDataPrepperTest extends TestCase
                 'title' => 'Gogo!!!'
             ],
             'url' => 'http://localhost/api/v1/projects',
-            'httpMethod' => 'GET'
+            'requestMethod' => 'GET'
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
@@ -49,7 +49,7 @@ class RestRequestDataPrepperTest extends TestCase
                 'ham' => 33
             ],
             'url' => 'http://localhost/api/v1/projects',
-            'httpMethod' => 'GET'
+            'requestMethod' => 'GET'
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
@@ -67,7 +67,7 @@ class RestRequestDataPrepperTest extends TestCase
             'resourceId' => 33,
             'parameters' => [],
             'url' => 'http://localhost/api/v1/projects',
-            'httpMethod' => 'GET'
+            'requestMethod' => 'GET'
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
@@ -82,7 +82,7 @@ class RestRequestDataPrepperTest extends TestCase
             'resourceId' => '',
             'parameters' => [],
             'url' => 'http://localhost/api/v1/projects',
-            'httpMethod' => 'GET'
+            'requestMethod' => 'GET'
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
@@ -108,7 +108,7 @@ class RestRequestDataPrepperTest extends TestCase
                 'title' => 'Gogo!!!'
             ],
             'url' => 'http://localhost/api/v1/projects',
-            'httpMethod' => 'GET'
+            'requestMethod' => 'GET'
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
@@ -123,7 +123,7 @@ class RestRequestDataPrepperTest extends TestCase
     }
 
     /**
-     * @dataProvider httpMethodProvider
+     * @dataProvider requestMethodProvider
      */
     public function test_rest_request_data_prepper_returns_expected_result_using_different_http_methods($methodText)
     {
@@ -142,12 +142,12 @@ class RestRequestDataPrepperTest extends TestCase
                 'title' => 'Gogo!!!'
             ],
             'url' => 'http://localhost/api/v1/projects',
-            'httpMethod' => $methodText
+            'requestMethod' => $methodText
         ];
 
         $this->assertEquals($expectedResponse,$preppedData);
     }
-    public function httpMethodProvider()
+    public function requestMethodProvider()
     {
         return [
             'GET' => ['GET'],
@@ -173,7 +173,7 @@ class RestRequestDataPrepperTest extends TestCase
             'resource' => '$%#@',
             'resourceId' => '1,2,6,8,99,22',
             'url' => 'http://localhost/api/v1/projects',
-            'httpMethod' => 'GET',
+            'requestMethod' => 'GET',
             'parameters' => [
                 '33' => '\'',
                 '::' => 'pwer',

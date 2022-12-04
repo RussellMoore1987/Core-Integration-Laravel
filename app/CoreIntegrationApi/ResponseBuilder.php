@@ -2,14 +2,14 @@
 
 namespace App\CoreIntegrationApi;
 
-use App\CoreIntegrationApi\HttpMethodResponseBuilderFactory\HttpMethodResponseBuilderFactory;
+use App\CoreIntegrationApi\RequestMethodResponseBuilderFactory\RequestMethodResponseBuilderFactory;
 
 abstract class ResponseBuilder
 {
 
-    function __construct(HttpMethodResponseBuilderFactory $httpMethodResponseBuilderFactory) 
+    function __construct(RequestMethodResponseBuilderFactory $requestMethodResponseBuilderFactory) 
     {
-        $this->httpMethodResponseBuilderFactory = $httpMethodResponseBuilderFactory;
+        $this->requestMethodResponseBuilderFactory = $requestMethodResponseBuilderFactory;
     }
 
     abstract public function setValidatedMetaData($validatedMetaData);

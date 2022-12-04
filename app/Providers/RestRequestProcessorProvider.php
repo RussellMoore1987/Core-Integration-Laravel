@@ -9,9 +9,9 @@ use App\CoreIntegrationApi\RestApi\RestResponseBuilder;
 use App\CoreIntegrationApi\RestApi\RestQueryResolver;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\CoreIntegrationApi\ResourceDataProvider;
-use App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryResolverFactory;
-use App\CoreIntegrationApi\HttpMethodResponseBuilderFactory\HttpMethodResponseBuilderFactory;
-use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
+use App\CoreIntegrationApi\RequestMethodQueryResolverFactory\RequestMethodQueryResolverFactory;
+use App\CoreIntegrationApi\RequestMethodResponseBuilderFactory\RequestMethodResponseBuilderFactory;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidatorFactory;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\ServiceProvider;
@@ -46,7 +46,7 @@ class RestRequestProcessorProvider extends ServiceProvider
                 $app->make(RestRequestDataPrepper::class),
                 $app->make(ValidatorDataCollector::class),
                 $app->make(ResourceDataProvider::class),
-                $app->make(HttpMethodTypeValidatorFactory::class),
+                $app->make(RequestMethodTypeValidatorFactory::class),
             );
         });
     }
@@ -54,7 +54,7 @@ class RestRequestProcessorProvider extends ServiceProvider
     private function bindQueryResolver() {
         $this->app->bind(RestQueryResolver::class, function ($app) {
             return new RestQueryResolver(
-                $app->make(HttpMethodQueryResolverFactory::class),
+                $app->make(RequestMethodQueryResolverFactory::class),
             );
         });
     }
@@ -62,7 +62,7 @@ class RestRequestProcessorProvider extends ServiceProvider
     private function bindResponseBuilder() {
         $this->app->bind(RestResponseBuilder::class, function ($app) {
             return new RestResponseBuilder(
-                $app->make(HttpMethodResponseBuilderFactory::class),
+                $app->make(RequestMethodResponseBuilderFactory::class),
             );
         });
     }

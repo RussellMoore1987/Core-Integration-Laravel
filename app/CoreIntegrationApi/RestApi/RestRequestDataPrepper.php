@@ -20,7 +20,7 @@ class RestRequestDataPrepper extends RequestDataPrepper
     private function setRequestDetails()
     {
         $this->preppedData['url'] = $this->request->url();
-        $this->preppedData['httpMethod'] = $this->request->getMethod();
+        $this->preppedData['requestMethod'] = $this->request->getMethod();
     }
 
     private function setEndpointDetails()

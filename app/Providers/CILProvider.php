@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilderFactory;
 use App\CoreIntegrationApi\CIL\CILQueryAssembler;
 use App\CoreIntegrationApi\ResourceDataProvider;
-use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidators\GetHttpMethodTypeValidator;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\GetRequestMethodTypeValidator;
 use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFactory;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use Illuminate\Support\ServiceProvider;
@@ -21,7 +21,7 @@ class CILProvider extends ServiceProvider
     {
         $this->bindCILQueryAssembler();
         $this->bindResourceDataProvider();
-        $this->bindGetHttpMethodTypeValidator();
+        $this->bindGetRequestMethodTypeValidator();
     }
 
     private function bindCILQueryAssembler() {
@@ -40,9 +40,9 @@ class CILProvider extends ServiceProvider
         });
     }
 
-    private function bindGetHttpMethodTypeValidator() {
-        $this->app->bind(GetHttpMethodTypeValidator::class, function ($app) {
-            return new GetHttpMethodTypeValidator(
+    private function bindGetRequestMethodTypeValidator() {
+        $this->app->bind(GetRequestMethodTypeValidator::class, function ($app) {
+            return new GetRequestMethodTypeValidator(
                 $app->make(ParameterValidatorFactory::class),
             );
         });

@@ -22,7 +22,7 @@ class ResourceDataProviderTest extends TestCase
     public function test_resourceDataProvider_functions_results_as_expected_from_project_class()
     {
         $this->createProjectClassTestInfo();
-        $this->resourceDataProvider->setClass($this->project);
+        $this->resourceDataProvider->setResource($this->project);
 
         $this->assertEquals($this->expectedResourceInfo['primaryKeyName'], $this->resourceDataProvider->getClassPrimaryKeyName());
         $this->assertEquals($this->expectedResourceInfo['path'], $this->resourceDataProvider->getClassPath());
@@ -381,7 +381,7 @@ class ResourceDataProviderTest extends TestCase
     public function test_resourceDataProvider_functions_results_as_expected_from_WorkHistoryType_class()
     {
         $this->createWorkHistoryTypeClassTestInfo();
-        $this->resourceDataProvider->setClass($this->workHistoryType);
+        $this->resourceDataProvider->setResource($this->workHistoryType);
 
         $this->assertEquals($this->expectedResourceInfo['primaryKeyName'], $this->resourceDataProvider->getClassPrimaryKeyName());
         $this->assertEquals($this->expectedResourceInfo['path'], $this->resourceDataProvider->getClassPath());

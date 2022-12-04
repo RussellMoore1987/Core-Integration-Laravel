@@ -27,3 +27,6 @@ Route::post("context/v1", [CILApiController::class, 'processContextRequest']); /
 // TODO: To utilize leader for perhaps building out a more complex pathing rest request
 // Route::any("rest/v1/{class?}/{id?}/{path?}", [CILApiController::class, 'processRestRequest'])->where('path', '.+');
 // last endpoint valid then work up
+
+// TODO: make sure api works with model hidden properties, not showing in the api********
+// TODO: get different leaves of data, form, data, pagination data, all data

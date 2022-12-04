@@ -2,14 +2,14 @@
 
 namespace App\CoreIntegrationApi;
 
-use App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryResolverFactory;
+use App\CoreIntegrationApi\RequestMethodQueryResolverFactory\RequestMethodQueryResolverFactory;
 abstract class QueryResolver
 {
-    protected $httpMethodQueryResolverFactory;
+    protected $requestMethodQueryResolverFactory;
 
-    function __construct(HttpMethodQueryResolverFactory $httpMethodQueryResolverFactory) 
+    function __construct(RequestMethodQueryResolverFactory $requestMethodQueryResolverFactory) 
     {
-        $this->httpMethodQueryResolverFactory = $httpMethodQueryResolverFactory;
+        $this->requestMethodQueryResolverFactory = $requestMethodQueryResolverFactory;
     }
 
     abstract public function resolve($validatedMetaData);

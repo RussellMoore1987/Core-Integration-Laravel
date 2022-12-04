@@ -36,7 +36,7 @@ class GlobalAPIControllerOld extends Controller
     protected $statusCode;
     protected $indexUrlPath;
     protected $url;
-    protected $httpMethod;
+    protected $requestMethod;
     
     protected $includes = [];
     protected $paramsAccepted  = [];
@@ -58,7 +58,7 @@ class GlobalAPIControllerOld extends Controller
         $this->classId = $classId;
         $this->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints');
         $this->indexUrlPath = $endpointKey !== NULL ? substr($request->url(), 0, strpos($request->url(), $this->endpointKey)) : $request->url();
-        $this->httpMethod = $_SERVER['REQUEST_METHOD'] ?? request()->method() ?? null;
+        $this->requestMethod = $_SERVER['REQUEST_METHOD'] ?? request()->method() ?? null;
         $this->url = $request->url();
         
         // TODO:
@@ -184,7 +184,7 @@ class GlobalAPIControllerOld extends Controller
     }
 
     protected function isGetRequest(){
-        if ($this->httpMethod == 'GET'){
+        if ($this->requestMethod == 'GET'){
             return true;
         }else{
             return false;
@@ -358,7 +358,7 @@ class GlobalAPIControllerOld extends Controller
 
     protected function postRequest(){
         return response()->json([
-            "Content" => "'{$this->httpMethod}' is not an accepted method. Please view the documentation at {$this->indexUrlPath}."
+            "Content" => "'{$this->requestMethod}' is not an accepted method. Please view the documentation at {$this->indexUrlPath}."
         ], 400);
     }
 
@@ -374,7 +374,7 @@ class GlobalAPIControllerOld extends Controller
         $responseData = [
             'success' => $success,
             'errors' => $this->errors,
-            'requestMethod' => $this->httpMethod,
+            'requestMethod' => $this->requestMethod,
             'paramsSent' => [
                 'All' => request()->all(),
                 'GET' => $_GET,

@@ -26,9 +26,9 @@ class RestResponseBuilder extends ResponseBuilder
 
     protected function makeRequest()
     {
-        $httpMethodResponseBuilder = $this->httpMethodResponseBuilderFactory->getFactoryItem($this->validatedMetaData['endpointData']['httpMethod']);
+        $requestMethodResponseBuilder = $this->requestMethodResponseBuilderFactory->getFactoryItem($this->validatedMetaData['endpointData']['requestMethod']);
 
-        return $httpMethodResponseBuilder->buildResponse($this->validatedMetaData, $this->queryResult);
+        return $requestMethodResponseBuilder->buildResponse($this->validatedMetaData, $this->queryResult);
     }
 }
 

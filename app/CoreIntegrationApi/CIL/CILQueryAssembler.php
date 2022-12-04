@@ -18,7 +18,7 @@ class CILQueryAssembler implements QueryAssembler
 
     public function query($validatedMetaData)
     {
-        $this->queryBuilder = $validatedMetaData['endpointData']['class']::query();
+        $this->queryBuilder = $validatedMetaData['resourceInfo']['path']::query();
 
         foreach ($validatedMetaData['queryArguments'] as $data) {
             $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem($data['dataType']);

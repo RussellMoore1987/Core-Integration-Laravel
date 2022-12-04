@@ -19,7 +19,7 @@ class resourceDataProvider
         $this->parameterDataProviderFactory = $parameterDataProviderFactory;
     }
 
-    public function setClass(Model $class)
+    public function setResource(Model $class)
     {
         $this->resourceObject = $class;
         $this->classPath = get_class($class);

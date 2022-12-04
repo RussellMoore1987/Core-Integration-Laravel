@@ -9,9 +9,9 @@ use App\CoreIntegrationApi\ContextApi\ContextResponseBuilder;
 use App\CoreIntegrationApi\ContextApi\ContextQueryResolver;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\CoreIntegrationApi\ResourceDataProvider;
-use App\CoreIntegrationApi\HttpMethodQueryResolverFactory\HttpMethodQueryResolverFactory;
-use App\CoreIntegrationApi\HttpMethodResponseBuilderFactory\HttpMethodResponseBuilderFactory;
-use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
+use App\CoreIntegrationApi\RequestMethodQueryResolverFactory\RequestMethodQueryResolverFactory;
+use App\CoreIntegrationApi\RequestMethodResponseBuilderFactory\RequestMethodResponseBuilderFactory;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidatorFactory;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\ServiceProvider;
@@ -40,7 +40,7 @@ class ContextRequestProcessorProvider extends ServiceProvider
                 $app->make(ContextRequestDataPrepper::class),
                 $app->make(ValidatorDataCollector::class),
                 $app->make(ResourceDataProvider::class),
-                $app->make(HttpMethodTypeValidatorFactory::class),
+                $app->make(RequestMethodTypeValidatorFactory::class),
             );
         });
     }
@@ -56,7 +56,7 @@ class ContextRequestProcessorProvider extends ServiceProvider
     private function bindQueryResolver() {
         $this->app->bind(ContextQueryResolver::class, function ($app) {
             return new ContextQueryResolver(
-                $app->make(HttpMethodQueryResolverFactory::class),
+                $app->make(RequestMethodQueryResolverFactory::class),
             );
         });
     }
@@ -64,7 +64,7 @@ class ContextRequestProcessorProvider extends ServiceProvider
     private function bindResponseBuilder() {
         $this->app->bind(ContextResponseBuilder::class, function ($app) {
             return new ContextResponseBuilder(
-                $app->make(HttpMethodResponseBuilderFactory::class),
+                $app->make(RequestMethodResponseBuilderFactory::class),
             );
         });
     }

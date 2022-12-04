@@ -71,8 +71,6 @@ class FullRestApiTest extends TestCase
                 'rejectedParameters',
                 'acceptedParameters',
                 'endpointData'
-            )->has('endpointData', fn ($json) =>
-                $json->missing('class')->etc()
             )
         );
 
@@ -89,7 +87,7 @@ class FullRestApiTest extends TestCase
         $response->assertJsonPath('endpointData.resourceId', $projectIds);
         $response->assertJsonPath('endpointData.indexUrl', 'http://localhost:8000/api/v1/');
         $response->assertJsonPath('endpointData.url', 'http://localhost:8000/api/v1/projects/' . $projectIds);
-        $response->assertJsonPath('endpointData.httpMethod', 'GET');
+        $response->assertJsonPath('endpointData.requestMethod', 'GET');
         $response->assertJsonPath('endpointData.resourceIdConvertedTo', ['id' => $projectIds]);
 
         // test page and per_page work

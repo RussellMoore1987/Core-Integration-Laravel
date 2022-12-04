@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\CoreIntegrationApi\ResourceDataProvider;
-use App\CoreIntegrationApi\HttpMethodTypeValidatorFactory\HttpMethodTypeValidatorFactory;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidatorFactory;
 use App\CoreIntegrationApi\RestApi\RestRequestValidator;
 use App\CoreIntegrationApi\RestApi\RestRequestDataPrepper;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -21,13 +21,13 @@ class RestRequestValidatorTest extends TestCase
     /**
      * @dataProvider ReturnsExpectedResultProvider
      */
-    public function test_rest_request_validator_returns_expected_result($httpMethod, $expectedAcceptedParameters)
+    public function test_rest_request_validator_returns_expected_result($requestMethod, $expectedAcceptedParameters)
     {
         $validatedMetaData = $this->validateRequest([
             'resource' => 'projects',
             'id' => 33,
             'title' => 'Test Project',
-        ], 'api/v1/projects', $httpMethod);
+        ], 'api/v1/projects', $requestMethod);
 
         $this->assertArrayHasKey('endpointData', $validatedMetaData);
         $this->assertArrayHasKey('resourceInfo', $validatedMetaData);
@@ -41,10 +41,9 @@ class RestRequestValidatorTest extends TestCase
         $expectedEndpointData = [
             'resource' => 'projects',
             'resourceId' => '33',
-            'class' => 'App\Models\Project',
             'indexUrl' => 'http://localhost/api/v1/',
             'url' => 'http://localhost/api/v1/projects',
-            'httpMethod' => $httpMethod,
+            'requestMethod' => $requestMethod,
             'resourceIdConvertedTo' => [
                 'id' => 33
             ]
@@ -90,20 +89,19 @@ class RestRequestValidatorTest extends TestCase
     /**
      * @dataProvider ReturnsExpectedResultNoIdProvider
      */
-    public function test_rest_request_validator_returns_expected_result_accepted_endpoint_no_id($httpMethod, $expectedAcceptedParameters)
+    public function test_rest_request_validator_returns_expected_result_accepted_endpoint_no_id($requestMethod, $expectedAcceptedParameters)
     {
         $validatedMetaData = $this->validateRequest([
             'resource' => 'projects',
             'title' => 'Test Project',
-        ], 'api/v1/projects', $httpMethod);
+        ], 'api/v1/projects', $requestMethod);
 
         $expectedEndpointData = [
             'resource' => 'projects',
             'resourceId' => '',
-            'class' => 'App\Models\Project',
             'indexUrl' => 'http://localhost/api/v1/',
             'url' => 'http://localhost/api/v1/projects',
-            'httpMethod' => $httpMethod,
+            'requestMethod' => $requestMethod,
         ];
 
         $this->assertEquals($expectedEndpointData, $validatedMetaData['endpointData']);
@@ -115,7 +113,7 @@ class RestRequestValidatorTest extends TestCase
 
         // ];
 
-        // $httpMethod == 'POST' ? dd($httpMethod, $expectedAcceptedParameters, $validatedMetaData['acceptedParameters']) : null;
+        // $requestMethod == 'POST' ? dd($requestMethod, $expectedAcceptedParameters, $validatedMetaData['acceptedParameters']) : null;
 
         $this->assertEquals($expectedAcceptedParameters, $validatedMetaData['acceptedParameters']);
     }
@@ -151,10 +149,9 @@ class RestRequestValidatorTest extends TestCase
         $expectedEndpointData = [
             'resource' => 'workHistoryTypes',
             'resourceId' => 33,
-            'class' => 'App\Models\WorkHistoryType',
             'indexUrl' => 'http://localhost/api/v1/',
             'url' => 'http://localhost/api/v1/workHistoryTypes',
-            'httpMethod' => 'GET',
+            'requestMethod' => 'GET',
             'resourceIdConvertedTo' => [
                 'work_history_type_id' => 33
             ]
@@ -165,31 +162,31 @@ class RestRequestValidatorTest extends TestCase
     }
 
     /**
-     * @dataProvider httpMethodProvider
+     * @dataProvider requestMethodProvider
      */
-    public function test_rest_request_validator_returns_expected_result_rejected_endpoint_with_id($httpMethod)
+    public function test_rest_request_validator_returns_expected_result_rejected_endpoint_with_id($requestMethod)
     {
         $this->expectException(HttpResponseException::class);
 
         $this->validateRequest([
             'resource' => 'notProjects',
             'id' => 33,
-        ], 'api/v1/notProjects', $httpMethod);
+        ], 'api/v1/notProjects', $requestMethod);
     }
     
     /**
-     * @dataProvider httpMethodProvider
+     * @dataProvider requestMethodProvider
      */
-    public function test_rest_request_validator_returns_expected_result_rejected_endpoint_without_id($httpMethod)
+    public function test_rest_request_validator_returns_expected_result_rejected_endpoint_without_id($requestMethod)
     {
         $this->expectException(HttpResponseException::class);
 
         $this->validateRequest([
             'resource' => 'notProjects',
-        ], 'api/v1/notProjects', $httpMethod);
+        ], 'api/v1/notProjects', $requestMethod);
     }
 
-    public function httpMethodProvider()
+    public function requestMethodProvider()
     {
         return [
             'GET' => ['GET'],
@@ -310,9 +307,9 @@ class RestRequestValidatorTest extends TestCase
         $restRequestDataPrepper = new RestRequestDataPrepper($request);
         $validatorDataCollector = App::make(ValidatorDataCollector::class);
         $resourceDataProvider = App::make(ResourceDataProvider::class);
-        $httpMethodTypeValidatorFactory = App::make(HttpMethodTypeValidatorFactory::class);
+        $requestMethodTypeValidatorFactory = App::make(RequestMethodTypeValidatorFactory::class);
 
-        $restRequestValidator = new RestRequestValidator($restRequestDataPrepper, $validatorDataCollector, $resourceDataProvider, $httpMethodTypeValidatorFactory);
+        $restRequestValidator = new RestRequestValidator($restRequestDataPrepper, $validatorDataCollector, $resourceDataProvider, $requestMethodTypeValidatorFactory);
 
         return $restRequestValidator->validate();
     }

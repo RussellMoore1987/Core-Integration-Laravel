@@ -10,8 +10,8 @@ class RestQueryResolver extends QueryResolver
 
     public function resolve($validatedMetaData)
     {
-        $httpMethodQueryResolver = $this->httpMethodQueryResolverFactory->getFactoryItem($validatedMetaData['endpointData']['httpMethod']);
-        $queryResult = $httpMethodQueryResolver->resolveQuery($validatedMetaData);
+        $requestMethodQueryResolver = $this->requestMethodQueryResolverFactory->getFactoryItem($validatedMetaData['endpointData']['requestMethod']);
+        $queryResult = $requestMethodQueryResolver->resolveQuery($validatedMetaData);
 
         return $queryResult;
     }

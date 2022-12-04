@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
-class PostHttpMethodTest extends TestCase
+class PostRequestMethodTest extends TestCase
 {
     use DatabaseTransactions;
 
