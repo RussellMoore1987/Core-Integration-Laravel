@@ -28,7 +28,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         $this->parameterValidatorFactory = $parameterValidatorFactory;
     }
 
-    public function validateRequest(ValidatorDataCollector $validatorDataCollector, $requestData) : ValidatorDataCollector
+    public function validateRequest(ValidatorDataCollector &$validatorDataCollector, $requestData) : void
     {
         $this->validatorDataCollector = $validatorDataCollector;
         $parameters = $requestData['parameters'];
@@ -54,14 +54,12 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
                 ]);
             }
         }
-
-        return $this->validatorDataCollector;
     }
 
     protected function getMethodParameterValidator($dataType, $data)
     {
         $parameterValidator = $this->parameterValidatorFactory->getFactoryItem($dataType);
-        $this->validatorDataCollector = $parameterValidator->validate($this->validatorDataCollector, $data);
+        $parameterValidator->validate($this->validatorDataCollector, $data);
     }
 
     protected function handleDefaultParameters($key, $value)

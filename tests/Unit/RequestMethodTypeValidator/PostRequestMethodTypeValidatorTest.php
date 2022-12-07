@@ -39,7 +39,7 @@ class PostRequestMethodTypeValidatorTest extends TestCase
             ],
         ];
 
-        $this->validatorDataCollector = $this->postRequestMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
+        $this->postRequestMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
 
         $this->assertEquals($expectedResult, $this->validatorDataCollector->getAllData());
     }
@@ -54,7 +54,7 @@ class PostRequestMethodTypeValidatorTest extends TestCase
 
         $this->expectException(HttpResponseException::class);
 
-        $this->validatorDataCollector = $this->postRequestMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
+        $this->postRequestMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
     }
 
     public function parameterToValidateProvider()
@@ -84,7 +84,7 @@ class PostRequestMethodTypeValidatorTest extends TestCase
 
         $requestData['parameters'] = ['name' => 'Web Development']; // Category only require name
 
-        $this->validatorDataCollector = $this->postRequestMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
+        $this->postRequestMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
 
         $this->assertEquals($expectedResult, $this->validatorDataCollector->getAllData());
     }
@@ -114,7 +114,7 @@ class PostRequestMethodTypeValidatorTest extends TestCase
             'so_not_good' => 12345,
         ];
 
-        $this->validatorDataCollector = $this->postRequestMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
+        $this->postRequestMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
 
         $this->assertEquals($expectedResult, $this->validatorDataCollector->getAllData());
     }
@@ -126,7 +126,7 @@ class PostRequestMethodTypeValidatorTest extends TestCase
 
         $this->expectException(HttpResponseException::class);
 
-        $this->validatorDataCollector = $this->postRequestMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
+        $this->postRequestMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
     }
 
     protected function setRequestData(object $class)

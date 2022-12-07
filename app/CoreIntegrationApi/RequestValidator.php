@@ -5,10 +5,13 @@ namespace App\CoreIntegrationApi;
 use App\CoreIntegrationApi\RequestDataPrepper;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\CoreIntegrationApi\ResourceDataProvider;
+use App\CoreIntegrationApi\EndpointValidator;
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidatorFactory;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\App;
 
 // ! start here ********************************************************* readability, uml
+// TODO: take small steps in refactoring new structure *********************** test speed
 
 abstract class RequestValidator 
 {
@@ -31,10 +34,15 @@ abstract class RequestValidator
     function __construct(RequestDataPrepper $requestDataPrepper, ValidatorDataCollector $validatorDataCollector, ResourceDataProvider $resourceDataProvider, RequestMethodTypeValidatorFactory $requestMethodTypeValidatorFactory) 
     {
         $this->requestDataPrepper = $requestDataPrepper;
-        $this->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? [];
-        $this->validatorDataCollector = $validatorDataCollector;
+        $this->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? []; // TODO: remove
+        $this->validatorDataCollector = $validatorDataCollector; // passed by reference to methods
+        $this->validatorDataCollector->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? [];
         $this->resourceDataProvider = $resourceDataProvider;
         $this->requestMethodTypeValidatorFactory = $requestMethodTypeValidatorFactory;
+
+
+
+        $this->EndpointValidator = App::make(EndpointValidator::class);
     }   
 
     public function validate()
@@ -50,8 +58,13 @@ abstract class RequestValidator
     {
         $this->setUpPreppedDataForValidation($prepRequestData);
         
-        $this->validateEndPoint();
-        $this->setResourceInfo();
+        // ! switch to fix
+        // $this->validateEndPoint();
+        // $this->setResourceInfo();
+        // * new way
+        $this->EndpointValidator->validateEndPoint($this->validatorDataCollector);
+
+
 
         $this->validateHttpRequest();
         
@@ -60,12 +73,42 @@ abstract class RequestValidator
 
     protected function setUpPreppedDataForValidation($prepRequestData)
     {
-        $this->resource = $prepRequestData['resource'] ?? '';
-        $this->resourceId = $prepRequestData['resourceId']  ?? [];
-        $this->parameters = $prepRequestData['parameters'] ?? [];
-        $this->requestMethod = $prepRequestData['requestMethod'] ?? 'GET';
-        $this->url = $prepRequestData['url'] ?? '';
+        // ! switch to fix
+        // $this->resource = $prepRequestData['resource'] ?? '';
+        // $this->resourceId = $prepRequestData['resourceId']  ?? [];
+        // $this->parameters = $prepRequestData['parameters'] ?? [];
+        // $this->requestMethod = $prepRequestData['requestMethod'] ?? 'GET';
+        // $this->url = $prepRequestData['url'] ?? '';
+        // * new way
+        $this->validatorDataCollector->resource = $prepRequestData['resource'] ?? '';
+        $this->validatorDataCollector->resourceId = $prepRequestData['resourceId']  ?? [];
+        $this->validatorDataCollector->parameters = $prepRequestData['parameters'] ?? [];
+        $this->validatorDataCollector->requestMethod = $prepRequestData['requestMethod'] ?? 'GET';
+        $this->validatorDataCollector->url = $prepRequestData['url'] ?? '';
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     protected function validateEndPoint()
     {
@@ -136,16 +179,50 @@ abstract class RequestValidator
         $this->validatorDataCollector->setResourceInfo($this->resourceInfo);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function validateHttpRequest()
     {
+        // ! switch to fix
+        // $requestData = [
+        //     'parameters' => $this->parameters,
+        //     'resourceInfo' => $this->resourceInfo,
+        //     'resourceObject' => $this->resourceObject,
+        // ];
+
+        // $requestMethodTypeValidator = $this->requestMethodTypeValidatorFactory->getFactoryItem($this->requestMethod);
+        // $requestMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
+
+        // * new way
         $requestData = [
-            'parameters' => $this->parameters,
-            'resourceInfo' => $this->resourceInfo,
-            'resourceObject' => $this->resourceObject,
+            'parameters' => $this->validatorDataCollector->parameters,
+            'resourceInfo' => $this->validatorDataCollector->resourceInfo,
+            'resourceObject' => $this->validatorDataCollector->resourceObject,
         ];
 
-        $requestMethodTypeValidator = $this->requestMethodTypeValidatorFactory->getFactoryItem($this->requestMethod);
-        $this->validatorDataCollector = $requestMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
+        $requestMethodTypeValidator = $this->requestMethodTypeValidatorFactory->getFactoryItem($this->validatorDataCollector->requestMethod);
+        $requestMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
     }
 
     protected function setValidatedMetaData()

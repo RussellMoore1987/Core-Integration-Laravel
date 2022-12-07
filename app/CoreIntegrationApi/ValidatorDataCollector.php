@@ -4,8 +4,17 @@ namespace App\CoreIntegrationApi;
 
 class ValidatorDataCollector 
 {   
-    protected $endpointData = [];
-    protected $resourceInfo = [];
+    public $availableResourceEndpoints;
+    
+    public $resource;
+    public $resourceId;
+    public $parameters = [];
+    public $requestMethod;
+    public $resourceObject;
+    public $url;
+    public $resourceInfo = [];
+    public $endpointData = [];
+
     protected $rejectedParameters = [];
     protected $acceptedParameters = [];
     protected $queryArguments = [];
@@ -80,5 +89,12 @@ class ValidatorDataCollector
         $this->rejectedParameters = [];
         $this->acceptedParameters = [];
         $this->queryArguments = [];
+
+        // test
+        $this->resource = null;
+        $this->resourceId = null;
+        $this->parameters = null;
+        $this->requestMethod = null;
+        $this->url = null;
     }
 }

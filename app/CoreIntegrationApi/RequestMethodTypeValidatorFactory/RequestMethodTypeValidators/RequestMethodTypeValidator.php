@@ -6,5 +6,5 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 
 interface RequestMethodTypeValidator
 {
-    public function validateRequest(ValidatorDataCollector $validatorDataCollector, $requestData) : ValidatorDataCollector;
+    public function validateRequest(ValidatorDataCollector &$validatorDataCollector, $requestData) : void;
 }

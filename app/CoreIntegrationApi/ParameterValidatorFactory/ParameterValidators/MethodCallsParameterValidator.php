@@ -7,7 +7,7 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 
 class MethodCallsParameterValidator implements ParameterValidator
 {
-    public function validate(ValidatorDataCollector $validatorDataCollector, $parameterData) : ValidatorDataCollector
+    public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData) : ValidatorDataCollector
     {
         $this->validatorDataCollector = $validatorDataCollector; 
 
