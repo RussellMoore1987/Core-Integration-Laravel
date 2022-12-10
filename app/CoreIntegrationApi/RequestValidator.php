@@ -10,24 +10,14 @@ use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeVa
 use Illuminate\Support\Facades\App;
 
 // ! start here ********************************************************* readability, uml
-// TODO: take small steps in refactoring new structure *********************** test speed**** ??? one commit back ???
+// TODO: take small steps in refactoring new structure *********************** test speed****
 
 abstract class RequestValidator 
 {
-
     protected $requestDataPrepper;
     protected $validatorDataCollector;
     protected $resourceDataProvider;
-    protected $requestMethodTypeValidatorFactory; // TODO: add to factory if statement structure GET|Retrieve, POST|Create, PUT|Replace, PATCH|Update DELETE
-
-    protected $resourceObject;
-    protected $resourceInfo;
-    protected $resource;
-    protected $resourceId;
-    protected $parameters;
-    
-    protected $availableResourceEndpoints;
-    protected $endpointData;
+    protected $requestMethodTypeValidatorFactory;
     protected $validatedMetaData;
 
     function __construct(RequestDataPrepper $requestDataPrepper, ValidatorDataCollector $validatorDataCollector, ResourceDataProvider $resourceDataProvider, RequestMethodTypeValidatorFactory $requestMethodTypeValidatorFactory) 
@@ -69,7 +59,7 @@ abstract class RequestValidator
         $this->validatorDataCollector->url = $prepRequestData['url'] ?? '';
     }
 
-    public function validateHttpRequest()
+    protected function validateHttpRequest()
     {
         $requestData = [
             'parameters' => $this->validatorDataCollector->parameters,
