@@ -241,24 +241,13 @@ class RestRequestValidatorTest extends TestCase
      */
     public function test_rest_request_validator_returns_expected_result_default_parameters_rejected($pageValue, $perPageValue)
     {
-        $validatedMetaData = $this->validateRequest([
+        $this->expectException(HttpResponseException::class);
+
+        $this->validateRequest([
             'resource' => 'projects',
             'page' => $pageValue,
             'perPage' => $perPageValue,
         ]);
-
-        $expectedRejectedParameters = [
-            'page' => [
-                'value' => $pageValue,
-                'parameterError' => 'This parameter\'s value must be an int.',
-            ],
-            'perPage' => [
-                'value' => $perPageValue,
-                'parameterError' => 'This parameter\'s value must be an int.',
-            ],
-        ];
-
-        $this->assertEquals($expectedRejectedParameters, $validatedMetaData['rejectedParameters']);
     }
 
     public function parameterValueProvider()
@@ -271,34 +260,15 @@ class RestRequestValidatorTest extends TestCase
 
     public function test_rest_request_validator_returns_expected_result_non_acceptable_parameters()
     {
-        $validatedMetaData = $this->validateRequest([
+        $this->expectException(HttpResponseException::class);
+
+        $this->validateRequest([
             'resource' => 'projects',
             'pageJoe' => 2,
             'Ham' => 22.99,
             '' => 'yes',
             'array' => [],
         ]);
-
-        $expectedRejectedParameters = [
-            'pagejoe' => [
-                'value' => 2,
-                'parameterError' => 'This is an invalid parameter for this resource/endpoint.',  
-            ],
-            'ham' => [
-                'value' => 22.99,
-                'parameterError' => 'This is an invalid parameter for this resource/endpoint.', 
-            ],
-            '' => [
-                'value' => 'yes',
-                'parameterError' => 'This is an invalid parameter for this resource/endpoint.',  
-            ],
-            'array' => [
-                'value' => [],
-                'parameterError' => 'This is an invalid parameter for this resource/endpoint.',   
-            ]
-        ];
-
-        $this->assertEquals($expectedRejectedParameters, $validatedMetaData['rejectedParameters']);
     }
 
     protected function validateRequest(array $parameters = [], $url = 'api/v1/projects', $method = 'GET')

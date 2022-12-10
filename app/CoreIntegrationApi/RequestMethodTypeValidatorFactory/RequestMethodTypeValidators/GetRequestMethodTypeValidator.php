@@ -54,6 +54,8 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
                 ]);
             }
         }
+
+        $this->checkIfValidRequest();
     }
 
     protected function getMethodParameterValidator($dataType, $data)
@@ -123,14 +125,17 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
     }
 
     // TODO: Test this method.
-    protected function throwValidationException($validator) : void
+    protected function checkIfValidRequest() : void
     {
-        $response = response()->json([
-            'error' => 'Validation failed',
-            'errors' => $validator->errors(),
-            'message' => 'Validation failed, resend request after adjustments have been made.',
-            'status_code' => 422,
-        ], 422);
-        throw new HttpResponseException($response);
+        if ($this->validatorDataCollector->getRejectedParameters()) {
+            $response = response()->json([
+                'error' => 'Validation Failed',
+                'rejectedParameters' => $this->validatorDataCollector->getRejectedParameters(),
+                'acceptedParameters' => $this->validatorDataCollector->getAcceptedParameters(),
+                'message' => 'Validation failed, resend request after adjustments have been made.',
+                'status_code' => 422,
+            ], 422);
+            throw new HttpResponseException($response);
+        }
     }
 }

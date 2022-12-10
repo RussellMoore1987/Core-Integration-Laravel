@@ -30,3 +30,15 @@ Route::post("context/v1", [CILApiController::class, 'processContextRequest']); /
 
 // TODO: make sure api works with model hidden properties, not showing in the api********
 // TODO: get different leaves of data, form, data, pagination data, all data
+
+
+// db
+// models
+// composer install
+// coreintegration.php
+// full rest api 
+
+// Basic
+// db validation
+
+// 

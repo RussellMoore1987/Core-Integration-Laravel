@@ -16,11 +16,7 @@ class Project extends Model
     public $availableIncludes = ['images', 'tags', 'categories'];
 
     public $formData = [
-        'is_published' => [
-            'min' => 0,
-            'max' => 1,
-            'maxlength' => 1,  
-        ],
+        
     ];
 
     public $validationRules = [];

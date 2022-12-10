@@ -11,7 +11,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\App;
 
 // ! start here ********************************************************* readability, uml
-// TODO: take small steps in refactoring new structure *********************** test speed
+// TODO: take small steps in refactoring new structure *********************** test speed**** ??? one commit back ???
 
 abstract class RequestValidator 
 {
@@ -35,14 +35,14 @@ abstract class RequestValidator
     {
         $this->requestDataPrepper = $requestDataPrepper;
         $this->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? []; // TODO: remove
-        $this->validatorDataCollector = $validatorDataCollector; // passed by reference to methods
+        $this->validatorDataCollector = $validatorDataCollector; // passed by reference to all methods
         $this->validatorDataCollector->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? [];
         $this->resourceDataProvider = $resourceDataProvider;
         $this->requestMethodTypeValidatorFactory = $requestMethodTypeValidatorFactory;
 
 
 
-        $this->EndpointValidator = App::make(EndpointValidator::class);
+        $this->EndpointValidator = App::make(EndpointValidator::class); // TODO: fix this***
     }   
 
     public function validate()
