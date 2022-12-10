@@ -56,7 +56,7 @@ class EndpointValidator
             'resourceId' => $this->validatorDataCollector->resourceId,  
             'indexUrl' => $this->getIndexUrl(),
             'url' => $this->validatorDataCollector->url,
-            'requestMethod' => $this->validatorDataCollector->requestMethod, // TODO: name might need to change when we add in the context api accessMethodTypeValidatorFactor structure
+            'requestMethod' => $this->validatorDataCollector->requestMethod,
         ]; 
         $this->checkForResourceId();
     }
