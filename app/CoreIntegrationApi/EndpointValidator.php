@@ -13,23 +13,10 @@ class EndpointValidator
         $this->resourceDataProvider = $resourceDataProvider;
     }   
 
-    
     public function validateEndPoint(ValidatorDataCollector &$validatorDataCollector)
     {
-
-
         $this->validatorDataCollector = $validatorDataCollector;
-        // $this->resource = $this->validatorDataCollector->resource;
-        // $this->resourceId = $this->validatorDataCollector->resourceId;
-        // $this->parameters = $this->validatorDataCollector->parameters;
-        // $this->requestMethod = $this->validatorDataCollector->requestMethod;
-        // $this->url = $this->validatorDataCollector->url;
-
-
-
-
-
-
+        
         if (array_key_exists($this->validatorDataCollector->resource, $this->validatorDataCollector->availableResourceEndpoints) ) {
             $this->setResourceVariables();
             $this->setEndpointDataInValidatorDataCollector();
@@ -72,7 +59,6 @@ class EndpointValidator
             'requestMethod' => $this->validatorDataCollector->requestMethod, // TODO: name might need to change when we add in the context api accessMethodTypeValidatorFactor structure
         ]; 
         $this->checkForResourceId();
-        // $this->validatorDataCollector->setEndpointData($this->endpointData);
     }
 
     protected function checkForResourceId()
@@ -87,10 +73,10 @@ class EndpointValidator
     protected function returnEndpointError()
     {
         $response = response()->json([
-            'error' => 'Invalid Endpoint',
+            'error' => 'Resource/Endpoint Not Found',
             'message' => "\"{$this->validatorDataCollector->resource}\" is not a valid resource/endpoint for this API. Please review available resources/endpoints at " . $this->getIndexUrl(),
-            'status_code' => 400,
-        ], 400);
+            'status_code' => 404,
+        ], 404);
         throw new HttpResponseException($response);
     }
 
