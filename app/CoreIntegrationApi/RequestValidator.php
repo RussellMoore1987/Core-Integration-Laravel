@@ -6,7 +6,6 @@ use App\CoreIntegrationApi\RequestDataPrepper;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\CoreIntegrationApi\EndpointValidator;
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidatorFactory;
-use Illuminate\Support\Facades\App;
 
 // ! start here ********************************************************* readability, uml
 // TODO: take small steps in refactoring new structure *********************** test speed****
@@ -42,7 +41,7 @@ abstract class RequestValidator
         
         $this->EndpointValidator->validateEndPoint($this->validatorDataCollector);
 
-        $this->validateHttpRequest();
+        $this->validateRequestMethod();
         
         $this->setValidatedMetaData();
     }
@@ -56,7 +55,7 @@ abstract class RequestValidator
         $this->validatorDataCollector->url = $prepRequestData['url'] ?? '';
     }
 
-    protected function validateHttpRequest()
+    protected function validateRequestMethod()
     {
         $requestData = [
             'parameters' => $this->validatorDataCollector->parameters,
