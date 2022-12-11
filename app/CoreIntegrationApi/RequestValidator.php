@@ -4,7 +4,6 @@ namespace App\CoreIntegrationApi;
 
 use App\CoreIntegrationApi\RequestDataPrepper;
 use App\CoreIntegrationApi\ValidatorDataCollector;
-use App\CoreIntegrationApi\ResourceDataProvider;
 use App\CoreIntegrationApi\EndpointValidator;
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidatorFactory;
 use Illuminate\Support\Facades\App;
@@ -16,18 +15,16 @@ abstract class RequestValidator
 {
     protected $requestDataPrepper;
     protected $validatorDataCollector;
-    protected $resourceDataProvider;
     protected $requestMethodTypeValidatorFactory;
     protected $validatedMetaData;
 
-    function __construct(RequestDataPrepper $requestDataPrepper, ValidatorDataCollector $validatorDataCollector, ResourceDataProvider $resourceDataProvider, RequestMethodTypeValidatorFactory $requestMethodTypeValidatorFactory) 
+    function __construct(RequestDataPrepper $requestDataPrepper, ValidatorDataCollector $validatorDataCollector, EndpointValidator $endpointValidator, RequestMethodTypeValidatorFactory $requestMethodTypeValidatorFactory) 
     {
         $this->requestDataPrepper = $requestDataPrepper;
-        $this->validatorDataCollector = $validatorDataCollector; // passed by reference to all methods
+        $this->validatorDataCollector = $validatorDataCollector; // * passed by reference to all methods
         $this->validatorDataCollector->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? [];
-        $this->resourceDataProvider = $resourceDataProvider;
         $this->requestMethodTypeValidatorFactory = $requestMethodTypeValidatorFactory;
-        $this->EndpointValidator = App::make(EndpointValidator::class); // TODO: fix this***
+        $this->EndpointValidator = $endpointValidator;
     }   
 
     public function validate()

@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
+use App\CoreIntegrationApi\EndpointValidator;
 use App\CoreIntegrationApi\RestApi\RestRequestDataPrepper;
 use App\CoreIntegrationApi\RestApi\RestRequestProcessor;
 use App\CoreIntegrationApi\RestApi\RestRequestValidator;
 use App\CoreIntegrationApi\RestApi\RestResponseBuilder;
 use App\CoreIntegrationApi\RestApi\RestQueryResolver;
 use App\CoreIntegrationApi\ValidatorDataCollector;
-use App\CoreIntegrationApi\ResourceDataProvider;
 use App\CoreIntegrationApi\RequestMethodQueryResolverFactory\RequestMethodQueryResolverFactory;
 use App\CoreIntegrationApi\RequestMethodResponseBuilderFactory\RequestMethodResponseBuilderFactory;
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidatorFactory;
@@ -45,7 +45,7 @@ class RestRequestProcessorProvider extends ServiceProvider
             return new RestRequestValidator(
                 $app->make(RestRequestDataPrepper::class),
                 $app->make(ValidatorDataCollector::class),
-                $app->make(ResourceDataProvider::class),
+                $app->make(EndpointValidator::class),
                 $app->make(RequestMethodTypeValidatorFactory::class),
             );
         });
