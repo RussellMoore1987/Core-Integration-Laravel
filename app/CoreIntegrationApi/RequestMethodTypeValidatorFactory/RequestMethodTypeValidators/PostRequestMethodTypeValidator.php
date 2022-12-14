@@ -9,14 +9,19 @@ use Illuminate\Support\Facades\Validator;
 
 class PostRequestMethodTypeValidator implements RequestMethodTypeValidator
 {
+    protected $validatorDataCollector;
+    protected $parameters;
+    protected $resourceInfo;
+    protected $resourceObject;
+    protected $validationRules;
 
-    public function validateRequest(ValidatorDataCollector &$validatorDataCollector, $requestData) : void
+    public function validateRequest(ValidatorDataCollector &$validatorDataCollector) : void
     {
         $this->validatorDataCollector = $validatorDataCollector;
 
-        $this->parameters = $requestData['parameters'];
-        $this->resourceInfo = $requestData['resourceInfo'];
-        $this->resourceObject = $requestData['resourceObject'];
+        $this->parameters = $this->validatorDataCollector->parameters;
+        $this->resourceInfo = $this->validatorDataCollector->resourceInfo;
+        $this->resourceObject = $this->validatorDataCollector->resourceObject;
 
         $this->validateParameters();
     }

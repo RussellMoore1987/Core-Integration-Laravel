@@ -22,7 +22,7 @@ abstract class RequestValidator
         $this->validatorDataCollector = $validatorDataCollector; // * passed by reference to all methods
         $this->validatorDataCollector->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? [];
         $this->requestMethodTypeValidatorFactory = $requestMethodTypeValidatorFactory;
-        $this->EndpointValidator = $endpointValidator;
+        $this->endpointValidator = $endpointValidator;
     }
 
     public function validate()
@@ -34,36 +34,30 @@ abstract class RequestValidator
         return $this->validatedMetaData;
     }
 
-    protected function validateRequest($prepRequestData)
+    protected function validateRequest($preppedRequestData)
     {
-        $this->setUpPreppedDataForValidation($prepRequestData);
+        $this->setUpPreppedDataForValidation($preppedRequestData);
         
-        $this->EndpointValidator->validateEndPoint($this->validatorDataCollector);
+        $this->endpointValidator->validateEndPoint($this->validatorDataCollector);
 
-        $this->validateRequestMethod();
+        $this->validateByRequestMethod();
         
         $this->setValidatedMetaData();
     }
 
-    protected function setUpPreppedDataForValidation($prepRequestData)
+    protected function setUpPreppedDataForValidation($preppedRequestData)
     {
-        $this->validatorDataCollector->resource = $prepRequestData['resource'] ?? '';
-        $this->validatorDataCollector->resourceId = $prepRequestData['resourceId']  ?? [];
-        $this->validatorDataCollector->parameters = $prepRequestData['parameters'] ?? [];
-        $this->validatorDataCollector->requestMethod = $prepRequestData['requestMethod'] ?? 'GET';
-        $this->validatorDataCollector->url = $prepRequestData['url'] ?? '';
+        $this->validatorDataCollector->resource = $preppedRequestData['resource'] ?? '';
+        $this->validatorDataCollector->resourceId = $preppedRequestData['resourceId']  ?? [];
+        $this->validatorDataCollector->parameters = $preppedRequestData['parameters'] ?? [];
+        $this->validatorDataCollector->requestMethod = $preppedRequestData['requestMethod'] ?? 'GET';
+        $this->validatorDataCollector->url = $preppedRequestData['url'] ?? '';
     }
 
-    protected function validateRequestMethod()
+    protected function validateByRequestMethod()
     {
-        $requestData = [
-            'parameters' => $this->validatorDataCollector->parameters,
-            'resourceInfo' => $this->validatorDataCollector->resourceInfo,
-            'resourceObject' => $this->validatorDataCollector->resourceObject,
-        ];
-
         $requestMethodTypeValidator = $this->requestMethodTypeValidatorFactory->getFactoryItem($this->validatorDataCollector->requestMethod);
-        $requestMethodTypeValidator->validateRequest($this->validatorDataCollector, $requestData);
+        $requestMethodTypeValidator->validateRequest($this->validatorDataCollector);
     }
 
     protected function setValidatedMetaData()

@@ -12,10 +12,10 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
     protected $parameterValidatorFactory;
     protected $defaultAcceptableParameters = ['per_page', 'perpage', 'page', 'column_data', 'columndata', 'form_data', 'formdata'];
     protected $getMethodParameterValidatorDefaults = [
-        'columns' => 'select', 
-        'select' => 'select', 
-        'orderby' => 'orderby', 
-        'order_by' => 'orderby', 
+        'columns' => 'select',
+        'select' => 'select',
+        'orderby' => 'orderby',
+        'order_by' => 'orderby',
         'methodcalls' => 'methodcalls',
         'method_calls' => 'methodcalls',
         // TODO: add to documentation relationships
@@ -28,11 +28,11 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         $this->parameterValidatorFactory = $parameterValidatorFactory;
     }
 
-    public function validateRequest(ValidatorDataCollector &$validatorDataCollector, $requestData) : void
+    public function validateRequest(ValidatorDataCollector &$validatorDataCollector) : void
     {
         $this->validatorDataCollector = $validatorDataCollector;
-        $parameters = $requestData['parameters'];
-        $resourceInfo = $requestData['resourceInfo'];
+        $parameters = $this->validatorDataCollector->parameters;
+        $resourceInfo = $this->validatorDataCollector->resourceInfo;
 
         foreach ($parameters as $key => $value) {
             $key = strtolower($key);

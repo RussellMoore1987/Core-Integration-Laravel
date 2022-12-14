@@ -8,7 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class PutRequestMethodTypeValidator implements RequestMethodTypeValidator
 {
-    public function validateRequest(ValidatorDataCollector &$validatorDataCollector, $requestData) : void
+    public function validateRequest(ValidatorDataCollector &$validatorDataCollector) : void
     {
         
     }
