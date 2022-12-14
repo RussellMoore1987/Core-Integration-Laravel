@@ -7,10 +7,8 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 
 class JsonParameterValidator implements ParameterValidator
 {
-    public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData) : ValidatorDataCollector
+    public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData) : void
     {
-        $this->validatorDataCollector = $validatorDataCollector; 
-
-        return $this->validatorDataCollector;
+        $this->validatorDataCollector = $validatorDataCollector;
     }
 }

@@ -39,7 +39,7 @@ class IntParameterValidatorTest extends TestCase
             ],    
         ];
 
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -72,7 +72,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -102,7 +102,7 @@ class IntParameterValidatorTest extends TestCase
             ],    
         ];
 
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -136,7 +136,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -170,7 +170,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -204,7 +204,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -238,7 +238,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -272,7 +272,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -306,7 +306,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -340,7 +340,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -374,7 +374,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -408,7 +408,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -442,7 +442,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -476,7 +476,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -510,7 +510,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -544,7 +544,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -578,7 +578,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -610,7 +610,7 @@ class IntParameterValidatorTest extends TestCase
             ],    
         ];
 
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -644,7 +644,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -674,7 +674,7 @@ class IntParameterValidatorTest extends TestCase
             ],    
         ];
 
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -704,7 +704,7 @@ class IntParameterValidatorTest extends TestCase
             ],    
         ];
 
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -738,7 +738,7 @@ class IntParameterValidatorTest extends TestCase
             ],    
         ];
 
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -772,7 +772,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -806,7 +806,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -840,7 +840,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -874,7 +874,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -921,7 +921,7 @@ class IntParameterValidatorTest extends TestCase
             ],    
         ];
 
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -975,7 +975,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
@@ -1037,7 +1037,7 @@ class IntParameterValidatorTest extends TestCase
             'queryArguments' => $expectedQueryArguments,
         ];
         
-        $this->validatorDataCollector = $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedGetAllData, $this->validatorDataCollector->getAllData());
     }

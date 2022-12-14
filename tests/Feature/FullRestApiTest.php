@@ -137,27 +137,6 @@ class FullRestApiTest extends TestCase
     /**
      * @group db
      */
-    public function test_performance() : void
-    {
-        $time_start = microtime(true);
-        for ($i=0; $i < 1000; $i++) {
-            $response = $this->get('/api/v1/projects?start_date=2021-03-09::LT&is_published=1');
-        }
-        $time_end = microtime(true);
-        $execution_time = ($time_end - $time_start); // seconds
-        dd("Total Execution Time test_performance: {$execution_time} seconds");
-    }
-    // by reference 1000 times
-        // 7.4322929382324
-        // 6.5321760177612
-        // 7.3061909675598
-        // 6.5125818252563
-        // 6.6576659679413
-
-
-    /**
-     * @group db
-     */
     public function test_return_404_response() : void
     {
         $response = $this->get('/api/v1/projects/9999999999');

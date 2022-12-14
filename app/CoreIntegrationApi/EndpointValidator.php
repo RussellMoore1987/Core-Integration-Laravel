@@ -13,7 +13,7 @@ class EndpointValidator
         $this->resourceDataProvider = $resourceDataProvider;
     }   
 
-    public function validateEndPoint(ValidatorDataCollector &$validatorDataCollector)
+    public function validateEndPoint(ValidatorDataCollector &$validatorDataCollector) : void
     {
         $this->validatorDataCollector = $validatorDataCollector;
         

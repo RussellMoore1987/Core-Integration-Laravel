@@ -43,7 +43,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -77,7 +77,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -111,7 +111,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -145,7 +145,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -179,7 +179,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -213,7 +213,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -247,7 +247,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -281,7 +281,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -315,7 +315,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -349,7 +349,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -383,7 +383,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -417,7 +417,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -451,7 +451,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -485,7 +485,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -519,7 +519,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -553,7 +553,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -593,7 +593,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -633,7 +633,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -663,7 +663,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -690,7 +690,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -717,7 +717,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -757,7 +757,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -805,7 +805,7 @@ class DateParameterValidatorTest extends TestCase
             'queryArguments' => $expectedQueryArguments,
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedGetAllData, $this->validatorDataCollector->getAllData());
     }
