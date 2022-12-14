@@ -13,7 +13,7 @@ abstract class RequestProcessor
     protected $queryResolver;
     protected $responseBuilder;
 
-    function __construct(RequestValidator $requestValidator, QueryResolver $queryResolver, ResponseBuilder $responseBuilder) 
+    public function __construct(RequestValidator $requestValidator, QueryResolver $queryResolver, ResponseBuilder $responseBuilder)
     {
         $this->requestValidator = $requestValidator;
         $this->queryResolver = $queryResolver;

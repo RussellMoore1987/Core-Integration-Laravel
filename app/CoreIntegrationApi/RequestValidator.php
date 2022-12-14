@@ -8,7 +8,6 @@ use App\CoreIntegrationApi\EndpointValidator;
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidatorFactory;
 
 // ! start here ********************************************************* readability, uml
-// TODO: take small steps in refactoring new structure *********************** test speed****
 
 abstract class RequestValidator
 {

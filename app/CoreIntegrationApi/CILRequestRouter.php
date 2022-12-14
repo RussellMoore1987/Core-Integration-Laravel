@@ -10,11 +10,11 @@ class CILRequestRouter
     private $restRequestProcessor;
     private $contextRequestProcessor;
 
-    function __construct(RestRequestProcessor $restRequestProcessor, ContextRequestProcessor $contextRequestProcessor) 
+    public function __construct(RestRequestProcessor $restRequestProcessor, ContextRequestProcessor $contextRequestProcessor)
     {
         $this->restRequestProcessor = $restRequestProcessor;
         $this->contextRequestProcessor = $contextRequestProcessor;
-    }  
+    }
     
     public function processRequest()
     {
@@ -26,12 +26,12 @@ class CILRequestRouter
         }
     }
 
-    public function processRestRequest() 
+    public function processRestRequest()
     {
         return $this->restRequestProcessor->process();
     }
 
-    public function processContextRequest() 
+    public function processContextRequest()
     {
         // return ["Message" => "Got Here!!! " . request()->contextInstructions]; // TODO: needs to be removed
         return $this->contextRequestProcessor->process(); // TODO: validate, must be post request

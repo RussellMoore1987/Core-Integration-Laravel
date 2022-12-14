@@ -36,9 +36,7 @@ Route::post("context/v1", [CILApiController::class, 'processContextRequest']); /
 // models
 // composer install
 // coreintegration.php
-// full rest api 
+// full rest api
 
 // Basic
 // db validation
-
-// 
