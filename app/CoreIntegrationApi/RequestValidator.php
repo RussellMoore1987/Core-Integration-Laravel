@@ -10,21 +10,21 @@ use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeVa
 // ! start here ********************************************************* readability, uml
 // TODO: take small steps in refactoring new structure *********************** test speed****
 
-abstract class RequestValidator 
+abstract class RequestValidator
 {
     protected $requestDataPrepper;
     protected $validatorDataCollector;
     protected $requestMethodTypeValidatorFactory;
     protected $validatedMetaData;
 
-    function __construct(RequestDataPrepper $requestDataPrepper, ValidatorDataCollector $validatorDataCollector, EndpointValidator $endpointValidator, RequestMethodTypeValidatorFactory $requestMethodTypeValidatorFactory) 
+    public function __construct(RequestDataPrepper $requestDataPrepper, ValidatorDataCollector $validatorDataCollector, EndpointValidator $endpointValidator, RequestMethodTypeValidatorFactory $requestMethodTypeValidatorFactory)
     {
         $this->requestDataPrepper = $requestDataPrepper;
         $this->validatorDataCollector = $validatorDataCollector; // * passed by reference to all methods
         $this->validatorDataCollector->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? [];
         $this->requestMethodTypeValidatorFactory = $requestMethodTypeValidatorFactory;
         $this->EndpointValidator = $endpointValidator;
-    }   
+    }
 
     public function validate()
     {
@@ -72,7 +72,7 @@ abstract class RequestValidator
         $this->validatedMetaData = $this->validatorDataCollector->getAllData();
     }
 
-    public function getValidatedMetaData() 
+    public function getValidatedMetaData()
     {
         return $this->validatedMetaData;
     }
