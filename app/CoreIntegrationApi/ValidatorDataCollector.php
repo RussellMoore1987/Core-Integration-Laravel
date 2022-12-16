@@ -37,7 +37,7 @@ class ValidatorDataCollector
         return $this->resourceInfo;
     }
 
-    public function setRejectedParameter(array $rejectedParameters)
+    public function setRejectedParameter(array $rejectedParameters) // TODO: should this method be Plural
     {
         $this->setArrayParameter('rejectedParameters', $rejectedParameters);
     }
@@ -46,7 +46,7 @@ class ValidatorDataCollector
         return $this->rejectedParameters;
     }
     
-    public function setAcceptedParameter(array $acceptedParameters)
+    public function setAcceptedParameter(array $acceptedParameters) // TODO: should this method be Plural
     {
         $this->setArrayParameter('acceptedParameters', $acceptedParameters);
     }
@@ -71,6 +71,7 @@ class ValidatorDataCollector
         }
     }
 
+    // TODO: getAll getRequesBuilderData ??? do we need both, just one, do we need the extra data, ???
     public function getAllData()
     {
         return [

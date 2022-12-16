@@ -34,6 +34,7 @@ class PostRequestMethodTypeValidator implements RequestMethodTypeValidator
 
     protected function setUpValidationRules() : void
     {
+        // TODO: do I want $this->resourceObject->validationRules to be public or protected
         $validationRules = $this->resourceObject->validationRules && method_exists($this->resourceObject, 'getValidationRules') ? $this->resourceObject->getValidationRules() : [];
 
         if (!$validationRules) {
@@ -48,12 +49,12 @@ class PostRequestMethodTypeValidator implements RequestMethodTypeValidator
     protected function validate() : void
     {
         $validator = Validator::make($this->parameters, $this->validationRules);
-        // TODO: do this in the other RequestMethodTypeValidators
+        // TODO: do this in the other RequestMethodTypeValidators ? trait, class
         if ($validator->fails()) {
             $this->throwValidationException($validator);
         }
         
-        $this->validatorDataCollector->setRejectedParameter(array_diff($this->parameters, $validator->validated()) );
+        $this->validatorDataCollector->setRejectedParameter(array_diff($this->parameters, $validator->validated()));
         $this->validatorDataCollector->setAcceptedParameter($validator->validated());
         $this->validatorDataCollector->setQueryArgument($validator->validated());
     }

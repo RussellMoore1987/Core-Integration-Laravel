@@ -32,9 +32,7 @@
         public function validate($data, $validationRulesToValidate = null)
         {
             $validationRulesToValidate = $validationRulesToValidate ?? $this->getValidationRules();
-            $validator = Validator::make($data, $validationRulesToValidate);
-
-            return $validator;
+            return Validator::make($data, $validationRulesToValidate);
         }
 
         // TODO: add testing for this
@@ -42,8 +40,8 @@
         {
             // get default validation
             if (
-                !$this->validationRules || 
-                (!isset($this->validationRules['modelValidation']) || !is_array($this->validationRules['modelValidation'])) || 
+                !$this->validationRules ||
+                (!isset($this->validationRules['modelValidation']) || !is_array($this->validationRules['modelValidation'])) ||
                 (!isset($this->validationRules['createValidation']) || !is_array($this->validationRules['createValidation']))
             ) {
                 throw new \Exception('validationRules rules not set. A class utilizing the CILModel trait must have validationRules, see the documentation located at app\CoreIntegrationApi\docs\CILModel.php');
@@ -54,7 +52,7 @@
             $keyName = $this->getKeyName();
             $actionType = $this->$keyName != null ? 'update' : 'create';
 
-            if ($actionType != 'update') {
+            if ($actionType == 'create') {
                 // merge update and create validation rules
                 foreach ($validationRulesToReturn as $columnName => $validationRules) {
                     if (isset($this->validationRules['createValidation'][$columnName])) {
