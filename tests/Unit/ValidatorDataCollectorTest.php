@@ -79,7 +79,7 @@ class ValidatorDataCollectorTest extends TestCase
         ];
     }
 
-    public function test_getAllData_function()
+    public function test_getValidatedMetaData_function()
     {
         $this->setAllParameters(); 
 
@@ -91,7 +91,7 @@ class ValidatorDataCollectorTest extends TestCase
             'queryArguments' => $this->expectedParameters,
         ];
 
-        $this->assertEquals($expectedOutput, $this->ValidatorDataCollector->getAllData());
+        $this->assertEquals($expectedOutput, $this->ValidatorDataCollector->getValidatedMetaData());
     }
 
     private function setAllParameters()
@@ -106,7 +106,7 @@ class ValidatorDataCollectorTest extends TestCase
         $this->ValidatorDataCollector->setQueryArgument($this->parameters[1]); 
     }
 
-    public function test_getAllData_function_with_nulls_returned()
+    public function test_getValidatedMetaData_function_with_nulls_returned()
     {
         $expectedOutput = [
             'endpointData' => [],
@@ -116,7 +116,7 @@ class ValidatorDataCollectorTest extends TestCase
             'queryArguments' => [],
         ];
 
-        $this->assertEquals($expectedOutput, $this->ValidatorDataCollector->getAllData());
+        $this->assertEquals($expectedOutput, $this->ValidatorDataCollector->getValidatedMetaData());
     }
 
     public function test_collector_reset_function()
@@ -133,6 +133,6 @@ class ValidatorDataCollectorTest extends TestCase
 
         $this->ValidatorDataCollector->reset();
 
-        $this->assertEquals($expectedOutput, $this->ValidatorDataCollector->getAllData());
+        $this->assertEquals($expectedOutput, $this->ValidatorDataCollector->getValidatedMetaData());
     }
 }

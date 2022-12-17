@@ -797,7 +797,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
 
-        $expectedGetAllData = [
+        $expectedGetValidatedMetaData = [
             'endpointData' => [],
             'resourceInfo' => [],
             'acceptedParameters' => $expectedAcceptedParameters,
@@ -807,6 +807,6 @@ class DateParameterValidatorTest extends TestCase
         
         $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedGetAllData, $this->validatorDataCollector->getAllData());
+        $this->assertEquals($expectedGetValidatedMetaData, $this->validatorDataCollector->getValidatedMetaData());
     }
 }

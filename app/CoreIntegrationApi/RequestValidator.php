@@ -7,7 +7,6 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\CoreIntegrationApi\EndpointValidator;
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidatorFactory;
 
-// ! start here ********************************************************* readability, uml
 
 abstract class RequestValidator
 {
@@ -62,7 +61,8 @@ abstract class RequestValidator
 
     protected function setValidatedMetaData()
     {
-        $this->validatedMetaData = $this->validatorDataCollector->getAllData();
+        // ! start here ********************************************************* readability, uml
+        $this->validatedMetaData = $this->validatorDataCollector->getValidatedMetaData();
     }
 
     public function getValidatedMetaData()

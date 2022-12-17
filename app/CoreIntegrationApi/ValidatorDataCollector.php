@@ -72,7 +72,7 @@ class ValidatorDataCollector
     }
 
     // TODO: getAll getRequesBuilderData ??? do we need both, just one, do we need the extra data, ???
-    public function getAllData()
+    public function getValidatedMetaData()
     {
         return [
            'endpointData' => $this->endpointData,

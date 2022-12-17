@@ -1029,7 +1029,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
-        $expectedGetAllData = [
+        $expectedGetValidatedMetaData = [
             'endpointData' => [],
             'resourceInfo' => [],
             'acceptedParameters' => $expectedAcceptedParameters,
@@ -1039,6 +1039,6 @@ class IntParameterValidatorTest extends TestCase
         
         $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedGetAllData, $this->validatorDataCollector->getAllData());
+        $this->assertEquals($expectedGetValidatedMetaData, $this->validatorDataCollector->getValidatedMetaData());
     }
 }

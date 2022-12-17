@@ -4,6 +4,7 @@ namespace App\CoreIntegrationApi;
 
 use App\CoreIntegrationApi\RestApi\RestRequestProcessor;
 use App\CoreIntegrationApi\ContextApi\ContextRequestProcessor;
+use Illuminate\Http\JsonResponse;
 
 class CILRequestRouter
 {
@@ -16,7 +17,7 @@ class CILRequestRouter
         $this->contextRequestProcessor = $contextRequestProcessor;
     }
     
-    public function processRequest()
+    public function processRequest() : JsonResponse
     {
         $request = request();
         if ($request->contextInstructions && $request->method() == 'POST') {
@@ -26,12 +27,12 @@ class CILRequestRouter
         }
     }
 
-    public function processRestRequest()
+    public function processRestRequest() : JsonResponse
     {
         return $this->restRequestProcessor->process();
     }
 
-    public function processContextRequest()
+    public function processContextRequest() : JsonResponse
     {
         // return ["Message" => "Got Here!!! " . request()->contextInstructions]; // TODO: needs to be removed
         return $this->contextRequestProcessor->process(); // TODO: validate, must be post request

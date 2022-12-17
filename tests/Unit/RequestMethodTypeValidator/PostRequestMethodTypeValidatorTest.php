@@ -46,7 +46,7 @@ class PostRequestMethodTypeValidatorTest extends TestCase
         ];
 
         $this->postRequestMethodTypeValidator->validateRequest($this->validatorDataCollector);
-        $actualResults = $this->validatorDataCollector->getAllData();
+        $actualResults = $this->validatorDataCollector->getValidatedMetaData();
 
         // just testing the ones that are set in the class
         $this->assertEquals($expectedResults['rejectedParameters'], $actualResults['rejectedParameters']);
@@ -124,7 +124,7 @@ class PostRequestMethodTypeValidatorTest extends TestCase
         ];
         
         $this->postRequestMethodTypeValidator->validateRequest($this->validatorDataCollector);
-        $actualResults = $this->validatorDataCollector->getAllData();
+        $actualResults = $this->validatorDataCollector->getValidatedMetaData();
 
         // just testing the ones that are set in the class
         $this->assertEquals($expectedResults['rejectedParameters'], $actualResults['rejectedParameters']);
@@ -156,7 +156,7 @@ class PostRequestMethodTypeValidatorTest extends TestCase
         ];
         
         $this->postRequestMethodTypeValidator->validateRequest($this->validatorDataCollector);
-        $actualResults = $this->validatorDataCollector->getAllData();
+        $actualResults = $this->validatorDataCollector->getValidatedMetaData();
 
         // just testing the ones that are set in the class
         $this->assertEquals($expectedResults['rejectedParameters'], $actualResults['rejectedParameters']);
