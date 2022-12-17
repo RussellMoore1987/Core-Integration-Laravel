@@ -46,27 +46,13 @@ class ValidatorDataCollectorTest extends TestCase
     }
 
     // tests ------------------------------------------------------------
-    public function test_setEndpointData_function()
-    {
-        $this->ValidatorDataCollector->setEndpointData($this->endpointData); 
-        
-        $this->assertEquals($this->endpointData, $this->ValidatorDataCollector->getEndpointData());
-    }
-
-    public function test_setResourceInfo_function()
-    {
-        $this->ValidatorDataCollector->setResourceInfo($this->resourceInfo); 
-        
-        $this->assertEquals($this->resourceInfo, $this->ValidatorDataCollector->getResourceInfo());
-    }
-
     /**
      * @dataProvider parameterFunctions
      */
     public function test_setParameter_functions($setFunction, $getFunction)
     {
-        $this->ValidatorDataCollector->$setFunction($this->parameters[0]); 
-        $this->ValidatorDataCollector->$setFunction($this->parameters[1]); 
+        $this->ValidatorDataCollector->$setFunction($this->parameters[0]);
+        $this->ValidatorDataCollector->$setFunction($this->parameters[1]);
 
         $this->assertEquals($this->expectedParameters, $this->ValidatorDataCollector->$getFunction());
     }
@@ -81,7 +67,7 @@ class ValidatorDataCollectorTest extends TestCase
 
     public function test_getValidatedMetaData_function()
     {
-        $this->setAllParameters(); 
+        $this->setAllParameters();
 
         $expectedOutput = [
             'endpointData' => $this->endpointData,
@@ -96,14 +82,14 @@ class ValidatorDataCollectorTest extends TestCase
 
     private function setAllParameters()
     {
-        $this->ValidatorDataCollector->setEndpointData($this->endpointData);
-        $this->ValidatorDataCollector->setResourceInfo($this->resourceInfo);
-        $this->ValidatorDataCollector->setRejectedParameter($this->parameters[0]); 
-        $this->ValidatorDataCollector->setRejectedParameter($this->parameters[1]); 
-        $this->ValidatorDataCollector->setAcceptedParameter($this->parameters[0]);  
-        $this->ValidatorDataCollector->setAcceptedParameter($this->parameters[1]); 
-        $this->ValidatorDataCollector->setQueryArgument($this->parameters[0]);  
-        $this->ValidatorDataCollector->setQueryArgument($this->parameters[1]); 
+        $this->ValidatorDataCollector->endpointData = $this->endpointData;
+        $this->ValidatorDataCollector->resourceInfo = $this->resourceInfo;
+        $this->ValidatorDataCollector->setRejectedParameter($this->parameters[0]);
+        $this->ValidatorDataCollector->setRejectedParameter($this->parameters[1]);
+        $this->ValidatorDataCollector->setAcceptedParameter($this->parameters[0]);
+        $this->ValidatorDataCollector->setAcceptedParameter($this->parameters[1]);
+        $this->ValidatorDataCollector->setQueryArgument($this->parameters[0]);
+        $this->ValidatorDataCollector->setQueryArgument($this->parameters[1]);
     }
 
     public function test_getValidatedMetaData_function_with_nulls_returned()
@@ -121,7 +107,7 @@ class ValidatorDataCollectorTest extends TestCase
 
     public function test_collector_reset_function()
     {
-        $this->setAllParameters(); 
+        $this->setAllParameters();
 
         $expectedOutput = [
             'endpointData' => [],

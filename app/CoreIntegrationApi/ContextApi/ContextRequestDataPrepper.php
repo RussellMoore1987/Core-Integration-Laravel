@@ -12,7 +12,7 @@ class ContextRequestDataPrepper extends RequestDataPrepper
     protected $requestData;
 
     // TODO: add request information like URL and HTTP method
-    public function prepRequestData()
+    public function prepRequestData() : array
     {
         $this->prepDefaultData();
         $this->prepRequests();
@@ -83,9 +83,9 @@ class ContextRequestDataPrepper extends RequestDataPrepper
         
         if ($this->checkIfWeNeedToUnset()) {
             unset(
-                $this->requestData['resourceId'], 
-                $this->requestData['resource_id'], 
-                $this->requestData['id'], 
+                $this->requestData['resourceId'],
+                $this->requestData['resource_id'],
+                $this->requestData['id'],
                 $this->requestData['resource']
             );
         }
@@ -95,9 +95,9 @@ class ContextRequestDataPrepper extends RequestDataPrepper
     {
         if (is_array($this->requestData)) {
             $keys = array_keys($this->requestData);
-            $KeysToUnset = ['resourceId', 'resource_id', 'id', 'resource'];
+            $keysToUnset = ['resourceId', 'resource_id', 'id', 'resource'];
 
-            foreach ($KeysToUnset as $key) {
+            foreach ($keysToUnset as $key) {
                 if (in_array($key, $keys)) { return true; }
             }
         }

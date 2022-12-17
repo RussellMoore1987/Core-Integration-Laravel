@@ -2,9 +2,11 @@
 
 namespace App\CoreIntegrationApi;
 
-class ValidatorDataCollector 
-{   
-    public $availableResourceEndpoints;
+// ! start here ********************************************************* readability
+
+class ValidatorDataCollector
+{
+    protected $availableResourceEndpoints;
     
     public $resource;
     public $resourceId;
@@ -19,60 +21,51 @@ class ValidatorDataCollector
     protected $acceptedParameters = [];
     protected $queryArguments = [];
 
-    public function setEndpointData(array $endpointData)
+    // TODO: test
+    public function setAvailableResourceEndpoints(array $availableResourceEndpoints) : void
     {
-        $this->endpointData = $endpointData;
+        $this->availableResourceEndpoints = $availableResourceEndpoints;
     }
-    public function getEndpointData()
+    public function getAvailableResourceEndpoints() : array
     {
-        return $this->endpointData;
-    }
-
-    public function setResourceInfo(array $resourceInfo)
-    {
-        $this->resourceInfo = $resourceInfo;
-    }
-    public function getResourceInfo()
-    {
-        return $this->resourceInfo;
+        return $this->availableResourceEndpoints;
     }
 
-    public function setRejectedParameter(array $rejectedParameters) // TODO: should this method be Plural
+    public function setRejectedParameter(array $rejectedParameters) : void // TODO: should this method be Plural
     {
         $this->setArrayParameter('rejectedParameters', $rejectedParameters);
     }
-    public function getRejectedParameters()
+    public function getRejectedParameters() : array
     {
         return $this->rejectedParameters;
     }
     
-    public function setAcceptedParameter(array $acceptedParameters) // TODO: should this method be Plural
+    public function setAcceptedParameter(array $acceptedParameters) : void // TODO: should this method be Plural
     {
         $this->setArrayParameter('acceptedParameters', $acceptedParameters);
     }
-    public function getAcceptedParameters()
+    public function getAcceptedParameters() : array
     {
         return $this->acceptedParameters;
     }
 
-    public function setQueryArgument(array $queryArguments)
+    public function setQueryArgument(array $queryArguments) : void
     {
         $this->setArrayParameter('queryArguments', $queryArguments);
     }
-    public function getQueryArguments()
+    public function getQueryArguments() : array
     {
         return $this->queryArguments;
     }
 
-    protected function setArrayParameter($thisArrayString, $parameters)
+    protected function setArrayParameter($thisArrayString, $parameters) : void
     {
         foreach ($parameters as $columnName => $value) {
             $this->$thisArrayString[$columnName] = $value;
         }
     }
 
-    // TODO: getAll getRequesBuilderData ??? do we need both, just one, do we need the extra data, ???
-    public function getValidatedMetaData()
+    public function getValidatedMetaData() : array
     {
         return [
            'endpointData' => $this->endpointData,
@@ -83,7 +76,7 @@ class ValidatorDataCollector
         ];
     }
 
-    public function reset()
+    public function reset() : void // reset for reuse, context api
     {
         $this->endpointData = [];
         $this->resourceInfo = [];
@@ -91,7 +84,7 @@ class ValidatorDataCollector
         $this->acceptedParameters = [];
         $this->queryArguments = [];
 
-        // test
+        // TODO: test
         $this->resource = null;
         $this->resourceId = null;
         $this->parameters = null;

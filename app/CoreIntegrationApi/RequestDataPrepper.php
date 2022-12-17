@@ -9,19 +9,19 @@ abstract class RequestDataPrepper
         protected $request;
         protected $preppedData;
 
-        function __construct(Request $request) 
+        public function __construct(Request $request)
         {
             $this->request = $request;
-        }  
+        }
 
-        public function prep() 
+        public function prep() : void
         {
             $this->preppedData = $this->prepRequestData();
         }
 
-        abstract public function prepRequestData(); // Rest = request, Context = array of requests
+        abstract public function prepRequestData() : array; // Rest = request, Context = array of requests
 
-        public function getPreppedData() 
+        public function getPreppedData() : array
         {
             return $this->preppedData;
         }

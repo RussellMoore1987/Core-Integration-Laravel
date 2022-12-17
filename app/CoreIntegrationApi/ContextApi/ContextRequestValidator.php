@@ -10,7 +10,7 @@ class ContextRequestValidator extends RequestValidator
     
     protected $validatedMetaData = [];
 
-    public function validate()
+    public function validate() : array
     {
         $this->requestDataPrepper->prep();
 
@@ -22,14 +22,14 @@ class ContextRequestValidator extends RequestValidator
         return $this->validatedMetaData;
     }
 
-    protected function setUpPreppedDataForValidation($prepRequestData)
+    protected function setUpPreppedDataForValidation($prepRequestData) : void
     {
         parent::setUpPreppedDataForValidation($prepRequestData);
         
         $this->validatorDataCollector->reset();
     }
 
-    protected function setValidatedMetaData()
+    protected function setValidatedMetaData() : void
     {
         $validatedRequestMetaData['rejectedParameters'] = $this->validatorDataCollector->getRejectedParameters();
         $validatedRequestMetaData['acceptedParameters'] = $this->validatorDataCollector->getAcceptedParameters();

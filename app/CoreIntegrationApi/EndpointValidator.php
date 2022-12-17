@@ -8,33 +8,36 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 
 class EndpointValidator
 {
-    function __construct(ResourceDataProvider $resourceDataProvider) 
+    protected $resourceDataProvider;
+    protected $validatorDataCollector;
+    protected $availableResourceEndpoints;
+
+    public function __construct(ResourceDataProvider $resourceDataProvider)
     {
         $this->resourceDataProvider = $resourceDataProvider;
-    }   
+    }
 
     public function validateEndPoint(ValidatorDataCollector &$validatorDataCollector) : void
     {
         $this->validatorDataCollector = $validatorDataCollector;
+        $this->availableResourceEndpoints = $this->validatorDataCollector->getAvailableResourceEndpoints();
         
-        if (array_key_exists($this->validatorDataCollector->resource, $this->validatorDataCollector->availableResourceEndpoints) ) {
+        if (array_key_exists($this->validatorDataCollector->resource, $this->availableResourceEndpoints)) {
             $this->setResourceVariables();
             $this->setEndpointDataInValidatorDataCollector();
         } elseif ($this->validatorDataCollector->resource != 'index') {
             $this->returnEndpointError();
-        } 
-
-        $this->setResourceInfo();
+        }
     }
 
-    protected function setResourceVariables()
+    protected function setResourceVariables() : void
     {
-        $this->validatorDataCollector->resourceObject = new $this->validatorDataCollector->availableResourceEndpoints[$this->validatorDataCollector->resource]();
+        $this->validatorDataCollector->resourceObject = new $this->availableResourceEndpoints[$this->validatorDataCollector->resource]();
         $this->resourceDataProvider->setResource($this->validatorDataCollector->resourceObject);
         $this->validatorDataCollector->resourceInfo = $this->resourceDataProvider->getResourceInfo();
     }
 
-    protected function setEndpointDataInValidatorDataCollector()
+    protected function setEndpointDataInValidatorDataCollector() : void
     {
         $this->setEndpointData();
         $this->validatorDataCollector->setAcceptedParameter([
@@ -44,24 +47,24 @@ class EndpointValidator
         ]);
     }
 
-    protected function getIndexUrl()
+    protected function getIndexUrl() : string
     {
         return substr($this->validatorDataCollector->url, 0, strpos($this->validatorDataCollector->url, 'api/v1/') + 7);
     }
 
-    protected function setEndpointData()
+    protected function setEndpointData() : void
     {
         $this->validatorDataCollector->endpointData = [
-            'resource' => $this->validatorDataCollector->resource, 
-            'resourceId' => $this->validatorDataCollector->resourceId,  
+            'resource' => $this->validatorDataCollector->resource,
+            'resourceId' => $this->validatorDataCollector->resourceId,
             'indexUrl' => $this->getIndexUrl(),
             'url' => $this->validatorDataCollector->url,
             'requestMethod' => $this->validatorDataCollector->requestMethod,
-        ]; 
+        ];
         $this->checkForResourceId();
     }
 
-    protected function checkForResourceId()
+    protected function checkForResourceId() : void
     {
         if ($this->validatorDataCollector->resourceId) {
             $primaryKeyName = $this->validatorDataCollector->resourceInfo['primaryKeyName'];
@@ -78,10 +81,5 @@ class EndpointValidator
             'status_code' => 404,
         ], 404);
         throw new HttpResponseException($response);
-    }
-
-    protected function setResourceInfo()
-    {
-        $this->validatorDataCollector->setResourceInfo($this->validatorDataCollector->resourceInfo);
     }
 }

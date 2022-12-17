@@ -19,12 +19,12 @@ abstract class RequestValidator
     {
         $this->requestDataPrepper = $requestDataPrepper;
         $this->validatorDataCollector = $validatorDataCollector; // * passed by reference to all methods
-        $this->validatorDataCollector->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? [];
+        $this->validatorDataCollector->setAvailableResourceEndpoints(config('coreintegration.availableResourceEndpoints') ?? []);
         $this->requestMethodTypeValidatorFactory = $requestMethodTypeValidatorFactory;
         $this->endpointValidator = $endpointValidator;
     }
 
-    public function validate()
+    public function validate() : array
     {
         $this->requestDataPrepper->prep();
 
@@ -33,7 +33,7 @@ abstract class RequestValidator
         return $this->validatedMetaData;
     }
 
-    protected function validateRequest($preppedRequestData)
+    protected function validateRequest($preppedRequestData) : void
     {
         $this->setUpPreppedDataForValidation($preppedRequestData);
         
@@ -44,7 +44,7 @@ abstract class RequestValidator
         $this->setValidatedMetaData();
     }
 
-    protected function setUpPreppedDataForValidation($preppedRequestData)
+    protected function setUpPreppedDataForValidation($preppedRequestData) : void
     {
         $this->validatorDataCollector->resource = $preppedRequestData['resource'] ?? '';
         $this->validatorDataCollector->resourceId = $preppedRequestData['resourceId']  ?? [];
@@ -53,20 +53,14 @@ abstract class RequestValidator
         $this->validatorDataCollector->url = $preppedRequestData['url'] ?? '';
     }
 
-    protected function validateByRequestMethod()
+    protected function validateByRequestMethod() : void
     {
         $requestMethodTypeValidator = $this->requestMethodTypeValidatorFactory->getFactoryItem($this->validatorDataCollector->requestMethod);
         $requestMethodTypeValidator->validateRequest($this->validatorDataCollector);
     }
 
-    protected function setValidatedMetaData()
+    protected function setValidatedMetaData() : void
     {
-        // ! start here ********************************************************* readability, uml
         $this->validatedMetaData = $this->validatorDataCollector->getValidatedMetaData();
-    }
-
-    public function getValidatedMetaData()
-    {
-        return $this->validatedMetaData;
     }
 }
