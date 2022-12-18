@@ -132,7 +132,7 @@ class PostRequestMethodTypeValidatorTest extends TestCase
         $this->assertEquals($expectedResults['queryArguments'], $actualResults['queryArguments']);
     }
 
-    public function test_PostRequestMethodTypeValidator_returns_correct_data_in_regards_to_setRejectedParameter()
+    public function test_PostRequestMethodTypeValidator_returns_correct_data_in_regards_to_setRejectedParameters()
     {
         $this->setRequestData(new Category());
         $name = 'Web Development';

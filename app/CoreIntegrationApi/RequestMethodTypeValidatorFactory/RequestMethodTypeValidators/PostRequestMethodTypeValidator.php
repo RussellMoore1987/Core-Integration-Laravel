@@ -54,8 +54,8 @@ class PostRequestMethodTypeValidator implements RequestMethodTypeValidator
             $this->throwValidationException($validator);
         }
         
-        $this->validatorDataCollector->setRejectedParameter(array_diff($this->parameters, $validator->validated()));
-        $this->validatorDataCollector->setAcceptedParameter($validator->validated());
+        $this->validatorDataCollector->setRejectedParameters(array_diff($this->parameters, $validator->validated()));
+        $this->validatorDataCollector->setAcceptedParameters($validator->validated());
         $this->validatorDataCollector->setQueryArgument($validator->validated());
     }
 

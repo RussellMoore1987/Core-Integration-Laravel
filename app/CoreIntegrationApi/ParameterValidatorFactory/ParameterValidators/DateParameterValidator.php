@@ -20,8 +20,8 @@ class DateParameterValidator implements ParameterValidator
         $this->setMainVariables($validatorDataCollector, $parameterData);
         $this->processDateData();
         $this->checkForErrors();
-        $this->setAcceptedParameterIfAny(); 
-        $this->setDataQueryArgumentIfAny(); 
+        $this->setAcceptedParameterIfAny();
+        $this->setDataQueryArgumentIfAny();
     }
 
     private function setMainVariables($validatorDataCollector, $parameterData)
@@ -32,7 +32,7 @@ class DateParameterValidator implements ParameterValidator
             $this->columnName = $columnName;
             $this->date = $date;
             $this->originalDate = $date;
-        } 
+        }
     }
 
     private function processDateData()
@@ -72,13 +72,13 @@ class DateParameterValidator implements ParameterValidator
     {
         if (in_array($this->dateAction, ['greaterthan', 'gt', '>'])) {
             $this->comparisonOperator = '>';
-        } else if (in_array($this->dateAction, ['greaterthanorequal', 'gte', '>='])) {
+        } elseif (in_array($this->dateAction, ['greaterthanorequal', 'gte', '>='])) {
             $this->comparisonOperator = '>=';
-        } else if (in_array($this->dateAction, ['lessthan', 'lt', '<'])) {
+        } elseif (in_array($this->dateAction, ['lessthan', 'lt', '<'])) {
             $this->comparisonOperator = '<';
-        } else if (in_array($this->dateAction, ['lessthanorequal', 'lte', '<='])) {
+        } elseif (in_array($this->dateAction, ['lessthanorequal', 'lte', '<='])) {
             $this->comparisonOperator = '<=';
-        } else if (in_array($this->dateAction, ['between', 'bt'])) {
+        } elseif (in_array($this->dateAction, ['between', 'bt'])) {
             $this->comparisonOperator = 'bt';
         } else {
             $this->comparisonOperator = '=';
@@ -100,8 +100,8 @@ class DateParameterValidator implements ParameterValidator
     private function checkToSeeIfFirstDateIsGreaterThenLastDate()
     {
         if (
-            $this->comparisonOperator == 'bt' && 
-            is_array($this->date) && 
+            $this->comparisonOperator == 'bt' &&
+            is_array($this->date) &&
             $this->date[0] > $this->date[1]
         ) {
             $this->error = true;
@@ -115,9 +115,9 @@ class DateParameterValidator implements ParameterValidator
     private function checkToSeeIfWeHaveTwoDates()
     {
         if (
-            $this->comparisonOperator == 'bt' && 
+            $this->comparisonOperator == 'bt' &&
             !(
-                is_array($this->date) && 
+                is_array($this->date) &&
                 count($this->date) == 2
             )
         ) {
@@ -129,7 +129,7 @@ class DateParameterValidator implements ParameterValidator
     private function setErrorsIfAny()
     {
         if ($this->errors) {
-            $this->validatorDataCollector->setRejectedParameter([
+            $this->validatorDataCollector->setRejectedParameters([
                 "$this->columnName" => [
                     'dateCoveredTo' => $this->date,
                     'originalDate' => $this->originalDate,
@@ -144,7 +144,7 @@ class DateParameterValidator implements ParameterValidator
     private function setAcceptedParameterIfAny()
     {
         if (!$this->errors) {
-            $this->validatorDataCollector->setAcceptedParameter([
+            $this->validatorDataCollector->setAcceptedParameters([
                 "$this->columnName" => [
                     'dateCoveredTo' => $this->date,
                     'originalDate' => $this->originalDate,

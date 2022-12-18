@@ -20,7 +20,7 @@ class EndpointValidator
     public function validateEndPoint(ValidatorDataCollector &$validatorDataCollector) : void
     {
         $this->validatorDataCollector = $validatorDataCollector;
-        $this->availableResourceEndpoints = $this->validatorDataCollector->getAvailableResourceEndpoints();
+        $this->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? [];
         
         if (array_key_exists($this->validatorDataCollector->resource, $this->availableResourceEndpoints)) {
             $this->setResourceVariables();
@@ -40,7 +40,7 @@ class EndpointValidator
     protected function setEndpointDataInValidatorDataCollector() : void
     {
         $this->setEndpointData();
-        $this->validatorDataCollector->setAcceptedParameter([
+        $this->validatorDataCollector->setAcceptedParameters([
             "endpoint" => [
                 'message' => "\"{$this->validatorDataCollector->resource}\" is a valid resource/endpoint for this API. You can also review available resources/endpoints at " . $this->getIndexUrl()
             ]

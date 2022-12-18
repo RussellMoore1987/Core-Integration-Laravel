@@ -46,7 +46,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
             } elseif (in_array($key ,$this->defaultAcceptableParameters)) {
                 $this->handleDefaultParameters($key, $value);
             } else {
-                $this->validatorDataCollector->setRejectedParameter([
+                $this->validatorDataCollector->setRejectedParameters([
                     $key => [
                         'value' => $value,
                         'parameterError' => 'This is an invalid parameter for this resource/endpoint.'
@@ -71,14 +71,14 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         } elseif ($key == 'page') {
             $this->setPageParameter($value);
         } elseif (in_array($key, ['columndata', 'column_data'])) {
-            $this->validatorDataCollector->setAcceptedParameter([
+            $this->validatorDataCollector->setAcceptedParameters([
                 'columnData' => [
                     'value' => $value,
                     'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this resource/endpoint'
                 ]
             ]);
         } elseif (in_array($key, ['formdata', 'form_data'])) {
-            $this->validatorDataCollector->setAcceptedParameter([
+            $this->validatorDataCollector->setAcceptedParameters([
                 'formData' => [
                     'value' => $value,
                     'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter form data for this resource/endpoint'
@@ -90,11 +90,11 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
     protected function setPerPageParameter($value)
     {
         if ($this->isInt($value)) {
-            $this->validatorDataCollector->setAcceptedParameter([
+            $this->validatorDataCollector->setAcceptedParameters([
                 'perPage' => (int) $value
             ]);
         } else {
-            $this->validatorDataCollector->setRejectedParameter([
+            $this->validatorDataCollector->setRejectedParameters([
                 'perPage' => [
                     'value' => $value,
                     'parameterError' => 'This parameter\'s value must be an int.'
@@ -106,11 +106,11 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
     protected function setPageParameter($value)
     {
         if ($this->isInt($value)) {
-            $this->validatorDataCollector->setAcceptedParameter([
+            $this->validatorDataCollector->setAcceptedParameters([
                 'page' => (int) $value
             ]);
         } else {
-            $this->validatorDataCollector->setRejectedParameter([
+            $this->validatorDataCollector->setRejectedParameters([
                 'page' => [
                     'value' => $value,
                     'parameterError' => 'This parameter\'s value must be an int.'

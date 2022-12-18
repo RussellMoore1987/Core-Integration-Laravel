@@ -19,7 +19,6 @@ abstract class RequestValidator
     {
         $this->requestDataPrepper = $requestDataPrepper;
         $this->validatorDataCollector = $validatorDataCollector; // * passed by reference to all methods
-        $this->validatorDataCollector->setAvailableResourceEndpoints(config('coreintegration.availableResourceEndpoints') ?? []);
         $this->requestMethodTypeValidatorFactory = $requestMethodTypeValidatorFactory;
         $this->endpointValidator = $endpointValidator;
     }

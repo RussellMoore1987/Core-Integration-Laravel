@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\CoreIntegrationApi\ValidatorDataCollector;
+use App\Models\Project;
 use Tests\TestCase;
 
 class ValidatorDataCollectorTest extends TestCase
@@ -59,15 +60,15 @@ class ValidatorDataCollectorTest extends TestCase
     public function parameterFunctions()
     {
         return [
-            'rejectedParameters' => ['setRejectedParameter','getRejectedParameters'],
-            'acceptedParameters' => ['setAcceptedParameter','getAcceptedParameters'],
+            'rejectedParameters' => ['setRejectedParameters','getRejectedParameters'],
+            'acceptedParameters' => ['setAcceptedParameters','getAcceptedParameters'],
             'queryArguments' => ['setQueryArgument','getQueryArguments'],
         ];
     }
 
     public function test_getValidatedMetaData_function()
     {
-        $this->setAllParameters();
+        $this->setAllValidatedMetaDataParameters();
 
         $expectedOutput = [
             'endpointData' => $this->endpointData,
@@ -80,14 +81,21 @@ class ValidatorDataCollectorTest extends TestCase
         $this->assertEquals($expectedOutput, $this->ValidatorDataCollector->getValidatedMetaData());
     }
 
-    private function setAllParameters()
+    private function setAllValidatedMetaDataParameters()
     {
+        $this->ValidatorDataCollector->resource = 'projects';
+        $this->ValidatorDataCollector->resourceId = '12342';
+        $this->ValidatorDataCollector->parameters = ['name' => 'sam'];
+        $this->ValidatorDataCollector->requestMethod = 'get';
+        $this->ValidatorDataCollector->resourceObject = new Project();
+        $this->ValidatorDataCollector->url = 'https://foxpest.atlassian.net/jira/software/projects/PA/boards/16';
         $this->ValidatorDataCollector->endpointData = $this->endpointData;
         $this->ValidatorDataCollector->resourceInfo = $this->resourceInfo;
-        $this->ValidatorDataCollector->setRejectedParameter($this->parameters[0]);
-        $this->ValidatorDataCollector->setRejectedParameter($this->parameters[1]);
-        $this->ValidatorDataCollector->setAcceptedParameter($this->parameters[0]);
-        $this->ValidatorDataCollector->setAcceptedParameter($this->parameters[1]);
+
+        $this->ValidatorDataCollector->setRejectedParameters($this->parameters[0]);
+        $this->ValidatorDataCollector->setRejectedParameters($this->parameters[1]);
+        $this->ValidatorDataCollector->setAcceptedParameters($this->parameters[0]);
+        $this->ValidatorDataCollector->setAcceptedParameters($this->parameters[1]);
         $this->ValidatorDataCollector->setQueryArgument($this->parameters[0]);
         $this->ValidatorDataCollector->setQueryArgument($this->parameters[1]);
     }
@@ -107,7 +115,7 @@ class ValidatorDataCollectorTest extends TestCase
 
     public function test_collector_reset_function()
     {
-        $this->setAllParameters();
+        $this->setAllValidatedMetaDataParameters();
 
         $expectedOutput = [
             'endpointData' => [],
@@ -120,5 +128,11 @@ class ValidatorDataCollectorTest extends TestCase
         $this->ValidatorDataCollector->reset();
 
         $this->assertEquals($expectedOutput, $this->ValidatorDataCollector->getValidatedMetaData());
+        $this->assertEquals(null, $this->ValidatorDataCollector->resource);
+        $this->assertEquals(null, $this->ValidatorDataCollector->resourceId);
+        $this->assertEquals([], $this->ValidatorDataCollector->parameters);
+        $this->assertEquals(null, $this->ValidatorDataCollector->requestMethod);
+        $this->assertEquals(null, $this->ValidatorDataCollector->resourceObject);
+        $this->assertEquals(null, $this->ValidatorDataCollector->url);
     }
 }

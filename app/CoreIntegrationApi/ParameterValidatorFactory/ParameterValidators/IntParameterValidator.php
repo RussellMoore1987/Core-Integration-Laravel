@@ -205,7 +205,7 @@ class IntParameterValidator implements ParameterValidator
     private function setErrorsIfAny()
     {
         if ($this->errors) {
-            $this->validatorDataCollector->setRejectedParameter([
+            $this->validatorDataCollector->setRejectedParameters([
                 "$this->columnName" => [
                     'intCoveredTo' => $this->int,
                     'originalIntString' => $this->originalInt,
@@ -220,7 +220,7 @@ class IntParameterValidator implements ParameterValidator
     private function setAcceptedParameterIfAny()
     {
         if (!$this->requestError) {
-            $this->validatorDataCollector->setAcceptedParameter([
+            $this->validatorDataCollector->setAcceptedParameters([
                 "$this->columnName" => [
                     'intCoveredTo' => $this->int,
                     'originalIntString' => $this->originalInt,

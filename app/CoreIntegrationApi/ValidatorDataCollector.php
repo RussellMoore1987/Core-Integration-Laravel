@@ -6,8 +6,6 @@ namespace App\CoreIntegrationApi;
 
 class ValidatorDataCollector
 {
-    protected $availableResourceEndpoints;
-    
     public $resource;
     public $resourceId;
     public $parameters = [];
@@ -21,17 +19,7 @@ class ValidatorDataCollector
     protected $acceptedParameters = [];
     protected $queryArguments = [];
 
-    // TODO: test
-    public function setAvailableResourceEndpoints(array $availableResourceEndpoints) : void
-    {
-        $this->availableResourceEndpoints = $availableResourceEndpoints;
-    }
-    public function getAvailableResourceEndpoints() : array
-    {
-        return $this->availableResourceEndpoints;
-    }
-
-    public function setRejectedParameter(array $rejectedParameters) : void // TODO: should this method be Plural
+    public function setRejectedParameters(array $rejectedParameters) : void
     {
         $this->setArrayParameter('rejectedParameters', $rejectedParameters);
     }
@@ -40,7 +28,7 @@ class ValidatorDataCollector
         return $this->rejectedParameters;
     }
     
-    public function setAcceptedParameter(array $acceptedParameters) : void // TODO: should this method be Plural
+    public function setAcceptedParameters(array $acceptedParameters) : void
     {
         $this->setArrayParameter('acceptedParameters', $acceptedParameters);
     }
@@ -78,17 +66,17 @@ class ValidatorDataCollector
 
     public function reset() : void // reset for reuse, context api
     {
-        $this->endpointData = [];
+        $this->resource = null;
+        $this->resourceId = null;
+        $this->parameters = [];
+        $this->requestMethod = null;
+        $this->resourceObject = null;
+        $this->url = null;
         $this->resourceInfo = [];
+        $this->endpointData = [];
+
         $this->rejectedParameters = [];
         $this->acceptedParameters = [];
         $this->queryArguments = [];
-
-        // TODO: test
-        $this->resource = null;
-        $this->resourceId = null;
-        $this->parameters = null;
-        $this->requestMethod = null;
-        $this->url = null;
     }
 }
