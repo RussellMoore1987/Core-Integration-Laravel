@@ -23,7 +23,7 @@ class IntParameterValidator implements ParameterValidator
         $this->processData();
         $this->checkForOtherErrors();
         $this->setErrorsIfAny();
-        $this->setAcceptedParameterIfAny(); 
+        $this->setAcceptedParameterIfAny();
         $this->setDataQueryArgumentIfAny();
     }
 
@@ -35,7 +35,7 @@ class IntParameterValidator implements ParameterValidator
             $this->columnName = $columnName;
             $this->int = $int;
             $this->originalInt = $int;
-        } 
+        }
     }
 
     private function processData()
@@ -53,24 +53,24 @@ class IntParameterValidator implements ParameterValidator
     private function seeIfParameterHasAction()
     {
         if (str_contains($this->int, '::')) {
-            $int_array = explode('::', $this->int);
+            $intArray = explode('::', $this->int);
     
-            $this->originalComparisonOperator = $int_array[1];
-            $this->intAction = strtolower($int_array[1]);
-            $this->int = $int_array[0];
-        } 
+            $this->originalComparisonOperator = $intArray[1];
+            $this->intAction = strtolower($intArray[1]);
+            $this->int = $intArray[0];
+        }
     }
 
     private function seeIfParameterHasArrayProcessAccordingly()
     {
-        $this->IfArray();
-        $this->IfNotArray();
+        $this->ifArray();
+        $this->ifNotArray();
     }
 
-    private function IfArray()
+    private function ifArray()
     {
         if (
-            str_contains($this->int, ',') && 
+            str_contains($this->int, ',') &&
             (
                 in_array($this->intAction, ['between', 'bt', 'in', 'notin']) ||
                 $this->intAction == null
@@ -116,7 +116,7 @@ class IntParameterValidator implements ParameterValidator
         return is_numeric($value) && !str_contains($value, '.');
     }
 
-    private function IfNotArray()
+    private function ifNotArray()
     {
         if (!is_array($this->int) && !$this->processedAsArray) {
             if ($this->isInt($this->int)) {
@@ -141,17 +141,17 @@ class IntParameterValidator implements ParameterValidator
     {
         if (in_array($this->intAction, ['greaterthan', 'gt', '>'])) {
             $this->comparisonOperator = '>';
-        } else if (in_array($this->intAction, ['greaterthanorequal', 'gte', '>='])) {
+        } elseif (in_array($this->intAction, ['greaterthanorequal', 'gte', '>='])) {
             $this->comparisonOperator = '>=';
-        } else if (in_array($this->intAction, ['lessthan', 'lt', '<'])) {
+        } elseif (in_array($this->intAction, ['lessthan', 'lt', '<'])) {
             $this->comparisonOperator = '<';
-        } else if (in_array($this->intAction, ['lessthanorequal', 'lte', '<='])) {
+        } elseif (in_array($this->intAction, ['lessthanorequal', 'lte', '<='])) {
             $this->comparisonOperator = '<=';
-        } else if (in_array($this->intAction, ['between', 'bt'])) {
+        } elseif (in_array($this->intAction, ['between', 'bt'])) {
             $this->comparisonOperator = 'bt';
-        } else if ($this->intAction == 'in') {
+        } elseif ($this->intAction == 'in') {
             $this->comparisonOperator = 'in';
-        } else if ($this->intAction == 'notin') {
+        } elseif ($this->intAction == 'notin') {
             $this->comparisonOperator = 'notin';
         } else {
             $this->comparisonOperator = '=';
@@ -172,8 +172,8 @@ class IntParameterValidator implements ParameterValidator
     private function checkToSeeIfFirstIntIsGreaterThenLastInt()
     {
         if (
-            $this->comparisonOperator == 'bt' && 
-            is_array($this->int) && 
+            $this->comparisonOperator == 'bt' &&
+            is_array($this->int) &&
             count($this->int) >= 2 &&
             $this->int[0] >= $this->int[1]
         ) {
@@ -188,9 +188,9 @@ class IntParameterValidator implements ParameterValidator
     private function checkToSeeIfWeHaveTwoInts()
     {
         if (
-            $this->comparisonOperator == 'bt' && 
+            $this->comparisonOperator == 'bt' &&
             !(
-                is_array($this->int) && 
+                is_array($this->int) &&
                 count($this->int) >= 2
             )
         ) {
