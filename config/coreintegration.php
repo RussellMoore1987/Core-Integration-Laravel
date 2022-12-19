@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Accepted Classes For the Core integration REST API
+    | Accepted Classes For the Core integration API
     |--------------------------------------------------------------------------
     |
     | Specify the resource/endpoint and the corresponding model
@@ -28,6 +28,29 @@ return [
         'workHistoryTypes' => 'App\Models\WorkHistoryType',
         'workHistory' => 'App\Models\WorkHistory',
         'tests' => 'App\Models\Test',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Return Request Structure
+    |--------------------------------------------------------------------------
+    |
+    | This allows you to specify what you would like the default structure of
+    | requested data to be.
+    |
+    */
+
+    'defaultReturnRequestStructure' => [
+        'paginationData',
+        // 'requestProcessingInfo',
+        // 'formData',
+        // 'apiDataTypeData',
+        // 'resourceInfo',
+        // 'requestedDataOnly', // this will override all other options
     ]
 
+    // Available methods (GET, POST) per endpoint
+        // require API key for mutation requests
+    // filtering (WHERE...) per endpoint
+    // API keys, overarching, per endpoint
 ];

@@ -2,8 +2,6 @@
 
 namespace App\CoreIntegrationApi;
 
-// ! start here ********************************************************* readability
-
 class ValidatorDataCollector
 {
     public $resource;
@@ -11,7 +9,7 @@ class ValidatorDataCollector
     public $parameters = [];
     public $requestMethod;
     public $resourceObject;
-    public $url;
+    public $url; // TODO: may need to move this mostly applies to the rest API
     public $resourceInfo = [];
     public $endpointData = [];
 

@@ -24,7 +24,7 @@ class EndpointValidator
         
         if (array_key_exists($this->validatorDataCollector->resource, $this->availableResourceEndpoints)) {
             $this->setResourceVariables();
-            $this->setEndpointDataInValidatorDataCollector();
+            $this->setEndpointData();
         } elseif ($this->validatorDataCollector->resource != 'index') {
             $this->returnEndpointError();
         }
@@ -37,9 +37,10 @@ class EndpointValidator
         $this->validatorDataCollector->resourceInfo = $this->resourceDataProvider->getResourceInfo();
     }
 
-    protected function setEndpointDataInValidatorDataCollector() : void
+    protected function setEndpointData() : void
     {
-        $this->setEndpointData();
+        $this->setMainPortionOfEndpointData();
+        $this->checkForResourceId();
         $this->validatorDataCollector->setAcceptedParameters([
             "endpoint" => [
                 'message' => "\"{$this->validatorDataCollector->resource}\" is a valid resource/endpoint for this API. You can also review available resources/endpoints at " . $this->getIndexUrl()
@@ -47,12 +48,7 @@ class EndpointValidator
         ]);
     }
 
-    protected function getIndexUrl() : string
-    {
-        return substr($this->validatorDataCollector->url, 0, strpos($this->validatorDataCollector->url, 'api/v1/') + 7);
-    }
-
-    protected function setEndpointData() : void
+    protected function setMainPortionOfEndpointData() : void
     {
         $this->validatorDataCollector->endpointData = [
             'resource' => $this->validatorDataCollector->resource,
@@ -61,7 +57,6 @@ class EndpointValidator
             'url' => $this->validatorDataCollector->url,
             'requestMethod' => $this->validatorDataCollector->requestMethod,
         ];
-        $this->checkForResourceId();
     }
 
     protected function checkForResourceId() : void
@@ -81,5 +76,10 @@ class EndpointValidator
             'status_code' => 404,
         ], 404);
         throw new HttpResponseException($response);
+    }
+
+    protected function getIndexUrl() : string
+    {
+        return substr($this->validatorDataCollector->url, 0, strpos($this->validatorDataCollector->url, 'api/v1/') + 7);
     }
 }

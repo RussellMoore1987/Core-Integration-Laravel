@@ -19,8 +19,8 @@ abstract class RequestValidator
     {
         $this->requestDataPrepper = $requestDataPrepper;
         $this->validatorDataCollector = $validatorDataCollector; // * passed by reference to all methods
-        $this->requestMethodTypeValidatorFactory = $requestMethodTypeValidatorFactory;
         $this->endpointValidator = $endpointValidator;
+        $this->requestMethodTypeValidatorFactory = $requestMethodTypeValidatorFactory;
     }
 
     public function validate() : array

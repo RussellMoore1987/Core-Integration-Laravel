@@ -16,6 +16,14 @@ class RequestMethodTypeValidatorFactoryTest extends TestCase
         $this->requestMethodTypeValidatorFactory = new RequestMethodTypeValidatorFactory();
     }
 
+    public function test_RequestMethodTypeFactory_throws_exception_when_receiving_an_invalid_request_method_type()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectErrorMessage('RequestMethodTypeFactory: Invalid request method type "unlinked"');
+
+        $this->requestMethodTypeValidatorFactory->getFactoryItem('Unlinked');
+    }
+
     /**
      * @dataProvider requestMethodProvider
      */
@@ -27,7 +35,6 @@ class RequestMethodTypeValidatorFactoryTest extends TestCase
     }
     public function requestMethodProvider()
     {
-        // TODO: variables for similar strings
         return [
             'get' => ['get', "{$this->classPath}\GetRequestMethodTypeValidator"],
             'post' => ['post', "{$this->classPath}\PostRequestMethodTypeValidator"],
