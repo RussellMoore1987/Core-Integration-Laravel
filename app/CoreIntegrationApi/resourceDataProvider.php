@@ -6,53 +6,53 @@ use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFac
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class resourceDataProvider
+// TODO: may need to change the name of this class as this class specifically gets things for model resources
+class ResourceDataProvider
 {
-    protected $classPath;
     protected $resourceObject;
-    protected $classTableName;
+    protected $classPath;
+    protected $resourceTableName;
     protected $columnData;
-    protected $availableParameters;
+    protected $availableParameters = [];
 
     public function __construct(ParameterDataProviderFactory $parameterDataProviderFactory)
     {
-        $this->parameterDataProviderFactory = $parameterDataProviderFactory;
+        $this->parameterDataProviderFactory = $parameterDataProviderFactory; // TODO: name change ??? attributeDataProviderFactory resourceDataProviderFactory
     }
 
-    public function setResource(Model $class)
+    public function setResource(Model $class) : void
     {
         $this->resourceObject = $class;
         $this->classPath = get_class($class);
     }
 
-    public function getClassPrimaryKeyName()
+    public function getResourcePrimaryKeyName() : string
     {
-        $primaryKeyName = $this->resourceObject->getKeyName() ?? 'id';
-        return $primaryKeyName;
+        return $this->resourceObject->getKeyName() ?? 'id';
     }
 
-    public function getClassPath()
+    public function getResourceClassPath() : string
     {
         return $this->classPath;
     }
 
-    public function getClassAcceptableParameters()
+    public function getResourceAcceptableParameters() : array
     {
-        $this->classTableName = $this->resourceObject->gettable();
+        $this->resourceTableName = $this->resourceObject->gettable();
         $this->getAcceptableParameters();
         return $this->availableParameters;
     }
 
-    protected function getAcceptableParameters()
+    protected function getAcceptableParameters() : void
     {
-        $this->columnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$this->classTableName}"));
+        $this->columnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$this->resourceTableName}"));
         $this->setAcceptableParameters();
         $this->addAdditionalInfoToAcceptableParameters();
         $this->availableParameters['availableMethodCalls'] = $this->resourceObject->availableMethodCalls ?? [];
         $this->availableParameters['availableIncludes'] = $this->resourceObject->availableIncludes ?? [];
     }
 
-    protected function arrayOfObjectsToArrayOfArrays(array $arrayOfObjects)
+    protected function arrayOfObjectsToArrayOfArrays(array $arrayOfObjects) : array
     {
         foreach ($arrayOfObjects as $object) {
             $arrayOfArrays[] = (array) $object;
@@ -61,19 +61,19 @@ class resourceDataProvider
         return $arrayOfArrays;
     }
 
-    protected function setAcceptableParameters()
+    protected function setAcceptableParameters() : void
     {
         foreach ($this->columnData as $columnArray) {
-            foreach ($columnArray as $column_data_name => $value) {
-                $column_data_name = strtolower($column_data_name);
-                $value = $value === Null ? $value : strtolower($value);
+            foreach ($columnArray as $columnDataName => $value) {
+                $columnDataName = strtolower($columnDataName);
+                $value = $value === null ? $value : strtolower($value);
 
-                $this->availableParameters['acceptableParameters'][$columnArray['Field']][$column_data_name] = $value; 
+                $this->availableParameters['acceptableParameters'][$columnArray['Field']][$columnDataName] = $value;
             }
         }
     }
 
-    protected function addAdditionalInfoToAcceptableParameters()
+    protected function addAdditionalInfoToAcceptableParameters() : void
     {
         foreach ($this->availableParameters['acceptableParameters'] as $key => $columnArray) {
             $parameterFormDataProvider = $this->parameterDataProviderFactory->getFactoryItem($columnArray['type']);
@@ -85,15 +85,14 @@ class resourceDataProvider
         }
     }
 
-    public function getResourceInfo()
+    public function getResourceInfo() : array
     {
-        $resourceInfo = array_merge(
+        return array_merge(
             [
-            'primaryKeyName' => $this->getClassPrimaryKeyName(),
-            'path' => $this->getClassPath(),
+                'primaryKeyName' => $this->getResourcePrimaryKeyName(),
+                'path' => $this->classPath,
             ],
-            $this->getClassAcceptableParameters()
+            $this->getResourceAcceptableParameters()
         );
-        return $resourceInfo;
     }
 }

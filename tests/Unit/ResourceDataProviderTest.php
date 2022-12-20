@@ -24,12 +24,12 @@ class ResourceDataProviderTest extends TestCase
         $this->createProjectClassTestInfo();
         $this->resourceDataProvider->setResource($this->project);
 
-        $this->assertEquals($this->expectedResourceInfo['primaryKeyName'], $this->resourceDataProvider->getClassPrimaryKeyName());
-        $this->assertEquals($this->expectedResourceInfo['path'], $this->resourceDataProvider->getClassPath());
+        $this->assertEquals($this->expectedResourceInfo['primaryKeyName'], $this->resourceDataProvider->getResourcePrimaryKeyName());
+        $this->assertEquals($this->expectedResourceInfo['path'], $this->resourceDataProvider->getResourceClassPath());
         $this->assertEquals($this->expectedResourceInfo, $this->resourceDataProvider->getResourceInfo());
         unset($this->expectedResourceInfo['primaryKeyName']);
         unset($this->expectedResourceInfo['path']);
-        $this->assertEquals($this->expectedResourceInfo, $this->resourceDataProvider->getClassAcceptableParameters());
+        $this->assertEquals($this->expectedResourceInfo, $this->resourceDataProvider->getResourceAcceptableParameters());
 
     }
 
@@ -383,12 +383,12 @@ class ResourceDataProviderTest extends TestCase
         $this->createWorkHistoryTypeClassTestInfo();
         $this->resourceDataProvider->setResource($this->workHistoryType);
 
-        $this->assertEquals($this->expectedResourceInfo['primaryKeyName'], $this->resourceDataProvider->getClassPrimaryKeyName());
-        $this->assertEquals($this->expectedResourceInfo['path'], $this->resourceDataProvider->getClassPath());
+        $this->assertEquals($this->expectedResourceInfo['primaryKeyName'], $this->resourceDataProvider->getResourcePrimaryKeyName());
+        $this->assertEquals($this->expectedResourceInfo['path'], $this->resourceDataProvider->getResourceClassPath());
         $this->assertEquals($this->expectedResourceInfo, $this->resourceDataProvider->getResourceInfo());
         unset($this->expectedResourceInfo['primaryKeyName']);
         unset($this->expectedResourceInfo['path']);
-        $this->assertEquals($this->expectedResourceInfo, $this->resourceDataProvider->getClassAcceptableParameters());
+        $this->assertEquals($this->expectedResourceInfo, $this->resourceDataProvider->getResourceAcceptableParameters());
 
     }
 

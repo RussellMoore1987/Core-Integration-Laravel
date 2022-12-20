@@ -14,7 +14,7 @@ class EndpointValidator
 
     public function __construct(ResourceDataProvider $resourceDataProvider)
     {
-        $this->resourceDataProvider = $resourceDataProvider;
+        $this->resourceDataProvider = $resourceDataProvider; // TODO: name change ??? resourceInfoProvider info -> about the resource, both are fairly ambiguous
     }
 
     public function validateEndPoint(ValidatorDataCollector &$validatorDataCollector) : void
