@@ -13,7 +13,7 @@ class GetRequestMethodQueryResolver implements RequestMethodQueryResolver
     protected $validatedMetaData;
     protected $queryResult;
 
-    function __construct(QueryAssembler $queryAssembler, QueryIndex $queryIndex) 
+    public function __construct(QueryAssembler $queryAssembler, QueryIndex $queryIndex)
     {
         $this->queryAssembler = $queryAssembler;
         $this->queryIndex = $queryIndex;
@@ -23,8 +23,8 @@ class GetRequestMethodQueryResolver implements RequestMethodQueryResolver
     {
         $this->validatedMetaData = $validatedMetaData;
 
-        $this->checkResourceColumnData();
-        $this->checkIndex(); 
+        $this->checkResourceColumnData(); // get,    has, set*** if statement
+        $this->checkIndex();
         $this->checkFormData();
         $this->checkGetRequest();
 
@@ -38,7 +38,7 @@ class GetRequestMethodQueryResolver implements RequestMethodQueryResolver
                 $this->queryResult['availableResourceParameters'][$columnName] = $columnArray['api_data_type'];
             }
             $this->queryResult['info'] = [
-                'message' => 'Documentation on how to utilize parameter data types can be found in the index response, in the ApiDocumentation section.', 
+                'message' => 'Documentation on how to utilize parameter data types can be found in the index response, in the ApiDocumentation section.',
                 'index_url' => $this->validatedMetaData['endpointData']['indexUrl']
             ];
         }
@@ -47,7 +47,7 @@ class GetRequestMethodQueryResolver implements RequestMethodQueryResolver
     protected function checkIndex()
     {
         if (!$this->queryResult && $this->validatedMetaData['endpointData']['resource'] == 'index') {
-            $this->queryResult = $this->queryIndex->get();   
+            $this->queryResult = $this->queryIndex->get();
         }
     }
 
@@ -55,7 +55,7 @@ class GetRequestMethodQueryResolver implements RequestMethodQueryResolver
     {
         if (!$this->queryResult && isset($this->validatedMetaData['acceptedParameters']['formData'])) {
             // TODO: get form data
-            $this->queryResult = 'form data';   
+            $this->queryResult = 'form data';
         }
     }
 

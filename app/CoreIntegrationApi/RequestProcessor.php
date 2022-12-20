@@ -31,7 +31,7 @@ abstract class RequestProcessor
     {
         $this->validatedMetaData = $this->requestValidator->validate();
         $this->responseBuilder->setValidatedMetaData($this->validatedMetaData);
-        // * if validation fails request will be sent back to the user as a HttpResponseException (a 400, 422 response)
+        // * if validation fails request will be sent back to the user as a HttpResponseException (a 404, 422 response)
     }
 
     protected function getRequestedData() : void

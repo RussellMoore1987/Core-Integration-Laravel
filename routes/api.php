@@ -18,9 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 // ! Start here ****************************************************************** refine prosses, rename, refactor, UML*** read up on testing names, end-to-end, integration, unit, ect. ability to add images
 
-Route::any("v1/{resource?}/{resourceId?}", [CILApiController::class, 'processRequest']); // generic route -> both REST and Context
-
-Route::any("rest/v1/{resource?}/{resourceId?}", [CILApiController::class, 'processRestRequest']); // REST only route
+Route::any("v1/{resource?}/{resourceId?}", [CILApiController::class, 'processRestRequest']); // REST only route
 
 Route::post("context/v1", [CILApiController::class, 'processContextRequest']); // Context only route
 
