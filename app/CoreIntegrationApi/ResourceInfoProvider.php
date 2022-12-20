@@ -17,7 +17,7 @@ class ResourceInfoProvider
 
     public function __construct(ParameterDataProviderFactory $parameterDataProviderFactory)
     {
-        $this->parameterDataProviderFactory = $parameterDataProviderFactory; // TODO: name change ??? attributeDataProviderFactory resourceDataProviderFactory
+        $this->parameterDataProviderFactory = $parameterDataProviderFactory; // TODO: name change ??? parameterInfoProviderFactory ??? attributeDataProviderFactory resourceAttributeInfoProviderFactory ??? resourceParameterInfoProviderFactory
     }
 
     public function setResource(Model $class) : void

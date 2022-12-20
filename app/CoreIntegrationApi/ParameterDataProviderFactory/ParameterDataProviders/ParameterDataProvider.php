@@ -4,11 +4,11 @@ namespace App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProvi
 
 use Illuminate\Database\Eloquent\Model;
 
-abstract class ParameterDataProvider 
+abstract class ParameterDataProvider
 {
     protected $apiDataType;
     protected $defaultValidationRules = [];
-    protected $formData = []; 
+    protected $formData = [];
 
     public function getData(array $parameterDataInfo,  Model $parameterClass) : array
     {
@@ -34,7 +34,7 @@ abstract class ParameterDataProvider
     protected function checkToSeeIfFormDataIsRequired()
     {
         if (
-            $this->parameterDataInfo['null'] == 'no' && 
+            $this->parameterDataInfo['null'] == 'no' &&
             $this->parameterDataInfo['default'] == null &&
             $this->parameterDataInfo['extra'] != 'auto_increment'
         ) {
@@ -46,11 +46,11 @@ abstract class ParameterDataProvider
     protected function checkForClassParameterFormData() // merge arrays
     {
         if (
-            is_array($this->formData) && 
-            $this->parameterClass->formData && 
+            is_array($this->formData) &&
+            $this->parameterClass->formData &&
             isset($this->parameterClass->formData[$this->parameterName])
             ) {
-            $this->formData = array_merge($this->formData, $this->parameterClass->formData[$this->parameterName]); 
+            $this->formData = array_merge($this->formData, $this->parameterClass->formData[$this->parameterName]);
         }
     }
 
