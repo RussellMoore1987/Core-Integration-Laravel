@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilderFactory;
 use App\CoreIntegrationApi\CIL\CILQueryAssembler;
 use App\CoreIntegrationApi\EndpointValidator;
-use App\CoreIntegrationApi\ResourceDataProvider;
+use App\CoreIntegrationApi\ResourceInfoProvider;
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\GetRequestMethodTypeValidator;
 use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFactory;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
@@ -21,7 +21,7 @@ class CILProvider extends ServiceProvider
     public function register()
     {
         $this->bindCILQueryAssembler();
-        $this->bindResourceDataProvider();
+        $this->bindResourceInfoProvider();
         $this->bindGetRequestMethodTypeValidator();
         $this->bindEndpointValidator();
     }
@@ -34,9 +34,9 @@ class CILProvider extends ServiceProvider
         });
     }
 
-    private function bindResourceDataProvider() {
-        $this->app->bind(ResourceDataProvider::class, function ($app) {
-            return new ResourceDataProvider(
+    private function bindResourceInfoProvider() {
+        $this->app->bind(ResourceInfoProvider::class, function ($app) {
+            return new ResourceInfoProvider(
                 $app->make(ParameterDataProviderFactory::class),
             );
         });
@@ -53,7 +53,7 @@ class CILProvider extends ServiceProvider
     private function bindEndpointValidator() {
         $this->app->bind(EndpointValidator::class, function ($app) {
             return new EndpointValidator(
-                $app->make(ResourceDataProvider::class),
+                $app->make(ResourceInfoProvider::class),
             );
         });
     }

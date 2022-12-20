@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\CoreIntegrationApi\CIL\CILQueryAssembler;
 use App\CoreIntegrationApi\EndpointValidator;
-use App\CoreIntegrationApi\ResourceDataProvider;
+use App\CoreIntegrationApi\ResourceInfoProvider;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
@@ -34,7 +34,7 @@ class CILProviderTest extends TestCase
     {
         return [
             'CILQueryAssembler' => [CILQueryAssembler::class],
-            'ResourceDataProvider' => [ResourceDataProvider::class],
+            'ResourceInfoProvider' => [ResourceInfoProvider::class],
             'EndpointValidator' => [EndpointValidator::class],
         ];
     }

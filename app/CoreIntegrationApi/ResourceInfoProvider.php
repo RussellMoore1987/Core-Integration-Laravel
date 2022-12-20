@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 // TODO: may need to change the name of this class as this class specifically gets things for model resources
-class ResourceDataProvider
+class ResourceInfoProvider
 {
     protected $resourceObject;
     protected $classPath;
