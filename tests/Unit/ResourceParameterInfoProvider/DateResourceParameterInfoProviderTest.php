@@ -27,8 +27,7 @@ class DateResourceParameterInfoProviderTest extends TestCase
     public function test_DateResourceParameterInfoProvider_default_return_values($parameterDataInfo, $expectedResult)
     {
         unset($this->project->formData);
-        unset($this->project->validationRules);
-        $result = $this->dateResourceParameterInfoProvider->getData($parameterDataInfo, $this->project);
+        $result = $this->dateResourceParameterInfoProvider->getData($parameterDataInfo, $this->project->formData ?? []);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -39,12 +38,11 @@ class DateResourceParameterInfoProviderTest extends TestCase
     public function test_DateResourceParameterInfoProvider_default_return_values_with_requires($parameterDataInfo, $expectedResult)
     {
         unset($this->project->formData);
-        unset($this->project->validationRules);
         $parameterDataInfo['default'] = null;
         $expectedResult['formData']['required'] = true;
         $expectedResult['defaultValidationRules'][] = 'required';
 
-        $result = $this->dateResourceParameterInfoProvider->getData($parameterDataInfo, $this->project);
+        $result = $this->dateResourceParameterInfoProvider->getData($parameterDataInfo, $this->project->formData ?? []);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -158,7 +156,7 @@ class DateResourceParameterInfoProviderTest extends TestCase
         
         $this->expectedResult = $expectedResult;
 
-        $result = $this->dateResourceParameterInfoProvider->getData($parameterDataInfo,  $this->project);
+        $result = $this->dateResourceParameterInfoProvider->getData($parameterDataInfo,  $this->project->formData ?? []);
 
         $this->assertEquals($this->expectedResult, $result);
     }

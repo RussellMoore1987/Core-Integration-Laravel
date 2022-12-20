@@ -2,25 +2,22 @@
 
 namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders;
 
-use Illuminate\Database\Eloquent\Model;
-
 abstract class ResourceParameterInfoProvider
 {
     protected $apiDataType;
     protected $defaultValidationRules = [];
     protected $formData = [];
 
-    public function getData(array $parameterDataInfo,  Model $parameterClass) : array
+    public function getData(array $parameterDataInfo,  array $parameterClassFormData) : array
     {
         $this->parameterName = $parameterDataInfo['field'];
         $this->parameterDataInfo = $parameterDataInfo;
         $this->dataType = $parameterDataInfo['type'];
-        $this->parameterClass = $parameterClass;
         
         $this->getFormData();
         $this->checkToSeeIfFormDataIsRequired();
         
-        $this->checkForClassParameterFormData();
+        $this->checkForClassParameterFormData($parameterClassFormData);
 
         return [
             'apiDataType' => $this->getApiDataType(),
@@ -43,14 +40,10 @@ abstract class ResourceParameterInfoProvider
         }
     }
 
-    protected function checkForClassParameterFormData() // merge arrays
+    protected function checkForClassParameterFormData($parameterClassFormData)
     {
-        if (
-            is_array($this->formData) &&
-            $this->parameterClass->formData &&
-            isset($this->parameterClass->formData[$this->parameterName])
-            ) {
-            $this->formData = array_merge($this->formData, $this->parameterClass->formData[$this->parameterName]);
+        if ($parameterClassFormData && isset($parameterClassFormData[$this->parameterName])) {
+            $this->formData = array_merge($this->formData, $parameterClassFormData[$this->parameterName]);
         }
     }
 

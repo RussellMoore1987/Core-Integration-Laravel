@@ -27,8 +27,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
     public function test_IntResourceParameterInfoProvider_default_return_values($parameterDataInfo, $expectedResult)
     {
         unset($this->project->formData);
-        unset($this->project->validationRules);
-        $result = $this->intResourceParameterInfoProvider->getData($parameterDataInfo, $this->project);
+        $result = $this->intResourceParameterInfoProvider->getData($parameterDataInfo, $this->project->formData ?? []);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -338,7 +337,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
 
         $this->expectedResult = $expectedResult;
 
-        $result = $this->intResourceParameterInfoProvider->getData($parameterDataInfo, $this->project);
+        $result = $this->intResourceParameterInfoProvider->getData($parameterDataInfo, $this->project->formData ?? []);
 
         $this->assertEquals($this->expectedResult, $result);
     }

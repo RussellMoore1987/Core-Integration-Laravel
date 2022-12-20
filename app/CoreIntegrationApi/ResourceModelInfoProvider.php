@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\DB;
 class ResourceModelInfoProvider
 {
     protected $resourceObject;
-    protected $classPath;
-    protected $resourceTableName;
-    protected $columnData;
+    protected $resourceClassPath;
     protected $availableParameters = [];
 
     public function __construct(ResourceParameterInfoProviderFactory $resourceParameterInfoProviderFactory)
@@ -23,7 +21,7 @@ class ResourceModelInfoProvider
     public function setResource(Model $class) : void
     {
         $this->resourceObject = $class;
-        $this->classPath = get_class($class);
+        $this->resourceClassPath = get_class($class);
     }
 
     public function getResourcePrimaryKeyName() : string
@@ -33,20 +31,20 @@ class ResourceModelInfoProvider
 
     public function getResourceClassPath() : string
     {
-        return $this->classPath;
+        return $this->resourceClassPath;
     }
 
     public function getResourceAcceptableParameters() : array
     {
-        $this->resourceTableName = $this->resourceObject->gettable();
-        $this->getAcceptableParameters();
+        $resourceTableName = $this->resourceObject->gettable();
+        $this->getAcceptableParameters($resourceTableName);
         return $this->availableParameters;
     }
 
-    protected function getAcceptableParameters() : void
+    protected function getAcceptableParameters(string $resourceTableName) : void
     {
-        $this->columnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$this->resourceTableName}"));
-        $this->setAcceptableParameters();
+        $resourceColumnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$resourceTableName}"));
+        $this->setAcceptableParameters($resourceColumnData);
         $this->addAdditionalInfoToAcceptableParameters();
         $this->availableParameters['availableMethodCalls'] = $this->resourceObject->availableMethodCalls ?? [];
         $this->availableParameters['availableIncludes'] = $this->resourceObject->availableIncludes ?? [];
@@ -61,27 +59,27 @@ class ResourceModelInfoProvider
         return $arrayOfArrays;
     }
 
-    protected function setAcceptableParameters() : void
+    protected function setAcceptableParameters(array $resourceColumnData) : void
     {
-        foreach ($this->columnData as $columnArray) {
-            foreach ($columnArray as $columnDataName => $value) {
-                $columnDataName = strtolower($columnDataName);
+        foreach ($resourceColumnData as $columnAttributeArray) {
+            foreach ($columnAttributeArray as $attributeName => $value) {
+                $attributeName = strtolower($attributeName);
                 $value = $value === null ? $value : strtolower($value);
 
-                $this->availableParameters['acceptableParameters'][$columnArray['Field']][$columnDataName] = $value;
+                $this->availableParameters['acceptableParameters'][$columnAttributeArray['Field']][$attributeName] = $value;
             }
         }
     }
 
     protected function addAdditionalInfoToAcceptableParameters() : void
     {
-        foreach ($this->availableParameters['acceptableParameters'] as $key => $columnArray) {
-            $parameterFormDataProvider = $this->resourceParameterInfoProviderFactory->getFactoryItem($columnArray['type']);
-            $parameterData = $parameterFormDataProvider->getData($columnArray, $this->resourceObject);
+        foreach ($this->availableParameters['acceptableParameters'] as $parameterName => $parameterInfoArray) {
+            $resourceParameterInfoProvider = $this->resourceParameterInfoProviderFactory->getFactoryItem($parameterInfoArray['type']);
+            $parameterData = $resourceParameterInfoProvider->getData($parameterInfoArray, $this->resourceObject->formData ?? []);
 
-            $this->availableParameters['acceptableParameters'][$key]['api_data_type'] = $parameterData['apiDataType'];
-            $this->availableParameters['acceptableParameters'][$key]['defaultValidationRules'] = $parameterData['defaultValidationRules'];
-            $this->availableParameters['acceptableParameters'][$key]['formData'] = $parameterData['formData'];
+            $this->availableParameters['acceptableParameters'][$parameterName]['api_data_type'] = $parameterData['apiDataType'];
+            $this->availableParameters['acceptableParameters'][$parameterName]['defaultValidationRules'] = $parameterData['defaultValidationRules'];
+            $this->availableParameters['acceptableParameters'][$parameterName]['formData'] = $parameterData['formData'];
         }
     }
 
@@ -90,7 +88,7 @@ class ResourceModelInfoProvider
         return array_merge(
             [
                 'primaryKeyName' => $this->getResourcePrimaryKeyName(),
-                'path' => $this->classPath,
+                'path' => $this->resourceClassPath,
             ],
             $this->getResourceAcceptableParameters()
         );
