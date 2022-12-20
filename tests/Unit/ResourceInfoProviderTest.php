@@ -2,34 +2,34 @@
 
 namespace Tests\Unit;
 
-use App\CoreIntegrationApi\ResourceInfoProvider;
+use App\CoreIntegrationApi\ResourceModelInfoProvider;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviderFactory;
 use App\Models\Project;
 use App\Models\WorkHistoryType;
 use Tests\TestCase;
 
-class ResourceInfoProviderTest extends TestCase
+class ResourceModelInfoProviderTest extends TestCase
 {
-    private $resourceInfoProvider;
+    private $resourceModelInfoProvider;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->resourceInfoProvider = new ResourceInfoProvider(new ResourceParameterInfoProviderFactory());
+        $this->resourceModelInfoProvider = new ResourceModelInfoProvider(new ResourceParameterInfoProviderFactory());
     }
 
-    public function test_ResourceInfoProvider_functions_results_as_expected_from_project_class()
+    public function test_ResourceModelInfoProvider_functions_results_as_expected_from_project_class()
     {
         $this->createProjectClassTestInfo();
-        $this->resourceInfoProvider->setResource($this->project);
+        $this->resourceModelInfoProvider->setResource($this->project);
 
-        $this->assertEquals($this->expectedResourceInfo['primaryKeyName'], $this->resourceInfoProvider->getResourcePrimaryKeyName());
-        $this->assertEquals($this->expectedResourceInfo['path'], $this->resourceInfoProvider->getResourceClassPath());
-        $this->assertEquals($this->expectedResourceInfo, $this->resourceInfoProvider->getResourceInfo());
+        $this->assertEquals($this->expectedResourceInfo['primaryKeyName'], $this->resourceModelInfoProvider->getResourcePrimaryKeyName());
+        $this->assertEquals($this->expectedResourceInfo['path'], $this->resourceModelInfoProvider->getResourceClassPath());
+        $this->assertEquals($this->expectedResourceInfo, $this->resourceModelInfoProvider->getResourceInfo());
         unset($this->expectedResourceInfo['primaryKeyName']);
         unset($this->expectedResourceInfo['path']);
-        $this->assertEquals($this->expectedResourceInfo, $this->resourceInfoProvider->getResourceAcceptableParameters());
+        $this->assertEquals($this->expectedResourceInfo, $this->resourceModelInfoProvider->getResourceAcceptableParameters());
 
     }
 
@@ -378,17 +378,17 @@ class ResourceInfoProviderTest extends TestCase
         ];
     }
 
-    public function test_ResourceInfoProvider_functions_results_as_expected_from_WorkHistoryType_class()
+    public function test_ResourceModelInfoProvider_functions_results_as_expected_from_WorkHistoryType_class()
     {
         $this->createWorkHistoryTypeClassTestInfo();
-        $this->resourceInfoProvider->setResource($this->workHistoryType);
+        $this->resourceModelInfoProvider->setResource($this->workHistoryType);
 
-        $this->assertEquals($this->expectedResourceInfo['primaryKeyName'], $this->resourceInfoProvider->getResourcePrimaryKeyName());
-        $this->assertEquals($this->expectedResourceInfo['path'], $this->resourceInfoProvider->getResourceClassPath());
-        $this->assertEquals($this->expectedResourceInfo, $this->resourceInfoProvider->getResourceInfo());
+        $this->assertEquals($this->expectedResourceInfo['primaryKeyName'], $this->resourceModelInfoProvider->getResourcePrimaryKeyName());
+        $this->assertEquals($this->expectedResourceInfo['path'], $this->resourceModelInfoProvider->getResourceClassPath());
+        $this->assertEquals($this->expectedResourceInfo, $this->resourceModelInfoProvider->getResourceInfo());
         unset($this->expectedResourceInfo['primaryKeyName']);
         unset($this->expectedResourceInfo['path']);
-        $this->assertEquals($this->expectedResourceInfo, $this->resourceInfoProvider->getResourceAcceptableParameters());
+        $this->assertEquals($this->expectedResourceInfo, $this->resourceModelInfoProvider->getResourceAcceptableParameters());
 
     }
 

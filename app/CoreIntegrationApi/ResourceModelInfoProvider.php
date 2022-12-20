@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 // ! Start here ****************************************************************** readability
 // TODO: may need to change the name of this class as this class specifically gets things for model resources
-class ResourceInfoProvider
+class ResourceModelInfoProvider
 {
     protected $resourceObject;
     protected $classPath;
@@ -18,7 +18,6 @@ class ResourceInfoProvider
 
     public function __construct(ResourceParameterInfoProviderFactory $resourceParameterInfoProviderFactory)
     {
-        // TODO: name change ??? parameterInfoProviderFactory ??? attributeDataProviderFactory resourceAttributeInfoProviderFactory ??? resourceParameterInfoProviderFactory
         $this->resourceParameterInfoProviderFactory = $resourceParameterInfoProviderFactory;
     }
 

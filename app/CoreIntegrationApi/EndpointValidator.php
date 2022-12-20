@@ -2,19 +2,19 @@
 
 namespace App\CoreIntegrationApi;
 
-use App\CoreIntegrationApi\ResourceInfoProvider;
+use App\CoreIntegrationApi\ResourceModelInfoProvider;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 
 class EndpointValidator
 {
-    protected $resourceInfoProvider;
+    protected $resourceModelInfoProvider;
     protected $validatorDataCollector;
     protected $availableResourceEndpoints;
 
-    public function __construct(ResourceInfoProvider $resourceInfoProvider)
+    public function __construct(ResourceModelInfoProvider $resourceModelInfoProvider)
     {
-        $this->resourceInfoProvider = $resourceInfoProvider;
+        $this->resourceModelInfoProvider = $resourceModelInfoProvider;
     }
 
     public function validateEndPoint(ValidatorDataCollector &$validatorDataCollector) : void
@@ -33,8 +33,8 @@ class EndpointValidator
     protected function setResourceVariables() : void
     {
         $this->validatorDataCollector->resourceObject = new $this->availableResourceEndpoints[$this->validatorDataCollector->resource]();
-        $this->resourceInfoProvider->setResource($this->validatorDataCollector->resourceObject);
-        $this->validatorDataCollector->resourceInfo = $this->resourceInfoProvider->getResourceInfo();
+        $this->resourceModelInfoProvider->setResource($this->validatorDataCollector->resourceObject);
+        $this->validatorDataCollector->resourceInfo = $this->resourceModelInfoProvider->getResourceInfo();
     }
 
     protected function setEndpointData() : void
