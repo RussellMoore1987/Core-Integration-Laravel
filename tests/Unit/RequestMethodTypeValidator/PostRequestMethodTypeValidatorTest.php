@@ -4,7 +4,7 @@ namespace Tests\Unit\RequestMethodTypeValidator;
 
 use App\CoreIntegrationApi\ResourceInfoProvider;
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\PostRequestMethodTypeValidator;
-use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFactory;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviderFactory;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\Models\Category;
 use App\Models\WorkHistoryType;
@@ -178,7 +178,7 @@ class PostRequestMethodTypeValidatorTest extends TestCase
     {
         // TODO: rename things to make more sens
         // TODO: make it so I can mercilessly refactor it
-        $resourceInfoProvider = new ResourceInfoProvider(new ParameterDataProviderFactory());
+        $resourceInfoProvider = new ResourceInfoProvider(new ResourceParameterInfoProviderFactory());
         $resourceInfoProvider->setResource($class);
         $resourceInfo = $resourceInfoProvider->getResourceInfo();
 

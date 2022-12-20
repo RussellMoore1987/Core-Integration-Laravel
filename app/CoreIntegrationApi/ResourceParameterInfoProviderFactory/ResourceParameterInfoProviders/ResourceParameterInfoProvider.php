@@ -1,10 +1,10 @@
 <?php
 
-namespace App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders;
+namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders;
 
 use Illuminate\Database\Eloquent\Model;
 
-abstract class ParameterDataProvider
+abstract class ResourceParameterInfoProvider
 {
     protected $apiDataType;
     protected $defaultValidationRules = [];

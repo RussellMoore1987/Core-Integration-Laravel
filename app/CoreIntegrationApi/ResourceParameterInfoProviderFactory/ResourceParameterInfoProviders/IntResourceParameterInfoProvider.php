@@ -1,10 +1,10 @@
 <?php
 
-namespace App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders;
+namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders;
 
-use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders\ParameterDataProvider;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\ResourceParameterInfoProvider;
 // TODO: add validation rules to test
-class IntParameterDataProvider extends ParameterDataProvider
+class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
 {
     protected $apiDataType = 'int';
     protected $intType;

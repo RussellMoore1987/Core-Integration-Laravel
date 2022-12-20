@@ -2,10 +2,11 @@
 
 namespace App\CoreIntegrationApi;
 
-use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFactory;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviderFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+// ! Start here ****************************************************************** readability
 // TODO: may need to change the name of this class as this class specifically gets things for model resources
 class ResourceInfoProvider
 {
@@ -15,9 +16,10 @@ class ResourceInfoProvider
     protected $columnData;
     protected $availableParameters = [];
 
-    public function __construct(ParameterDataProviderFactory $parameterDataProviderFactory)
+    public function __construct(ResourceParameterInfoProviderFactory $resourceParameterInfoProviderFactory)
     {
-        $this->parameterDataProviderFactory = $parameterDataProviderFactory; // TODO: name change ??? parameterInfoProviderFactory ??? attributeDataProviderFactory resourceAttributeInfoProviderFactory ??? resourceParameterInfoProviderFactory
+        // TODO: name change ??? parameterInfoProviderFactory ??? attributeDataProviderFactory resourceAttributeInfoProviderFactory ??? resourceParameterInfoProviderFactory
+        $this->resourceParameterInfoProviderFactory = $resourceParameterInfoProviderFactory;
     }
 
     public function setResource(Model $class) : void
@@ -76,7 +78,7 @@ class ResourceInfoProvider
     protected function addAdditionalInfoToAcceptableParameters() : void
     {
         foreach ($this->availableParameters['acceptableParameters'] as $key => $columnArray) {
-            $parameterFormDataProvider = $this->parameterDataProviderFactory->getFactoryItem($columnArray['type']);
+            $parameterFormDataProvider = $this->resourceParameterInfoProviderFactory->getFactoryItem($columnArray['type']);
             $parameterData = $parameterFormDataProvider->getData($columnArray, $this->resourceObject);
 
             $this->availableParameters['acceptableParameters'][$key]['api_data_type'] = $parameterData['apiDataType'];

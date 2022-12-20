@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\CoreIntegrationApi\ResourceInfoProvider;
-use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFactory;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviderFactory;
 use App\Models\Project;
 use App\Models\WorkHistoryType;
 use Tests\TestCase;
@@ -16,7 +16,7 @@ class ResourceInfoProviderTest extends TestCase
     {
         parent::setUp();
 
-        $this->resourceInfoProvider = new ResourceInfoProvider(new ParameterDataProviderFactory());
+        $this->resourceInfoProvider = new ResourceInfoProvider(new ResourceParameterInfoProviderFactory());
     }
 
     public function test_ResourceInfoProvider_functions_results_as_expected_from_project_class()

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders;
+namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders;
 
-use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders\ParameterDataProvider;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\ResourceParameterInfoProvider;
 
-class DateParameterDataProvider extends ParameterDataProvider
+class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
 {
     protected $apiDataType = 'date';
     protected $dateType;

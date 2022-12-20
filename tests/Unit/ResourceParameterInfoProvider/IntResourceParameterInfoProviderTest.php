@@ -1,39 +1,39 @@
 <?php
 
-namespace Tests\Unit\ParameterDataProvider;
+namespace Tests\Unit\ResourceParameterInfoProvider;
 
-use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders\IntParameterDataProvider;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\IntResourceParameterInfoProvider;
 use App\Models\Project;
 use Tests\TestCase;
 
-class IntParameterDataProviderTest extends TestCase
+class IntResourceParameterInfoProviderTest extends TestCase
 {
     protected $project;
-    protected $intParameterDataProvider;
+    protected $intResourceParameterInfoProvider;
     protected $expectedResult;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->intParameterDataProvider = new IntParameterDataProvider();
+        $this->intResourceParameterInfoProvider = new IntResourceParameterInfoProvider();
 
         $this->project = new Project();
     }
 
     /**
-     * @dataProvider intParameterDataProvider
+     * @dataProvider intResourceParameterInfoProvider
      */
-    public function test_IntParameterDataProvider_default_return_values($parameterDataInfo, $expectedResult)
+    public function test_IntResourceParameterInfoProvider_default_return_values($parameterDataInfo, $expectedResult)
     {
         unset($this->project->formData);
         unset($this->project->validationRules);
-        $result = $this->intParameterDataProvider->getData($parameterDataInfo, $this->project);
+        $result = $this->intResourceParameterInfoProvider->getData($parameterDataInfo, $this->project);
 
         $this->assertEquals($expectedResult, $result);
     }
 
-    public function intParameterDataProvider()
+    public function intResourceParameterInfoProvider()
     {
         return [
             'tinyint' => [
@@ -330,7 +330,7 @@ class IntParameterDataProviderTest extends TestCase
     /**
      * @dataProvider classFormDataProvider
      */
-    public function test_IntParameterDataProvider_with_class_form_data_returned($parameterDataInfo, $formData, $expectedResult)
+    public function test_IntResourceParameterInfoProvider_with_class_form_data_returned($parameterDataInfo, $formData, $expectedResult)
     {
         $this->project->formData = [
             'fakeParameterName' => $formData,
@@ -338,7 +338,7 @@ class IntParameterDataProviderTest extends TestCase
 
         $this->expectedResult = $expectedResult;
 
-        $result = $this->intParameterDataProvider->getData($parameterDataInfo, $this->project);
+        $result = $this->intResourceParameterInfoProvider->getData($parameterDataInfo, $this->project);
 
         $this->assertEquals($this->expectedResult, $result);
     }

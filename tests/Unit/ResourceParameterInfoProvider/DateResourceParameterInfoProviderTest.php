@@ -1,42 +1,42 @@
 <?php
 
-namespace Tests\Unit\ParameterDataProvider;
+namespace Tests\Unit\ResourceParameterInfoProvider;
 
-use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviders\DateParameterDataProvider;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\DateResourceParameterInfoProvider;
 use App\Models\Project;
 use Tests\TestCase;
 
-class DateParameterDataProviderTest extends TestCase
+class DateResourceParameterInfoProviderTest extends TestCase
 {
     protected $project;
-    protected $dateParameterDataProvider;
+    protected $dateResourceParameterInfoProvider;
     protected $expectedResult;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->dateParameterDataProvider = new DateParameterDataProvider();
+        $this->dateResourceParameterInfoProvider = new DateResourceParameterInfoProvider();
 
         $this->project = new Project();
     }
 
     /**
-     * @dataProvider dateParameterDataProvider
+     * @dataProvider dateResourceParameterInfoProvider
      */
-    public function test_DateParameterDataProvider_default_return_values($parameterDataInfo, $expectedResult)
+    public function test_DateResourceParameterInfoProvider_default_return_values($parameterDataInfo, $expectedResult)
     {
         unset($this->project->formData);
         unset($this->project->validationRules);
-        $result = $this->dateParameterDataProvider->getData($parameterDataInfo, $this->project);
+        $result = $this->dateResourceParameterInfoProvider->getData($parameterDataInfo, $this->project);
 
         $this->assertEquals($expectedResult, $result);
     }
 
     /**
-     * @dataProvider dateParameterDataProvider
+     * @dataProvider dateResourceParameterInfoProvider
      */
-    public function test_DateParameterDataProvider_default_return_values_with_requires($parameterDataInfo, $expectedResult)
+    public function test_DateResourceParameterInfoProvider_default_return_values_with_requires($parameterDataInfo, $expectedResult)
     {
         unset($this->project->formData);
         unset($this->project->validationRules);
@@ -44,12 +44,12 @@ class DateParameterDataProviderTest extends TestCase
         $expectedResult['formData']['required'] = true;
         $expectedResult['defaultValidationRules'][] = 'required';
 
-        $result = $this->dateParameterDataProvider->getData($parameterDataInfo, $this->project);
+        $result = $this->dateResourceParameterInfoProvider->getData($parameterDataInfo, $this->project);
 
         $this->assertEquals($expectedResult, $result);
     }
 
-    public function dateParameterDataProvider()
+    public function dateResourceParameterInfoProvider()
     {
         return [
             'datetime' => [
@@ -150,7 +150,7 @@ class DateParameterDataProviderTest extends TestCase
     /**
      * @dataProvider classFormDataProvider
      */
-    public function test_DateParameterDataProvider_with_class_form_data_returned($parameterDataInfo, $formData, $expectedResult)
+    public function test_DateResourceParameterInfoProvider_with_class_form_data_returned($parameterDataInfo, $formData, $expectedResult)
     {
         $this->project->formData = [
             'fakeParameterName' => $formData,
@@ -158,7 +158,7 @@ class DateParameterDataProviderTest extends TestCase
         
         $this->expectedResult = $expectedResult;
 
-        $result = $this->dateParameterDataProvider->getData($parameterDataInfo,  $this->project);
+        $result = $this->dateResourceParameterInfoProvider->getData($parameterDataInfo,  $this->project);
 
         $this->assertEquals($this->expectedResult, $result);
     }

@@ -7,7 +7,7 @@ use App\CoreIntegrationApi\CIL\CILQueryAssembler;
 use App\CoreIntegrationApi\EndpointValidator;
 use App\CoreIntegrationApi\ResourceInfoProvider;
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\GetRequestMethodTypeValidator;
-use App\CoreIntegrationApi\ParameterDataProviderFactory\ParameterDataProviderFactory;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviderFactory;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use Illuminate\Support\ServiceProvider;
 
@@ -37,7 +37,7 @@ class CILProvider extends ServiceProvider
     private function bindResourceInfoProvider() {
         $this->app->bind(ResourceInfoProvider::class, function ($app) {
             return new ResourceInfoProvider(
-                $app->make(ParameterDataProviderFactory::class),
+                $app->make(ResourceParameterInfoProviderFactory::class),
             );
         });
     }
