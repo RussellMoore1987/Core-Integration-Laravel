@@ -78,7 +78,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -105,13 +105,13 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                       'value' => '',
-                      'valueError' => 'The value passed in is not an int. Only ints are permitted for this parameter. Your value is a string. This parameter was not set.'      
+                      'valueError' => 'The value passed in is not an int. Only ints are permitted for this parameter. Your value is a string. This parameter was not set.'
                     ],
                 ],
-            ],    
+            ],
         ];
 
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -148,7 +148,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -185,7 +185,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -222,7 +222,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -259,7 +259,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -296,7 +296,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -333,7 +333,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -370,7 +370,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -407,7 +407,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -444,7 +444,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -481,7 +481,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -518,7 +518,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -555,7 +555,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -592,7 +592,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -629,7 +629,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -658,10 +658,10 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                       'value' => $int,
-                      'valueError' => 'The value passed in is not an int. Only ints are permitted for this parameter. Your value is a string. This parameter was not set.'      
+                      'valueError' => 'The value passed in is not an int. Only ints are permitted for this parameter. Your value is a string. This parameter was not set.'
                     ],
                 ],
-            ],    
+            ],
         ];
 
         $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
@@ -701,7 +701,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -728,13 +728,13 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                       'value' => [100,1],
-                      'valueError' => 'The First int must be smaller then the second int, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.'      
+                      'valueError' => 'The First int must be smaller then the second int, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.'
                     ],
                 ],
-            ],    
+            ],
         ];
 
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -761,13 +761,13 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                       'value' => 1,
-                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.'      
+                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.'
                     ],
                 ],
-            ],    
+            ],
         ];
 
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -794,17 +794,17 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                       'value' => '',
-                      'valueError' => 'The value passed in is not an int. Only ints are permitted for this parameter. Your value is a string. This parameter was not set.'      
+                      'valueError' => 'The value passed in is not an int. Only ints are permitted for this parameter. Your value is a string. This parameter was not set.'
                     ],
                     [
                       'value' => '',
-                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.'      
+                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.'
                     ],
                 ],
-            ],    
+            ],
         ];
 
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -841,7 +841,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -878,7 +878,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -915,7 +915,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -952,7 +952,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -999,10 +999,10 @@ class IntParameterValidatorTest extends TestCase
                         'valueError' => 'There are no ints available in this array. This parameter was not set.'
                     ],
                 ],
-            ],    
+            ],
         ];
 
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -1037,7 +1037,7 @@ class IntParameterValidatorTest extends TestCase
                         'valueError' => 'The value at the index of 3 is not an int. Only ints are permitted for this parameter. Your value is a string.'
                     ],
                 ],
-            ],    
+            ],
         ];
 
         $expectedAcceptedParameters = [
@@ -1059,7 +1059,7 @@ class IntParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
@@ -1094,7 +1094,7 @@ class IntParameterValidatorTest extends TestCase
                         'valueError' => 'The value at the index of 3 is not an int. Only ints are permitted for this parameter. Your value is a string.'
                     ],
                 ],
-            ],    
+            ],
         ];
 
         $expectedAcceptedParameters = [
@@ -1124,7 +1124,7 @@ class IntParameterValidatorTest extends TestCase
             'queryArguments' => $expectedQueryArguments,
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedGetValidatedMetaData, $this->validatorDataCollector->getValidatedMetaData());
     }
