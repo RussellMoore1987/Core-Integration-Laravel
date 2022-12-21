@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 // TODO: clean up notes
 
-// ! Start here ****************************************************************** refine prosses, rename, refactor, UML*** read up on testing names, end-to-end, integration, unit, ect. ability to add images
+// ! Start here ****************************************************************** readability, test coverage, test organization, tests grouping
 
 Route::any("v1/{resource?}/{resourceId?}", [CILApiController::class, 'processRestRequest']); // REST only route
 

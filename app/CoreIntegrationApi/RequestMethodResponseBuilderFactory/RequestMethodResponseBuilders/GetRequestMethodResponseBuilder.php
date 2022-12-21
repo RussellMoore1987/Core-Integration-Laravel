@@ -57,7 +57,7 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
     {
         if (isset($this->validatedMetaData['resourceInfo']['acceptableParameters'])) {
             foreach ($this->validatedMetaData['resourceInfo']['acceptableParameters'] as $columnName => $columnArray) {
-                $paginateObj['availableResourceParameters']['parameters'][$columnName] = $columnArray['api_data_type'];
+                $paginateObj['availableResourceParameters']['parameters'][$columnName] = $columnArray['apiDataType'];
             }
             $paginateObj['availableResourceParameters']['parameters']['info'] = [
                 'message' => 'Documentation on how to utilize parameter data types can be found in the index response, in the apiDocumentation.parameterDataTypes section.', 

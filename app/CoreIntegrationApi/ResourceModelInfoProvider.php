@@ -6,7 +6,6 @@ use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParamete
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-// ! Start here ****************************************************************** readability
 class ResourceModelInfoProvider
 {
     protected $resourceObject;
@@ -41,6 +40,17 @@ class ResourceModelInfoProvider
         return $this->availableParameters;
     }
 
+    public function getResourceInfo() : array
+    {
+        return array_merge(
+            [
+                'primaryKeyName' => $this->getResourcePrimaryKeyName(),
+                'path' => $this->resourceClassPath,
+            ],
+            $this->getResourceAcceptableParameters()
+        );
+    }
+
     protected function getAcceptableParameters(string $resourceTableName) : void
     {
         $resourceColumnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$resourceTableName}"));
@@ -73,24 +83,13 @@ class ResourceModelInfoProvider
 
     protected function addAdditionalInfoToAcceptableParameters() : void
     {
-        foreach ($this->availableParameters['acceptableParameters'] as $parameterName => $parameterInfoArray) {
-            $resourceParameterInfoProvider = $this->resourceParameterInfoProviderFactory->getFactoryItem($parameterInfoArray['type']);
-            $parameterData = $resourceParameterInfoProvider->getData($parameterInfoArray, $this->resourceObject->formData ?? []);
+        foreach ($this->availableParameters['acceptableParameters'] as $parameterName => $parameterAttributeArray) {
+            $resourceParameterInfoProvider = $this->resourceParameterInfoProviderFactory->getFactoryItem($parameterAttributeArray['type']);
+            $parameterData = $resourceParameterInfoProvider->getData($parameterAttributeArray, $this->resourceObject->formData ?? []);
 
-            $this->availableParameters['acceptableParameters'][$parameterName]['api_data_type'] = $parameterData['apiDataType'];
+            $this->availableParameters['acceptableParameters'][$parameterName]['apiDataType'] = $parameterData['apiDataType'];
             $this->availableParameters['acceptableParameters'][$parameterName]['defaultValidationRules'] = $parameterData['defaultValidationRules'];
             $this->availableParameters['acceptableParameters'][$parameterName]['formData'] = $parameterData['formData'];
         }
-    }
-
-    public function getResourceInfo() : array
-    {
-        return array_merge(
-            [
-                'primaryKeyName' => $this->getResourcePrimaryKeyName(),
-                'path' => $this->resourceClassPath,
-            ],
-            $this->getResourceAcceptableParameters()
-        );
     }
 }

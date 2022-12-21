@@ -23,10 +23,10 @@ class FullRestApiTest extends TestCase
     }
 
     /**
+     * @group getMethod
      * @group db
-     * @return void
      */
-    public function test_that_what_I_get_back_is_what_I_would_exsect_from_this_endpoint_testing_json_structure()
+    public function test_that_what_I_get_back_is_what_I_would_exsect_from_this_endpoint_testing_json_structure() : void
     {
         $projectIds = implode(',',$this->projects->pluck('id')->toArray());
         $response = $this->get("/api/v1/projects/$projectIds?per_page=1&page=2");
@@ -100,6 +100,7 @@ class FullRestApiTest extends TestCase
     }
 
     /**
+     * @group getMethod
      * @group db
      */
     public function test_return_of_one_record() : void
@@ -135,6 +136,7 @@ class FullRestApiTest extends TestCase
     }
 
     /**
+     * @group getMethod
      * @group db
      */
     public function test_return_404_response() : void
@@ -146,6 +148,7 @@ class FullRestApiTest extends TestCase
     }
 
     /**
+     * @group getMethod
      * @group db
      */
     public function test_return_of_empty_data_set() : void
@@ -158,10 +161,10 @@ class FullRestApiTest extends TestCase
     }
 
     /**
+     * @group getMethod
      * @group db
-     * @return void
      */
-    public function test_return_of_column_data()
+    public function test_return_of_column_data() : void
     {
         $response = $this->get('/api/v1/projects/?columnData=yes');
 
@@ -197,12 +200,13 @@ class FullRestApiTest extends TestCase
 
     protected function makeProjects()
     {
+        $content = '{"error":"error", "big":"big", "name":"Sam", "array":{"color":"red"}}';
         $this->projects[] = Project::factory()->create([
             'title' => 'Test Project 1',
             'roles' => 'Developer',
             'client' => 'This is client 1',
             'description' => 'This is description 1',
-            'content' => '{"error":"error", "big":"big", "name":"Sam", "array":{"color":"red"}}',
+            'content' => $content,
             'start_date' => '1976-05-20',
             'end_date' => '1976-07-20',
             'is_published' => 1,
@@ -212,7 +216,7 @@ class FullRestApiTest extends TestCase
             'roles' => 'UX UI Designer',
             'client' => 'This is client 2',
             'description' => 'This is description 2',
-            'content' => '{"error":"error", "big":"big", "name":"Sam", "array":{"color":"red"}}',
+            'content' => $content,
             'start_date' => '1976-06-20',
             'end_date' => '1976-08-20',
             'is_published' => 1,
@@ -222,7 +226,7 @@ class FullRestApiTest extends TestCase
             'roles' => 'Designer',
             'client' => 'This is client 3',
             'description' => 'This is description 3',
-            'content' => '{"error":"error", "big":"big", "name":"Sam", "array":{"color":"red"}}',
+            'content' => $content,
             'start_date' => '1976-07-20',
             'end_date' => '1976-09-20',
             'is_published' => 0,
@@ -232,7 +236,7 @@ class FullRestApiTest extends TestCase
             'roles' => 'Team Lead',
             'client' => 'This is client 4',
             'description' => 'This is description 4',
-            'content' => '{"error":"error", "big":"big", "name":"Sam", "array":{"color":"red"}}',
+            'content' => $content,
             'start_date' => '1976-08-20',
             'end_date' => '1976-10-20',
             'is_published' => 0,
@@ -242,10 +246,10 @@ class FullRestApiTest extends TestCase
     }
 
     // TODO: Test
-    // GET with out authentication 
-    // GET with authentication 
-    // PUT, POST, PATCH with authentication 
-    // PUT, POST, PATCH with out authentication, must fail 
+    // GET with out authentication
+    // GET with authentication
+    // PUT, POST, PATCH with authentication
+    // PUT, POST, PATCH with out authentication, must fail
     // PUT, POST, PATCH response
     // PUT response code
     // POST response code

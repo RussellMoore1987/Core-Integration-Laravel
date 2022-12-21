@@ -35,7 +35,7 @@ class GetRequestMethodQueryResolver implements RequestMethodQueryResolver
     {
         if (isset($this->validatedMetaData['acceptedParameters']['columnData'])) {
             foreach ($this->validatedMetaData['resourceInfo']['acceptableParameters'] as $columnName => $columnArray) {
-                $this->queryResult['availableResourceParameters'][$columnName] = $columnArray['api_data_type'];
+                $this->queryResult['availableResourceParameters'][$columnName] = $columnArray['apiDataType'];
             }
             $this->queryResult['info'] = [
                 'message' => 'Documentation on how to utilize parameter data types can be found in the index response, in the ApiDocumentation section.',

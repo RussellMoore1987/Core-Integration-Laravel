@@ -16,7 +16,10 @@ class IntParameterValidatorTest extends TestCase
         $this->intParameterValidator = new IntParameterValidator();
     }
 
-    public function test_IntParameterValidator_validate_function_with_random_string()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_random_string() : void
     {
         $comparisonOperator = '';
         $intString = 'I am not a int' . $comparisonOperator;
@@ -33,20 +36,23 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                       'value' => 'I am not a int',
-                      'valueError' => 'The value passed in is not an int. Only ints are permitted for this parameter. Your value is a string. This parameter was not set.'      
+                      'valueError' => 'The value passed in is not an int. Only ints are permitted for this parameter. Your value is a string. This parameter was not set.'
                     ],
                 ],
-            ],    
+            ],
         ];
 
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_extra_action()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_extra_action() : void
     {
         $intString = "13,33::bt::something'";
         $parameterData = [
@@ -79,7 +85,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_no_int_blank_string()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_no_int_blank_string() : void
     {
         $comparisonOperator = '';
         $intString = '' . $comparisonOperator;
@@ -109,7 +118,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_equal_to_with_out_action_operator()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_equal_to_with_out_action_operator() : void
     {
         $comparisonOperator = '';
         $intString = '1' . $comparisonOperator;
@@ -143,7 +155,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_equal_to_by_default()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_equal_to_by_default() : void
     {
         $comparisonOperator = 'sam';
         $intString = '1::' . $comparisonOperator;
@@ -177,7 +192,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_greater_then_using_gt()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_greater_then_using_gt() : void
     {
         $comparisonOperator = 'GT';
         $intString = '4::' . $comparisonOperator;
@@ -211,7 +229,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_greater_then_using_greater_than()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_greater_then_using_greater_than() : void
     {
         $comparisonOperator = 'greaterThan';
         $intString = '4::' . $comparisonOperator;
@@ -245,7 +266,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_greater_then_using_greater_than_symbol()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_greater_then_using_greater_than_symbol() : void
     {
         $comparisonOperator = '>';
         $intString = '4::' . $comparisonOperator;
@@ -279,7 +303,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal() : void
     {
         $comparisonOperator = 'greaterThanOrEqual';
         $intString = '4::' . $comparisonOperator;
@@ -313,7 +340,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_gte()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_gte() : void
     {
         $comparisonOperator = 'GTE';
         $intString = '4::' . $comparisonOperator;
@@ -347,7 +377,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal_symbol()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal_symbol() : void
     {
         $comparisonOperator = '>=';
         $intString = '4::' . $comparisonOperator;
@@ -381,7 +414,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_less_then_using_less_than()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_less_then_using_less_than() : void
     {
         $comparisonOperator = 'lessThan';
         $intString = '4::' . $comparisonOperator;
@@ -415,7 +451,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_less_then_using_less_than_symbol()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_less_then_using_less_than_symbol() : void
     {
         $comparisonOperator = '<';
         $intString = '4::' . $comparisonOperator;
@@ -449,7 +488,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_less_then_using_lt()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_less_then_using_lt() : void
     {
         $comparisonOperator = 'lt';
         $intString = '4::' . $comparisonOperator;
@@ -483,7 +525,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_less_than_or_equal()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_less_than_or_equal() : void
     {
         $comparisonOperator = 'lessThanOrEqual';
         $intString = '10::' . $comparisonOperator;
@@ -517,7 +562,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_less_than_or_equal_symbol()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_less_than_or_equal_symbol() : void
     {
         $comparisonOperator = '<=';
         $intString = '10::' . $comparisonOperator;
@@ -551,7 +599,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_lte()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_lte() : void
     {
         $comparisonOperator = 'LTE';
         $intString = '10::' . $comparisonOperator;
@@ -585,7 +636,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_action_that_is_not_in_notin_or_bt()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_action_that_is_not_in_notin_or_bt() : void
     {
         // arrays or int strings that have a comma are only used in these actions IN, NotIn, BT, or Between
         $comparisonOperator = 'LTE';
@@ -617,7 +671,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_between()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_between() : void
     {
         $comparisonOperator = 'bt';
         $intString = '1,100::' . $comparisonOperator;
@@ -651,7 +708,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_between_error_first_int_grater_than_last_int()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_between_error_first_int_grater_than_last_int() : void
     {
         $comparisonOperator = 'between';
         $intString = '100,1::' . $comparisonOperator;
@@ -681,7 +741,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_between_error_no_second_int()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_between_error_no_second_int() : void
     {
         $comparisonOperator = 'BETWEEN';
         $intString = '1::' . $comparisonOperator;
@@ -711,7 +774,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_between_error_no_ints()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_between_error_no_ints() : void
     {
         $comparisonOperator = 'BT';
         $intString = '::' . $comparisonOperator;
@@ -745,7 +811,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_between_more_then_two_ints()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_between_more_then_two_ints() : void
     {
         $comparisonOperator = 'BT';
         $intString = '1,100,33::' . $comparisonOperator;
@@ -779,7 +848,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_in()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_in() : void
     {
         $comparisonOperator = 'in';
         $intString = '1,100,33,88,99,55::' . $comparisonOperator;
@@ -813,7 +885,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_in_by_default()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_in_by_default() : void
     {
         $comparisonOperator = '';
         $intString = '1,100,33,88,99,55' . $comparisonOperator;
@@ -847,7 +922,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_with_not_in()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_with_not_in() : void
     {
         $comparisonOperator = 'notIn';
         $intString = '1,100,33,88,99,55::' . $comparisonOperator;
@@ -881,7 +959,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_where_all_array_items_are_bad()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_where_all_array_items_are_bad() : void
     {
         $comparisonOperator = 'IN';
         $int = 'sam,6.87,.01,fugue';
@@ -928,7 +1009,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_where_we_have_a_mixed_array_of_good_and_bad_items()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_where_we_have_a_mixed_array_of_good_and_bad_items() : void
     {
         $comparisonOperator = 'IN';
         $int = '13,6.87,6,fugue';
@@ -982,7 +1066,10 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_IntParameterValidator_validate_function_get_all_data()
+    /**
+     * @group getMethod
+     */
+    public function test_IntParameterValidator_validate_function_get_all_data() : void
     {
         $comparisonOperator = 'IN';
         $int = '13,6.87,6,fugue';
