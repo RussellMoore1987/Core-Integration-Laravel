@@ -19,6 +19,7 @@ class CILApiController extends Controller
         return $this->restRequestProcessor->process();
     }
 
+    // TODO: need to test when ready, rest path first
     public function processContextRequest() : JsonResponse
     {
         // return ["Message" => "Got Here!!! " . request()->contextInstructions]; // TODO: needs to be removed

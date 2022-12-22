@@ -16,8 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 // TODO: clean up notes
 
-// ! Start here ****************************************************************** readability, test coverage, test organization, tests grouping, go one by one
-
 Route::any("v1/{resource?}/{resourceId?}", [CILApiController::class, 'processRestRequest']); // REST only route
 
 Route::post("context/v1", [CILApiController::class, 'processContextRequest']); // Context only route

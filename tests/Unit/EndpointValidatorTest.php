@@ -12,16 +12,12 @@ use App\CoreIntegrationApi\RestApi\RestRequestValidator;
 use App\CoreIntegrationApi\RestApi\RestRequestDataPrepper;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class RestRequestValidatorTest extends TestCase
+class EndpointValidatorTest extends TestCase
 {
-    // ===============================================================================================
-    // these tests for the most part should only test what the validator class it's self produces***
-    // ===============================================================================================
-
     /**
-     * @dataProvider ReturnsExpectedResultProvider
+     * @dataProvider returnsExpectedResultProvider
      */
-    public function test_rest_request_validator_returns_expected_result($requestMethod, $expectedAcceptedParameters)
+    public function test_RestRequestValidator_returns_expected_result($requestMethod, $expectedAcceptedParameters)
     {
         $validatedMetaData = $this->validateRequest([
             'resource' => 'projects',
@@ -54,7 +50,7 @@ class RestRequestValidatorTest extends TestCase
         $this->assertEquals($expectedAcceptedParameters, $validatedMetaData['acceptedParameters']);
     }
 
-    public function ReturnsExpectedResultProvider()
+    public function returnsExpectedResultProvider()
     {
         $otherAcceptedParameters = [
             'endpoint' => [
