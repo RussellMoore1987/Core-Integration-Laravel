@@ -25,7 +25,7 @@
     </coverage>
     <filter>
       <whitelist processUncoveredFilesFromWhitelist="true">
-        <directory suffix=".php">./app/CoreIntegrationApi</directory>
+        <directory suffix=".php">./app</directory>
       </whitelist>
     </filter>
     <php>
