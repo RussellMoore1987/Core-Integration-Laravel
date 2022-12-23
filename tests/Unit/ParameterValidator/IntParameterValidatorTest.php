@@ -17,7 +17,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_random_string() : void
     {
@@ -50,7 +50,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_extra_action() : void
     {
@@ -86,7 +86,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_no_int_blank_string() : void
     {
@@ -119,7 +119,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_equal_to_with_out_action_operator() : void
     {
@@ -156,7 +156,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_equal_to_by_default() : void
     {
@@ -193,7 +193,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_greater_then_using_gt() : void
     {
@@ -230,7 +230,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_greater_then_using_greater_than() : void
     {
@@ -267,7 +267,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_greater_then_using_greater_than_symbol() : void
     {
@@ -304,7 +304,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal() : void
     {
@@ -341,7 +341,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_gte() : void
     {
@@ -378,7 +378,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal_symbol() : void
     {
@@ -415,7 +415,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_less_then_using_less_than() : void
     {
@@ -452,7 +452,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_less_then_using_less_than_symbol() : void
     {
@@ -489,7 +489,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_less_then_using_lt() : void
     {
@@ -526,7 +526,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_less_than_or_equal() : void
     {
@@ -563,7 +563,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_less_than_or_equal_symbol() : void
     {
@@ -600,7 +600,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_lte() : void
     {
@@ -637,7 +637,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_action_that_is_not_in_notin_or_bt() : void
     {
@@ -672,7 +672,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_between() : void
     {
@@ -709,7 +709,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_between_error_first_int_grater_than_last_int() : void
     {
@@ -742,7 +742,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_between_error_no_second_int() : void
     {
@@ -775,7 +775,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_between_error_no_ints() : void
     {
@@ -812,7 +812,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_between_more_then_two_ints() : void
     {
@@ -849,7 +849,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_in() : void
     {
@@ -886,7 +886,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_in_by_default() : void
     {
@@ -923,7 +923,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_with_not_in() : void
     {
@@ -960,7 +960,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_where_all_array_items_are_bad() : void
     {
@@ -1010,7 +1010,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_where_we_have_a_mixed_array_of_good_and_bad_items() : void
     {
@@ -1067,7 +1067,7 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_IntParameterValidator_validate_function_get_all_data() : void
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Component;
 
 use App\CoreIntegrationApi\EndpointValidator;
 use Tests\TestCase;
@@ -13,8 +13,14 @@ use App\CoreIntegrationApi\RestApi\RestRequestDataPrepper;
 
 class RestRequestValidatorTest extends TestCase
 {
+    // TODO: refactor this ???
     /**
      * @dataProvider returnsExpectedResultProvider
+     * @group get
+     * @group post
+     * @group put
+     * @group patch
+     * @group delete
      */
     public function test_RestRequestValidator_returns_expected_result($requestMethod)
     {
@@ -24,7 +30,7 @@ class RestRequestValidatorTest extends TestCase
             'title' => 'Test Project',
         ], 'api/v1/projects', $requestMethod);
 
-        // just asserting structure, details tested else were
+        // just asserting structure, details tested in ResourceModelInfoProvider and ResourceParameterInfoProviders
         $this->assertArrayHasKey('endpointData', $validatedMetaData);
         $this->assertArrayHasKey('resourceInfo', $validatedMetaData);
         $this->assertArrayHasKey('acceptableParameters', $validatedMetaData['resourceInfo']);
@@ -42,6 +48,7 @@ class RestRequestValidatorTest extends TestCase
             'POST' => ['POST'],
             'PUT' => ['PUT'],
             'PATCH' => ['PATCH'],
+            'DELETE' => ['DELETE'],
         ];
     }
 

@@ -17,7 +17,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_random_string_use_default_date() : void
     {
@@ -54,7 +54,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_no_date_use_default_date() : void
     {
@@ -91,7 +91,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_equal_to_with_out_action_operator() : void
     {
@@ -128,7 +128,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_equal_to_by_default() : void
     {
@@ -165,7 +165,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_greater_then_using_gt() : void
     {
@@ -202,7 +202,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_greater_then_using_greater_than() : void
     {
@@ -239,7 +239,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_greater_then_using_greater_than_symbol() : void
     {
@@ -276,7 +276,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal() : void
     {
@@ -313,7 +313,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal_symbol() : void
     {
@@ -350,7 +350,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_greater_then_or_equal_to_using_gte() : void
     {
@@ -387,7 +387,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_less_then_using_less_than() : void
     {
@@ -424,7 +424,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_less_then_using_less_than_symbol() : void
     {
@@ -461,7 +461,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_less_then_using_lt() : void
     {
@@ -498,7 +498,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_less_then_or_equal_to_using_less_than_or_equal() : void
     {
@@ -535,7 +535,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_less_then_or_equal_to_using_less_than_or_equal_symbol() : void
     {
@@ -572,7 +572,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_less_than_or_equal_to_using_lte() : void
     {
@@ -609,7 +609,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_default_date_conversion() : void
     {
@@ -652,7 +652,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_between() : void
     {
@@ -695,7 +695,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_between_error_first_date_grater_than_last_date() : void
     {
@@ -728,7 +728,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_between_error_no_second_date() : void
     {
@@ -758,7 +758,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_between_error_no_dates() : void
     {
@@ -788,7 +788,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_with_more_then_two_between_dates() : void
     {
@@ -831,7 +831,7 @@ class DateParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group getMethod
+     * @group get
      */
     public function test_DateParameterValidator_validate_function_function_get_all_data() : void
     {

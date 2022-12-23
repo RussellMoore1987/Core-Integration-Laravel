@@ -7,6 +7,7 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\CoreIntegrationApi\EndpointValidator;
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidatorFactory;
 
+// ! Start here ****************************************************************** read over file and test readability, test coverage, test organization, tests grouping, go one by one (I have a stash of tests****)
 
 abstract class RequestValidator
 {
