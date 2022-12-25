@@ -5,6 +5,7 @@ namespace App\CoreIntegrationApi;
 use App\CoreIntegrationApi\RequestValidator;
 use App\CoreIntegrationApi\QueryResolver;
 use App\CoreIntegrationApi\ResponseBuilder;
+use Illuminate\Http\JsonResponse;
 
 abstract class RequestProcessor
 {
@@ -12,37 +13,34 @@ abstract class RequestProcessor
     protected $queryResolver;
     protected $responseBuilder;
 
-    function __construct(RequestValidator $requestValidator, QueryResolver $queryResolver, ResponseBuilder $responseBuilder) 
+    public function __construct(RequestValidator $requestValidator, QueryResolver $queryResolver, ResponseBuilder $responseBuilder)
     {
         $this->requestValidator = $requestValidator;
         $this->queryResolver = $queryResolver;
         $this->responseBuilder = $responseBuilder;
     }
 
-    /**
-     * @return The return string is a JSON string
-     */
-    public function process() : string
+    public function process() : JsonResponse
     {
-        $this->validate();
-        $this->resolve();
+        $this->validateRequest();
+        $this->getRequestedData();
         return $this->respond();
     }
 
-    protected function validate() 
+    protected function validateRequest() : void
     {
-        $metaData = $this->requestValidator->validate();
-        $this->responseBuilder->setValidationMetaData($metaData);
+        $this->validatedMetaData = $this->requestValidator->validate();
+        $this->responseBuilder->setValidatedMetaData($this->validatedMetaData);
+        // * if validation fails request will be sent back to the user as a HttpResponseException (a 404, 422 response)
     }
 
-    protected function resolve() 
+    protected function getRequestedData() : void
     {
-        $validatedQueryData = $this->requestValidator->getValidatedQueryData();
-        $queryResult = $this->queryResolver->resolve($validatedQueryData);
+        $queryResult = $this->queryResolver->resolve($this->validatedMetaData);
         $this->responseBuilder->setResponseData($queryResult);
     }
 
-    protected function respond()
+    protected function respond() : JsonResponse
     {
         return $this->responseBuilder->make();
     }

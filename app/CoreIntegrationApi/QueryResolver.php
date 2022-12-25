@@ -2,25 +2,15 @@
 
 namespace App\CoreIntegrationApi;
 
-use App\CoreIntegrationApi\QueryAssembler;
-use App\CoreIntegrationApi\QueryPersister;
-use App\CoreIntegrationApi\QueryIndex;
-use App\CoreIntegrationApi\QueryDeleter;
-
+use App\CoreIntegrationApi\RequestMethodQueryResolverFactory\RequestMethodQueryResolverFactory;
 abstract class QueryResolver
 {
-    protected $queryAssembler;
-    protected $queryPersister;
-    protected $queryIndex;
-    protected $queryDeleter;
+    protected $requestMethodQueryResolverFactory;
 
-    function __construct(QueryAssembler $queryAssembler, QueryPersister $queryPersister, QueryIndex $queryIndex, QueryDeleter $queryDeleter) 
+    public function __construct(RequestMethodQueryResolverFactory $requestMethodQueryResolverFactory)
     {
-        $this->queryAssembler = $queryAssembler;
-        $this->queryPersister = $queryPersister;
-        $this->queryIndex = $queryIndex;
-        $this->queryDeleter = $queryDeleter;
+        $this->requestMethodQueryResolverFactory = $requestMethodQueryResolverFactory;
     }
 
-    abstract public function resolve($validatedQueryData);
+    abstract public function resolve($validatedMetaData);
 }

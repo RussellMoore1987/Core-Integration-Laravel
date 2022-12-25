@@ -14,3 +14,4 @@ yarn-error.log
 /.idea
 /.vscode
 /russells_stash
+/phpunit-coverage-report

@@ -419,6 +419,8 @@
             // npm run dev (or) npm run prod
 
 
+            // php artisan test --coverage-html ./phpunit-coverage-report
+
  // @ Problems
     // TODO: get link and error message********
     // app\Providers\AppServiceProvider.php

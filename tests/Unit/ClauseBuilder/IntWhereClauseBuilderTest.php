@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\ClauseBuilder;
 
-use App\CoreIntegrationApi\CIL\ClauseBuilder\IntWhereClauseBuilder;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\IntWhereClauseBuilder;
 use App\Models\Project;
 use Tests\TestCase;
 

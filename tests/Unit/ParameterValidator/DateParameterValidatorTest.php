@@ -16,7 +16,10 @@ class DateParameterValidatorTest extends TestCase
         $this->DateParameterValidator = new DateParameterValidator();
     }
 
-    public function test_DateParameterValidator_validate_function_with_random_string_use_default_date()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_random_string_use_default_date() : void
     {
         $comparisonOperator = '';
         $dateString = 'I am not a date' . $comparisonOperator;
@@ -34,7 +37,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '1970-01-01 00:00:00',
@@ -43,14 +46,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_no_date_use_default_date()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_no_date_use_default_date() : void
     {
         $comparisonOperator = '';
         $dateString = '' . $comparisonOperator;
@@ -68,7 +74,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '1970-01-01 00:00:00',
@@ -77,14 +83,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_equal_to_with_out_action_operator()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_equal_to_with_out_action_operator() : void
     {
         $comparisonOperator = '';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
@@ -102,7 +111,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -111,14 +120,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_equal_to_by_default()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_equal_to_by_default() : void
     {
         $comparisonOperator = 'sam';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
@@ -136,7 +148,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -145,14 +157,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_greater_then_using_gt()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_greater_then_using_gt() : void
     {
         $comparisonOperator = 'GT';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
@@ -170,7 +185,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -179,14 +194,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_greater_then_using_greater_than()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_greater_then_using_greater_than() : void
     {
         $comparisonOperator = 'greaterThan';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
@@ -204,7 +222,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -213,14 +231,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_greater_then_using_greater_than_symbol()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_greater_then_using_greater_than_symbol() : void
     {
         $comparisonOperator = '>';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
@@ -238,7 +259,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -247,14 +268,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal() : void
     {
         $comparisonOperator = 'greaterThanOrEqual';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
@@ -272,7 +296,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -281,14 +305,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal_symbol()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal_symbol() : void
     {
         $comparisonOperator = '>=';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
@@ -306,7 +333,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -315,14 +342,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_greater_then_or_equal_to_using_gte()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_greater_then_or_equal_to_using_gte() : void
     {
         $comparisonOperator = 'GTE';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
@@ -340,7 +370,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -349,14 +379,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_less_then_using_less_than()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_less_then_using_less_than() : void
     {
         $comparisonOperator = 'lessThan';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
@@ -374,7 +407,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -383,14 +416,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_less_then_using_less_than_symbol()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_less_then_using_less_than_symbol() : void
     {
         $comparisonOperator = '<';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
@@ -408,7 +444,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -417,14 +453,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_less_then_using_lt()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_less_then_using_lt() : void
     {
         $comparisonOperator = 'LT';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
@@ -442,7 +481,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -451,14 +490,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_less_then_or_equal_to_using_less_than_or_equal()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_less_then_or_equal_to_using_less_than_or_equal() : void
     {
         $comparisonOperator = 'lessThanOrEqual';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
@@ -476,7 +518,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -485,14 +527,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_less_then_or_equal_to_using_less_than_or_equal_symbol()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_less_then_or_equal_to_using_less_than_or_equal_symbol() : void
     {
         $comparisonOperator = '<=';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
@@ -510,7 +555,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -519,14 +564,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_less_than_or_equal_to_using_lte()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_less_than_or_equal_to_using_lte() : void
     {
         $comparisonOperator = 'LTE';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
@@ -544,7 +592,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => '2020-01-01 12:45:59',
@@ -553,14 +601,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_default_date_conversion()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_default_date_conversion() : void
     {
         $comparisonOperator = 'BT';
         $dateString = 'Soso!!!,NoDateForYou::' . $comparisonOperator;
@@ -581,7 +632,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => [
@@ -593,14 +644,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_between()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_between() : void
     {
         $comparisonOperator = 'bt';
         $dateString = '1/1/2020 01:01:59,2020-12-31::'  . $comparisonOperator;
@@ -621,7 +675,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => [
@@ -633,14 +687,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_between_error_first_date_grater_than_last_date()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_between_error_first_date_grater_than_last_date() : void
     {
         $comparisonOperator = 'between';
         $dateString = '1/1/2222,2021-01-01::' . $comparisonOperator;
@@ -663,14 +720,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_between_error_no_second_date()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_between_error_no_second_date() : void
     {
         $comparisonOperator = 'BETWEEN';
         $dateString = '2021-01-01::' . $comparisonOperator;
@@ -690,14 +750,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_between_error_no_dates()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_between_error_no_dates() : void
     {
         $comparisonOperator = 'BT';
         $dateString = '::' . $comparisonOperator;
@@ -717,14 +780,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_with_more_then_two_between_dates()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_with_more_then_two_between_dates() : void
     {
         $comparisonOperator = 'BT';
         $dateString = '1970-01-01,1978-01-01,1999-01-01::' . $comparisonOperator;
@@ -745,7 +811,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => [
@@ -757,14 +823,17 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    public function test_DateParameterValidator_validate_function_function_get_all_data()
+    /**
+     * @group get
+     */
+    public function test_DateParameterValidator_validate_function_function_get_all_data() : void
     {
         $comparisonOperator = 'BT';
         $dateString = '1970-01-01,1978-01-01,1999-01-01::' . $comparisonOperator;
@@ -785,7 +854,7 @@ class DateParameterValidatorTest extends TestCase
         ];
 
         $expectedQueryArguments = [
-            [
+            'start_date' => [
                 'dataType' => 'date',
                 'columnName' => 'start_date',
                 'date' => [
@@ -797,15 +866,16 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
 
-        $expectedGetAllData = [
-            'endpointData' => null,
+        $expectedGetValidatedMetaData = [
+            'endpointData' => [],
+            'resourceInfo' => [],
             'acceptedParameters' => $expectedAcceptedParameters,
             'rejectedParameters' => [],
             'queryArguments' => $expectedQueryArguments,
         ];
         
-        $this->validatorDataCollector = $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
 
-        $this->assertEquals($expectedGetAllData, $this->validatorDataCollector->getAllData());
+        $this->assertEquals($expectedGetValidatedMetaData, $this->validatorDataCollector->getValidatedMetaData());
     }
 }

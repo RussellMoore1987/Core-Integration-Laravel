@@ -4,16 +4,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Accepted Classes For the Core integration REST API
+    | Accepted Classes For the Core integration API
     |--------------------------------------------------------------------------
     |
-    | Specify the path/endpoint and the corresponding model
-    | 'path/endpoint' => 'path\to\model'
+    | Specify the resource/endpoint and the corresponding model
+    | 'resource/endpoint' => 'path\to\model'
     | ex: 'caseStudies' => 'App\Models\CaseStudy'
     |
     */
 
-    'acceptedclasses' => [
+    'availableResourceEndpoints' => [
         'caseStudies' => 'App\Models\CaseStudy',
         'projects' => 'App\Models\Project',
         'content' => 'App\Models\Content',
@@ -26,7 +26,31 @@ return [
         'skillTypes' => 'App\Models\SkillType',
         'skills' => 'App\Models\Skill',
         'workHistoryTypes' => 'App\Models\WorkHistoryType',
-        'workHistory' => 'App\Models\WorkHistory'
+        'workHistory' => 'App\Models\WorkHistory',
+        'tests' => 'App\Models\Test',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Return Request Structure
+    |--------------------------------------------------------------------------
+    |
+    | This allows you to specify what you would like the default structure of
+    | requested data to be.
+    |
+    */
+
+    'defaultReturnRequestStructure' => [
+        'paginationData',
+        // 'requestProcessingInfo',
+        // 'formData',
+        // 'apiDataTypeData',
+        // 'resourceInfo',
+        // 'requestedDataOnly', // this will override all other options
     ]
 
+    // Available methods (GET, POST) per endpoint
+        // require API key for mutation requests
+    // filtering (WHERE...) per endpoint
+    // API keys, overarching, per endpoint
 ];

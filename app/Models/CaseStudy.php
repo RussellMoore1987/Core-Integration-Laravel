@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
+use App\CoreIntegrationApi\CIL\CILModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CaseStudy extends Model
 {
     use HasFactory;
+    use CILModel;
+
+    protected $validationRules = [
+        'modelValidation' => [],
+        'createValidation' => [],
+    ];
 
     public function images()
     {

@@ -6,11 +6,11 @@ use App\CoreIntegrationApi\RequestValidator;
 
 class ContextRequestValidator extends RequestValidator
 {
+    // @ uses serves a provider for dependency injection, Located app\Providers\ContextRequestProcessorProvider.php
+    
     protected $validatedMetaData = [];
 
-    // uses serves a provider for dependency injection, Located app\Providers\ContextRequestProcessorProvider.php
-
-    public function validate()
+    public function validate() : array
     {
         $this->requestDataPrepper->prep();
 
@@ -22,17 +22,17 @@ class ContextRequestValidator extends RequestValidator
         return $this->validatedMetaData;
     }
 
-    protected function setUpPreppedRequest($prepRequestData)
+    protected function setUpPreppedDataForValidation($prepRequestData) : void
     {
-        parent::setUpPreppedRequest($prepRequestData);
-        
-        $this->validatorDataCollector->reset();
+        parent::setUpPreppedDataForValidation($prepRequestData);
     }
 
-    protected function setValidatedMetaData()
+    protected function setValidatedMetaData() : void
     {
         $validatedRequestMetaData['rejectedParameters'] = $this->validatorDataCollector->getRejectedParameters();
         $validatedRequestMetaData['acceptedParameters'] = $this->validatorDataCollector->getAcceptedParameters();
         $this->validatedMetaData[] = $validatedRequestMetaData;
+
+        $this->validatorDataCollector->reset();
     }
 }

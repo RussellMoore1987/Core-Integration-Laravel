@@ -8,6 +8,6 @@ class RestQueryIndex implements QueryIndex
 {
     public function get()
     {
-        // get rest index
+        return 'index';
     }
 }

@@ -4,72 +4,33 @@ namespace App\CoreIntegrationApi\RestApi;
 
 use App\CoreIntegrationApi\RequestDataPrepper;
 
+// TODO: fix url case sensitivity, and camelCase and snake_case, Context API as well
+
 class RestRequestDataPrepper extends RequestDataPrepper
-{ 
-    private $allAvailableParameters;
-
-    public function prepRequestData()
+{
+    public function prepRequestData() : array
     {
-        $this->setClass();
+        $this->setRequestDetails();
         $this->setEndpointDetails();
-        $this->setMethodCalls();
-        $this->setIncludes();
-        $this->setPerPageParameter();
-        $this->setOrderByParameters();
-        $this->setSelectParameters();
-        $this->setOtherParameters();
+        $this->setParameters();
+
+        return $this->preppedData;
     }
 
-    // TODO: might Use these functions for both rest and context API
-    private function setClass()
+    private function setRequestDetails()
     {
-        if ($this->request->endpoint && isset($this->acceptedClasses[$this->request->endpoint])) {
-            $this->preppedData['class'] = $this->acceptedClasses[$this->request->endpoint];
-        } else {
-            $this->preppedData['class'] = NULL;
-        }
+        $this->preppedData['url'] = $this->request->url();
+        $this->preppedData['requestMethod'] = $this->request->getMethod();
     }
 
-    // TODO: set ids
-    // TODO: set id as class id, dynamically find it
-    // $class->getKeyName()
-    
     private function setEndpointDetails()
     {
-        $this->preppedData['endpoint'] = $this->request->endpoint ?? 'index';
-        
-
-        $this->preppedData['endpointId'] = $this->request->id ?? $this->request->endpointId ?? '';
+        $this->preppedData['resource'] = $this->request->resource ?? 'index';
+        $this->preppedData['resourceId'] = $this->request->resourceId ?? $this->request->resource_id ?? $this->request->id ?? '';
     }
 
-    private function setMethodCalls()
+    private function setParameters()
     {
-        $this->preppedData['methodCalls'] = $this->request->methodCalls ?? [];
-    }
-
-    private function setIncludes()
-    {
-        $this->preppedData['includes'] = $this->request->includes ?? [];
-    }
-
-    private function setPerPageParameter()
-    {
-        $this->preppedData['perPageParameter'] = $this->request->perPage ?? 30;
-    }
-
-    private function setOrderByParameters()
-    {
-        $this->preppedData['orderByParameters'] = $this->request->orderBy ?? [];
-    }
-
-    private function setSelectParameters()
-    {
-        $this->preppedData['selectParameters'] = $this->request->columns ?? [];
-    }
-
-    private function setOtherParameters()
-    {
-        $otherParameters = $this->request->except(['id', 'perPage', 'orderBy', 'columns', 'methodCalls','includes']);
-        $this->preppedData['otherParameters'] = $otherParameters ?? [];
+        $this->preppedData['parameters'] = $this->request->except(['id', 'resource', 'resourceId', 'resource_id']);
     }
 }

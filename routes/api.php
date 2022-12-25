@@ -1,14 +1,6 @@
 <?php
 
-use App\CoreIntegrationApi\ContextApi\ContextRequestDataPrepper;
-use App\CoreIntegrationApi\ContextApi\ContextRequestValidator;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-
-
-use App\Models\Project;
-
-use App\Http\Controllers\GlobalAPIController;
+use App\Http\Controllers\CILApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,25 +14,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::any("projects", function () {
-    // $r = new Request;
-    // $c = new ContextRequestDataPrepper($r);
-    // $v = new ContextRequestValidator($c);
+// TODO: clean up notes
 
-    // ! failed
-    // $v2 = App::make(ContextRequestValidator::class);
-    // * good
-    // $c = App::make(ContextRequestDataPrepper::class);
+Route::any("v1/{resource?}/{resourceId?}", [CILApiController::class, 'processRestRequest']); // REST only route
 
-    // dd($v);
-    return Project::all();
-});
-
-Route::any("v1/{endpoint?}/{endpointId?}", [GlobalAPIController::class, 'processRequest']);
-
-Route::any("rest/v1/{endpoint?}/{endpointId?}", [GlobalAPIController::class, 'processRestRequest']);
-
-Route::any("context/v1", [GlobalAPIController::class, 'processContextRequest']);
+Route::post("context/v1", [CILApiController::class, 'processContextRequest']); // Context only route
 
 // TODO: To utilize leader for perhaps building out a more complex pathing rest request
-// Route::any("rest/v1/{class?}/{id?}/{path?}", [GlobalAPIController::class, 'processRestRequest'])->where('path', '.+');
+// Route::any("rest/v1/{class?}/{id?}/{path?}", [CILApiController::class, 'processRestRequest'])->where('path', '.+');
+// last endpoint valid then work up
+
+// TODO: make sure api works with model hidden properties, not showing in the api********
+// TODO: get different leaves of data, form, data, pagination data, all data
+
+
+// db
+// models
+// composer install
+// coreintegration.php
+// full rest api
+// full context api
+
+// Basic
+// db validation
+
+// advanced
+// instructions/settings/modelAddOns

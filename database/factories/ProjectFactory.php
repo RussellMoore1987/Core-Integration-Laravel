@@ -35,6 +35,7 @@ class ProjectFactory extends Factory
         $start_date = $this->faker->dateTimeBetween($startDate = '-10 years', $endDate = 'now', $timezone = null);
         $end_date = $this->faker->dateTimeBetween($startDate = $start_date, $endDate = 'now', $timezone = null);
         $is_published = rand(1,100) < 80 ? 1 : 0;
+        $budget = (float) rand(100,999999). '.' . rand(1,99);
 
         return [
             'title' => $title,
@@ -47,7 +48,8 @@ class ProjectFactory extends Factory
             'demo_link' => $demo_link,
             'start_date' => $start_date,
             'end_date' => $end_date,
-            'is_published' => $is_published
+            'is_published' => $is_published,
+            'budget' => $budget,
         ];
     }
 }

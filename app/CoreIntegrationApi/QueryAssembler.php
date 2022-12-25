@@ -4,5 +4,5 @@ namespace App\CoreIntegrationApi;
 
 interface QueryAssembler 
 {
-    public function query($validatedQueryData);
+    public function query($validatedMetaData);
 }

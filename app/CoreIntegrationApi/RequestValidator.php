@@ -2,41 +2,29 @@
 
 namespace App\CoreIntegrationApi;
 
-use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use App\CoreIntegrationApi\RequestDataPrepper;
 use App\CoreIntegrationApi\ValidatorDataCollector;
+use App\CoreIntegrationApi\EndpointValidator;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidatorFactory;
 
-abstract class RequestValidator 
+// ! Start here ****************************************************************** read over file and test readability, test coverage, test organization, tests grouping, go one by one (I have a stash of tests****)
+
+abstract class RequestValidator
 {
+    protected $requestDataPrepper;
+    protected $validatorDataCollector;
+    protected $requestMethodTypeValidatorFactory;
+    protected $validatedMetaData;
 
-    private $requestDataPrepper;
-    private $validatorDataCollector;
-    private $acceptedClasses;
-    private $parameterValidatorFactory;
-    private $class;
-    private $endpoint;
-    private $endpointId;
-    private $parameters;
-    private $defaultAcceptableParameters = [
-        'orderby' => 'orderby', 
-        'perpage' => 'perpage', 
-        'column' => 'select', 
-        'page' => 'page',
-        'methodcalls' => 'methodcalls',
-        'includes' => 'includes',
-    ];
-    private $acceptableParameters;
-    private $validatedMetaData;
-    
-    function __construct(RequestDataPrepper $requestDataPrepper, ParameterValidatorFactory $parameterValidatorFactory, ValidatorDataCollector $validatorDataCollector) 
+    public function __construct(RequestDataPrepper $requestDataPrepper, ValidatorDataCollector $validatorDataCollector, EndpointValidator $endpointValidator, RequestMethodTypeValidatorFactory $requestMethodTypeValidatorFactory)
     {
         $this->requestDataPrepper = $requestDataPrepper;
-        $this->acceptedClasses = config('coreintegration.acceptedclasses') ?? [];
-        $this->parameterValidatorFactory = $parameterValidatorFactory;
-        $this->validatorDataCollector = $validatorDataCollector;
-    }   
+        $this->validatorDataCollector = $validatorDataCollector; // * passed by reference to all methods
+        $this->endpointValidator = $endpointValidator;
+        $this->requestMethodTypeValidatorFactory = $requestMethodTypeValidatorFactory;
+    }
 
-    public function validate()
+    public function validate() : array
     {
         $this->requestDataPrepper->prep();
 
@@ -45,76 +33,34 @@ abstract class RequestValidator
         return $this->validatedMetaData;
     }
 
-    protected function validateRequest($prepRequestData)
+    protected function validateRequest($preppedRequestData) : void
     {
-        $this->setUpPreppedRequest($prepRequestData);
+        $this->setUpPreppedDataForValidation($preppedRequestData);
         
-        $this->validateEndPoint();
-        $this->getAcceptableParameters();
-        $this->validateParameters();
+        $this->endpointValidator->validateEndPoint($this->validatorDataCollector);
 
+        $this->validateByRequestMethod();
+        
         $this->setValidatedMetaData();
     }
 
-    protected function setUpPreppedRequest($prepRequestData)
+    protected function setUpPreppedDataForValidation($preppedRequestData) : void
     {
-        $this->class = $prepRequestData['class'] ?? '';
-        $this->endpoint = $prepRequestData['endpoint'] ?? '';
-        $this->endpointId = $prepRequestData['endpointId']  ?? []; // may be set in the prepper as an id
-        $this->parameters = $prepRequestData['parameters'] ?? [];
+        $this->validatorDataCollector->resource = $preppedRequestData['resource'] ?? '';
+        $this->validatorDataCollector->resourceId = $preppedRequestData['resourceId']  ?? [];
+        $this->validatorDataCollector->parameters = $preppedRequestData['parameters'] ?? [];
+        $this->validatorDataCollector->requestMethod = $preppedRequestData['requestMethod'] ?? 'GET';
+        $this->validatorDataCollector->url = $preppedRequestData['url'] ?? '';
     }
 
-    // TODO: Returns database data type with validated information
-    // TODO: when finding acceptable parameters, Besides the default, apply parameter type to array of parameter information
-
-    protected function getAcceptableParameters()
+    protected function validateByRequestMethod() : void
     {
-        // set $this->acceptableParameters
+        $requestMethodTypeValidator = $this->requestMethodTypeValidatorFactory->getFactoryItem($this->validatorDataCollector->requestMethod);
+        $requestMethodTypeValidator->validateRequest($this->validatorDataCollector);
     }
 
-    protected function validateEndPoint()
+    protected function setValidatedMetaData() : void
     {
-        // see if end point is in config('coreintegration.acceptedclasses')
+        $this->validatedMetaData = $this->validatorDataCollector->getValidatedMetaData();
     }
-
-    // get validation but what about the others put patch post
-    protected function validateParameters()
-    {
-        $allAcceptableParameters = array_merge($this->acceptableParameters, $this->defaultAcceptableParameters);
-
-        foreach ($this->parameters as $key => $value) {
-            if (array_key_exists($key, $allAcceptableParameters)) {
-                $parameterValidator = $this->parameterValidatorFactory->getParameterValidator($allAcceptableParameters[$key]['type'] ?? $allAcceptableParameters[$key]);
-                $this->validatorDataCollector = $parameterValidator->validate($this->validatorDataCollector, [$key => $value]);
-            } else {
-                $this->validatorDataCollector->setRejectedParameter([
-                    $key => [
-                        $key => $value,
-                        'parameterError' => 'This is an invalid parameter for this endpoint.'
-                    ]
-                ]);
-            }
-        }
-        // code...
-        // use $this->acceptableParameters
-        // use $this->defaultAcceptableParameters
-        // Run them through a data preper or Parameter validator
-        // All parameter validation needs to be done here
-
-        // Use parameter validator factory
-    }
-
-    protected function setValidatedMetaData()
-    {
-        $validatedRequestMetaData['rejectedParameters'] = $this->validatorDataCollector->getRejectedParameters();
-        $validatedRequestMetaData['acceptedParameters'] = $this->validatorDataCollector->getAcceptedParameters();
-        // $validatedRequestMetaData['queryArguments'] = $this->validatorDataCollector->getQueryArguments(); // don't know if we need to send this one
-        $this->validatedMetaData = $validatedRequestMetaData;
-    }
-
-    // I don't know if we need this
-    // public function getValidatedQueryData() 
-    // {
-    //     return $this->validatedMetaData;
-    // }
 }

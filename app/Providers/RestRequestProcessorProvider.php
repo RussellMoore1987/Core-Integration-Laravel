@@ -2,17 +2,16 @@
 
 namespace App\Providers;
 
+use App\CoreIntegrationApi\EndpointValidator;
 use App\CoreIntegrationApi\RestApi\RestRequestDataPrepper;
 use App\CoreIntegrationApi\RestApi\RestRequestProcessor;
 use App\CoreIntegrationApi\RestApi\RestRequestValidator;
 use App\CoreIntegrationApi\RestApi\RestResponseBuilder;
-use App\CoreIntegrationApi\RestApi\RestQueryIndex;
 use App\CoreIntegrationApi\RestApi\RestQueryResolver;
-use App\CoreIntegrationApi\CIL\CILQueryAssembler;
-use App\CoreIntegrationApi\CIL\CILQueryDeleter;
-use App\CoreIntegrationApi\CIL\CILQueryPersister;
-use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use App\CoreIntegrationApi\ValidatorDataCollector;
+use App\CoreIntegrationApi\RequestMethodQueryResolverFactory\RequestMethodQueryResolverFactory;
+use App\CoreIntegrationApi\RequestMethodResponseBuilderFactory\RequestMethodResponseBuilderFactory;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidatorFactory;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\ServiceProvider;
@@ -37,7 +36,6 @@ class RestRequestProcessorProvider extends ServiceProvider
         $this->app->bind(RestRequestDataPrepper::class, function ($app) {
             return new RestRequestDataPrepper(
                 $app->make(Request::class),
-                $app->make(ParameterValidatorFactory::class),
             );
         });
     }
@@ -46,8 +44,9 @@ class RestRequestProcessorProvider extends ServiceProvider
         $this->app->bind(RestRequestValidator::class, function ($app) {
             return new RestRequestValidator(
                 $app->make(RestRequestDataPrepper::class),
-                $app->make(ParameterValidatorFactory::class),
                 $app->make(ValidatorDataCollector::class),
+                $app->make(EndpointValidator::class),
+                $app->make(RequestMethodTypeValidatorFactory::class),
             );
         });
     }
@@ -55,17 +54,16 @@ class RestRequestProcessorProvider extends ServiceProvider
     private function bindQueryResolver() {
         $this->app->bind(RestQueryResolver::class, function ($app) {
             return new RestQueryResolver(
-                $app->make(CILQueryAssembler::class),
-                $app->make(CILQueryPersister::class),
-                $app->make(RestQueryIndex::class),
-                $app->make(CILQueryDeleter::class),
+                $app->make(RequestMethodQueryResolverFactory::class),
             );
         });
     }
 
     private function bindResponseBuilder() {
         $this->app->bind(RestResponseBuilder::class, function ($app) {
-            return new RestResponseBuilder;
+            return new RestResponseBuilder(
+                $app->make(RequestMethodResponseBuilderFactory::class),
+            );
         });
     }
 

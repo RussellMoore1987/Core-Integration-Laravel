@@ -2,12 +2,24 @@
 
 namespace App\Models;
 
+use App\CoreIntegrationApi\CIL\CILModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
     use HasFactory;
+    use CILModel;
+
+    public $availableMethodCalls = ['pluse1_5', 'budgetTimeTwo', 'newTitle'];
+
+    public $availableIncludes = ['images', 'tags', 'categories'];
+
+    public $formData = [
+        
+    ];
+
+    public $validationRules = [];
 
     public function images()
     {
@@ -19,7 +31,7 @@ class Project extends Model
         return $this->belongsToMany(Tag::class);
     }
 
-    public function Categories()
+    public function categories()
     {
         return $this->belongsToMany(Category::class);
     }
@@ -43,5 +55,20 @@ class Project extends Model
         $this->images()->updateExistingPivot($this->images, ['is_featured_img' => 0]);
 
         return true;
+    }
+
+    public function pluse1_5()
+    {
+        return 1 + 5;
+    }
+
+    public function budgetTimeTwo()
+    {
+        return $this->budget * 2;
+    }
+
+    public function newTitle()
+    {
+        return $this->title . '!!!';
     }
 }

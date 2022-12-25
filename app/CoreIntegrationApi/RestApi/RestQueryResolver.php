@@ -6,30 +6,16 @@ use App\CoreIntegrationApi\QueryResolver;
 
 class RestQueryResolver extends QueryResolver
 {
-
     // uses serves a provider for dependency injection, Located app\Providers\RestRequestProcessorProvider.php
 
-    public function resolve($validatedQueryData)
+    public function resolve($validatedMetaData)
     {
-        // bad endpoint / errors
-        $query = $validatedQueryData->errors ? $validatedQueryData->errors : NULL;
+        $requestMethodQueryResolver = $this->requestMethodQueryResolverFactory->getFactoryItem($validatedMetaData['endpointData']['requestMethod']);
+        $queryResult = $requestMethodQueryResolver->resolveQuery($validatedMetaData);
 
-        // get column data
-
-        // get form data
-
-        // index
-        $query = $query === NULL && $validatedQueryData->action == 'INDEX' ? $this->queryIndex->get() : NULL;
-
-        // GET
-        $query = $query === NULL && $validatedQueryData->action == 'GET' ? $this->queryAssembler->query($validatedQueryData) : NULL;
-        
-        // persist - POST = add, PUT = update, PATCH = copy
-        $query = $query === NULL && in_array($validatedQueryData->action, ['POST', 'PUT', 'PATCH']) ? $this->queryPersister->persist($validatedQueryData) : NULL;
-
-        // delete
-        $query = $query === NULL && $validatedQueryData->action == 'DELETE' ? $this->queryDeleter->delete($validatedQueryData) : NULL;
-
-        return $query;
+        return $queryResult;
     }
 }
+
+// TODO: make it so you can send in snake_case or camelCase as a parameter
+// TODO: make constant casing on api output snake_case or camelCase

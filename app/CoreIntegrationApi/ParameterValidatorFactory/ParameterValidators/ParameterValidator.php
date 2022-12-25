@@ -6,5 +6,5 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 
 interface ParameterValidator
 {
-    public function validate(ValidatorDataCollector $validatorDataCollector, $parameterData) : ValidatorDataCollector;
+    public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData) : void;
 }
