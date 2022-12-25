@@ -7,7 +7,7 @@ use App\CoreIntegrationApi\RequestMethodResponseBuilderFactory\RequestMethodResp
 abstract class ResponseBuilder
 {
 
-    function __construct(RequestMethodResponseBuilderFactory $requestMethodResponseBuilderFactory) 
+    public function __construct(RequestMethodResponseBuilderFactory $requestMethodResponseBuilderFactory)
     {
         $this->requestMethodResponseBuilderFactory = $requestMethodResponseBuilderFactory;
     }
