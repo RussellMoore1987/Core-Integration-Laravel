@@ -13,7 +13,6 @@ use Tests\TestCase;
 
 class RestRequestValidatorTest extends TestCase
 {
-    // TODO: refactor this ???
     /**
      * @dataProvider requestMethodProvider
      * @group get

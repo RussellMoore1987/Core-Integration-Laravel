@@ -7,7 +7,7 @@ use App\CoreIntegrationApi\CIL\CILQueryAssembler;
 use App\CoreIntegrationApi\RestApi\RestQueryIndex;
 use Illuminate\Support\ServiceProvider;
 
-class RequestMethodQueryResolverProvider extends ServiceProvider 
+class RequestMethodQueryResolverProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -16,10 +16,10 @@ class RequestMethodQueryResolverProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->bindRequestDataPrepper();
+        $this->bindGetRequestMethodQueryResolver();
     }
 
-    private function bindRequestDataPrepper() {
+    private function bindGetRequestMethodQueryResolver() {
         $this->app->bind(GetRequestMethodQueryResolver::class, function ($app) {
             return new GetRequestMethodQueryResolver(
                 $app->make(CILQueryAssembler::class),

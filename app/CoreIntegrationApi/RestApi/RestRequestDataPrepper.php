@@ -12,7 +12,7 @@ class RestRequestDataPrepper extends RequestDataPrepper
     {
         $this->setRequestDetails();
         $this->setEndpointDetails();
-        $this->setParameters();
+        $this->setRequestParameters();
 
         return $this->preppedData;
     }
@@ -29,7 +29,7 @@ class RestRequestDataPrepper extends RequestDataPrepper
         $this->preppedData['resourceId'] = $this->request->resourceId ?? $this->request->resource_id ?? $this->request->id ?? '';
     }
 
-    private function setParameters()
+    private function setRequestParameters()
     {
         $this->preppedData['parameters'] = $this->request->except(['id', 'resource', 'resourceId', 'resource_id']);
     }
