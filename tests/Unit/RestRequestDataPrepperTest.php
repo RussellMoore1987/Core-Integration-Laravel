@@ -182,14 +182,14 @@ class RestRequestDataPrepperTest extends TestCase
     /**
      * @group get
      */
-    public function test_RestRequestDataPrepper_returns_expected_response_random_parameters()
+    public function test_RestRequestDataPrepper_returns_expected_response_for_random_parameters()
     {
         $response = $this->runDataPrepper([
             'resource' => '$%#@',
             'resourceId' => '1,2,6,8,99,22',
             '33' => '\'',
             '::' => 'pwer',
-            '\'' => 33,
+            '\'' => '33',
             '{}' => [],
             '[]' => '1,2,3,4,5,6,7',
         ]);
@@ -201,7 +201,7 @@ class RestRequestDataPrepperTest extends TestCase
             'parameters' => [
                 '33' => '\'',
                 '::' => 'pwer',
-                '\'' => 33,
+                '\'' => '33',
                 '{}' => [],
                 '[]' => '1,2,3,4,5,6,7',
             ],
@@ -216,9 +216,14 @@ class RestRequestDataPrepperTest extends TestCase
      */
     public function test_RestRequestDataPrepper_does_not_return_excluded_variables_in_parameters_array()
     {
-        $this->requestData['resourceId'] = 33;
-        $this->requestData['resource_id'] = 33;
-        $response = $this->runDataPrepper($this->requestData);
+        $response = $this->runDataPrepper([
+            'resource' => 'projects',
+            'start_date' => '2020-02-24',
+            'id' => '33',
+            'resourceId' => '33',
+            'resource_id' => '33',
+            'title' => 'Gogo'
+        ]);
 
         $this->assertTrue(!array_key_exists('id', $response['parameters']));
         $this->assertTrue(!array_key_exists('resourceId', $response['parameters']));
