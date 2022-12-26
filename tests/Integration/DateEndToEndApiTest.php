@@ -31,6 +31,8 @@ class DateEndToEndApiTest extends TestCase
 
     /**
      * @group db
+     * @group rest
+     * @group get
      * @return void
      */
     public function test_get_back_record_with_date_time_equal_to()
@@ -46,6 +48,8 @@ class DateEndToEndApiTest extends TestCase
 
     /**
      * @group db
+     * @group rest
+     * @group get
      * @return void
      */
     public function test_get_back_records_with_date_equal_to()
@@ -62,6 +66,8 @@ class DateEndToEndApiTest extends TestCase
 
     /**
      * @group db
+     * @group rest
+     * @group get
      * @return void
      */
     public function test_get_back_records_with_date_time_between()
@@ -79,7 +85,8 @@ class DateEndToEndApiTest extends TestCase
     /**
      * @dataProvider betweenOptionDataProvider
      * @group db
-     * @return void
+     * @group rest
+     * @group get
      */
     public function test_get_back_records_with_date_between_options($option)
     {

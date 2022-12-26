@@ -15,13 +15,9 @@ class RestRequestValidatorTest extends TestCase
 {
     /**
      * @dataProvider requestMethodProvider
-     * @group get
-     * @group post
-     * @group put
-     * @group patch
-     * @group delete
+     * @group allRequestMethods
      */
-    public function test_RestRequestValidator_returns_expected_result_array_with_correct_keys($requestMethod)
+    public function test_RestRequestValidator_returns_expected_result_array_with_correct_keys($requestMethod) : void
     {
         $validatedMetaData = $this->getRestRequestValidatorResponse([
             'resource' => 'projects',
@@ -40,7 +36,7 @@ class RestRequestValidatorTest extends TestCase
         $this->assertArrayHasKey('queryArguments', $validatedMetaData);
     }
 
-    public function requestMethodProvider()
+    public function requestMethodProvider() : array
     {
         return [
             'GET' => ['GET'],
@@ -51,7 +47,7 @@ class RestRequestValidatorTest extends TestCase
         ];
     }
 
-    protected function getRestRequestValidatorResponse(array $parameters = [], $url = 'api/v1/projects', $method = 'GET')
+    protected function getRestRequestValidatorResponse(array $parameters = [], $url = 'api/v1/projects', $method = 'GET') : array
     {
         $request = Request::create($url, $method, $parameters);
         $restRequestDataPrepper = new RestRequestDataPrepper($request);

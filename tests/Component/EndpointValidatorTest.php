@@ -29,11 +29,7 @@ class EndpointValidatorTest extends TestCase
 
     /**
      * @dataProvider returnsExpectedResultProvider
-     * @group get
-     * @group post
-     * @group put
-     * @group patch
-     * @group delete
+     * @group allRequestMethods
      */
     public function test_EndpointValidator_returns_expected_result_for_setting_request_methods($requestMethod)
     {
@@ -67,11 +63,7 @@ class EndpointValidatorTest extends TestCase
 
     /**
      * Testing GET, but path applies to all
-     * @group get
-     * @group post
-     * @group put
-     * @group patch
-     * @group delete
+     * @group allRequestMethods
      */
     public function test_EndpointValidator_returns_expected_result_for_endpointData()
     {
@@ -99,11 +91,7 @@ class EndpointValidatorTest extends TestCase
 
     /**
      * Testing GET, but path applies to all
-     * @group get
-     * @group post
-     * @group put
-     * @group patch
-     * @group delete
+     * @group allRequestMethods
      */
     public function test_EndpointValidator_returns_expected_result_for_endpointData_no_id()
     {
@@ -124,11 +112,7 @@ class EndpointValidatorTest extends TestCase
 
     /**
      * Testing GET, but path applies to all
-     * @group get
-     * @group post
-     * @group put
-     * @group patch
-     * @group delete
+     * @group allRequestMethods
      */
     public function test_EndpointValidator_returns_expected_resource_info()
     {
@@ -144,11 +128,7 @@ class EndpointValidatorTest extends TestCase
 
     /**
      * Testing GET, but path applies to all
-     * @group get
-     * @group post
-     * @group put
-     * @group patch
-     * @group delete
+     * @group allRequestMethods
      */
     public function test_EndpointValidator_returns_HttpResponseException_when_no_resource_is_provided()
     {

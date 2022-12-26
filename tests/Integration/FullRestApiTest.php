@@ -10,11 +10,8 @@ class FullRestApiTest extends TestCase
 {
     /**
      * @dataProvider returnsExpectedResultProvider
-     * @group get
-     * @group post
-     * @group put
-     * @group patch
-     * @group delete
+     * @group allRequestMethods
+     * @group rest
      */
     public function test_http_methods_return_404_response($httpMethods) : void
     {
