@@ -10,23 +10,7 @@ use Tests\TestCase;
 
 class RestRequestDataPrepperTest extends TestCase
 {
-    protected $requestData = [
-        'resource' => 'projects',
-        'start_date' => '2020-02-28',
-        'id' => 33,
-        'title' => 'Gogo!!!'
-    ];
-    protected $expectedResponse = [
-        'resource' => 'projects',
-        'resourceId' => 33,
-        'parameters' => [
-            'start_date' => '2020-02-28',
-            'title' => 'Gogo!!!'
-        ],
-        'url' => 'http://localhost/api/v1/projects',
-        'requestMethod' => 'GET'
-    ];
-
+    protected $url = 'http://localhost/api/v1/projects';
     /**
      * @group get
      */
@@ -35,18 +19,18 @@ class RestRequestDataPrepperTest extends TestCase
         $response = $this->runDataPrepper([
             'resource' => 'projects',
             'start_date' => '2020-02-28',
-            'id' => 33,
+            'id' => '33',
             'title' => 'Gogo!!!'
-        ]); Fixing RestRequestDataPrepperTest, decided to revert back to a more read able version
+        ]);
 
         $expectedResponse = [
             'resource' => 'projects',
-            'resourceId' => 33,
+            'resourceId' => '33',
             'parameters' => [
                 'start_date' => '2020-02-28',
                 'title' => 'Gogo!!!'
             ],
-            'url' => 'http://localhost/api/v1/projects',
+            'url' => $this->url,
             'requestMethod' => 'GET'
         ];
 
@@ -56,14 +40,26 @@ class RestRequestDataPrepperTest extends TestCase
     /**
      * @group get
      */
-    public function test_RestRequestDataPrepper_returns_expected_response_no_resourceId()
+    public function test_RestRequestDataPrepper_returns_expected_response_empty_resourceId()
     {
-        unset($this->requestData['id']);
-        $response = $this->runDataPrepper($this->requestData);
+        $response = $this->runDataPrepper([
+            'resource' => 'projects',
+            'start_date' => '2020-02-27',
+            'title' => 'Gogo!!'
+        ]);
 
-        $this->expectedResponse['resourceId'] = '';
+        $expectedResponse = [
+            'resource' => 'projects',
+            'resourceId' => '',
+            'parameters' => [
+                'start_date' => '2020-02-27',
+                'title' => 'Gogo!!'
+            ],
+            'url' => $this->url,
+            'requestMethod' => 'GET'
+        ];
 
-        $this->assertEquals($this->expectedResponse, $response);
+        $this->assertEquals($expectedResponse, $response);
     }
 
     /**
@@ -71,19 +67,26 @@ class RestRequestDataPrepperTest extends TestCase
      */
     public function test_RestRequestDataPrepper_returns_expected_response_empty_parameters()
     {
-        unset($this->requestData['start_date']);
-        unset($this->requestData['title']);
-        $response = $this->runDataPrepper($this->requestData);
+        $response = $this->runDataPrepper([
+            'resource' => 'projects',
+            'id' => '33',
+        ]);
 
-        $this->expectedResponse['parameters'] = [];
+        $expectedResponse = [
+            'resource' => 'projects',
+            'resourceId' => '33',
+            'parameters' => [],
+            'url' => $this->url,
+            'requestMethod' => 'GET'
+        ];
 
-        $this->assertEquals($this->expectedResponse, $response);
+        $this->assertEquals($expectedResponse, $response);
     }
 
     /**
      * @group get
      */
-    public function test_RestRequestDataPrepper_returns_expected_response_no_parameters()
+    public function test_RestRequestDataPrepper_returns_expected_response_no_parameters_sent_index_response()
     {
         $response = $this->runDataPrepper([], 'api/v1');
 
@@ -102,13 +105,27 @@ class RestRequestDataPrepperTest extends TestCase
      * @dataProvider resourceIdProvider
      * @group get
      */
-    public function test_RestRequestDataPrepper_returns_expected_response_different_resource_id_text($resourceIdText)
+    public function test_RestRequestDataPrepper_returns_expected_response_for_different_resource_id_text($resourceIdText)
     {
-        unset($this->requestData['id']);
-        $this->requestData[$resourceIdText] = 33;
-        $response = $this->runDataPrepper($this->requestData);
+        $response = $this->runDataPrepper([
+            'resource' => 'projects',
+            'start_date' => '2020-02-26',
+            $resourceIdText => '33',
+            'title' => 'Gogo!'
+        ]);
 
-        $this->assertEquals($this->expectedResponse, $response);
+        $expectedResponse = [
+            'resource' => 'projects',
+            'resourceId' => '33',
+            'parameters' => [
+                'start_date' => '2020-02-26',
+                'title' => 'Gogo!'
+            ],
+            'url' => $this->url,
+            'requestMethod' => 'GET'
+        ];
+
+        $this->assertEquals($expectedResponse, $response);
     }
 
     public function resourceIdProvider()
@@ -130,12 +147,27 @@ class RestRequestDataPrepperTest extends TestCase
      */
     public function test_RestRequestDataPrepper_returns_expected_response_using_different_http_methods($methodText)
     {
-        $response = $this->runDataPrepper($this->requestData, 'api/v1/projects', $methodText);
+        $response = $this->runDataPrepper([
+            'resource' => 'projects',
+            'start_date' => '2020-02-25',
+            'id' => '33',
+            'title' => 'Gogo'
+        ], 'api/v1/projects', $methodText);
 
-        $this->expectedResponse['requestMethod'] = $methodText;
+        $expectedResponse = [
+            'resource' => 'projects',
+            'resourceId' => '33',
+            'parameters' => [
+                'start_date' => '2020-02-25',
+                'title' => 'Gogo'
+            ],
+            'url' => $this->url,
+            'requestMethod' => $methodText
+        ];
 
-        $this->assertEquals($this->expectedResponse, $response);
+        $this->assertEquals($expectedResponse, $response);
     }
+
     public function requestMethodProvider()
     {
         return [
@@ -143,6 +175,7 @@ class RestRequestDataPrepperTest extends TestCase
             'POST' => ['POST'],
             'PUT' => ['PUT'],
             'PATCH' => ['PATCH'],
+            'DELETE' => ['DELETE'],
         ];
     }
 
@@ -164,7 +197,7 @@ class RestRequestDataPrepperTest extends TestCase
         $expectedResponse = [
             'resource' => '$%#@',
             'resourceId' => '1,2,6,8,99,22',
-            'url' => 'http://localhost/api/v1/projects',
+            'url' => $this->url,
             'parameters' => [
                 '33' => '\'',
                 '::' => 'pwer',
