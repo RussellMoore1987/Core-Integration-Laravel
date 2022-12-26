@@ -7,27 +7,37 @@ use Illuminate\Http\Request;
 use Tests\TestCase;
 
 // ! Start here ****************************************************************** read over file and test readability, test coverage, test organization, tests grouping, go one by one (I have a stash of tests**** EndpointValidatorTest.php)
-// testing what I am suppose to
-// add test groups
-// remove duplicates
 
 class RestRequestDataPrepperTest extends TestCase
 {
-    // TODO: set these with $preppedData and $expectedResponse
     protected $requestData = [
         'resource' => 'projects',
         'start_date' => '2020-02-28',
         'id' => 33,
         'title' => 'Gogo!!!'
     ];
-    protected $expectedResponse;
+    protected $expectedResponse = [
+        'resource' => 'projects',
+        'resourceId' => 33,
+        'parameters' => [
+            'start_date' => '2020-02-28',
+            'title' => 'Gogo!!!'
+        ],
+        'url' => 'http://localhost/api/v1/projects',
+        'requestMethod' => 'GET'
+    ];
 
     /**
      * @group get
      */
-    public function test_rest_request_data_prepper_returns_expected_result()
+    public function test_RestRequestDataPrepper_returns_expected_response()
     {
-        $preppedData = $this->prepareData($this->requestData);
+        $response = $this->runDataPrepper([
+            'resource' => 'projects',
+            'start_date' => '2020-02-28',
+            'id' => 33,
+            'title' => 'Gogo!!!'
+        ]); Fixing RestRequestDataPrepperTest, decided to revert back to a more read able version
 
         $expectedResponse = [
             'resource' => 'projects',
@@ -40,50 +50,42 @@ class RestRequestDataPrepperTest extends TestCase
             'requestMethod' => 'GET'
         ];
 
-        $this->assertEquals($expectedResponse, $preppedData);
+        $this->assertEquals($expectedResponse, $response);
     }
 
-    public function test_rest_request_data_prepper_returns_expected_result_no_resourceId()
+    /**
+     * @group get
+     */
+    public function test_RestRequestDataPrepper_returns_expected_response_no_resourceId()
     {
         unset($this->requestData['id']);
-        $this->requestData['ham'] = 33;
-        $preppedData = $this->prepareData($this->requestData);
+        $response = $this->runDataPrepper($this->requestData);
 
-        $expectedResponse = [
-            'resource' => 'projects',
-            'resourceId' => '',
-            'parameters' => [
-                'start_date' => '2020-02-28',
-                'title' => 'Gogo!!!',
-                'ham' => 33
-            ],
-            'url' => 'http://localhost/api/v1/projects',
-            'requestMethod' => 'GET'
-        ];
+        $this->expectedResponse['resourceId'] = '';
 
-        $this->assertEquals($expectedResponse, $preppedData);
+        $this->assertEquals($this->expectedResponse, $response);
     }
 
-    public function test_rest_request_data_prepper_returns_expected_result_empty_parameters()
+    /**
+     * @group get
+     */
+    public function test_RestRequestDataPrepper_returns_expected_response_empty_parameters()
     {
         unset($this->requestData['start_date']);
         unset($this->requestData['title']);
-        $preppedData = $this->prepareData($this->requestData);
+        $response = $this->runDataPrepper($this->requestData);
 
-        $expectedResponse = [
-            'resource' => 'projects',
-            'resourceId' => 33,
-            'parameters' => [],
-            'url' => 'http://localhost/api/v1/projects',
-            'requestMethod' => 'GET'
-        ];
+        $this->expectedResponse['parameters'] = [];
 
-        $this->assertEquals($expectedResponse, $preppedData);
+        $this->assertEquals($this->expectedResponse, $response);
     }
 
-    public function test_rest_request_data_prepper_returns_expected_result_no_parameters()
+    /**
+     * @group get
+     */
+    public function test_RestRequestDataPrepper_returns_expected_response_no_parameters()
     {
-        $preppedData = $this->prepareData([], 'api/v1');
+        $response = $this->runDataPrepper([], 'api/v1');
 
         $expectedResponse = [
             'resource' => 'index',
@@ -93,31 +95,22 @@ class RestRequestDataPrepperTest extends TestCase
             'requestMethod' => 'GET'
         ];
 
-        $this->assertEquals($expectedResponse, $preppedData);
+        $this->assertEquals($expectedResponse, $response);
     }
 
     /**
      * @dataProvider resourceIdProvider
+     * @group get
      */
-    public function test_rest_request_data_prepper_returns_expected_result_different_resource_id_text($resourceIdText)
+    public function test_RestRequestDataPrepper_returns_expected_response_different_resource_id_text($resourceIdText)
     {
         unset($this->requestData['id']);
         $this->requestData[$resourceIdText] = 33;
-        $preppedData = $this->prepareData($this->requestData);
+        $response = $this->runDataPrepper($this->requestData);
 
-        $expectedResponse = [
-            'resource' => 'projects',
-            'resourceId' => 33,
-            'parameters' => [
-                'start_date' => '2020-02-28',
-                'title' => 'Gogo!!!'
-            ],
-            'url' => 'http://localhost/api/v1/projects',
-            'requestMethod' => 'GET'
-        ];
-
-        $this->assertEquals($expectedResponse,$preppedData);
+        $this->assertEquals($this->expectedResponse, $response);
     }
+
     public function resourceIdProvider()
     {
         return [
@@ -135,22 +128,13 @@ class RestRequestDataPrepperTest extends TestCase
      * @group patch
      * @group delete
      */
-    public function test_rest_request_data_prepper_returns_expected_result_using_different_http_methods($methodText)
+    public function test_RestRequestDataPrepper_returns_expected_response_using_different_http_methods($methodText)
     {
-        $preppedData = $this->prepareData($this->requestData, 'api/v1/projects', $methodText);
+        $response = $this->runDataPrepper($this->requestData, 'api/v1/projects', $methodText);
 
-        $expectedResponse = [
-            'resource' => 'projects',
-            'resourceId' => 33,
-            'parameters' => [
-                'start_date' => '2020-02-28',
-                'title' => 'Gogo!!!'
-            ],
-            'url' => 'http://localhost/api/v1/projects',
-            'requestMethod' => $methodText
-        ];
+        $this->expectedResponse['requestMethod'] = $methodText;
 
-        $this->assertEquals($expectedResponse,$preppedData);
+        $this->assertEquals($this->expectedResponse, $response);
     }
     public function requestMethodProvider()
     {
@@ -162,9 +146,12 @@ class RestRequestDataPrepperTest extends TestCase
         ];
     }
 
-    public function test_rest_request_data_prepper_returns_expected_result_random_parameters()
+    /**
+     * @group get
+     */
+    public function test_RestRequestDataPrepper_returns_expected_response_random_parameters()
     {
-        $preppedData = $this->prepareData([
+        $response = $this->runDataPrepper([
             'resource' => '$%#@',
             'resourceId' => '1,2,6,8,99,22',
             '33' => '\'',
@@ -178,26 +165,40 @@ class RestRequestDataPrepperTest extends TestCase
             'resource' => '$%#@',
             'resourceId' => '1,2,6,8,99,22',
             'url' => 'http://localhost/api/v1/projects',
-            'requestMethod' => 'GET',
             'parameters' => [
                 '33' => '\'',
                 '::' => 'pwer',
                 '\'' => 33,
                 '{}' => [],
                 '[]' => '1,2,3,4,5,6,7',
-            ]
+            ],
+            'requestMethod' => 'GET',
         ];
 
-        $this->assertEquals($expectedResponse,$preppedData);
+        $this->assertEquals($expectedResponse, $response);
     }
 
-    protected function prepareData(array $parameters = [], $url = 'api/v1/projects', $method = 'GET')
+    /**
+     * @group get
+     */
+    public function test_RestRequestDataPrepper_does_not_return_excluded_variables_in_parameters_array()
+    {
+        $this->requestData['resourceId'] = 33;
+        $this->requestData['resource_id'] = 33;
+        $response = $this->runDataPrepper($this->requestData);
+
+        $this->assertTrue(!array_key_exists('id', $response['parameters']));
+        $this->assertTrue(!array_key_exists('resourceId', $response['parameters']));
+        $this->assertTrue(!array_key_exists('resource_id', $response['parameters']));
+        $this->assertTrue(!array_key_exists('resource', $response['parameters']));
+    }
+
+    protected function runDataPrepper(array $parameters = [], $url = 'api/v1/projects', $method = 'GET')
     {
         $request = Request::create($url, $method, $parameters);
         $restRequestDataPrepper = new RestRequestDataPrepper($request);
         $restRequestDataPrepper->prep();
-        $preppedData = $restRequestDataPrepper->getPreppedData();
 
-        return $preppedData;
+        return $restRequestDataPrepper->getPreppedData();
     }
 }
