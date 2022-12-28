@@ -7,10 +7,10 @@ use App\Models\Project;
 use Tests\TestCase;
 
 // ! Start here ****************************************************************** read over file and test readability, test coverage, test organization, tests grouping, go one by one (I have a stash of tests**** EndpointValidatorTest.php)
-// [] read over
+// [x] read over
 // [x] test groups
 // [x] function output -> : void
-// [] testing what I need to
+// [] testing what I need to test
 // [] put groups on other tests, look for * @group
 
 class ValidatorDataCollectorTest extends TestCase
@@ -25,13 +25,13 @@ class ValidatorDataCollectorTest extends TestCase
     }
 
     /**
-     * @dataProvider parameterFunctions
+     * @dataProvider setArrayParameterFunctionProvider
      * @group rest
      * @group context
      * @group allRequestMethods
      */
     // TODO: better name
-    public function test_validatorDataCollector_setArrayParameter_functionality_for_each_public_function_that_uses_it($setFunction, $getFunction) : void
+    public function test_validatorDataCollector_setArrayParameter_functionality_returns_expected_results($setFunction, $getFunction) : void
     {
         $this->validatorDataCollector->$setFunction(['team' => 12]);
         $this->validatorDataCollector->$setFunction([
@@ -42,7 +42,7 @@ class ValidatorDataCollectorTest extends TestCase
             ]
         ]);
 
-        $expectedParameters = [
+        $expectedOutput = [
             'team' => 12,
             'start_date' => [
                 'dateCoveredTo' => [2222, 2021],
@@ -51,10 +51,10 @@ class ValidatorDataCollectorTest extends TestCase
             ]
         ];
 
-        $this->assertEquals($expectedParameters, $this->validatorDataCollector->$getFunction());
+        $this->assertEquals($expectedOutput, $this->validatorDataCollector->$getFunction());
     }
 
-    public function parameterFunctions() : array
+    public function setArrayParameterFunctionProvider() : array
     {
         return [
             'rejectedParameters' => ['setRejectedParameters','getRejectedParameters'],
@@ -68,7 +68,7 @@ class ValidatorDataCollectorTest extends TestCase
      * @group context
      * @group allRequestMethods
      */
-    public function test_getValidatedMetaData_function_with_nulls_returned() : void
+    public function test_validatorDataCollector_getValidatedMetaData_function_with_nulls_returned() : void
     {
         $expectedOutput = [
             'endpointData' => [],
@@ -86,11 +86,11 @@ class ValidatorDataCollectorTest extends TestCase
      * @group context
      * @group allRequestMethods
      */
-    public function test_getValidatedMetaData_function() : void
+    public function test_validatorDataCollector_getValidatedMetaData_function_returns_expected_results() : void
     {
-        $this->setAllValidatedMetaDataParameters();
+        $this->setAllValidatorDataCollectorAttributes();
 
-        $expectedParameters = [
+        $expectedOutput = [
             'team' => 12,
             'start_date' => [
                 'dateCoveredTo' => [2222, 2021],
@@ -100,9 +100,9 @@ class ValidatorDataCollectorTest extends TestCase
         $expectedOutput = [
             'endpointData' => ['resource' => 'projects','endpointValid' => true,],
             'resourceInfo' => ['columnData' => ['projects' => ['...']],'otherData' => true,],
-            'rejectedParameters' => $expectedParameters,
-            'acceptedParameters' => $expectedParameters,
-            'queryArguments' => $expectedParameters,
+            'rejectedParameters' => $expectedOutput,
+            'acceptedParameters' => $expectedOutput,
+            'queryArguments' => $expectedOutput,
         ];
 
         $this->assertEquals($expectedOutput, $this->validatorDataCollector->getValidatedMetaData());
@@ -112,9 +112,9 @@ class ValidatorDataCollectorTest extends TestCase
      * @group context
      * @group allRequestMethods
      */
-    public function test_collector_reset_function() : void
+    public function test_validatorDataCollector_reset_function_resets_the_validatorDataCollector() : void
     {
-        $this->setAllValidatedMetaDataParameters();
+        $this->setAllValidatorDataCollectorAttributes();
 
         $expectedOutput = [
             'endpointData' => [],
@@ -135,7 +135,7 @@ class ValidatorDataCollectorTest extends TestCase
         $this->assertEquals(null, $this->validatorDataCollector->url);
     }
 
-    protected function setAllValidatedMetaDataParameters() : void
+    protected function setAllValidatorDataCollectorAttributes() : void
     {
         $this->validatorDataCollector->resource = 'projects';
         $this->validatorDataCollector->resourceId = '12342';
