@@ -4,21 +4,24 @@ namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory;
 
 use App\CoreIntegrationApi\CIL\CILDataTypeDeterminerFactory;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\ResourceParameterInfoProvider;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\StringResourceParameterInfoProvider;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\JsonResourceParameterInfoProvider;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\DateResourceParameterInfoProvider;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\IntResourceParameterInfoProvider;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\FloatResourceParameterInfoProvider;
 
 class ResourceParameterInfoProviderFactory extends CILDataTypeDeterminerFactory
 {
+    protected $factoryReturnArray = [
+        'string' => StringResourceParameterInfoProvider::class,
+        'json' => JsonResourceParameterInfoProvider::class,
+        'date' => DateResourceParameterInfoProvider::class,
+        'int' => IntResourceParameterInfoProvider::class,
+        'float' => FloatResourceParameterInfoProvider::class,
+    ];
+
     public function getFactoryItem($dataType) : ResourceParameterInfoProvider
     {
-        $classPath = 'App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders';
-
-        $this->factoryReturnArray = [
-            'string' => "{$classPath}\StringResourceParameterInfoProvider",
-            'json' => "{$classPath}\JsonResourceParameterInfoProvider",
-            'date' => "{$classPath}\DateResourceParameterInfoProvider",
-            'int' => "{$classPath}\IntResourceParameterInfoProvider",
-            'float' => "{$classPath}\FloatResourceParameterInfoProvider",
-        ];
-
         return parent::getFactoryItem($dataType);
     }
 }

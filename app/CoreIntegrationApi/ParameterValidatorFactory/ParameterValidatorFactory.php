@@ -4,25 +4,32 @@ namespace App\CoreIntegrationApi\ParameterValidatorFactory;
 
 use App\CoreIntegrationApi\CIL\CILDataTypeDeterminerFactory;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\StringParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\JsonParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\DateParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IntParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\FloatParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\OrderByParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\SelectParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IncludesParameterValidator;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\MethodCallsParameterValidator;
 
 class ParameterValidatorFactory extends CILDataTypeDeterminerFactory
 {
+    protected $factoryReturnArray = [
+        'string' => StringParameterValidator::class,
+        'json' => JsonParameterValidator::class,
+        'date' => DateParameterValidator::class,
+        'int' => IntParameterValidator::class,
+        'float' => FloatParameterValidator::class,
+        'orderby' => OrderByParameterValidator::class,
+        'select' => SelectParameterValidator::class,
+        'includes' => IncludesParameterValidator::class,
+        'methodcalls' => MethodCallsParameterValidator::class,
+    ];
+
     public function getFactoryItem($dataType) : ParameterValidator
     {
-        $classPath = 'App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators';
-
-        $this->factoryReturnArray = [
-            'string' => "{$classPath}\StringParameterValidator",
-            'json' => "{$classPath}\JsonParameterValidator",
-            'date' => "{$classPath}\DateParameterValidator",
-            'int' => "{$classPath}\IntParameterValidator",
-            'float' => "{$classPath}\FloatParameterValidator",
-            'orderby' => "{$classPath}\OrderByParameterValidator",
-            'select' => "{$classPath}\SelectParameterValidator",
-            'includes' => "{$classPath}\IncludesParameterValidator",
-            'methodcalls' => "{$classPath}\MethodCallsParameterValidator",
-        ];
-
         return parent::getFactoryItem($dataType);
     }
 }

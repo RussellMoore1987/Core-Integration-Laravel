@@ -25,63 +25,63 @@ abstract class CILDataTypeDeterminerFactory
     public function getFactoryItem($dataType) : object
     {
         $this->dataType = strtolower($dataType);
-        $this->factoryItem = null;
+        $this->factoryItem = null; // rests if used more then once
 
-        $this->checkForStringIfThereSetFactoryItem();
-        $this->checkForJsonIfThereSetFactoryItem();
-        $this->checkForDateIfThereSetFactoryItem();
-        $this->checkForIntIfThereSetFactoryItem();
-        $this->checkForFloatIfThereSetFactoryItem();
-        $this->checkForOrderByIfThereSetFactoryItem();
-        $this->checkForSelectIfThereSetFactoryItem();
-        $this->checkForIncludesIfThereSetFactoryItem();
-        $this->checkForMethodCallsIfThereSetFactoryItem();
+        $this->isString();
+        $this->isJson();
+        $this->isDate();
+        $this->isInt();
+        $this->isFloat();
+        $this->isOrderBy();
+        $this->isSelect();
+        $this->isIncludes();
+        $this->isMethodCalls();
 
         return $this->factoryItem;
-    }  
+    }
 
-    protected function checkForStringIfThereSetFactoryItem()
+    protected function isString() : void
     {
         if (
             !$this->factoryItem &&
             (
-                str_contains($this->dataType, 'varchar') || 
-                str_contains($this->dataType, 'char') || 
-                $this->dataType == 'blob' || 
+                str_contains($this->dataType, 'varchar') ||
+                str_contains($this->dataType, 'char') ||
+                $this->dataType == 'blob' ||
                 $this->dataType == 'text' ||
                 $this->dataType == 'string'
             )
         ) {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['string']);
+            $this->setFactoryItem($this->factoryReturnArray['string']);
         }
     }
 
-    protected function checkForJsonIfThereSetFactoryItem()
+    protected function isJson() : void
     {
         if (!$this->factoryItem && str_contains($this->dataType, 'json')) {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['json']);
+            $this->setFactoryItem($this->factoryReturnArray['json']);
         }
     }
 
-    protected function checkForDateIfThereSetFactoryItem()
+    protected function isDate() : void
     {
         if (
-            !$this->factoryItem && 
+            !$this->factoryItem &&
             (
-                $this->dataType == 'date' || 
-                $this->dataType == 'timestamp' || 
-                $this->dataType == 'datetime' || 
+                $this->dataType == 'date' ||
+                $this->dataType == 'timestamp' ||
+                $this->dataType == 'datetime' ||
                 str_contains($this->dataType, 'date')
             )
         ) {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['date']);
+            $this->setFactoryItem($this->factoryReturnArray['date']);
         }
     }
 
-    protected function checkForIntIfThereSetFactoryItem()
+    protected function isInt() : void
     {
         if (
-            !$this->factoryItem && 
+            !$this->factoryItem &&
             (
                 $this->dataType == 'integer' ||
                 $this->dataType == 'int' ||
@@ -92,14 +92,14 @@ abstract class CILDataTypeDeterminerFactory
                 (str_contains($this->dataType, 'int') && str_contains($this->dataType, 'unsigned'))
             )
         ) {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['int']);
+            $this->setFactoryItem($this->factoryReturnArray['int']);
         }
     }
 
-    protected function checkForFloatIfThereSetFactoryItem()
+    protected function isFloat() : void
     {
         if (
-            !$this->factoryItem && 
+            !$this->factoryItem &&
             (
                 $this->dataType == 'decimal' || str_contains($this->dataType, 'decimal') ||
                 $this->dataType == 'numeric' || str_contains($this->dataType, 'numeric') ||
@@ -107,44 +107,44 @@ abstract class CILDataTypeDeterminerFactory
                 $this->dataType == 'double' || str_contains($this->dataType, 'double')
             )
         ) {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['float']);
+            $this->setFactoryItem($this->factoryReturnArray['float']);
         }
     }
 
-    protected function checkForOrderByIfThereSetFactoryItem()
+    protected function isOrderBy() : void
     {
-        if (!$this->factoryItem && $this->dataType == 'orderby') 
+        if (!$this->factoryItem && $this->dataType == 'orderby')
         {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['orderby']);
+            $this->setFactoryItem($this->factoryReturnArray['orderby']);
         }
     }
 
-    protected function checkForSelectIfThereSetFactoryItem()
+    protected function isSelect() : void
     {
-        if (!$this->factoryItem && $this->dataType == 'select') 
+        if (!$this->factoryItem && $this->dataType == 'select')
         {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['select']);
+            $this->setFactoryItem($this->factoryReturnArray['select']);
         }
     }
 
-    protected function checkForIncludesIfThereSetFactoryItem()
+    protected function isIncludes() : void
     {
-        if (!$this->factoryItem && $this->dataType == 'includes') 
+        if (!$this->factoryItem && $this->dataType == 'includes')
         {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['includes']);
+            $this->setFactoryItem($this->factoryReturnArray['includes']);
         }
     }
 
-    protected function checkForMethodCallsIfThereSetFactoryItem()
+    protected function isMethodCalls() : void
     {
-        if (!$this->factoryItem && $this->dataType == 'methodcalls') 
+        if (!$this->factoryItem && $this->dataType == 'methodcalls')
         {
-            $this->factoryItem = $this->returnValue($this->factoryReturnArray['methodcalls']);
+            $this->setFactoryItem($this->factoryReturnArray['methodcalls']);
         }
     }
 
-    protected function returnValue($dataTypeValue)
+    protected function setFactoryItem($dataTypeValue) : void
     {
-        return App::make($dataTypeValue);
+        $this->factoryItem = App::make($dataTypeValue);
     }
 }

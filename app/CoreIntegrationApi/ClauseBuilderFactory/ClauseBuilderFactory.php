@@ -4,25 +4,32 @@ namespace App\CoreIntegrationApi\ClauseBuilderFactory;
 
 use App\CoreIntegrationApi\CIL\CILDataTypeDeterminerFactory;
 use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\ClauseBuilder;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\StringWhereClauseBuilder;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\JsonWhereClauseBuilder;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\DateWhereClauseBuilder;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\IntWhereClauseBuilder;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\FloatWhereClauseBuilder;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\OrderByClauseBuilder;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\SelectClauseBuilder;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\IncludesClauseBuilder;
+use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\MethodCallsClauseBuilder;
 
 class ClauseBuilderFactory extends CILDataTypeDeterminerFactory
 {
+    protected $factoryReturnArray = [
+        'string' => StringWhereClauseBuilder::class,
+        'json' => JsonWhereClauseBuilder::class,
+        'date' => DateWhereClauseBuilder::class,
+        'int' => IntWhereClauseBuilder::class,
+        'float' => FloatWhereClauseBuilder::class,
+        'orderby' => OrderByClauseBuilder::class,
+        'select' => SelectClauseBuilder::class,
+        'includes' => IncludesClauseBuilder::class,
+        'methodcalls' => MethodCallsClauseBuilder::class,
+    ];
+
     public function getFactoryItem($dataType) : ClauseBuilder
     {
-        $classPath = 'App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders';
-
-        $this->factoryReturnArray = [
-            'string' => "{$classPath}\StringWhereClauseBuilder",
-            'json' => "{$classPath}\JsonWhereClauseBuilder",
-            'date' => "{$classPath}\DateWhereClauseBuilder",
-            'int' => "{$classPath}\IntWhereClauseBuilder",
-            'float' => "{$classPath}\FloatWhereClauseBuilder",
-            'orderby' => "{$classPath}\OrderByClauseBuilder",
-            'select' => "{$classPath}\SelectClauseBuilder",
-            'includes' => "{$classPath}\IncludesClauseBuilder",
-            'methodcalls' => "{$classPath}\MethodCallsClauseBuilder",
-        ];
-
         return parent::getFactoryItem($dataType);
     }
 }

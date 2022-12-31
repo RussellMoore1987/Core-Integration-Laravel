@@ -24,11 +24,6 @@ abstract class RequestMethodTypeFactory
             throw new \Exception("RequestMethodTypeFactory: Invalid request method type \"$requestMethod\"");
         }
 
-        return $this->returnValue($this->factoryReturnArray[$requestMethod]);
-    }
-
-    protected function returnValue($requestMethodObjectPath)
-    {
-        return App::make($requestMethodObjectPath);
+        return App::make($this->factoryReturnArray[$requestMethod]);
     }
 }
