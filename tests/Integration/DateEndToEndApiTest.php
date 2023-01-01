@@ -6,7 +6,7 @@ use App\Models\Project;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
-// TODO: 
+// TODO:
 // post
 // put
 // patch
@@ -16,9 +16,13 @@ class DateEndToEndApiTest extends TestCase
 {
     use DatabaseTransactions;
 
-    private $projects = [];
+    protected $projects = [];
+    protected $project1Title = 'Test Project 1';
+    protected $project2Title = 'Test Project 2';
+    protected $project3Title = 'Test Project 3';
+    protected $project4Title = 'Test Project 4';
 
-    protected function setUp(): void
+    protected function setUp() : void
     {
         parent::setUp();
 
@@ -33,53 +37,50 @@ class DateEndToEndApiTest extends TestCase
      * @group db
      * @group rest
      * @group get
-     * @return void
      */
-    public function test_get_back_record_with_date_time_equal_to()
+    public function test_get_back_record_with_date_time_equal_to() : void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:30:45");
-        $res_array = json_decode($response->content(), true);
-        $projects = collect($res_array['data']);
+        $responseArray = json_decode($response->content(), true);
+        $projects = collect($responseArray['data']);
 
         $response->assertStatus(200);
-        $this->assertEquals(1, count($res_array['data']));
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 1')->first());
+        $this->assertEquals(1, count($responseArray['data']));
+        $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
     }
 
     /**
      * @group db
      * @group rest
      * @group get
-     * @return void
      */
-    public function test_get_back_records_with_date_equal_to()
+    public function test_get_back_records_with_date_equal_to() : void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01");
-        $res_array = json_decode($response->content(), true);
-        $projects = collect($res_array['data']);
+        $responseArray = json_decode($response->content(), true);
+        $projects = collect($responseArray['data']);
 
         $response->assertStatus(200);
-        $this->assertEquals(2, count($res_array['data']));
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 1')->first());
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 2')->first());
+        $this->assertEquals(2, count($responseArray['data']));
+        $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
+        $this->assertTrue((boolean) $projects->where('title', $this->project2Title)->first());
     }
 
     /**
      * @group db
      * @group rest
      * @group get
-     * @return void
      */
-    public function test_get_back_records_with_date_time_between()
+    public function test_get_back_records_with_date_time_between() : void
     {
-        $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:45:56,2010-01-01::bt"); 
-        $res_array = json_decode($response->content(), true);
+        $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:45:56,2010-01-01::bt");
+        $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($res_array['data']);
+        $projects = collect($responseArray['data']);
 
         $response->assertStatus(200);
-        $this->assertEquals(1, count($res_array['data']));
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 3')->first());
+        $this->assertEquals(1, count($responseArray['data']));
+        $this->assertTrue((boolean) $projects->where('title', $this->project3Title)->first());
     }
 
     /**
@@ -88,21 +89,21 @@ class DateEndToEndApiTest extends TestCase
      * @group rest
      * @group get
      */
-    public function test_get_back_records_with_date_between_options($option)
+    public function test_get_back_records_with_date_between_options($option) : void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01,2010-01-01::{$option}");
-        $res_array = json_decode($response->content(), true);
+        $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($res_array['data']);
+        $projects = collect($responseArray['data']);
 
         $response->assertStatus(200);
-        $this->assertEquals(3, count($res_array['data']));
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 1')->first());
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 2')->first());
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 3')->first());
+        $this->assertEquals(3, count($responseArray['data']));
+        $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
+        $this->assertTrue((boolean) $projects->where('title', $this->project2Title)->first());
+        $this->assertTrue((boolean) $projects->where('title', $this->project3Title)->first());
     }
 
-    public function betweenOptionDataProvider()
+    public function betweenOptionDataProvider() : array
     {
         return [
             'bt' => ['bt'],
@@ -112,40 +113,38 @@ class DateEndToEndApiTest extends TestCase
 
     /**
      * @group db
-     * @return void
      */
-    public function test_get_back_record_with_date_time_grater_than()
+    public function test_get_back_record_with_date_time_grater_than() : void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 11:23:33::gt");
-        $res_array = json_decode($response->content(), true);
+        $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($res_array['data']);
+        $projects = collect($responseArray['data']);
 
         $response->assertStatus(200);
-        $this->assertEquals(3, count($res_array['data']));
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 1')->first());
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 3')->first());
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 4')->first());
+        $this->assertEquals(3, count($responseArray['data']));
+        $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
+        $this->assertTrue((boolean) $projects->where('title', $this->project3Title)->first());
+        $this->assertTrue((boolean) $projects->where('title', $this->project4Title)->first());
     }
 
     /**
      * @dataProvider graterThenOptionDataProvider
      * @group db
-     * @return void
      */
-    public function test_get_back_record_with_date_grater_than_options($option)
+    public function test_get_back_record_with_date_grater_than_options($option) : void
     {
         $response = $this->get("/api/v1/projects/?start_date=2010-01-01::{$option}");
-        $res_array = json_decode($response->content(), true);
+        $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($res_array['data']);
+        $projects = collect($responseArray['data']);
 
         $response->assertStatus(200);
-        $this->assertEquals(1, count($res_array['data']));
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 4')->first());
+        $this->assertEquals(1, count($responseArray['data']));
+        $this->assertTrue((boolean) $projects->where('title', $this->project4Title)->first());
     }
 
-    public function graterThenOptionDataProvider()
+    public function graterThenOptionDataProvider() : array
     {
         return [
             'gt' => ['gt'],
@@ -154,44 +153,41 @@ class DateEndToEndApiTest extends TestCase
         ];
     }
 
-    // 
     /**
      * @group db
-     * @return void
      */
-    public function test_get_back_record_with_date_time_grater_than_or_equal()
+    public function test_get_back_record_with_date_time_grater_than_or_equal() : void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:30:45::GTE");
-        $res_array = json_decode($response->content(), true);
+        $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($res_array['data']);
+        $projects = collect($responseArray['data']);
 
         $response->assertStatus(200);
-        $this->assertEquals(3, count($res_array['data']));
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 1')->first());
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 3')->first());
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 4')->first());
+        $this->assertEquals(3, count($responseArray['data']));
+        $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
+        $this->assertTrue((boolean) $projects->where('title', $this->project3Title)->first());
+        $this->assertTrue((boolean) $projects->where('title', $this->project4Title)->first());
     }
 
     /**
      * @dataProvider greaterThanOrEqualOptionDataProvider
      * @group db
-     * @return void
      */
-    public function test_get_back_records_with_date_grater_than_or_equal_options($option)
+    public function test_get_back_records_with_date_grater_than_or_equal_options($option) : void
     {
         $response = $this->get("/api/v1/projects/?start_date=2010-01-01::{$option}");
-        $res_array = json_decode($response->content(), true);
+        $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($res_array['data']);
+        $projects = collect($responseArray['data']);
 
         $response->assertStatus(200);
-        $this->assertEquals(2, count($res_array['data']));
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 3')->first());
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 4')->first());
+        $this->assertEquals(2, count($responseArray['data']));
+        $this->assertTrue((boolean) $projects->where('title', $this->project3Title)->first());
+        $this->assertTrue((boolean) $projects->where('title', $this->project4Title)->first());
     }
 
-    public function greaterThanOrEqualOptionDataProvider()
+    public function greaterThanOrEqualOptionDataProvider() : array
     {
         return [
             'gte' => ['GTE'],
@@ -202,39 +198,37 @@ class DateEndToEndApiTest extends TestCase
 
     /**
      * @group db
-     * @return void
      */
-    public function test_get_back_records_with_date_time_less_than()
+    public function test_get_back_records_with_date_time_less_than() : void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:30:45::lt");
-        $res_array = json_decode($response->content(), true);
+        $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($res_array['data']);
+        $projects = collect($responseArray['data']);
 
         $response->assertStatus(200);
-        $this->assertEquals(1, count($res_array['data']));
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 2')->first());
+        $this->assertEquals(1, count($responseArray['data']));
+        $this->assertTrue((boolean) $projects->where('title', $this->project2Title)->first());
     }
 
     /**
      * @dataProvider lessThanOptionDataProvider
      * @group db
-     * @return void
      */
-    public function test_get_back_records_with_date_less_than_options($option)
+    public function test_get_back_records_with_date_less_than_options($option) : void
     {
         $response = $this->get("/api/v1/projects/?start_date=2010-01-01::{$option}");
-        $res_array = json_decode($response->content(), true);
+        $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($res_array['data']);
+        $projects = collect($responseArray['data']);
 
         $response->assertStatus(200);
-        $this->assertEquals(2, count($res_array['data']));
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 1')->first());
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 2')->first());
+        $this->assertEquals(2, count($responseArray['data']));
+        $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
+        $this->assertTrue((boolean) $projects->where('title', $this->project2Title)->first());
     }
 
-    public function lessThanOptionDataProvider()
+    public function lessThanOptionDataProvider() : array
     {
         return [
             'lte' => ['lt'],
@@ -245,41 +239,39 @@ class DateEndToEndApiTest extends TestCase
 
     /**
      * @group db
-     * @return void
      */
-    public function test_get_back_records_with_date_less_than_or_equal()
+    public function test_get_back_records_with_date_less_than_or_equal() : void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:30:45::lte");
-        $res_array = json_decode($response->content(), true);
+        $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($res_array['data']);
+        $projects = collect($responseArray['data']);
 
         $response->assertStatus(200);
-        $this->assertEquals(2, count($res_array['data']));
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 1')->first());
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 2')->first());
+        $this->assertEquals(2, count($responseArray['data']));
+        $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
+        $this->assertTrue((boolean) $projects->where('title', $this->project2Title)->first());
     }
 
     /**
      * @dataProvider lessThanOrEqualOptionDataProvider
      * @group db
-     * @return void
      */
-    public function test_get_back_records_with_date_less_than_or_equal_options($option)
+    public function test_get_back_records_with_date_less_than_or_equal_options($option) : void
     {
         $response = $this->get("/api/v1/projects/?start_date=2010-01-01::{$option}");
-        $res_array = json_decode($response->content(), true);
+        $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($res_array['data']);
+        $projects = collect($responseArray['data']);
 
         $response->assertStatus(200);
-        $this->assertEquals(3, count($res_array['data']));
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 1')->first());
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 2')->first());
-        $this->assertTrue((boolean) $projects->where('title', 'Test Project 3')->first());
+        $this->assertEquals(3, count($responseArray['data']));
+        $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
+        $this->assertTrue((boolean) $projects->where('title', $this->project2Title)->first());
+        $this->assertTrue((boolean) $projects->where('title', $this->project3Title)->first());
     }
 
-    public function lessThanOrEqualOptionDataProvider()
+    public function lessThanOrEqualOptionDataProvider() : array
     {
         return [
             'lte' => ['LTE'],
@@ -294,10 +286,9 @@ class DateEndToEndApiTest extends TestCase
 
     /**
      * @group db
-     * @return void
      */
     // TODO: should Ido this here???
-    // public function test_post_record_with_valid_data() 
+    // public function test_post_record_with_valid_data() : void
     // {
     //     $response = $this->post("/api/v1/projects/", [
     //         'title' => 'Test Project 5',
@@ -306,7 +297,7 @@ class DateEndToEndApiTest extends TestCase
     //         'end_date' => '2010-01-01',
     //         'status' => 'active',
     //     ]);
-
+    //
     //     $response->assertStatus(201);
     //     $this->assertDatabaseHas('projects', [
     //         'title' => 'Test Project 5',
@@ -316,34 +307,35 @@ class DateEndToEndApiTest extends TestCase
     //         'status' => 'active',
     //     ]);
     // }
+
         
-    protected function makeProjects()
+    protected function makeProjects() : void
     {
         $this->projects[] = Project::factory()->create([
-            'title' => 'Test Project 1',
+            'title' => $this->project1Title,
             'start_date' => '1979-01-01 12:30:45',
         ]);
         $this->projects[] = Project::factory()->create([
-            'title' => 'Test Project 2',
+            'title' => $this->project2Title,
             'start_date' => '1979-01-01',
         ]);
         $this->projects[] = Project::factory()->create([
-            'title' => 'Test Project 3',
+            'title' => $this->project3Title,
             'start_date' => '2010-01-01',
         ]);
         $this->projects[] = Project::factory()->create([
-            'title' => 'Test Project 4',
+            'title' => $this->project4Title,
             'start_date' => '2022-01-01',
         ]);
 
         $this->projects = collect($this->projects);
-    }    
+    }
 
     // TODO: Test
-    // GET with out authentication 
-    // GET with authentication 
-    // PUT, POST, PAtCH with authentication 
-    // PUT, POST, PAtCH with out authentication, must fail 
+    // GET with out authentication
+    // GET with authentication
+    // PUT, POST, PAtCH with authentication
+    // PUT, POST, PAtCH with out authentication, must fail
     // PUT, POST, PAtCH response
     // PUT response code
     // POST response code

@@ -10,7 +10,7 @@ class CILModelTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
@@ -19,9 +19,8 @@ class CILModelTest extends TestCase
 
     /**
      * @group db
-     * @return void
      */
-    public function test_validateAndSave_function_creates_record_and_then_updates_it_in_different_ways()
+    public function test_validateAndSave_function_creates_record_and_then_updates_it_in_different_ways() : void
     {
         // just making sure that the validateAndSave function works as expected
         // create record
@@ -106,7 +105,7 @@ class CILModelTest extends TestCase
     /**
      * @dataProvider exceptionDataProvider
      */
-    public function test_validateAndSave_exception_is_thrown($validationRules)
+    public function test_validateAndSave_exception_is_thrown($validationRules) : void
     {
         $this->expectException(\Exception::class);
         $this->expectErrorMessage('validationRules rules not set. A class utilizing the CILModel trait must have validationRules, see the documentation located at app\CoreIntegrationApi\docs\CILModel.php');
@@ -118,7 +117,7 @@ class CILModelTest extends TestCase
     /**
      * @dataProvider exceptionDataProvider
      */
-    public function test_validate_exception_is_thrown($validationRules)
+    public function test_validate_exception_is_thrown($validationRules) : void
     {
         $this->expectException(\Exception::class);
         $this->expectErrorMessage('validationRules rules not set. A class utilizing the CILModel trait must have validationRules, see the documentation located at app\CoreIntegrationApi\docs\CILModel.php');
@@ -127,7 +126,7 @@ class CILModelTest extends TestCase
         $this->project->validate([]);
     }
 
-    public function exceptionDataProvider()
+    public function exceptionDataProvider() : array
     {
         return [
             'noValidationRules' => [null],
@@ -136,7 +135,7 @@ class CILModelTest extends TestCase
         ];
     }
 
-    public function test_validateAndSave_method_passes_back_redirect_object()
+    public function test_validateAndSave_method_passes_back_redirect_object() : void
     {
         $redirectObject = $this->project->validateAndSave(['title' => 't'], '/test/redirect');
 
@@ -146,7 +145,7 @@ class CILModelTest extends TestCase
     /**
      * @dataProvider createValidationDataProvider
      */
-    public function test_validateAndSave_function_class_returns_expected_error_results_for_creates($data, $expectedErrors)
+    public function test_validateAndSave_function_class_returns_expected_error_results_for_creates($data, $expectedErrors) : void
     {
         $errors = $this->project->validateAndSave($data);
 
@@ -156,7 +155,7 @@ class CILModelTest extends TestCase
     /**
      * @dataProvider createValidationDataProvider
      */
-    public function test_validate_function_class_returns_expected_error_results_for_creates($data, $expectedErrors)
+    public function test_validate_function_class_returns_expected_error_results_for_creates($data, $expectedErrors) : void
     {
         // dd($this->project->validationRules);
         $validator = $this->project->validate($data);
@@ -165,7 +164,7 @@ class CILModelTest extends TestCase
         $this->assertEquals($expectedErrors, $errors);
     }
 
-    public function createValidationDataProvider()
+    public function createValidationDataProvider() : array
     {
         return [
             'App\Models\Project' => [
@@ -218,11 +217,9 @@ class CILModelTest extends TestCase
 
     /**
      * @dataProvider updateValidationDataProvider
-     * 
      * @group db
-     * @return void
      */
-    public function test_validateAndSave_function_class_returns_expected_error_results_for_updates($data, $expectedErrors)
+    public function test_validateAndSave_function_class_returns_expected_error_results_for_updates($data, $expectedErrors) : void
     {
         $project = Project::factory()->create();
         $project->validationRules = $this->project->validationRules;
@@ -234,7 +231,7 @@ class CILModelTest extends TestCase
     /**
      * @dataProvider updateValidationDataProvider
      */
-    public function test_validate_function_class_returns_expected_error_results_for_updates($data, $expectedErrors)
+    public function test_validate_function_class_returns_expected_error_results_for_updates($data, $expectedErrors) : void
     {
         $project = Project::factory()->create();
         $project->validationRules = $this->project->validationRules;
@@ -244,7 +241,7 @@ class CILModelTest extends TestCase
         $this->assertEquals($expectedErrors, $errors);
     }
 
-    public function updateValidationDataProvider()
+    public function updateValidationDataProvider() : array
     {
         return [
             'App\Models\Project' => [
@@ -270,7 +267,7 @@ class CILModelTest extends TestCase
         ];
     }
 
-    protected function createProject()
+    protected function createProject() : void
     {
         $this->project = new Project();
 
