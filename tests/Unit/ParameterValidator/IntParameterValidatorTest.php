@@ -36,7 +36,7 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                       'value' => 'I am not a int',
-                      'valueError' => 'The value passed in is not an int. Only ints are permitted for this parameter. Your value is a string. This parameter was not set.'
+                      'valueError' => $this->valueErrorMassage('string')
                     ],
                 ],
             ],
@@ -105,7 +105,7 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                       'value' => '',
-                      'valueError' => 'The value passed in is not an int. Only ints are permitted for this parameter. Your value is a string. This parameter was not set.'
+                      'valueError' => $this->valueErrorMassage('string')
                     ],
                 ],
             ],
@@ -658,7 +658,7 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                       'value' => $int,
-                      'valueError' => 'The value passed in is not an int. Only ints are permitted for this parameter. Your value is a string. This parameter was not set.'
+                      'valueError' => $this->valueErrorMassage('string')
                     ],
                 ],
             ],
@@ -794,7 +794,7 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                       'value' => '',
-                      'valueError' => 'The value passed in is not an int. Only ints are permitted for this parameter. Your value is a string. This parameter was not set.'
+                      'valueError' => $this->valueErrorMassage('string')
                     ],
                     [
                       'value' => '',
@@ -980,19 +980,19 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                         'value' => 'sam',
-                        'valueError' => 'The value at the index of 0 is not an int. Only ints are permitted for this parameter. Your value is a string.'
+                        'valueError' => $this->valueErrorIndexMassage(0, 'string')
                     ],
                     [
                         'value' => 6.87,
-                        'valueError' => 'The value at the index of 1 is not an int. Only ints are permitted for this parameter. Your value is a float.'
+                        'valueError' => $this->valueErrorIndexMassage(1, 'float')
                     ],
                     [
                         'value' => 0.01,
-                        'valueError' => 'The value at the index of 2 is not an int. Only ints are permitted for this parameter. Your value is a float.'
+                        'valueError' => $this->valueErrorIndexMassage(2, 'float')
                     ],
                     [
                         'value' => 'fugue',
-                        'valueError' => 'The value at the index of 3 is not an int. Only ints are permitted for this parameter. Your value is a string.'
+                        'valueError' => $this->valueErrorIndexMassage(3, 'string')
                     ],
                     [
                         'value' => 'sam,6.87,.01,fugue',
@@ -1030,11 +1030,11 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                         'value' => 6.87,
-                        'valueError' => 'The value at the index of 1 is not an int. Only ints are permitted for this parameter. Your value is a float.'
+                        'valueError' => $this->valueErrorIndexMassage(1, 'float')
                     ],
                     [
                         'value' => 'fugue',
-                        'valueError' => 'The value at the index of 3 is not an int. Only ints are permitted for this parameter. Your value is a string.'
+                        'valueError' => $this->valueErrorIndexMassage(3, 'string')
                     ],
                 ],
             ],
@@ -1087,11 +1087,11 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                         'value' => 6.87,
-                        'valueError' => 'The value at the index of 1 is not an int. Only ints are permitted for this parameter. Your value is a float.'
+                        'valueError' => $this->valueErrorIndexMassage(1, 'float')
                     ],
                     [
                         'value' => 'fugue',
-                        'valueError' => 'The value at the index of 3 is not an int. Only ints are permitted for this parameter. Your value is a string.'
+                        'valueError' => $this->valueErrorIndexMassage(3, 'string')
                     ],
                 ],
             ],
@@ -1127,5 +1127,15 @@ class IntParameterValidatorTest extends TestCase
         $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedGetValidatedMetaData, $this->validatorDataCollector->getValidatedMetaData());
+    }
+
+    protected function valueErrorIndexMassage(int $index, string $dataType) : string
+    {
+        return "The value at the index of {$index} is not an int. Only ints are permitted for this parameter. Your value is a {$dataType}.";
+    }
+    protected function valueErrorMassage(string $dataType) : string
+    {
+        return "The value passed in is not an int. Only ints are permitted for this parameter. Your value is a {$dataType}. This parameter was not set.";
+        
     }
 }
