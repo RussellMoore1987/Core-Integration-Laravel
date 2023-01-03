@@ -1,0 +1,2 @@
+## EndToEnd
+End-to-end tests test the users journey through the application and its various parts. For example a user could make a GET request to find a record, find that it's not there, then send a POST request to create one. They could also update the record in different ways (PUT, PATCH) and DELETE it as well.

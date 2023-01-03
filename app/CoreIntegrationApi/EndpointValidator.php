@@ -6,6 +6,12 @@ use App\CoreIntegrationApi\ResourceModelInfoProvider;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 
+// ! Start here ****************************************************************** read over file and test readability, test coverage, test organization, tests grouping, go one by one (I have a stash of tests**** EndpointValidatorTest.php)
+// [x] read over
+// [x] test groups
+// [x] add return type : void
+// [x] testing what I need to test
+
 class EndpointValidator
 {
     protected $resourceModelInfoProvider;
@@ -15,12 +21,12 @@ class EndpointValidator
     public function __construct(ResourceModelInfoProvider $resourceModelInfoProvider)
     {
         $this->resourceModelInfoProvider = $resourceModelInfoProvider;
+        $this->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? [];
     }
 
     public function validateEndPoint(ValidatorDataCollector &$validatorDataCollector) : void
     {
         $this->validatorDataCollector = $validatorDataCollector;
-        $this->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? [];
         
         if (array_key_exists($this->validatorDataCollector->resource, $this->availableResourceEndpoints)) {
             $this->setResourceVariables();
