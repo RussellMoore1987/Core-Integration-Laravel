@@ -282,7 +282,7 @@ class GetRequestMethodTest extends TestCase
                 ]
             ],
             'message' => 'Validation failed, resend request after adjustments have been made.',
-            'status_code' => 422,
+            'statusCode' => 422,
         ];
 
         $this->assertEquals($expectedResponse,$responseArray);
@@ -319,7 +319,7 @@ class GetRequestMethodTest extends TestCase
                 ]
             ],
             'message' => 'Validation failed, resend request after adjustments have been made.',
-            'status_code' => 422,
+            'statusCode' => 422,
         ];
 
         $this->assertEquals($expectedResponse,$responseArray);

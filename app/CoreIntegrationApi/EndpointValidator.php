@@ -6,12 +6,6 @@ use App\CoreIntegrationApi\ResourceModelInfoProvider;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-// ! Start here ****************************************************************** read over file and test readability, test coverage, test organization, tests grouping, go one by one (I have a stash of tests**** EndpointValidatorTest.php)
-// [x] read over
-// [x] test groups
-// [x] add return type : void
-// [x] testing what I need to test
-
 class EndpointValidator
 {
     protected $resourceModelInfoProvider;
@@ -39,14 +33,13 @@ class EndpointValidator
     protected function setResourceVariables() : void
     {
         $this->validatorDataCollector->resourceObject = new $this->availableResourceEndpoints[$this->validatorDataCollector->resource]();
-        $this->resourceModelInfoProvider->setResource($this->validatorDataCollector->resourceObject);
-        $this->validatorDataCollector->resourceInfo = $this->resourceModelInfoProvider->getResourceInfo();
+        $this->validatorDataCollector->resourceInfo = $this->resourceModelInfoProvider->getResourceInfo($this->validatorDataCollector->resourceObject);
     }
 
     protected function setEndpointData() : void
     {
         $this->setMainPortionOfEndpointData();
-        $this->checkForResourceId();
+        $this->setResourceId();
         $this->validatorDataCollector->setAcceptedParameters([
             "endpoint" => [
                 'message' => "\"{$this->validatorDataCollector->resource}\" is a valid resource/endpoint for this API. You can also review available resources/endpoints at " . $this->getIndexUrl()
@@ -58,15 +51,16 @@ class EndpointValidator
     {
         $this->validatorDataCollector->endpointData = [
             'resource' => $this->validatorDataCollector->resource,
-            'resourceId' => $this->validatorDataCollector->resourceId,
             'indexUrl' => $this->getIndexUrl(),
             'url' => $this->validatorDataCollector->url,
             'requestMethod' => $this->validatorDataCollector->requestMethod,
         ];
     }
 
-    protected function checkForResourceId() : void
+    protected function setResourceId() : void
     {
+        $this->validatorDataCollector->endpointData['resourceId'] = $this->validatorDataCollector->resourceId;
+
         if ($this->validatorDataCollector->resourceId) {
             $primaryKeyName = $this->validatorDataCollector->resourceInfo['primaryKeyName'];
             $this->validatorDataCollector->parameters[$primaryKeyName] = $this->validatorDataCollector->resourceId;
@@ -74,12 +68,12 @@ class EndpointValidator
         }
     }
 
-    protected function returnEndpointError()
+    protected function returnEndpointError() : void
     {
         $response = response()->json([
             'error' => 'Resource/Endpoint Not Found',
             'message' => "\"{$this->validatorDataCollector->resource}\" is not a valid resource/endpoint for this API. Please review available resources/endpoints at " . $this->getIndexUrl(),
-            'status_code' => 404,
+            'statusCode' => 404,
         ], 404);
         throw new HttpResponseException($response);
     }

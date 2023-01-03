@@ -133,7 +133,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
                 'rejectedParameters' => $this->validatorDataCollector->getRejectedParameters(),
                 'acceptedParameters' => $this->validatorDataCollector->getAcceptedParameters(),
                 'message' => 'Validation failed, resend request after adjustments have been made.',
-                'status_code' => 422,
+                'statusCode' => 422,
             ], 422);
             throw new HttpResponseException($response);
         }

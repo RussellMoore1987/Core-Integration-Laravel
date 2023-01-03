@@ -65,7 +65,7 @@ class PostRequestMethodTypeValidator implements RequestMethodTypeValidator
             'error' => 'Validation failed',
             'errors' => $validator->errors(),
             'message' => 'Validation failed, resend request after adjustments have been made.',
-            'status_code' => 422,
+            'statusCode' => 422,
         ], 422);
         throw new HttpResponseException($response);
     }

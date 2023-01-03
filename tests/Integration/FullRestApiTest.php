@@ -21,7 +21,7 @@ class FullRestApiTest extends TestCase
         $expectedResponse = [
             'error' => 'Resource/Endpoint Not Found',
             'message' => '"notProjects" is not a valid resource/endpoint for this API. Please review available resources/endpoints at http://localhost:8000/api/v1/',
-            'status_code' => 404,
+            'statusCode' => 404,
         ];
 
         $response->assertStatus(404);

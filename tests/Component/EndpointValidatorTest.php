@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\App;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
+// ! Start here ****************************************************************** read over file and test readability, test coverage, test organization, tests grouping, go one by one (I have a stash of tests**** EndpointValidatorTest.php)
+// [] read over
+// [] test groups
+// [] add return type : void
+// [] testing what I need to test
+
 class EndpointValidatorTest extends TestCase
 {
     protected $validatorDataCollector;

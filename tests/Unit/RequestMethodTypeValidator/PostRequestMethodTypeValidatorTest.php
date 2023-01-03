@@ -13,7 +13,7 @@ use Tests\TestCase;
 
 class PostRequestMethodTypeValidatorTest extends TestCase
 {
-    // End-to-end done in tests\Feature\PostRequestMethodTest.php
+    // * End-to-end done in tests\Feature\PostRequestMethodTest.php
 
     protected function setUp(): void
     {
@@ -179,10 +179,7 @@ class PostRequestMethodTypeValidatorTest extends TestCase
         // TODO: rename things to make more sens
         // TODO: make it so I can mercilessly refactor it
         $resourceModelInfoProvider = new ResourceModelInfoProvider(new ResourceParameterInfoProviderFactory());
-        $resourceModelInfoProvider->setResource($class);
-        $resourceInfo = $resourceModelInfoProvider->getResourceInfo();
-
-        $this->resourceInfo = $resourceInfo;
+        $this->resourceInfo = $resourceModelInfoProvider->getResourceInfo($class);
 
         $this->validatorDataCollector->resourceInfo = $this->resourceInfo;
         $this->validatorDataCollector->resourceObject = $class;

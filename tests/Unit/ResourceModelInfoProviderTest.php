@@ -22,14 +22,7 @@ class ResourceModelInfoProviderTest extends TestCase
     public function test_ResourceModelInfoProvider_functions_results_as_expected_from_project_class()
     {
         $this->createProjectClassTestInfo();
-        $this->resourceModelInfoProvider->setResource($this->project);
-
-        $this->assertEquals($this->expectedResourceInfo['primaryKeyName'], $this->resourceModelInfoProvider->getResourcePrimaryKeyName());
-        $this->assertEquals($this->expectedResourceInfo['path'], $this->resourceModelInfoProvider->getResourceClassPath());
-        $this->assertEquals($this->expectedResourceInfo, $this->resourceModelInfoProvider->getResourceInfo());
-        unset($this->expectedResourceInfo['primaryKeyName']);
-        unset($this->expectedResourceInfo['path']);
-        $this->assertEquals($this->expectedResourceInfo, $this->resourceModelInfoProvider->getResourceAcceptableParameters());
+        $this->assertEquals($this->expectedResourceInfo, $this->resourceModelInfoProvider->getResourceInfo($this->project));
 
     }
 
@@ -381,15 +374,7 @@ class ResourceModelInfoProviderTest extends TestCase
     public function test_ResourceModelInfoProvider_functions_results_as_expected_from_WorkHistoryType_class()
     {
         $this->createWorkHistoryTypeClassTestInfo();
-        $this->resourceModelInfoProvider->setResource($this->workHistoryType);
-
-        $this->assertEquals($this->expectedResourceInfo['primaryKeyName'], $this->resourceModelInfoProvider->getResourcePrimaryKeyName());
-        $this->assertEquals($this->expectedResourceInfo['path'], $this->resourceModelInfoProvider->getResourceClassPath());
-        $this->assertEquals($this->expectedResourceInfo, $this->resourceModelInfoProvider->getResourceInfo());
-        unset($this->expectedResourceInfo['primaryKeyName']);
-        unset($this->expectedResourceInfo['path']);
-        $this->assertEquals($this->expectedResourceInfo, $this->resourceModelInfoProvider->getResourceAcceptableParameters());
-
+        $this->assertEquals($this->expectedResourceInfo, $this->resourceModelInfoProvider->getResourceInfo($this->workHistoryType));
     }
 
     protected function createWorkHistoryTypeClassTestInfo()

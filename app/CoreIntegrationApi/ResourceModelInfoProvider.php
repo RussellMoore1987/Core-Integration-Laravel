@@ -17,31 +17,11 @@ class ResourceModelInfoProvider
         $this->resourceParameterInfoProviderFactory = $resourceParameterInfoProviderFactory;
     }
 
-    public function setResource(Model $class) : void
+    public function getResourceInfo(Model $class) : array
     {
         $this->resourceObject = $class;
         $this->resourceClassPath = get_class($class);
-    }
-
-    public function getResourcePrimaryKeyName() : string
-    {
-        return $this->resourceObject->getKeyName() ?? 'id';
-    }
-
-    public function getResourceClassPath() : string
-    {
-        return $this->resourceClassPath;
-    }
-
-    public function getResourceAcceptableParameters() : array
-    {
-        $resourceTableName = $this->resourceObject->gettable();
-        $this->getAcceptableParameters($resourceTableName);
-        return $this->availableParameters;
-    }
-
-    public function getResourceInfo() : array
-    {
+        
         return array_merge(
             [
                 'primaryKeyName' => $this->getResourcePrimaryKeyName(),
@@ -49,6 +29,18 @@ class ResourceModelInfoProvider
             ],
             $this->getResourceAcceptableParameters()
         );
+    }
+
+    protected function getResourcePrimaryKeyName() : string
+    {
+        return $this->resourceObject->getKeyName() ?? 'id';
+    }
+
+    protected function getResourceAcceptableParameters() : array
+    {
+        $resourceTableName = $this->resourceObject->gettable();
+        $this->getAcceptableParameters($resourceTableName);
+        return $this->availableParameters;
     }
 
     protected function getAcceptableParameters(string $resourceTableName) : void
