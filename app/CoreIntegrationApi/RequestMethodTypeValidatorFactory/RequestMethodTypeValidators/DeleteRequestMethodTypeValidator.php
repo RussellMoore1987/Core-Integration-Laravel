@@ -8,9 +8,11 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class DeleteRequestMethodTypeValidator implements RequestMethodTypeValidator
 {
+    protected $validatorDataCollector;
+
     public function validateRequest(ValidatorDataCollector &$validatorDataCollector) : void
     {
-        
+        $this->validatorDataCollector = $validatorDataCollector;
     }
 
     // TODO: Test this method.
