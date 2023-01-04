@@ -12,6 +12,7 @@ abstract class RequestValidator
     protected $requestDataPrepper;
     protected $validatorDataCollector;
     protected $requestMethodTypeValidatorFactory;
+    protected $endpointValidator;
     protected $validatedMetaData;
 
     public function __construct(RequestDataPrepper $requestDataPrepper, ValidatorDataCollector $validatorDataCollector, EndpointValidator $endpointValidator, RequestMethodTypeValidatorFactory $requestMethodTypeValidatorFactory)

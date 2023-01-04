@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class ResourceModelInfoProvider
 {
+    protected $resourceParameterInfoProviderFactory;
     protected $resourceObject;
     protected $resourceClassPath;
     protected $availableParameters = [];
