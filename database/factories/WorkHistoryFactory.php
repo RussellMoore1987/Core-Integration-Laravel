@@ -21,17 +21,17 @@ class WorkHistoryFactory extends Factory
      */
     public function definition()
     {
-        $title = ucwords($this->faker->words(rand(1,4), true));
+        $title = ucwords($this->faker->words(random_int(1,4), true));
 
         $startDate =  date($format = 'M Y', $max = 2021);
         $endDate = date($format = 'M Y', $max = 2021);
         $date_range = $startDate . ' - ' . $endDate;
 
-        $description = $this->faker->sentences(rand(1,5), true);
+        $description = $this->faker->sentences(random_int(1,5), true);
         if (strlen($description) > 255) {
             $description = substr($description, 0, 254) . '.';
         }
-        $sort_order = rand(1,100) < 70 ? 100 : rand(1,99);
+        $sort_order = random_int(1,100) < 70 ? 100 : random_int(1,99);
 
         return [
             'title' => $title,

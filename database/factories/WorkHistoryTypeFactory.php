@@ -21,11 +21,11 @@ class WorkHistoryTypeFactory extends Factory
      */
     public function definition()
     {
-        $name = ucwords($this->faker->unique()->words(rand(1,3), true));
+        $name = ucwords($this->faker->unique()->words(random_int(1,3), true));
         if (strlen($name) > 35) {
             $name = substr($name, 0, 35);
         } 
-        $icon = rand(1, 100) > 80 ? 'graduation-cap' : null;
+        $icon = random_int(1, 100) > 80 ? 'graduation-cap' : null;
 
         return [
             'name' => $name,

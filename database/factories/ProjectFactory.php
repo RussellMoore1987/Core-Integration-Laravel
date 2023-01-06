@@ -21,21 +21,21 @@ class ProjectFactory extends Factory
      */
     public function definition()
     {
-        $title = ucwords($this->faker->words(rand(1,5), true));
+        $title = ucwords($this->faker->words(random_int(1,5), true));
         $roles = $this->faker->randomElement(['UX Designer', 'Designer', 'Project Manager', 'Lead Developer', 'Backend Developer']);
         $client = $this->faker->company;
-        $description = $this->faker->sentences(rand(1,5), true);
+        $description = $this->faker->sentences(random_int(1,5), true);
         if (strlen($description) > 255) {
             $description = substr($description, 0, 254) . '.';
         }
-        $content = json_encode($this->faker->words(rand(3,255)));
+        $content = json_encode($this->faker->words(random_int(3,255)));
         $video_link = $this->faker->url;
         $code_link = $this->faker->url;
         $demo_link = $this->faker->url;
         $start_date = $this->faker->dateTimeBetween($startDate = '-10 years', $endDate = 'now', $timezone = null);
         $end_date = $this->faker->dateTimeBetween($startDate = $start_date, $endDate = 'now', $timezone = null);
-        $is_published = rand(1,100) < 80 ? 1 : 0;
-        $budget = (float) rand(100,999999). '.' . rand(1,99);
+        $is_published = random_int(1,100) < 80 ? 1 : 0;
+        $budget = (float) random_int(100,999999). '.' . random_int(1,99);
 
         return [
             'title' => $title,
