@@ -1,18 +1,12 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Integration;
 
 use App\Models\Project;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
-// TODO:
-// post
-// put
-// patch
-// delete
-
-class DateEndToEndApiTest extends TestCase
+class GetDateIntegrationApiTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -28,10 +22,6 @@ class DateEndToEndApiTest extends TestCase
 
         $this->makeProjects();
     }
-
-    // ==============================================================================
-    // GET API Tests
-    // ==============================================================================
 
     /**
      * @group db
@@ -113,6 +103,8 @@ class DateEndToEndApiTest extends TestCase
 
     /**
      * @group db
+     * @group rest
+     * @group get
      */
     public function test_get_back_record_with_date_time_grater_than() : void
     {
@@ -131,6 +123,8 @@ class DateEndToEndApiTest extends TestCase
     /**
      * @dataProvider graterThenOptionDataProvider
      * @group db
+     * @group rest
+     * @group get
      */
     public function test_get_back_record_with_date_grater_than_options($option) : void
     {
@@ -155,6 +149,8 @@ class DateEndToEndApiTest extends TestCase
 
     /**
      * @group db
+     * @group rest
+     * @group get
      */
     public function test_get_back_record_with_date_time_grater_than_or_equal() : void
     {
@@ -173,6 +169,8 @@ class DateEndToEndApiTest extends TestCase
     /**
      * @dataProvider greaterThanOrEqualOptionDataProvider
      * @group db
+     * @group rest
+     * @group get
      */
     public function test_get_back_records_with_date_grater_than_or_equal_options($option) : void
     {
@@ -198,6 +196,8 @@ class DateEndToEndApiTest extends TestCase
 
     /**
      * @group db
+     * @group rest
+     * @group get
      */
     public function test_get_back_records_with_date_time_less_than() : void
     {
@@ -214,6 +214,8 @@ class DateEndToEndApiTest extends TestCase
     /**
      * @dataProvider lessThanOptionDataProvider
      * @group db
+     * @group rest
+     * @group get
      */
     public function test_get_back_records_with_date_less_than_options($option) : void
     {
@@ -239,6 +241,8 @@ class DateEndToEndApiTest extends TestCase
 
     /**
      * @group db
+     * @group rest
+     * @group get
      */
     public function test_get_back_records_with_date_less_than_or_equal() : void
     {
@@ -256,6 +260,8 @@ class DateEndToEndApiTest extends TestCase
     /**
      * @dataProvider lessThanOrEqualOptionDataProvider
      * @group db
+     * @group rest
+     * @group get
      */
     public function test_get_back_records_with_date_less_than_or_equal_options($option) : void
     {
@@ -279,35 +285,6 @@ class DateEndToEndApiTest extends TestCase
             '<= less than or equal' => ['<='],
         ];
     }
-
-    // ==============================================================================
-    // POST API Tests
-    // ==============================================================================
-
-    /**
-     * @group db
-     */
-    // TODO: should Ido this here???
-    // public function test_post_record_with_valid_data() : void
-    // {
-    //     $response = $this->post("/api/v1/projects/", [
-    //         'title' => 'Test Project 5',
-    //         'description' => 'Test Project 5 description',
-    //         'start_date' => '2010-01-01',
-    //         'end_date' => '2010-01-01',
-    //         'status' => 'active',
-    //     ]);
-    //
-    //     $response->assertStatus(201);
-    //     $this->assertDatabaseHas('projects', [
-    //         'title' => 'Test Project 5',
-    //         'description' => 'Test Project 5 description',
-    //         'start_date' => '2010-01-01',
-    //         'end_date' => '2010-01-01',
-    //         'status' => 'active',
-    //     ]);
-    // }
-
         
     protected function makeProjects() : void
     {
@@ -330,30 +307,4 @@ class DateEndToEndApiTest extends TestCase
 
         $this->projects = collect($this->projects);
     }
-
-    // TODO: Test
-    // GET with out authentication
-    // GET with authentication
-    // PUT, POST, PAtCH with authentication
-    // PUT, POST, PAtCH with out authentication, must fail
-    // PUT, POST, PAtCH response
-    // PUT response code
-    // POST response code
-    // PAtCH response code
-    // available includes / method calls in first test in this file
-    // separate test file
-        // ids - the many ways
-        // All data types tested, and all there veronese
-            // string
-            // date
-            // int
-            // float
-            // json
-        // All extra parameters
-            // method call
-            // includes - deep test
-            // page
-            // perPage
-    // Not caring about casing, columns, parameters
-    // form data
 }

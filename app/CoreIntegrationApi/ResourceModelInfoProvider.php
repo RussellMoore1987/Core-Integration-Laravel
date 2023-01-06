@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class ResourceModelInfoProvider
 {
-    protected $resourceObject;
-    protected $resourceClassPath;
+    protected $resourceParameterInfoProviderFactory;
+    protected $resourceFormData;
     protected $availableParameters = [];
 
     public function __construct(ResourceParameterInfoProviderFactory $resourceParameterInfoProviderFactory)
@@ -17,38 +17,24 @@ class ResourceModelInfoProvider
         $this->resourceParameterInfoProviderFactory = $resourceParameterInfoProviderFactory;
     }
 
-    public function setResource(Model $class) : void
+    public function getResourceInfo(Model $resourceObject) : array
     {
-        $this->resourceObject = $class;
-        $this->resourceClassPath = get_class($class);
+        $this->resourceFormData = $resourceObject->formData ?? [];
+        
+        return [
+            'primaryKeyName' => $resourceObject->getKeyName() ?? 'id', // TODO: test id and custom id
+            'path' => get_class($resourceObject), // TODO: test
+            'acceptableParameters' => $this->getResourceAcceptableParameters($resourceObject), // TODO: test
+            'availableMethodCalls' => $resourceObject->availableMethodCalls ?? [], // TODO: test full and empty
+            'availableIncludes' => $resourceObject->availableIncludes ?? [], // TODO: test full and empty
+        ];
     }
 
-    public function getResourcePrimaryKeyName() : string
+    protected function getResourceAcceptableParameters($resourceObject) : array
     {
-        return $this->resourceObject->getKeyName() ?? 'id';
-    }
-
-    public function getResourceClassPath() : string
-    {
-        return $this->resourceClassPath;
-    }
-
-    public function getResourceAcceptableParameters() : array
-    {
-        $resourceTableName = $this->resourceObject->gettable();
+        $resourceTableName = $resourceObject->gettable();
         $this->getAcceptableParameters($resourceTableName);
         return $this->availableParameters;
-    }
-
-    public function getResourceInfo() : array
-    {
-        return array_merge(
-            [
-                'primaryKeyName' => $this->getResourcePrimaryKeyName(),
-                'path' => $this->resourceClassPath,
-            ],
-            $this->getResourceAcceptableParameters()
-        );
     }
 
     protected function getAcceptableParameters(string $resourceTableName) : void
@@ -56,8 +42,6 @@ class ResourceModelInfoProvider
         $resourceColumnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$resourceTableName}"));
         $this->setAcceptableParameters($resourceColumnData);
         $this->addAdditionalInfoToAcceptableParameters();
-        $this->availableParameters['availableMethodCalls'] = $this->resourceObject->availableMethodCalls ?? [];
-        $this->availableParameters['availableIncludes'] = $this->resourceObject->availableIncludes ?? [];
     }
 
     protected function arrayOfObjectsToArrayOfArrays(array $arrayOfObjects) : array
@@ -69,27 +53,25 @@ class ResourceModelInfoProvider
         return $arrayOfArrays;
     }
 
-    protected function setAcceptableParameters(array $resourceColumnData) : void
+    protected function setAcceptableParameters(array $resourceColumnData) : void // TODO: test details
     {
         foreach ($resourceColumnData as $columnAttributeArray) {
             foreach ($columnAttributeArray as $attributeName => $value) {
                 $attributeName = strtolower($attributeName);
                 $value = $value === null ? $value : strtolower($value);
 
-                $this->availableParameters['acceptableParameters'][$columnAttributeArray['Field']][$attributeName] = $value;
+                $this->availableParameters[$columnAttributeArray['Field']][$attributeName] = $value;
             }
         }
     }
 
     protected function addAdditionalInfoToAcceptableParameters() : void
     {
-        foreach ($this->availableParameters['acceptableParameters'] as $parameterName => $parameterAttributeArray) {
+        foreach ($this->availableParameters as $parameterName => $parameterAttributeArray) {
             $resourceParameterInfoProvider = $this->resourceParameterInfoProviderFactory->getFactoryItem($parameterAttributeArray['type']);
-            $parameterData = $resourceParameterInfoProvider->getData($parameterAttributeArray, $this->resourceObject->formData ?? []);
+            $parameterData = $resourceParameterInfoProvider->getData($parameterAttributeArray, $this->resourceFormData);
 
-            $this->availableParameters['acceptableParameters'][$parameterName]['apiDataType'] = $parameterData['apiDataType'];
-            $this->availableParameters['acceptableParameters'][$parameterName]['defaultValidationRules'] = $parameterData['defaultValidationRules'];
-            $this->availableParameters['acceptableParameters'][$parameterName]['formData'] = $parameterData['formData'];
+            $this->availableParameters[$parameterName] += $parameterData; // array merge // TODO: test structure
         }
     }
 }

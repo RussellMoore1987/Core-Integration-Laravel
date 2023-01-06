@@ -13,8 +13,7 @@ class EndpointValidatorTest extends TestCase
 {
     protected $validatorDataCollector;
     protected $endpointValidator;
-    protected $projectsUrl = 'http://localhost/api/v1/projects';
-    protected $indexUrl = 'http://localhost/api/v1/';
+    protected $expectedEndpointData;
 
     protected function setUp() : void
     {
@@ -25,35 +24,39 @@ class EndpointValidatorTest extends TestCase
         $this->validatorDataCollector->resourceId = '33';
         $this->validatorDataCollector->parameters = ['title' => 'Test Project'];
         $this->validatorDataCollector->requestMethod = 'GET';
-        $this->validatorDataCollector->url = $this->projectsUrl;
+        $this->validatorDataCollector->url = 'http://localhost/api/v1/projects';
+
+        $this->expectedEndpointData = [
+            'resource' => 'projects',
+            'resourceId' => '33',
+            'indexUrl' => 'http://localhost/api/v1/',
+            'url' => 'http://localhost/api/v1/projects',
+            'requestMethod' => 'GET',
+            'resourceIdConvertedTo' => [
+                'id' => 33
+            ]
+        ];
 
         $this->endpointValidator = App::make(EndpointValidator::class);
     }
 
     /**
-     * @dataProvider returnsExpectedResultProvider
+     * @dataProvider requestMethodsProvider
      * @group allRequestMethods
+     * @group rest
+     * @group context
      */
     public function test_EndpointValidator_returns_expected_result_for_setting_request_methods($requestMethod) : void
     {
         $this->validatorDataCollector->requestMethod = $requestMethod;
         $this->endpointValidator->validateEndPoint($this->validatorDataCollector);
 
-        $expectedEndpointData = [
-            'resource' => 'projects',
-            'resourceId' => '33',
-            'indexUrl' => $this->indexUrl,
-            'url' => $this->projectsUrl,
-            'requestMethod' => $requestMethod,
-            'resourceIdConvertedTo' => [
-                'id' => 33
-            ]
-        ];
+        $this->expectedEndpointData['requestMethod'] = $requestMethod;
 
-        $this->assertEquals($expectedEndpointData, $this->validatorDataCollector->endpointData);
+        $this->assertEquals($this->expectedEndpointData, $this->validatorDataCollector->endpointData);
     }
 
-    public function returnsExpectedResultProvider() : array
+    public function requestMethodsProvider() : array
     {
         return [
             'GET' => ['GET'],
@@ -67,78 +70,100 @@ class EndpointValidatorTest extends TestCase
     /**
      * Testing GET, but path applies to all
      * @group allRequestMethods
+     * @group rest
+     * @group context
      */
-    public function test_EndpointValidator_returns_expected_result_for_endpointData() : void
+    public function test_EndpointValidator_returns_expected_result_for_getAcceptedParameters_endpoint() : void
     {
         $this->endpointValidator->validateEndPoint($this->validatorDataCollector);
-
-        $expectedEndpointData = [
-            'resource' => 'projects',
-            'resourceId' => '33',
-            'indexUrl' => $this->indexUrl,
-            'url' => $this->projectsUrl,
-            'requestMethod' => 'GET',
-            'resourceIdConvertedTo' => [
-                'id' => 33
-            ]
-        ];
 
         $expectedEndpointAcceptedParameters = [
                 'message' => '"projects" is a valid resource/endpoint for this API. You can also review available resources/endpoints at http://localhost/api/v1/'
         ];
 
-
-        $this->assertEquals($expectedEndpointData, $this->validatorDataCollector->endpointData);
         $this->assertEquals($expectedEndpointAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters()['endpoint']);
     }
 
     /**
      * Testing GET, but path applies to all
      * @group allRequestMethods
+     * @group rest
+     * @group context
      */
     public function test_EndpointValidator_returns_expected_result_for_endpointData_no_id() : void
     {
         $this->validatorDataCollector->resourceId = '';
         $this->endpointValidator->validateEndPoint($this->validatorDataCollector);
 
-        $expectedEndpointData = [
-            'resource' => 'projects',
-            'resourceId' => '',
-            'indexUrl' => $this->indexUrl,
-            'url' => $this->projectsUrl,
-            'requestMethod' => 'GET',
-        ];
+        $this->expectedEndpointData['resourceId'] = '';
+        unset($this->expectedEndpointData['resourceIdConvertedTo']);
 
-        $this->assertEquals($expectedEndpointData, $this->validatorDataCollector->endpointData);
+        $this->assertEquals($this->expectedEndpointData, $this->validatorDataCollector->endpointData);
     }
-
 
     /**
      * Testing GET, but path applies to all
      * @group allRequestMethods
+     * @group rest
+     * @group context
      */
-    public function test_EndpointValidator_returns_expected_resource_info() : void
+    public function test_EndpointValidator_returns_expected_resourceInfo() : void
     {
         $this->endpointValidator->validateEndPoint($this->validatorDataCollector);
 
         $this->assertInstanceOf(Project::class, $this->validatorDataCollector->resourceObject);
         // just asserting structure, details tested in ResourceModelInfoProvider and ResourceParameterInfoProviders
         $this->assertTrue((boolean) $this->validatorDataCollector->resourceInfo);
+        $this->assertArrayHasKey('primaryKeyName', $this->validatorDataCollector->resourceInfo);
+        $this->assertArrayHasKey('path', $this->validatorDataCollector->resourceInfo);
         $this->assertArrayHasKey('acceptableParameters', $this->validatorDataCollector->resourceInfo);
         $this->assertArrayHasKey('availableMethodCalls', $this->validatorDataCollector->resourceInfo);
         $this->assertArrayHasKey('availableIncludes', $this->validatorDataCollector->resourceInfo);
+        $this->assertEquals(5, count($this->validatorDataCollector->resourceInfo)); // test fails if not up dated
+    }
+
+    /**
+     * Testing GET, but path applies to all
+     * @dataProvider notValidResourceProvider
+     * @group allRequestMethods
+     * @group rest
+     * @group context
+     */
+    public function test_EndpointValidator_returns_HttpResponseException_when_resource_is_invalid($invalidResource) : void
+    {
+        // exception details tested in FullRestApiTest
+        $this->expectException(HttpResponseException::class);
+
+        $this->validatorDataCollector->resource = $invalidResource;
+        $this->endpointValidator->validateEndPoint($this->validatorDataCollector);
+    }
+
+    public function notValidResourceProvider() : array
+    {
+        return [
+            'blankString' => [''],
+            'notAnAvailableResourceEndpoint' => ['notAnEndpoint'],
+        ];
     }
 
     /**
      * Testing GET, but path applies to all
      * @group allRequestMethods
+     * @group rest
+     * @group context
      */
-    public function test_EndpointValidator_returns_HttpResponseException_when_no_resource_is_provided() : void
+    public function test_EndpointValidator_returns_expected_result_for_the_index_endpoint() : void
     {
-        // exception details tested in FullRestApiTest
-        $this->expectException(HttpResponseException::class);
+        $this->validatorDataCollector->resourceId = '';
+        $this->validatorDataCollector->resource = 'index';
+        $this->validatorDataCollector->parameters = [];
+        $this->validatorDataCollector->requestMethod = 'GET';
+        $this->validatorDataCollector->url = 'http://localhost/api/v1';
 
-        $this->validatorDataCollector->resource = '';
         $this->endpointValidator->validateEndPoint($this->validatorDataCollector);
+
+        $this->assertEquals([], $this->validatorDataCollector->endpointData);
+        $this->assertFalse((boolean) $this->validatorDataCollector->resourceInfo);
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
     }
 }

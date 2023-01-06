@@ -23,18 +23,18 @@ class TestFactory extends Factory
      */
     public function definition()
     {
-        $name = ucwords($this->faker->words(rand(1,5), true));
+        $name = ucwords($this->faker->words(random_int(1, 5), true));
         $state = $this->faker->stateAbbr();
-        $description = $this->faker->sentences(rand(1,5), true);
+        $description = $this->faker->sentences(random_int(1, 5), true);
         if (strlen($description) > 255) {
             $description = substr($description, 0, 254) . '.';
         }
-        $descriptionLong = $this->faker->sentences(rand(1,5), true);
+        $descriptionLong = $this->faker->sentences(random_int(1, 5), true);
         if (strlen($descriptionLong) > 255) {
             $descriptionLong = substr($descriptionLong, 0, 254) . '.';
         }
-        $content = json_encode($this->faker->words(rand(3,255)));
-        $isConfirmed = rand(0,1);
+        $content = json_encode($this->faker->words(random_int(3, 255)));
+        $isConfirmed = random_int(0, 1);
 
         return [
             'state'=> $state,
@@ -42,13 +42,13 @@ class TestFactory extends Factory
             'description'=> $description,
             'description_long'=> $descriptionLong,
             'content'=> $content,
-            'isConfirmed'=> $isConfirmed,
+            'is_confirmed'=> $isConfirmed,
             'time'=> '',
             'start_date'=> '',
             'created_at'=> '',
             'end_at'=> '',
             'amount_decimal'=> '',
-            'amountDouble'=> '',
+            'amount_double'=> '',
             'amount_float'=> '',
             'members'=> '',
             'votes'=> '',

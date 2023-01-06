@@ -11,6 +11,7 @@ abstract class RequestValidator
 {
     protected $requestDataPrepper;
     protected $validatorDataCollector;
+    protected $endpointValidator;
     protected $requestMethodTypeValidatorFactory;
     protected $validatedMetaData;
 

@@ -8,9 +8,11 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class PutRequestMethodTypeValidator implements RequestMethodTypeValidator
 {
+    protected $validatorDataCollector;
+
     public function validateRequest(ValidatorDataCollector &$validatorDataCollector) : void
     {
-        
+        $this->validatorDataCollector = $validatorDataCollector;
     }
 
     // TODO: Test this method.
@@ -20,7 +22,7 @@ class PutRequestMethodTypeValidator implements RequestMethodTypeValidator
             'error' => 'Validation failed',
             'errors' => $validator->errors(),
             'message' => 'Validation failed, resend request after adjustments have been made.',
-            'status_code' => 422,
+            'statusCode' => 422,
         ], 422);
         throw new HttpResponseException($response);
     }

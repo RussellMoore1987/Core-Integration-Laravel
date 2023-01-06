@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Integration;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -9,16 +9,9 @@ class PostRequestMethodTest extends TestCase
 {
     use DatabaseTransactions;
 
-    private $projects = [];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-    }
-
     /**
-     * @integration
+     * @group post
+     * @group rest
      * ? https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/422#:~:text=The%20HyperText%20Transfer%20Protocol%20(HTTP,to%20process%20the%20contained%20instructions.
      */
     public function test_post_request_return_unprocessable_entity_422_response_because_project_model_parameters_not_valid() : void
@@ -40,15 +33,17 @@ class PostRequestMethodTest extends TestCase
               ]
             ],
             'message' => 'Validation failed, resend request after adjustments have been made.',
-            'status_code' => 422,
+            'statusCode' => 422,
         ];
 
         $this->assertEquals($expectedResponse,$responseArray);
     }
 
     /**
-     * @integration
      * @dataProvider parameterToValidateProvider
+     * @group post
+     * @group rest
+     * @group db
      */
     public function test_post_request_creates_new_record($resource, $primaryKey, $parameters, $classPath) : void
     {
@@ -71,7 +66,7 @@ class PostRequestMethodTest extends TestCase
         $this->assertEquals($expectedResponse,$responseArray);
     }
 
-    public function parameterToValidateProvider()
+    public function parameterToValidateProvider() : array
     {
         return [
             'projects' => ['projects', 'id', ['title' => 'Test Project'], 'App\Models\Project'],

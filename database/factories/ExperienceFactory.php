@@ -21,12 +21,12 @@ class ExperienceFactory extends Factory
      */
     public function definition()
     {
-            $title = ucwords($this->faker->words(rand(1,5), true));
-            $description = $this->faker->sentences(rand(3,10), true);
+            $title = ucwords($this->faker->words(random_int(1,5), true));
+            $description = $this->faker->sentences(random_int(3,10), true);
             if (strlen($description) > 2500) {
                 $description = substr($description, 0, 2500) . '.';
             }
-            $sort_order = rand(1,100) < 70 ? 100 : rand(1,99);
+            $sort_order = random_int(1,100) < 70 ? 100 : random_int(1,99);
     
             return [
                 'title' => $title,

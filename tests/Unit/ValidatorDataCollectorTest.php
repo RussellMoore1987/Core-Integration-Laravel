@@ -6,13 +6,6 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 use App\Models\Project;
 use Tests\TestCase;
 
-// ! Start here ****************************************************************** read over file and test readability, test coverage, test organization, tests grouping, go one by one (I have a stash of tests**** EndpointValidatorTest.php)
-// [x] read over
-// [x] test groups
-// [x] function output -> : void
-// [x] testing what I need to test
-// [] put groups on other tests, look for * @group
-
 class ValidatorDataCollectorTest extends TestCase
 {
     private $validatorDataCollector;

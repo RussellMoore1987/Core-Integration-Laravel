@@ -12,6 +12,7 @@ abstract class RequestProcessor
     protected $requestValidator;
     protected $queryResolver;
     protected $responseBuilder;
+    protected $validatedMetaData;
 
     public function __construct(RequestValidator $requestValidator, QueryResolver $queryResolver, ResponseBuilder $responseBuilder)
     {
