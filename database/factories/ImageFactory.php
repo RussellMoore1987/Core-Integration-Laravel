@@ -23,7 +23,7 @@ class ImageFactory extends Factory
     {
 
         $image_name = $this->faker->unique()->word . '.png';
-        $alt = $this->faker->words(random_int(1,10), true);
+        $alt = $this->faker->words(random_int(1, 10), true);
         if (strlen($alt) > 255) {
             $alt = substr($alt, 0, 253) . '.';
         }

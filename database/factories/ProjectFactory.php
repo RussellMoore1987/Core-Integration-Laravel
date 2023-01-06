@@ -29,12 +29,12 @@ class ProjectFactory extends Factory
             $description = substr($description, 0, 254) . '.';
         }
         $content = json_encode($this->faker->words(random_int(3,255)));
-        $video_link = $this->faker->url;
-        $code_link = $this->faker->url;
-        $demo_link = $this->faker->url;
-        $start_date = $this->faker->dateTimeBetween($startDate = '-10 years', $endDate = 'now', $timezone = null);
-        $end_date = $this->faker->dateTimeBetween($startDate = $start_date, $endDate = 'now', $timezone = null);
-        $is_published = random_int(1,100) < 80 ? 1 : 0;
+        $videoLink = $this->faker->url;
+        $codeLink = $this->faker->url;
+        $demoLink = $this->faker->url;
+        $startDate = $this->faker->dateTimeBetween('-10 years', 'now', null);
+        $endDate = $this->faker->dateTimeBetween($startDate, 'now', null);
+        $isPublished = random_int(1,100) < 80 ? 1 : 0;
         $budget = (float) random_int(100,999999). '.' . random_int(1,99);
 
         return [
@@ -43,12 +43,12 @@ class ProjectFactory extends Factory
             'client' => $client,
             'description' => $description,
             'content' => $content,
-            'video_link' => $video_link,
-            'code_link' => $code_link,
-            'demo_link' => $demo_link,
-            'start_date' => $start_date,
-            'end_date' => $end_date,
-            'is_published' => $is_published,
+            'video_link' => $videoLink,
+            'code_link' => $codeLink,
+            'demo_link' => $demoLink,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+            'is_published' => $isPublished,
             'budget' => $budget,
         ];
     }

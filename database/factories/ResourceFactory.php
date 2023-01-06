@@ -21,21 +21,21 @@ class ResourceFactory extends Factory
      */
     public function definition()
     {
-        $title = ucwords($this->faker->words(random_int(1,4), true));
-        $excerpt = $this->faker->sentences(random_int(1,5), true);
+        $title = ucwords($this->faker->words(random_int(1, 4), true));
+        $excerpt = $this->faker->sentences(random_int(1, 5), true);
         if (strlen($excerpt) > 255) {
             $excerpt = substr($excerpt, 0, 254) . '.';
         }
-        $content = $this->faker->randomHtml(2,3);
-        $post_date = $this->faker->dateTimeBetween($startDate = '-10 years', $endDate = 'now', $timezone = null);
-        $is_published = random_int(1,100) < 80 ? 1 : 0;
+        $content = $this->faker->randomHtml(2, 3);
+        $postDate = $this->faker->dateTimeBetween('-10 years', 'now', null);
+        $isPublished = random_int(1, 100) < 80 ? 1 : 0;
 
         return [
             'title' => $title,
             'excerpt' => $excerpt,
             'content' => $content,
-            'post_date' => $post_date,
-            'is_published' => $is_published
+            'post_date' => $postDate,
+            'is_published' => $isPublished
         ];
     }
 }

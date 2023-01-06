@@ -21,7 +21,7 @@ class TagFactory extends Factory
      */
     public function definition()
     {
-        $name = ucwords($this->faker->unique()->words(random_int(1,5), true));
+        $name = ucwords($this->faker->unique()->words(random_int(1, 5), true));
         if (strlen($name) > 35) {
             $name = substr($name, 0, 35);
         }
