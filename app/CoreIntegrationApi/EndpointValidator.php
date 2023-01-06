@@ -33,7 +33,7 @@ class EndpointValidator
     protected function setResourceVariables() : void
     {
         $this->validatorDataCollector->resourceObject = new $this->availableResourceEndpoints[$this->validatorDataCollector->resource]();
-        $this->validatorDataCollector->resourceInfo = $this->resourceModelInfoProvider->getResourceInfo($this->validatorDataCollector->resourceObject);
+        $this->validatorDataCollector->resourceInfo = $this->resourceModelInfoProvider->getResourceInfo($this->validatorDataCollector->resourceObject); // TODO: this will brake if not a model
     }
 
     protected function setEndpointData() : void

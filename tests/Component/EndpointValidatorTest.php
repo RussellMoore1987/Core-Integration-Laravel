@@ -9,12 +9,6 @@ use Illuminate\Support\Facades\App;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-// ! Start here ****************************************************************** read over file and test readability, test coverage, test organization, tests grouping, go one by one (I have a stash of tests**** EndpointValidatorTest.php)
-// [x] read over
-// [] test groups, rest, context
-// [x] add return type : void
-// [] testing what I need to test
-
 class EndpointValidatorTest extends TestCase
 {
     protected $validatorDataCollector;
@@ -49,6 +43,8 @@ class EndpointValidatorTest extends TestCase
     /**
      * @dataProvider requestMethodsProvider
      * @group allRequestMethods
+     * @group rest
+     * @group context
      */
     public function test_EndpointValidator_returns_expected_result_for_setting_request_methods($requestMethod) : void
     {
@@ -74,6 +70,8 @@ class EndpointValidatorTest extends TestCase
     /**
      * Testing GET, but path applies to all
      * @group allRequestMethods
+     * @group rest
+     * @group context
      */
     public function test_EndpointValidator_returns_expected_result_for_getAcceptedParameters_endpoint() : void
     {
@@ -89,6 +87,8 @@ class EndpointValidatorTest extends TestCase
     /**
      * Testing GET, but path applies to all
      * @group allRequestMethods
+     * @group rest
+     * @group context
      */
     public function test_EndpointValidator_returns_expected_result_for_endpointData_no_id() : void
     {
@@ -104,6 +104,8 @@ class EndpointValidatorTest extends TestCase
     /**
      * Testing GET, but path applies to all
      * @group allRequestMethods
+     * @group rest
+     * @group context
      */
     public function test_EndpointValidator_returns_expected_resourceInfo() : void
     {
@@ -124,6 +126,8 @@ class EndpointValidatorTest extends TestCase
      * Testing GET, but path applies to all
      * @dataProvider notValidResourceProvider
      * @group allRequestMethods
+     * @group rest
+     * @group context
      */
     public function test_EndpointValidator_returns_HttpResponseException_when_resource_is_invalid($invalidResource) : void
     {
@@ -145,6 +149,8 @@ class EndpointValidatorTest extends TestCase
     /**
      * Testing GET, but path applies to all
      * @group allRequestMethods
+     * @group rest
+     * @group context
      */
     public function test_EndpointValidator_returns_expected_result_for_the_index_endpoint() : void
     {

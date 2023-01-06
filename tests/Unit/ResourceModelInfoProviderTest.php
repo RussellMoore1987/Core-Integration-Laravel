@@ -8,9 +8,20 @@ use App\Models\Project;
 use App\Models\WorkHistoryType;
 use Tests\TestCase;
 
+// ! Start here ******************************************************************
+// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
+// ! (I have a stash of tests**** EndpointValidatorTest.php) (sub ResourceParameterInfoProviderFactory)
+// [] read over
+// [] test groups, rest, context
+// [] add return type : void
+// [] testing what I need to test
+
 class ResourceModelInfoProviderTest extends TestCase
 {
     private $resourceModelInfoProvider;
+    private $expectedResourceInfo;
+    private $project;
+    private $workHistoryType;
 
     protected function setUp(): void
     {
@@ -34,7 +45,7 @@ class ResourceModelInfoProviderTest extends TestCase
             'is_published' => [
                 'min' => 0,
                 'max' => 1,
-                'maxlength' => 1,  
+                'maxlength' => 1,
             ],
         ];
 
