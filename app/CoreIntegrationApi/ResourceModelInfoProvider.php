@@ -22,11 +22,11 @@ class ResourceModelInfoProvider
         $this->resourceFormData = $resourceObject->formData ?? [];
         
         return [
-            'primaryKeyName' => $resourceObject->getKeyName() ?? 'id',
-            'path' => get_class($resourceObject),
-            'acceptableParameters' => $this->getResourceAcceptableParameters($resourceObject),
-            'availableMethodCalls' => $resourceObject->availableMethodCalls ?? [],
-            'availableIncludes' => $resourceObject->availableIncludes ?? [],
+            'primaryKeyName' => $resourceObject->getKeyName() ?? 'id', // TODO: test id and custom id
+            'path' => get_class($resourceObject), // TODO: test
+            'acceptableParameters' => $this->getResourceAcceptableParameters($resourceObject), // TODO: test
+            'availableMethodCalls' => $resourceObject->availableMethodCalls ?? [], // TODO: test full and empty
+            'availableIncludes' => $resourceObject->availableIncludes ?? [], // TODO: test full and empty
         ];
     }
 
@@ -53,7 +53,7 @@ class ResourceModelInfoProvider
         return $arrayOfArrays;
     }
 
-    protected function setAcceptableParameters(array $resourceColumnData) : void
+    protected function setAcceptableParameters(array $resourceColumnData) : void // TODO: test details
     {
         foreach ($resourceColumnData as $columnAttributeArray) {
             foreach ($columnAttributeArray as $attributeName => $value) {
@@ -71,7 +71,7 @@ class ResourceModelInfoProvider
             $resourceParameterInfoProvider = $this->resourceParameterInfoProviderFactory->getFactoryItem($parameterAttributeArray['type']);
             $parameterData = $resourceParameterInfoProvider->getData($parameterAttributeArray, $this->resourceFormData);
 
-            $this->availableParameters[$parameterName] += $parameterData; // array merge
+            $this->availableParameters[$parameterName] += $parameterData; // array merge // TODO: test structure
         }
     }
 }
