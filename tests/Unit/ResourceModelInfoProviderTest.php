@@ -11,7 +11,7 @@ use Tests\TestCase;
 // ! Start here ******************************************************************
 // ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
 // ! (I have a stash of tests**** EndpointValidatorTest.php) (sub ResourceParameterInfoProviderFactory)
-// [] read over
+// [x] read over
 // [x] test groups, rest, context
 // [x] add return type : void
 // [x] testing what I need to test
@@ -35,7 +35,7 @@ class ResourceModelInfoProviderTest extends TestCase
      * @group context
      * @group allRequestMethods
      */
-    public function test_getResourceInfo_gives_expected_results_from_category_class_info() : void
+    public function test_getResourceInfo_gets_expected_results_from_category_class() : void
     {
         $this->createCategoryClassTestInfo();
 
@@ -46,6 +46,7 @@ class ResourceModelInfoProviderTest extends TestCase
             $this->assertArrayHasKey('apiDataType', $parameterAttributeArray);
             $this->assertArrayHasKey('defaultValidationRules', $parameterAttributeArray);
             $this->assertArrayHasKey('formData', $parameterAttributeArray);
+            // removing these resource info items so we can assess the details of just the other resource info items
             unset($actualResourceInfo['acceptableParameters'][$parameterName]['apiDataType']);
             unset($actualResourceInfo['acceptableParameters'][$parameterName]['defaultValidationRules']);
             unset($actualResourceInfo['acceptableParameters'][$parameterName]['formData']);
@@ -130,7 +131,7 @@ class ResourceModelInfoProviderTest extends TestCase
      * @group context
      * @group allRequestMethods
      */
-    public function test_getResourceInfo_gives_expected_results_from_WorkHistoryType_class_info_different_primaryKeyName() : void
+    public function test_getResourceInfo_gives_expected_results_from_WorkHistoryType_class_different_primaryKeyName() : void
     {
         $this->createWorkHistoryTypeClassTestInfo();
 
@@ -141,6 +142,7 @@ class ResourceModelInfoProviderTest extends TestCase
             $this->assertArrayHasKey('apiDataType', $parameterAttributeArray);
             $this->assertArrayHasKey('defaultValidationRules', $parameterAttributeArray);
             $this->assertArrayHasKey('formData', $parameterAttributeArray);
+            // removing these resource info items so we can assess the details of just the other resource info items
             unset($actualResourceInfo['acceptableParameters'][$parameterName]['apiDataType']);
             unset($actualResourceInfo['acceptableParameters'][$parameterName]['defaultValidationRules']);
             unset($actualResourceInfo['acceptableParameters'][$parameterName]['formData']);
