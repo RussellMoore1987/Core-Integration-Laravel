@@ -43,7 +43,7 @@ abstract class DataTypeDeterminerFactory
     protected function isString() : void
     {
         if (
-            !$this->factoryItem &&
+            $this->factoryItemIsNotSet() &&
             (
                 str_contains($this->dataType, 'varchar') ||
                 str_contains($this->dataType, 'char') ||
@@ -58,7 +58,7 @@ abstract class DataTypeDeterminerFactory
 
     protected function isJson() : void
     {
-        if (!$this->factoryItem && str_contains($this->dataType, 'json')) {
+        if ($this->factoryItemIsNotSet() && str_contains($this->dataType, 'json')) {
             $this->setFactoryItem($this->factoryItemArray['json']);
         }
     }
@@ -66,7 +66,7 @@ abstract class DataTypeDeterminerFactory
     protected function isDate() : void
     {
         if (
-            !$this->factoryItem &&
+            $this->factoryItemIsNotSet() &&
             (
                 $this->dataType == 'date' ||
                 $this->dataType == 'timestamp' ||
@@ -81,7 +81,7 @@ abstract class DataTypeDeterminerFactory
     protected function isInt() : void
     {
         if (
-            !$this->factoryItem &&
+            $this->factoryItemIsNotSet() &&
             (
                 $this->dataType == 'integer' ||
                 $this->dataType == 'int' ||
@@ -99,7 +99,7 @@ abstract class DataTypeDeterminerFactory
     protected function isFloat() : void
     {
         if (
-            !$this->factoryItem &&
+            $this->factoryItemIsNotSet() &&
             (
                 $this->dataType == 'decimal' || str_contains($this->dataType, 'decimal') ||
                 $this->dataType == 'numeric' || str_contains($this->dataType, 'numeric') ||
@@ -113,30 +113,35 @@ abstract class DataTypeDeterminerFactory
 
     protected function isOrderBy() : void
     {
-        if (!$this->factoryItem && $this->dataType == 'orderby') {
+        if ($this->factoryItemIsNotSet() && $this->dataType == 'orderby') {
             $this->setFactoryItem($this->factoryItemArray['orderby']);
         }
     }
 
     protected function isSelect() : void
     {
-        if (!$this->factoryItem && $this->dataType == 'select') {
+        if ($this->factoryItemIsNotSet() && $this->dataType == 'select') {
             $this->setFactoryItem($this->factoryItemArray['select']);
         }
     }
 
     protected function isIncludes() : void
     {
-        if (!$this->factoryItem && $this->dataType == 'includes') {
+        if ($this->factoryItemIsNotSet() && $this->dataType == 'includes') {
             $this->setFactoryItem($this->factoryItemArray['includes']);
         }
     }
 
     protected function isMethodCalls() : void
     {
-        if (!$this->factoryItem && $this->dataType == 'methodcalls') {
+        if ($this->factoryItemIsNotSet() && $this->dataType == 'methodcalls') {
             $this->setFactoryItem($this->factoryItemArray['methodcalls']);
         }
+    }
+
+    protected function factoryItemIsNotSet() : bool
+    {
+        return !$this->factoryItem;
     }
 
     protected function setFactoryItem($dataTypeValue) : void
