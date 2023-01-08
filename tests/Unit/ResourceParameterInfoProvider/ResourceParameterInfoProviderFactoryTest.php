@@ -10,9 +10,19 @@ use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParamete
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviderFactory;
 use Tests\TestCase;
 
+// ! Start here ******************************************************************
+// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
+// ! (I have a stash of tests**** EndpointValidatorTest.php) (sub IntResourceParameterInfoProvider DateResourceParameterInfoProvider)
+// [] read over
+// [] test groups, rest, context
+// [] add return type : void
+// [] testing what I need to test
+
 class ResourceParameterInfoProviderFactoryTest extends TestCase
 {
-    protected function setUp(): void
+    protected $resourceParameterInfoProviderFactory;
+
+    protected function setUp() : void
     {
         parent::setUp();
 
@@ -21,14 +31,17 @@ class ResourceParameterInfoProviderFactoryTest extends TestCase
 
     /**
      * @dataProvider stringParameterProvider
+     * @group rest
+     * @group context
+     * @group allRequestMethods
      */
-    public function test_creation_of_string_parameter_data_provider_class($dataType)
+    public function test_creation_of_StringResourceParameterInfoProvider_class($dataType) : void
     {
         $resourceParameterInfoProvider = $this->resourceParameterInfoProviderFactory->getFactoryItem($dataType);
 
         $this->assertInstanceOf(StringResourceParameterInfoProvider::class, $resourceParameterInfoProvider);
     }
-    public function stringParameterProvider()
+    public function stringParameterProvider() : array
     {
         return [
             'varchar' => ['Varchar'],
@@ -40,14 +53,17 @@ class ResourceParameterInfoProviderFactoryTest extends TestCase
 
     /**
      * @dataProvider dateParameterProvider
+     * @group rest
+     * @group context
+     * @group allRequestMethods
      */
-    public function test_creation_of_date_parameter_data_provider_class($dataType)
+    public function test_creation_of_DateResourceParameterInfoProvider_class($dataType) : void
     {
         $resourceParameterInfoProvider = $this->resourceParameterInfoProviderFactory->getFactoryItem($dataType);
 
         $this->assertInstanceOf(DateResourceParameterInfoProvider::class, $resourceParameterInfoProvider);
     }
-    public function dateParameterProvider()
+    public function dateParameterProvider() : array
     {
         return [
             'date' => ['date'],
@@ -58,14 +74,17 @@ class ResourceParameterInfoProviderFactoryTest extends TestCase
 
     /**
      * @dataProvider intParameterProvider
+     * @group rest
+     * @group context
+     * @group allRequestMethods
      */
-    public function test_creation_of_int_parameter_data_provider_class($dataType)
+    public function test_creation_of_IntResourceParameterInfoProvider_class($dataType) : void
     {
         $resourceParameterInfoProvider = $this->resourceParameterInfoProviderFactory->getFactoryItem($dataType);
 
         $this->assertInstanceOf(IntResourceParameterInfoProvider::class, $resourceParameterInfoProvider);
     }
-    public function intParameterProvider()
+    public function intParameterProvider() : array
     {
         return [
             'integer' => ['integer'],
@@ -79,14 +98,17 @@ class ResourceParameterInfoProviderFactoryTest extends TestCase
 
     /**
      * @dataProvider floatParameterProvider
+     * @group rest
+     * @group context
+     * @group allRequestMethods
      */
-    public function test_creation_of_float_parameter_data_provider_class($dataType)
+    public function test_creation_of_FloatResourceParameterInfoProvider_class($dataType) : void
     {
         $resourceParameterInfoProvider = $this->resourceParameterInfoProviderFactory->getFactoryItem($dataType);
 
         $this->assertInstanceOf(FloatResourceParameterInfoProvider::class, $resourceParameterInfoProvider);
     }
-    public function floatParameterProvider()
+    public function floatParameterProvider() : array
     {
         return [
             'decimal' => ['decimal'],
@@ -96,7 +118,12 @@ class ResourceParameterInfoProviderFactoryTest extends TestCase
         ];
     }
 
-    public function test_creation_of_json_parameter_data_provider_class()
+    /**
+     * @group rest
+     * @group context
+     * @group allRequestMethods
+     */
+    public function test_creation_of_JsonResourceParameterInfoProvider_class() : void
     {
         $resourceParameterInfoProvider = $this->resourceParameterInfoProviderFactory->getFactoryItem('json');
 

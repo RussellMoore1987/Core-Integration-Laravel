@@ -8,14 +8,6 @@ use App\Models\Category;
 use App\Models\WorkHistoryType;
 use Tests\TestCase;
 
-// ! Start here ******************************************************************
-// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
-// ! (I have a stash of tests**** EndpointValidatorTest.php) (sub ResourceParameterInfoProviderFactory)
-// [x] read over
-// [x] test groups, rest, context
-// [x] add return type : void
-// [x] testing what I need to test
-
 class ResourceModelInfoProviderTest extends TestCase
 {
     private $resourceModelInfoProvider;

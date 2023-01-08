@@ -49,7 +49,7 @@ abstract class DataTypeDeterminerFactory
                 str_contains($this->dataType, 'char') ||
                 $this->dataType == 'blob' ||
                 $this->dataType == 'text' ||
-                $this->dataType == 'string'
+                $this->dataType == 'string' // TODO: do I need this ???
             )
         ) {
             $this->setFactoryItem($this->factoryItemArray['string']);
