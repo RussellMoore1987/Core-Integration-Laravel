@@ -16,7 +16,7 @@ use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\MethodCallsClause
 
 class ClauseBuilderFactory extends DataTypeDeterminerFactory
 {
-    protected $factoryReturnArray = [
+    protected $factoryItemArray = [
         'string' => StringWhereClauseBuilder::class,
         'json' => JsonWhereClauseBuilder::class,
         'date' => DateWhereClauseBuilder::class,

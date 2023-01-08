@@ -16,7 +16,7 @@ use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\MethodC
 
 class ParameterValidatorFactory extends DataTypeDeterminerFactory
 {
-    protected $factoryReturnArray = [
+    protected $factoryItemArray = [
         'string' => StringParameterValidator::class,
         'json' => JsonParameterValidator::class,
         'date' => DateParameterValidator::class,

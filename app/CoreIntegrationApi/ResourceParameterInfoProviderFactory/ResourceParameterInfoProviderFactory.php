@@ -12,7 +12,7 @@ use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParamete
 
 class ResourceParameterInfoProviderFactory extends DataTypeDeterminerFactory
 {
-    protected $factoryReturnArray = [
+    protected $factoryItemArray = [
         'string' => StringResourceParameterInfoProvider::class,
         'json' => JsonResourceParameterInfoProvider::class,
         'date' => DateResourceParameterInfoProvider::class,

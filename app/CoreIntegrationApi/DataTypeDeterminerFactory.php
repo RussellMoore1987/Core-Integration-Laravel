@@ -9,7 +9,7 @@ abstract class DataTypeDeterminerFactory
     protected $factoryItem;
     protected $dataType;
     // Just placeholder strings, should be replaced by paths to the actual classes, see app\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilderFactory.php for example
-    protected $factoryReturnArray = [
+    protected $factoryItemArray = [
         'string' => 'string',
         'json' => 'json',
         'date' => 'date',
@@ -22,7 +22,7 @@ abstract class DataTypeDeterminerFactory
         'methodcalls' => 'methodcalls',
     ];
 
-    public function getFactoryItem($dataType) : object
+    public function getFactoryItem(string $dataType) : object
     {
         $this->dataType = strtolower($dataType);
         $this->factoryItem = null; // rests if used more then once
@@ -52,14 +52,14 @@ abstract class DataTypeDeterminerFactory
                 $this->dataType == 'string'
             )
         ) {
-            $this->setFactoryItem($this->factoryReturnArray['string']);
+            $this->setFactoryItem($this->factoryItemArray['string']);
         }
     }
 
     protected function isJson() : void
     {
         if (!$this->factoryItem && str_contains($this->dataType, 'json')) {
-            $this->setFactoryItem($this->factoryReturnArray['json']);
+            $this->setFactoryItem($this->factoryItemArray['json']);
         }
     }
 
@@ -74,7 +74,7 @@ abstract class DataTypeDeterminerFactory
                 str_contains($this->dataType, 'date')
             )
         ) {
-            $this->setFactoryItem($this->factoryReturnArray['date']);
+            $this->setFactoryItem($this->factoryItemArray['date']);
         }
     }
 
@@ -92,7 +92,7 @@ abstract class DataTypeDeterminerFactory
                 (str_contains($this->dataType, 'int') && str_contains($this->dataType, 'unsigned'))
             )
         ) {
-            $this->setFactoryItem($this->factoryReturnArray['int']);
+            $this->setFactoryItem($this->factoryItemArray['int']);
         }
     }
 
@@ -107,39 +107,35 @@ abstract class DataTypeDeterminerFactory
                 $this->dataType == 'double' || str_contains($this->dataType, 'double')
             )
         ) {
-            $this->setFactoryItem($this->factoryReturnArray['float']);
+            $this->setFactoryItem($this->factoryItemArray['float']);
         }
     }
 
     protected function isOrderBy() : void
     {
-        if (!$this->factoryItem && $this->dataType == 'orderby')
-        {
-            $this->setFactoryItem($this->factoryReturnArray['orderby']);
+        if (!$this->factoryItem && $this->dataType == 'orderby') {
+            $this->setFactoryItem($this->factoryItemArray['orderby']);
         }
     }
 
     protected function isSelect() : void
     {
-        if (!$this->factoryItem && $this->dataType == 'select')
-        {
-            $this->setFactoryItem($this->factoryReturnArray['select']);
+        if (!$this->factoryItem && $this->dataType == 'select') {
+            $this->setFactoryItem($this->factoryItemArray['select']);
         }
     }
 
     protected function isIncludes() : void
     {
-        if (!$this->factoryItem && $this->dataType == 'includes')
-        {
-            $this->setFactoryItem($this->factoryReturnArray['includes']);
+        if (!$this->factoryItem && $this->dataType == 'includes') {
+            $this->setFactoryItem($this->factoryItemArray['includes']);
         }
     }
 
     protected function isMethodCalls() : void
     {
-        if (!$this->factoryItem && $this->dataType == 'methodcalls')
-        {
-            $this->setFactoryItem($this->factoryReturnArray['methodcalls']);
+        if (!$this->factoryItem && $this->dataType == 'methodcalls') {
+            $this->setFactoryItem($this->factoryItemArray['methodcalls']);
         }
     }
 
