@@ -2,7 +2,7 @@
 
 namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory;
 
-use App\CoreIntegrationApi\CIL\CILDataTypeDeterminerFactory;
+use App\CoreIntegrationApi\DataTypeDeterminerFactory;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\ResourceParameterInfoProvider;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\StringResourceParameterInfoProvider;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\JsonResourceParameterInfoProvider;
@@ -10,7 +10,7 @@ use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParamete
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\IntResourceParameterInfoProvider;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\FloatResourceParameterInfoProvider;
 
-class ResourceParameterInfoProviderFactory extends CILDataTypeDeterminerFactory
+class ResourceParameterInfoProviderFactory extends DataTypeDeterminerFactory
 {
     protected $factoryReturnArray = [
         'string' => StringResourceParameterInfoProvider::class,

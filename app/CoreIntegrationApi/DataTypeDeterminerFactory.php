@@ -1,10 +1,10 @@
 <?php
 
-namespace App\CoreIntegrationApi\CIL;
+namespace App\CoreIntegrationApi;
 
 use Illuminate\Support\Facades\App;
 
-abstract class CILDataTypeDeterminerFactory
+abstract class DataTypeDeterminerFactory
 {
     protected $factoryItem;
     protected $dataType;

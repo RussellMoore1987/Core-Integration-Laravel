@@ -2,7 +2,7 @@
 
 namespace App\CoreIntegrationApi\ParameterValidatorFactory;
 
-use App\CoreIntegrationApi\CIL\CILDataTypeDeterminerFactory;
+use App\CoreIntegrationApi\DataTypeDeterminerFactory;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ParameterValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\StringParameterValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\JsonParameterValidator;
@@ -14,7 +14,7 @@ use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\SelectP
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IncludesParameterValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\MethodCallsParameterValidator;
 
-class ParameterValidatorFactory extends CILDataTypeDeterminerFactory
+class ParameterValidatorFactory extends DataTypeDeterminerFactory
 {
     protected $factoryReturnArray = [
         'string' => StringParameterValidator::class,
