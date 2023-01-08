@@ -93,6 +93,12 @@ class ResourceParameterInfoProviderFactoryTest extends TestCase
             'tinyint' => ['tinyint'],
             'mediumint' => ['Mediumint'],
             'bigint' => ['bigint'],
+            'integer unsigned' => ['integer unsigned'],
+            'int unsigned' => ['Int unsigned'],
+            'smallint unsigned' => ['smallint unsigned'],
+            'tinyint unsigned' => ['tinyint unsigned'],
+            'mediumint unsigned' => ['Mediumint unsigned'],
+            'bigint unsigned' => ['bigint unsigned'],
         ];
     }
 
