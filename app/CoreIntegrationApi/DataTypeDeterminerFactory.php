@@ -48,8 +48,7 @@ abstract class DataTypeDeterminerFactory
                 str_contains($this->dataType, 'varchar') ||
                 str_contains($this->dataType, 'char') ||
                 $this->dataType == 'blob' ||
-                $this->dataType == 'text' ||
-                $this->dataType == 'string' // TODO: do I need this ???
+                $this->dataType == 'text'
             )
         ) {
             $this->setFactoryItem($this->factoryItemArray['string']);
@@ -68,9 +67,7 @@ abstract class DataTypeDeterminerFactory
         if (
             $this->factoryItemIsNotSet() &&
             (
-                $this->dataType == 'date' ||
                 $this->dataType == 'timestamp' ||
-                $this->dataType == 'datetime' ||
                 str_contains($this->dataType, 'date')
             )
         ) {
@@ -80,18 +77,7 @@ abstract class DataTypeDeterminerFactory
 
     protected function isInt() : void
     {
-        if (
-            $this->factoryItemIsNotSet() &&
-            (
-                $this->dataType == 'integer' ||
-                $this->dataType == 'int' ||
-                $this->dataType == 'smallint' ||
-                $this->dataType == 'tinyint' ||
-                $this->dataType == 'mediumint' ||
-                $this->dataType == 'bigint' ||
-                (str_contains($this->dataType, 'int') && str_contains($this->dataType, 'unsigned'))
-            )
-        ) {
+        if ($this->factoryItemIsNotSet() && str_contains($this->dataType, 'int')) {
             $this->setFactoryItem($this->factoryItemArray['int']);
         }
     }
@@ -101,10 +87,10 @@ abstract class DataTypeDeterminerFactory
         if (
             $this->factoryItemIsNotSet() &&
             (
-                $this->dataType == 'decimal' || str_contains($this->dataType, 'decimal') ||
-                $this->dataType == 'numeric' || str_contains($this->dataType, 'numeric') ||
-                $this->dataType == 'float' || str_contains($this->dataType, 'float') ||
-                $this->dataType == 'double' || str_contains($this->dataType, 'double')
+                str_contains($this->dataType, 'decimal') ||
+                str_contains($this->dataType, 'numeric') ||
+                str_contains($this->dataType, 'float') ||
+                str_contains($this->dataType, 'double')
             )
         ) {
             $this->setFactoryItem($this->factoryItemArray['float']);

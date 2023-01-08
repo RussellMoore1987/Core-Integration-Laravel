@@ -43,6 +43,7 @@ class ResourceParameterInfoProviderFactoryTest extends TestCase
     }
     public function stringParameterProvider() : array
     {
+        // TODO: other string type, is there a way to ask the database what the constraints are???
         return [
             'varchar' => ['Varchar'],
             'char' => ['char'],
@@ -65,6 +66,7 @@ class ResourceParameterInfoProviderFactoryTest extends TestCase
     }
     public function dateParameterProvider() : array
     {
+        // TODO: other date types
         return [
             'date' => ['date'],
             'timestamp' => ['Timestamp'],
@@ -86,6 +88,7 @@ class ResourceParameterInfoProviderFactoryTest extends TestCase
     }
     public function intParameterProvider() : array
     {
+        // TODO: add bit ???
         return [
             'integer' => ['integer'],
             'int' => ['Int'],
@@ -121,6 +124,10 @@ class ResourceParameterInfoProviderFactoryTest extends TestCase
             'numeric' => ['numeric'],
             'float' => ['Float'],
             'double' => ['double'],
+            'decimal unsigned' => ['decimal unsigned'],
+            'numeric unsigned' => ['numeric unsigned'],
+            'float unsigned' => ['Float unsigned'],
+            'double unsigned' => ['double unsigned'],
         ];
     }
 
