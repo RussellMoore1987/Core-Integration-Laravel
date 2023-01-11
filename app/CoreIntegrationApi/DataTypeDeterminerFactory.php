@@ -47,8 +47,10 @@ abstract class DataTypeDeterminerFactory
             (
                 str_contains($this->dataType, 'varchar') ||
                 str_contains($this->dataType, 'char') ||
-                $this->dataType == 'blob' ||
-                $this->dataType == 'text'
+                str_contains($this->dataType, 'blob') ||
+                str_contains($this->dataType, 'text') ||
+                $this->dataType == 'enum' ||
+                $this->dataType == 'set'
             )
         ) {
             $this->setFactoryItem($this->factoryItemArray['string']);
@@ -67,6 +69,7 @@ abstract class DataTypeDeterminerFactory
         if (
             $this->factoryItemIsNotSet() &&
             (
+                $this->dataType == 'year' ||
                 $this->dataType == 'timestamp' ||
                 str_contains($this->dataType, 'date')
             )
@@ -77,7 +80,7 @@ abstract class DataTypeDeterminerFactory
 
     protected function isInt() : void
     {
-        if ($this->factoryItemIsNotSet() && str_contains($this->dataType, 'int')) {
+        if ($this->factoryItemIsNotSet() && (str_contains($this->dataType, 'int') || $this->dataType == 'bit')) {
             $this->setFactoryItem($this->factoryItemArray['int']);
         }
     }
@@ -130,8 +133,8 @@ abstract class DataTypeDeterminerFactory
         return !$this->factoryItem;
     }
 
-    protected function setFactoryItem($dataTypeValue) : void
+    protected function setFactoryItem($apiParameterClassPath) : void
     {
-        $this->factoryItem = App::make($dataTypeValue);
+        $this->factoryItem = App::make($apiParameterClassPath);
     }
 }

@@ -17,6 +17,7 @@ use Tests\TestCase;
 // [] test groups, rest, context
 // [] add return type : void
 // [] testing what I need to test
+// [] make this factory uneak
 
 class ResourceParameterInfoProviderFactoryTest extends TestCase
 {
@@ -43,12 +44,21 @@ class ResourceParameterInfoProviderFactoryTest extends TestCase
     }
     public function stringParameterProvider() : array
     {
-        // TODO: other string type, is there a way to ask the database what the constraints are???
         return [
-            'varchar' => ['Varchar'],
+            'varchar' => ['varchar'],
+            'varchar' => ['varchar(150)'],
             'char' => ['char'],
+            'char' => ['char(2)'],
+            'tinyBlob' => ['tinyBlob'],
             'blob' => ['blob'],
+            'mediumBlob' => ['mediumBlob'],
+            'longBlob' => ['longBlob'],
+            'tinyText' => ['tinyText'],
             'text' => ['text'],
+            'mediumText' => ['mediumText'],
+            'longText' => ['longText'],
+            'enum' => ['enum'],
+            'set' => ['set'],
         ];
     }
 
@@ -66,11 +76,11 @@ class ResourceParameterInfoProviderFactoryTest extends TestCase
     }
     public function dateParameterProvider() : array
     {
-        // TODO: other date types
         return [
             'date' => ['date'],
             'timestamp' => ['Timestamp'],
             'datetime' => ['datetime'],
+            'year' => ['year'],
         ];
     }
 
@@ -88,19 +98,19 @@ class ResourceParameterInfoProviderFactoryTest extends TestCase
     }
     public function intParameterProvider() : array
     {
-        // TODO: add bit ???
         return [
+            'bit' => ['bit'],
             'integer' => ['integer'],
             'int' => ['Int'],
             'smallint' => ['smallint'],
             'tinyint' => ['tinyint'],
-            'mediumint' => ['Mediumint'],
+            'mediumInt' => ['MediumInt'],
             'bigint' => ['bigint'],
             'integer unsigned' => ['integer unsigned'],
             'int unsigned' => ['Int unsigned'],
             'smallint unsigned' => ['smallint unsigned'],
             'tinyint unsigned' => ['tinyint unsigned'],
-            'mediumint unsigned' => ['Mediumint unsigned'],
+            'MediumInt unsigned' => ['MediumInt unsigned'],
             'bigint unsigned' => ['bigint unsigned'],
         ];
     }
