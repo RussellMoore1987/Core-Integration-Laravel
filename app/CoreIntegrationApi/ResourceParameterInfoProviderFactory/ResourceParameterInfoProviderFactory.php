@@ -76,7 +76,7 @@ class ResourceParameterInfoProviderFactory
 
     protected function isInt() : void
     {
-        if ($this->factoryItemIsNotSet() && (str_contains($this->dataType, 'int') || $this->dataType == 'bit')) {
+        if ($this->factoryItemIsNotSet() && str_contains($this->dataType, 'int')) {
             $this->setFactoryItem($this->factoryItemArray['int']);
         }
     }

@@ -99,10 +99,6 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
 
     protected function isDateType($dateString)
     {
-        if (str_contains($this->dataType, $dateString)) {
-            return true;
-        }
-
-        return false;
+        return str_contains($this->parameterDataType, $dateString) ? true : false;
     }
 }
