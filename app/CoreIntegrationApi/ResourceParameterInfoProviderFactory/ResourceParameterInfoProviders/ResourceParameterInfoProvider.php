@@ -25,7 +25,8 @@ abstract class ResourceParameterInfoProvider
         $this->parameterAttributeArray = $parameterAttributeArray;
         $this->parameterDataType = $parameterAttributeArray['type'];
         
-        $this->getFormData(); // TODO: rename ??? getParameterInfo*** getParameterData
+        // ! Start here ************
+        $this->getParameterData();
         $this->isParameterRequired();
         
         $this->checkForClassParameterFormData($resourceFormData);
@@ -37,7 +38,7 @@ abstract class ResourceParameterInfoProvider
         ];
     }
 
-    abstract protected function getFormData(); // needs to set $this->apiDataType : string, $this->defaultValidationRules : array, $this->formData : array
+    abstract protected function getParameterData(); // needs to set $this->apiDataType : string, $this->defaultValidationRules : array, $this->formData : array
 
     protected function isParameterRequired()
     {
