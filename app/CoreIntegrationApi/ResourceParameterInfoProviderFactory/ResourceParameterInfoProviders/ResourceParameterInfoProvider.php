@@ -2,14 +2,6 @@
 
 namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders;
 
-// ! Start here ******************************************************************
-// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
-// ! (I have a stash of tests**** EndpointValidatorTest.php) (sub IntResourceParameterInfoProvider DateResourceParameterInfoProvider)
-// [] read over
-// [] test groups, rest, context
-// [] add return type : void
-// [] testing what I need to test
-
 abstract class ResourceParameterInfoProvider
 {
     protected $apiDataType;
@@ -25,11 +17,10 @@ abstract class ResourceParameterInfoProvider
         $this->parameterAttributeArray = $parameterAttributeArray;
         $this->parameterDataType = $parameterAttributeArray['type'];
         
-        // ! Start here ************
         $this->getParameterData();
         $this->isParameterRequired();
         
-        $this->checkForClassParameterFormData($resourceFormData);
+        $this->mergeResourceParameterFormData($resourceFormData);
 
         return [
             'apiDataType' => $this->getApiDataType(),
@@ -52,7 +43,7 @@ abstract class ResourceParameterInfoProvider
         }
     }
 
-    protected function checkForClassParameterFormData($resourceFormData)
+    protected function mergeResourceParameterFormData($resourceFormData)
     {
         if ($resourceFormData && isset($resourceFormData[$this->parameterName])) {
             $this->formData = array_merge($this->formData, $resourceFormData[$this->parameterName]);
@@ -61,10 +52,15 @@ abstract class ResourceParameterInfoProvider
 
     protected function getApiDataType() : string
     {
-        if (!$this->apiDataType) {
+        if ($this->apiDataTypeIsNotSet()) {
             throw new \Exception('No apiDataType class property set, this must be set in the child class');
         }
 
         return $this->apiDataType;
+    }
+
+    protected function apiDataTypeIsNotSet() : string
+    {
+        return !$this->apiDataType;
     }
 }

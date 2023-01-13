@@ -6,6 +6,15 @@ use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParamete
 use App\Models\Project;
 use Tests\TestCase;
 
+// TODO: add validation rules to test
+// ! Start here ******************************************************************
+// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
+// ! (I have a stash of tests**** EndpointValidatorTest.php) (sub IntResourceParameterInfoProvider DateResourceParameterInfoProvider)
+// [] read over
+// [] test groups, rest, context
+// [] add return type : void
+// [] testing what I need to test
+
 class IntResourceParameterInfoProviderTest extends TestCase
 {
     protected $project;
@@ -26,8 +35,8 @@ class IntResourceParameterInfoProviderTest extends TestCase
      */
     public function test_IntResourceParameterInfoProvider_default_return_values($parameterDataInfo, $expectedResult)
     {
-        unset($this->project->formData);
-        $result = $this->intResourceParameterInfoProvider->getData($parameterDataInfo, $this->project->formData ?? []);
+        $this->project->formData = [];
+        $result = $this->intResourceParameterInfoProvider->getData($parameterDataInfo, $this->project->formData);
 
         $this->assertEquals($expectedResult, $result);
     }

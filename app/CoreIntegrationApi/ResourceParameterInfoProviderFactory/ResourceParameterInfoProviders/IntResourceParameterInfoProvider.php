@@ -4,8 +4,6 @@ namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourcePa
 
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\ResourceParameterInfoProvider;
 
-// TODO: add validation rules to test
-
 // ? https://dev.mysql.com/doc/refman/8.0/en/integer-types.html Data type details
 class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
 {
@@ -13,7 +11,7 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
     protected $intType;
     protected $min0 = 'min:0';
 
-    protected function getParameterData()
+    protected function getParameterData() : void
     {
         $this->isTinyInt();
         $this->isSmallInt();
@@ -23,7 +21,7 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
         $this->isInt();
     }
 
-    protected function isTinyInt()
+    protected function isTinyInt() : void
     {
         if ($this->intTypeIsNotSet() && $this->isIntType('tinyint')) {
             
@@ -52,7 +50,7 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isSmallInt()
+    protected function isSmallInt() : void
     {
         if ($this->intTypeIsNotSet() && $this->isIntType('smallint')) {
             
@@ -81,7 +79,7 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isMediumInt()
+    protected function isMediumInt() : void
     {
         if ($this->intTypeIsNotSet() && $this->isIntType('mediumint')) {
             
@@ -111,7 +109,7 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isInteger()
+    protected function isInteger() : void
     {
         if ($this->intTypeIsNotSet() && $this->isIntType('integer')) {
             
@@ -140,7 +138,7 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isBigInt()
+    protected function isBigInt() : void
     {
         if ($this->intTypeIsNotSet() && $this->isIntType('bigint')) {
             
@@ -170,7 +168,7 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isInt()
+    protected function isInt() : void
     {
         if ($this->intTypeIsNotSet() && $this->isIntType('int')) { // integer
             
@@ -199,18 +197,18 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isIntType($intString)
+    protected function intTypeIsNotSet() : bool
+    {
+        return !$this->intType;
+    }
+    
+    protected function isIntType($intString) : bool
     {
         return str_contains($this->parameterDataType, $intString) ? true : false;
     }
-
-    protected function isUnsignedInt()
+    
+    protected function isUnsignedInt() : bool
     {
         return str_contains($this->parameterDataType, 'unsigned') ? true : false;
-    }
-
-    protected function intTypeIsNotSet()
-    {
-        return !$this->intType;
     }
 }
