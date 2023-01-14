@@ -3,7 +3,6 @@
 namespace Tests\Unit\ResourceParameterInfoProvider;
 
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\IntResourceParameterInfoProvider;
-use App\Models\Project;
 use Tests\TestCase;
 
 // TODO: add validation rules to test
@@ -17,20 +16,18 @@ use Tests\TestCase;
 
 class IntResourceParameterInfoProviderTest extends TestCase
 {
-    protected $project;
     protected $intResourceParameterInfoProvider;
-    protected $expectedResult;
-
     protected $parameterAttributeArray;
-    protected $tinyintUnsignedParameterAttributeArray;
+    protected $minValidationForUnsigned = 'min:0';
+    protected $minValidationForInteger = 'min:-2147483648';
+    protected $maxValidationForInteger = 'max:2147483647';
+    protected $maxValidationForIntegerUnsigned = 'max:4294967295';
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->intResourceParameterInfoProvider = new IntResourceParameterInfoProvider();
-
-        $this->project = new Project();
     }
 
     /**
@@ -60,154 +57,13 @@ class IntResourceParameterInfoProviderTest extends TestCase
             'smallint' => $this->getSmallintTestData(),
             'smallintUnsigned' => $this->getSmallintUnsignedTestData(),
             'mediumint' => $this->getMediumintTestData(),
-            'mediumintUnsigned' => [
-                'mediumint unsigned',
-                [
-                    'min' => 100,
-                ],
-                [
-                    'formData' => [
-                        'min' => 100,
-                        'max' => 16777215,
-                        'maxlength' => 8,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:0',
-                        'max:16777215',
-                    ],
-                ]
-            ],
-            'integer' => [
-                'integer',
-                [
-                    'min2' => -2147483648,
-                    'max2' => 2147483647,
-                    'maxlength2' => 10,
-                    'type2' => 'number',
-                ],
-                [
-                    'formData' => [
-                        'min' => -2147483648,
-                        'max' => 2147483647,
-                        'maxlength' => 10,
-                        'type' => 'number',
-                        'min2' => -2147483648,
-                        'max2' => 2147483647,
-                        'maxlength2' => 10,
-                        'type2' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:-2147483648',
-                        'max:2147483647',
-                    ],
-                ]
-            ],
-            'integerUnsigned' => [
-                'integer unsigned',
-                [
-                    'minlength' => 3,
-                ],
-                [
-                    'formData' => [
-                        'min' => 0,
-                        'max' => 4294967295,
-                        'minlength' => 3,
-                        'maxlength' => 10,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:0',
-                        'max:4294967295',
-                    ],
-                ]
-            ],
-            'bigint' => [
-                'bigint',
-                [
-                    'min' => 0,
-                    'min2' => -9223372036854775808,
-                ],
-                [
-                    'formData' => [
-                        'min' => 0,
-                        'min2' => -9223372036854775808,
-                        'max' => 9223372036854775807,
-                        'maxlength' => 19,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:-9223372036854775808',
-                        'max:9223372036854775807',
-                    ],
-                ]
-            ],
-            'bigintUnsigned' => [
-                'bigint unsigned',
-                [
-                    'min' => '',
-                    'max' => '',
-                    'maxlength' => '',
-                    'type' => '',
-                ],
-                [
-                    'formData' => [
-                        'min' => '',
-                        'max' => '',
-                        'maxlength' => '',
-                        'type' => '',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:0',
-                        'max:18446744073709551615',
-                    ],
-                ]
-            ],
-            'int' => [
-                'int',
-                [
-                    'maxlength' => 5,
-                ],
-                [
-                    'formData' => [
-                        'min' => -2147483648,
-                        'max' => 2147483647,
-                        'maxlength' => 5,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:-2147483648',
-                        'max:2147483647',
-                    ],
-                ]
-            ],
-            'intUnsigned' => [
-                'int unsigned',
-                [
-                    'min' => 12,
-                    'maxlength' => 2,
-                    'type' => 'text',
-                ],
-                [
-                    'formData' => [
-                        'min' => 12,
-                        'max' => 4294967295,
-                        'maxlength' => 2,
-                        'type' => 'text',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:0',
-                        'max:4294967295',
-                    ],
-                ]
-            ],
+            'mediumintUnsigned' => $this->getMediumintUnsignedTestData(),
+            'integer' => $this->getIntegerTestData(),
+            'integerUnsigned' => $this->getIntegerUnsignedTestData(),
+            'bigint' => $this->getBigintTestData(),
+            'bigintUnsigned' => $this->getBigintUnsignedTestData(),
+            'int' => $this->getIntTestData(),
+            'intUnsigned' => $this->getIntUnsignedTestData(),
         ];
     }
 
@@ -256,7 +112,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ],
                 'defaultValidationRules' => [
                     'integer',
-                    'min:0',
+                    $this->minValidationForUnsigned,
                     'max:255',
                 ],
             ]
@@ -300,7 +156,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ],
                 'defaultValidationRules' => [
                     'integer',
-                    'min:0',
+                    $this->minValidationForUnsigned,
                     'max:65535',
                 ],
             ]
@@ -330,6 +186,182 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     'integer',
                     'min:-8388608',
                     'max:8388607',
+                ],
+            ]
+        ];
+    }
+
+    protected function getMediumintUnsignedTestData(): array
+    {
+        return [
+            'mediumint unsigned',
+            [
+                'min' => 100,
+            ],
+            [
+                'formData' => [
+                    'min' => 100,
+                    'max' => 16777215,
+                    'maxlength' => 8,
+                    'type' => 'number',
+                ],
+                'defaultValidationRules' => [
+                    'integer',
+                    $this->minValidationForUnsigned,
+                    'max:16777215',
+                ],
+            ]
+        ];
+    }
+
+    protected function getIntegerTestData(): array
+    {
+        return [
+            'integer',
+            [
+                'min2' => -2147483648,
+                'max2' => 2147483647,
+                'maxlength2' => 10,
+                'type2' => 'number',
+            ],
+            [
+                'formData' => [
+                    'min' => -2147483648,
+                    'max' => 2147483647,
+                    'maxlength' => 10,
+                    'type' => 'number',
+                    'min2' => -2147483648,
+                    'max2' => 2147483647,
+                    'maxlength2' => 10,
+                    'type2' => 'number',
+                ],
+                'defaultValidationRules' => [
+                    'integer',
+                    $this->minValidationForInteger,
+                    $this->maxValidationForInteger,
+                ],
+            ]
+        ];
+    }
+
+    protected function getIntegerUnsignedTestData(): array
+    {
+        return [
+            'integer unsigned',
+            [
+                'minlength' => 3,
+            ],
+            [
+                'formData' => [
+                    'min' => 0,
+                    'max' => 4294967295,
+                    'minlength' => 3,
+                    'maxlength' => 10,
+                    'type' => 'number',
+                ],
+                'defaultValidationRules' => [
+                    'integer',
+                    $this->minValidationForUnsigned,
+                    $this->maxValidationForIntegerUnsigned,
+                ],
+            ]
+        ];
+    }
+
+    protected function getBigintTestData(): array
+    {
+        return [
+            'bigint',
+            [
+                'min' => 0,
+                'min2' => -9223372036854775808,
+            ],
+            [
+                'formData' => [
+                    'min' => 0,
+                    'min2' => -9223372036854775808,
+                    'max' => 9223372036854775807,
+                    'maxlength' => 19,
+                    'type' => 'number',
+                ],
+                'defaultValidationRules' => [
+                    'integer',
+                    'min:-9223372036854775808',
+                    'max:9223372036854775807',
+                ],
+            ]
+        ];
+    }
+
+    protected function getBigintUnsignedTestData(): array
+    {
+        return [
+            'bigint unsigned',
+            [
+                'min' => '',
+                'max' => '',
+                'maxlength' => '',
+                'type' => '',
+            ],
+            [
+                'formData' => [
+                    'min' => '',
+                    'max' => '',
+                    'maxlength' => '',
+                    'type' => '',
+                ],
+                'defaultValidationRules' => [
+                    'integer',
+                    $this->minValidationForUnsigned,
+                    'max:18446744073709551615',
+                ],
+            ]
+        ];
+    }
+
+    protected function getIntTestData(): array
+    {
+        return [
+            'int',
+            [
+                'maxlength' => 5,
+            ],
+            [
+                'formData' => [
+                    'min' => -2147483648,
+                    'max' => 2147483647,
+                    'maxlength' => 5,
+                    'type' => 'number',
+                ],
+                'defaultValidationRules' => [
+                    'integer',
+                    $this->minValidationForInteger,
+                    $this->maxValidationForInteger,
+                ],
+            ]
+        ];
+    }
+
+    protected function getIntUnsignedTestData(): array
+    {
+        return [
+            'int unsigned',
+            [
+                'min' => 12,
+                'maxlength' => 2,
+                'type' => 'text',
+            ],
+            [
+                'formData' => [
+                    'min' => 12,
+                    'max' => 4294967295,
+                    'maxlength' => 2,
+                    'type' => 'text',
+                ],
+                'defaultValidationRules' => [
+                    'integer',
+                    $this->minValidationForUnsigned,
+                    $this->maxValidationForIntegerUnsigned,
                 ],
             ]
         ];
@@ -366,7 +398,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
             ],
             'tinyintUnsigned' => [
                 'tinyint unsigned',
-                [0,255,3,'min:0','max:255']
+                [0,255,3,$this->minValidationForUnsigned,'max:255']
             ],
             'smallint' => [
                 'smallint',
@@ -374,7 +406,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
             ],
             'smallintUnsigned' => [
                 'smallint unsigned',
-                [0,65535,5,'min:0','max:65535']
+                [0,65535,5,$this->minValidationForUnsigned,'max:65535']
             ],
             'mediumint' => [
                 'mediumint',
@@ -382,15 +414,15 @@ class IntResourceParameterInfoProviderTest extends TestCase
             ],
             'mediumintUnsigned' => [
                 'mediumint unsigned',
-                [0,16777215,8,'min:0','max:16777215']
+                [0,16777215,8,$this->minValidationForUnsigned,'max:16777215']
             ],
             'integer' => [
                 'integer',
-                [-2147483648,2147483647,10,'min:-2147483648','max:2147483647']
+                [-2147483648,2147483647,10,$this->minValidationForInteger,$this->maxValidationForInteger]
             ],
             'integerUnsigned' => [
                 'integer unsigned',
-                [0,4294967295,10,'min:0','max:4294967295']
+                [0,4294967295,10,$this->minValidationForUnsigned,$this->maxValidationForIntegerUnsigned]
             ],
             'bigint' => [
                 'bigint',
@@ -398,15 +430,15 @@ class IntResourceParameterInfoProviderTest extends TestCase
             ],
             'bigintUnsigned' => [
                 'bigint unsigned',
-                [0,18446744073709551615,20,'min:0','max:18446744073709551615']
+                [0,18446744073709551615,20,$this->minValidationForUnsigned,'max:18446744073709551615']
             ],
             'int' => [
                 'int',
-                [-2147483648,2147483647,10,'min:-2147483648','max:2147483647']
+                [-2147483648,2147483647,10,$this->minValidationForInteger,$this->maxValidationForInteger]
             ],
             'intUnsigned' => [
                 'int unsigned',
-                [0,4294967295,10,'min:0','max:4294967295']
+                [0,4294967295,10,$this->minValidationForUnsigned,$this->maxValidationForIntegerUnsigned]
             ],
         ];
     }
