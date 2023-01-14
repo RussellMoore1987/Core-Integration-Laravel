@@ -34,232 +34,9 @@ class IntResourceParameterInfoProviderTest extends TestCase
     }
 
     /**
-     * @dataProvider intResourceParameterInfoProvider
-     */
-    public function test_IntResourceParameterInfoProvider_default_return_values($type, $expectedResult)
-    {
-        $this->setupTestingData();
-        
-        $this->parameterAttributeArray['type'] = $type;
-        $result = $this->intResourceParameterInfoProvider->getData($this->parameterAttributeArray, []);
-
-        $this->assertEquals($expectedResult, $result);
-    }
-
-    public function intResourceParameterInfoProvider()
-    {
-        return [
-            'tinyint' => [
-                'tinyint',
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => -128,
-                        'max' => 127,
-                        'maxlength' => 3,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:-128',
-                        'max:127',
-                    ],
-                ]
-            ],
-            'tinyint unsigned' => [
-                'tinyint unsigned',
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => 0,
-                        'max' => 255,
-                        'maxlength' => 3,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:0',
-                        'max:255',
-                    ],
-                ]
-            ],
-            'smallint' => [
-                'smallint',
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => -32768,
-                        'max' => 32767,
-                        'maxlength' => 5,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:-32768',
-                        'max:32767',
-                    ],
-                ]
-            ],
-            'smallint unsigned' => [
-                'smallint unsigned',
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => 0,
-                        'max' => 65535,
-                        'maxlength' => 5,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:0',
-                        'max:65535',
-                    ],
-                ]
-            ],
-            'mediumint' => [
-                'mediumint',
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => -8388608,
-                        'max' => 8388607,
-                        'maxlength' => 7,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:-8388608',
-                        'max:8388607',
-                    ],
-                ]
-            ],
-            'mediumint unsigned' => [
-                'mediumint unsigned',
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => 0,
-                        'max' => 16777215,
-                        'maxlength' => 8,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:0',
-                        'max:16777215',
-                    ],
-                ]
-            ],
-            'integer' => [
-                'integer',
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => -2147483648,
-                        'max' => 2147483647,
-                        'maxlength' => 10,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:-2147483648',
-                        'max:2147483647',
-                    ],
-                ]
-            ],
-            'integer unsigned' => [
-                'integer unsigned',
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => 0,
-                        'max' => 4294967295,
-                        'maxlength' => 10,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:0',
-                        'max:4294967295',
-                    ],
-                ]
-            ],
-            'bigint' => [
-                'bigint',
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => -9223372036854775808,
-                        'max' => 9223372036854775807,
-                        'maxlength' => 19,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:-9223372036854775808',
-                        'max:9223372036854775807',
-                    ],
-                ]
-            ],
-            'bigint unsigned' => [
-                'bigint unsigned',
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => 0,
-                        'max' => 18446744073709551615,
-                        'maxlength' => 20,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:0',
-                        'max:18446744073709551615',
-                    ],
-                ]
-            ],
-            'int' => [
-                'int',
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => -2147483648,
-                        'max' => 2147483647,
-                        'maxlength' => 10,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:-2147483648',
-                        'max:2147483647',
-                    ],
-                ]
-            ],
-            'int unsigned' => [
-                'int unsigned',
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => 0,
-                        'max' => 4294967295,
-                        'maxlength' => 10,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:0',
-                        'max:4294967295',
-                    ],
-                ]
-            ],
-        ];
-    }
-
-    /**
      * @dataProvider classFormDataProvider
      */
-    public function test_IntResourceParameterInfoProvider_with_class_form_data_returned($type, $formData, $expectedResult)
+    public function test_IntResourceParameterInfoProvider_with_class_form_data_returned($type, $formData, $expectedResultPieces)
     {
         $this->setupTestingData();
         
@@ -270,7 +47,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
 
         $result = $this->intResourceParameterInfoProvider->getData($this->parameterAttributeArray, $formData);
 
-        $this->assertEquals($expectedResult, $result);
+        $this->assertEquals($this->getExpectedResultWithCustomFormData($expectedResultPieces), $result);
     }
 
     public function classFormDataProvider()
@@ -278,122 +55,17 @@ class IntResourceParameterInfoProviderTest extends TestCase
         $this->setupTestingData();
 
         return [
-            'tinyint' => [
-                'tinyint',
-                [
-                    'min' => 0,
-                    'max' => 1,
-                    'maxlength' => 1,
-                ],
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => 0,
-                        'max' => 1,
-                        'maxlength' => 1,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:-128',
-                        'max:127',
-                    ],
-                ]
-            ],
-            'tinyint unsigned' => [
-                'tinyint unsigned',
-                [
-                    'max' => 1,
-                    'maxlength' => 1,
-                    'required' => true,
-                    'type' => 'select',
-                ],
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => 0,
-                        'max' => 1,
-                        'maxlength' => 1,
-                        'type' => 'select',
-                        'required' => true,
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:0',
-                        'max:255',
-                    ],
-                ]
-            ],
-            'smallint' => [
-                'smallint',
-                [
-                    'min' => -33,
-                ],
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => -33,
-                        'max' => 32767,
-                        'maxlength' => 5,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:-32768',
-                        'max:32767',
-                    ],
-                ]
-            ],
-            'smallint unsigned' => [
-                'smallint unsigned',
-                [],
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => 0,
-                        'max' => 65535,
-                        'maxlength' => 5,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:0',
-                        'max:65535',
-                    ],
-                ]
-            ],
-            'mediumint' => [
-                'mediumint',
-                [
-                    'min' => 100,
-                    'max' => 8388607,
-                    'minlength' => 3,
-                    'maxlength' => 7,
-                    'type' => 'Range',
-                ],
-                [
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => 100,
-                        'max' => 8388607,
-                        'minlength' => 3,
-                        'maxlength' => 7,
-                        'type' => 'Range',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:-8388608',
-                        'max:8388607',
-                    ],
-                ]
-            ],
-            'mediumint unsigned' => [
+            'tinyint' => $this->getTinyintTestData(),
+            'tinyintUnsigned' => $this->getTinyintUnsignedTestData(),
+            'smallint' => $this->getSmallintTestData(),
+            'smallintUnsigned' => $this->getSmallintUnsignedTestData(),
+            'mediumint' => $this->getMediumintTestData(),
+            'mediumintUnsigned' => [
                 'mediumint unsigned',
                 [
                     'min' => 100,
                 ],
                 [
-                    'apiDataType' => 'int',
                     'formData' => [
                         'min' => 100,
                         'max' => 16777215,
@@ -416,7 +88,6 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     'type2' => 'number',
                 ],
                 [
-                    'apiDataType' => 'int',
                     'formData' => [
                         'min' => -2147483648,
                         'max' => 2147483647,
@@ -434,13 +105,12 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     ],
                 ]
             ],
-            'integer unsigned' => [
+            'integerUnsigned' => [
                 'integer unsigned',
                 [
                     'minlength' => 3,
                 ],
                 [
-                    'apiDataType' => 'int',
                     'formData' => [
                         'min' => 0,
                         'max' => 4294967295,
@@ -462,7 +132,6 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     'min2' => -9223372036854775808,
                 ],
                 [
-                    'apiDataType' => 'int',
                     'formData' => [
                         'min' => 0,
                         'min2' => -9223372036854775808,
@@ -477,7 +146,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     ],
                 ]
             ],
-            'bigint unsigned' => [
+            'bigintUnsigned' => [
                 'bigint unsigned',
                 [
                     'min' => '',
@@ -486,7 +155,6 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     'type' => '',
                 ],
                 [
-                    'apiDataType' => 'int',
                     'formData' => [
                         'min' => '',
                         'max' => '',
@@ -506,7 +174,6 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     'maxlength' => 5,
                 ],
                 [
-                    'apiDataType' => 'int',
                     'formData' => [
                         'min' => -2147483648,
                         'max' => 2147483647,
@@ -520,7 +187,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     ],
                 ]
             ],
-            'int unsigned' => [
+            'intUnsigned' => [
                 'int unsigned',
                 [
                     'min' => 12,
@@ -528,7 +195,6 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     'type' => 'text',
                 ],
                 [
-                    'apiDataType' => 'int',
                     'formData' => [
                         'min' => 12,
                         'max' => 4294967295,
@@ -545,6 +211,206 @@ class IntResourceParameterInfoProviderTest extends TestCase
         ];
     }
 
+    protected function getTinyintTestData(): array
+    {
+        return [
+            'tinyint',
+            [
+                'min' => 0,
+                'max' => 1,
+                'maxlength' => 1,
+            ],
+            [
+                'formData' => [
+                    'min' => 0,
+                    'max' => 1,
+                    'maxlength' => 1,
+                    'type' => 'number',
+                ],
+                'defaultValidationRules' => [
+                    'integer',
+                    'min:-128',
+                    'max:127',
+                ],
+            ]
+        ];
+    }
+
+    protected function getTinyintUnsignedTestData(): array
+    {
+        return [
+            'tinyint unsigned',
+            [
+                'max' => 1,
+                'maxlength' => 1,
+                'required' => true,
+                'type' => 'select',
+            ],
+            [
+                'formData' => [
+                    'min' => 0,
+                    'max' => 1,
+                    'maxlength' => 1,
+                    'type' => 'select',
+                    'required' => true,
+                ],
+                'defaultValidationRules' => [
+                    'integer',
+                    'min:0',
+                    'max:255',
+                ],
+            ]
+        ];
+    }
+
+    protected function getSmallintTestData(): array
+    {
+        return [
+            'smallint',
+            [
+                'min' => -33,
+            ],
+            [
+                'formData' => [
+                    'min' => -33,
+                    'max' => 32767,
+                    'maxlength' => 5,
+                    'type' => 'number',
+                ],
+                'defaultValidationRules' => [
+                    'integer',
+                    'min:-32768',
+                    'max:32767',
+                ],
+            ]
+        ];
+    }
+
+    protected function getSmallintUnsignedTestData(): array
+    {
+        return [
+            'smallint unsigned',
+            ['min' => 1],
+            [
+                'formData' => [
+                    'min' => 1,
+                    'max' => 65535,
+                    'maxlength' => 5,
+                    'type' => 'number',
+                ],
+                'defaultValidationRules' => [
+                    'integer',
+                    'min:0',
+                    'max:65535',
+                ],
+            ]
+        ];
+    }
+
+    protected function getMediumintTestData(): array
+    {
+        return [
+            'mediumint',
+            [
+                'min' => 100,
+                'max' => 8388607,
+                'minlength' => 3,
+                'maxlength' => 7,
+                'type' => 'Range',
+            ],
+            [
+                'formData' => [
+                    'min' => 100,
+                    'max' => 8388607,
+                    'minlength' => 3,
+                    'maxlength' => 7,
+                    'type' => 'Range',
+                ],
+                'defaultValidationRules' => [
+                    'integer',
+                    'min:-8388608',
+                    'max:8388607',
+                ],
+            ]
+        ];
+    }
+
+    protected function getExpectedResultWithCustomFormData(array $expectedResultPieces)
+    {
+        return [
+            'apiDataType' => 'int',
+            'formData' => $expectedResultPieces['formData'],
+            'defaultValidationRules' => $expectedResultPieces['defaultValidationRules']
+        ];
+    }
+
+    /**
+     * @dataProvider intResourceParameterInfoProvider
+     */
+    public function test_IntResourceParameterInfoProvider_default_return_values($type, $expectedResultPieces)
+    {
+        $this->setupTestingData();
+        
+        $this->parameterAttributeArray['type'] = $type;
+        $result = $this->intResourceParameterInfoProvider->getData($this->parameterAttributeArray, []);
+
+        $this->assertEquals($this->getExpectedResult($expectedResultPieces), $result);
+    }
+
+    public function intResourceParameterInfoProvider()
+    {
+        return [
+            'tinyint' => [
+                'tinyint',
+                [-128,127,3,'min:-128','max:127',]
+            ],
+            'tinyintUnsigned' => [
+                'tinyint unsigned',
+                [0,255,3,'min:0','max:255']
+            ],
+            'smallint' => [
+                'smallint',
+                [-32768,32767,5,'min:-32768','max:32767']
+            ],
+            'smallintUnsigned' => [
+                'smallint unsigned',
+                [0,65535,5,'min:0','max:65535']
+            ],
+            'mediumint' => [
+                'mediumint',
+                [-8388608,8388607,7,'min:-8388608','max:8388607']
+            ],
+            'mediumintUnsigned' => [
+                'mediumint unsigned',
+                [0,16777215,8,'min:0','max:16777215']
+            ],
+            'integer' => [
+                'integer',
+                [-2147483648,2147483647,10,'min:-2147483648','max:2147483647']
+            ],
+            'integerUnsigned' => [
+                'integer unsigned',
+                [0,4294967295,10,'min:0','max:4294967295']
+            ],
+            'bigint' => [
+                'bigint',
+                [-9223372036854775808,9223372036854775807,19,'min:-9223372036854775808','max:9223372036854775807']
+            ],
+            'bigintUnsigned' => [
+                'bigint unsigned',
+                [0,18446744073709551615,20,'min:0','max:18446744073709551615']
+            ],
+            'int' => [
+                'int',
+                [-2147483648,2147483647,10,'min:-2147483648','max:2147483647']
+            ],
+            'intUnsigned' => [
+                'int unsigned',
+                [0,4294967295,10,'min:0','max:4294967295']
+            ],
+        ];
+    }
+
     protected function setupTestingData(): void
     {
         $this->parameterAttributeArray = [
@@ -554,6 +420,24 @@ class IntResourceParameterInfoProviderTest extends TestCase
             'key' => '',
             'default' => '0',
             'extra' => '',
+        ];
+    }
+
+    protected function getExpectedResult(array $expectedResultPieces)
+    {
+        return [
+            'apiDataType' => 'int',
+            'formData' => [
+                'min' => $expectedResultPieces[0],
+                'max' => $expectedResultPieces[1],
+                'maxlength' => $expectedResultPieces[2],
+                'type' => 'number',
+            ],
+            'defaultValidationRules' => [
+                'integer',
+                $expectedResultPieces[3],
+                $expectedResultPieces[4]
+            ]
         ];
     }
 }
