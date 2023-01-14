@@ -21,6 +21,9 @@ class IntResourceParameterInfoProviderTest extends TestCase
     protected $intResourceParameterInfoProvider;
     protected $expectedResult;
 
+    protected $parameterAttributeArray;
+    protected $tinyintUnsignedParameterAttributeArray;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -33,10 +36,12 @@ class IntResourceParameterInfoProviderTest extends TestCase
     /**
      * @dataProvider intResourceParameterInfoProvider
      */
-    public function test_IntResourceParameterInfoProvider_default_return_values($parameterDataInfo, $expectedResult)
+    public function test_IntResourceParameterInfoProvider_default_return_values($type, $expectedResult)
     {
-        $this->project->formData = [];
-        $result = $this->intResourceParameterInfoProvider->getData($parameterDataInfo, $this->project->formData);
+        $this->setupTestingData();
+        
+        $this->parameterAttributeArray['type'] = $type;
+        $result = $this->intResourceParameterInfoProvider->getData($this->parameterAttributeArray, []);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -45,14 +50,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
     {
         return [
             'tinyint' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'tinyint',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'tinyint',
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -69,14 +67,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'tinyint unsigned' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'tinyint unsigned',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'tinyint unsigned',
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -93,14 +84,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'smallint' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'smallint',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'smallint',
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -117,14 +101,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'smallint unsigned' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'smallint unsigned',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'smallint unsigned',
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -141,14 +118,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'mediumint' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'mediumint',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'mediumint',
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -165,14 +135,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'mediumint unsigned' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'mediumint unsigned',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'mediumint unsigned',
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -189,14 +152,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'integer' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'integer',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'integer',
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -213,14 +169,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'integer unsigned' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'integer unsigned',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'integer unsigned',
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -237,14 +186,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'bigint' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'bigint',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'bigint',
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -261,14 +203,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'bigint unsigned' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'bigint unsigned',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'bigint unsigned',
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -285,14 +220,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'int' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'int',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'int',
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -309,14 +237,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'int unsigned' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'int unsigned',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'int unsigned',
                 [
                     'apiDataType' => 'int',
                     'formData' => [
@@ -338,31 +259,27 @@ class IntResourceParameterInfoProviderTest extends TestCase
     /**
      * @dataProvider classFormDataProvider
      */
-    public function test_IntResourceParameterInfoProvider_with_class_form_data_returned($parameterDataInfo, $formData, $expectedResult)
+    public function test_IntResourceParameterInfoProvider_with_class_form_data_returned($type, $formData, $expectedResult)
     {
-        $this->project->formData = [
+        $this->setupTestingData();
+        
+        $this->parameterAttributeArray['type'] = $type;
+        $formData = [
             'fakeParameterName' => $formData,
         ];
 
-        $this->expectedResult = $expectedResult;
+        $result = $this->intResourceParameterInfoProvider->getData($this->parameterAttributeArray, $formData);
 
-        $result = $this->intResourceParameterInfoProvider->getData($parameterDataInfo, $this->project->formData ?? []);
-
-        $this->assertEquals($this->expectedResult, $result);
+        $this->assertEquals($expectedResult, $result);
     }
 
     public function classFormDataProvider()
     {
+        $this->setupTestingData();
+
         return [
             'tinyint' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'tinyint',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'tinyint',
                 [
                     'min' => 0,
                     'max' => 1,
@@ -384,14 +301,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'tinyint unsigned' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'tinyint unsigned',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'tinyint unsigned',
                 [
                     'max' => 1,
                     'maxlength' => 1,
@@ -415,14 +325,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'smallint' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'smallint',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'smallint',
                 [
                     'min' => -33,
                 ],
@@ -442,14 +345,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'smallint unsigned' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'smallint unsigned',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'smallint unsigned',
                 [],
                 [
                     'apiDataType' => 'int',
@@ -467,14 +363,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'mediumint' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'mediumint',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'mediumint',
                 [
                     'min' => 100,
                     'max' => 8388607,
@@ -499,14 +388,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'mediumint unsigned' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'mediumint unsigned',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'mediumint unsigned',
                 [
                     'min' => 100,
                 ],
@@ -526,14 +408,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'integer' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'integer',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'integer',
                 [
                     'min2' => -2147483648,
                     'max2' => 2147483647,
@@ -560,14 +435,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'integer unsigned' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'integer unsigned',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'integer unsigned',
                 [
                     'minlength' => 3,
                 ],
@@ -588,14 +456,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'bigint' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'bigint',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'bigint',
                 [
                     'min' => 0,
                     'min2' => -9223372036854775808,
@@ -617,14 +478,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'bigint unsigned' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'bigint unsigned',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'bigint unsigned',
                 [
                     'min' => '',
                     'max' => '',
@@ -647,14 +501,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'int' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'int',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'int',
                 [
                     'maxlength' => 5,
                 ],
@@ -674,14 +521,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                 ]
             ],
             'int unsigned' => [
-                [
-                    'field' => 'fakeParameterName',
-                    'type' => 'int unsigned',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                ],
+                'int unsigned',
                 [
                     'min' => 12,
                     'maxlength' => 2,
@@ -702,6 +542,18 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     ],
                 ]
             ],
+        ];
+    }
+
+    protected function setupTestingData(): void
+    {
+        $this->parameterAttributeArray = [
+            'field' => 'fakeParameterName',
+            'type' => 'tinyint',
+            'null' => 'no',
+            'key' => '',
+            'default' => '0',
+            'extra' => '',
         ];
     }
 }
