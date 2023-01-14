@@ -22,7 +22,7 @@ class ResourceParameterInfoProviderFactory
         'float' => FloatResourceParameterInfoProvider::class,
     ];
 
-    public function getFactoryItem(string $dataType) : ResourceParameterInfoProvider
+    public function getFactoryItem(string $dataType): ResourceParameterInfoProvider
     {
         $this->dataType = strtolower($dataType);
         $this->factoryItem = null; // rests if used more then once
@@ -36,7 +36,7 @@ class ResourceParameterInfoProviderFactory
         return $this->factoryItem;
     }
 
-    protected function isString() : void
+    protected function isString(): void
     {
         if (
             $this->factoryItemIsNotSet() &&
@@ -53,14 +53,14 @@ class ResourceParameterInfoProviderFactory
         }
     }
 
-    protected function isJson() : void
+    protected function isJson(): void
     {
         if ($this->factoryItemIsNotSet() && str_contains($this->dataType, 'json')) {
             $this->setFactoryItem($this->factoryItemArray['json']);
         }
     }
 
-    protected function isDate() : void
+    protected function isDate(): void
     {
         if (
             $this->factoryItemIsNotSet() &&
@@ -74,14 +74,14 @@ class ResourceParameterInfoProviderFactory
         }
     }
 
-    protected function isInt() : void
+    protected function isInt(): void
     {
         if ($this->factoryItemIsNotSet() && str_contains($this->dataType, 'int')) {
             $this->setFactoryItem($this->factoryItemArray['int']);
         }
     }
 
-    protected function isFloat() : void
+    protected function isFloat(): void
     {
         if (
             $this->factoryItemIsNotSet() &&
@@ -96,12 +96,12 @@ class ResourceParameterInfoProviderFactory
         }
     }
 
-    protected function factoryItemIsNotSet() : bool
+    protected function factoryItemIsNotSet(): bool
     {
         return !$this->factoryItem;
     }
 
-    protected function setFactoryItem($dataTypeClassPath) : void
+    protected function setFactoryItem($dataTypeClassPath): void
     {
         $this->factoryItem = App::make($dataTypeClassPath);
     }

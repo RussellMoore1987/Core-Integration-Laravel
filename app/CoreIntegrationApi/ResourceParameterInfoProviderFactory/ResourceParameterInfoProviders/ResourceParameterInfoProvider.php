@@ -11,7 +11,7 @@ abstract class ResourceParameterInfoProvider
     protected $defaultValidationRules = [];
     protected $formData = [];
 
-    public function getData(array $parameterAttributeArray, array $resourceFormData) : array
+    public function getData(array $parameterAttributeArray, array $resourceFormData): array
     {
         $this->parameterName = $parameterAttributeArray['field'];
         $this->parameterAttributeArray = $parameterAttributeArray;
@@ -50,7 +50,7 @@ abstract class ResourceParameterInfoProvider
         }
     }
 
-    protected function getApiDataType() : string
+    protected function getApiDataType(): string
     {
         if ($this->apiDataTypeIsNotSet()) {
             throw new \Exception('No apiDataType class property set, this must be set in the child class');
@@ -59,7 +59,7 @@ abstract class ResourceParameterInfoProvider
         return $this->apiDataType;
     }
 
-    protected function apiDataTypeIsNotSet() : string
+    protected function apiDataTypeIsNotSet(): string
     {
         return !$this->apiDataType;
     }

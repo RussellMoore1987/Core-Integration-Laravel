@@ -15,7 +15,7 @@ class ResourceModelInfoProviderTest extends TestCase
     private $category;
     private $workHistoryType;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -27,7 +27,7 @@ class ResourceModelInfoProviderTest extends TestCase
      * @group context
      * @group allRequestMethods
      */
-    public function test_getResourceInfo_gets_expected_results_from_category_class() : void
+    public function test_getResourceInfo_gets_expected_results_from_category_class(): void
     {
         $this->createCategoryClassTestInfo();
 
@@ -47,7 +47,7 @@ class ResourceModelInfoProviderTest extends TestCase
         $this->assertEquals($this->expectedResourceInfo, $actualResourceInfo);
     }
 
-    protected function createCategoryClassTestInfo() : void
+    protected function createCategoryClassTestInfo(): void
     {
         $this->category = new Category();
 
@@ -66,7 +66,7 @@ class ResourceModelInfoProviderTest extends TestCase
         $this->setUpExpectedResourceInfo();
     }
 
-    protected function setUpExpectedResourceInfo() : void
+    protected function setUpExpectedResourceInfo(): void
     {
         $this->expectedResourceInfo = [
             'primaryKeyName' => 'id',
@@ -123,7 +123,7 @@ class ResourceModelInfoProviderTest extends TestCase
      * @group context
      * @group allRequestMethods
      */
-    public function test_getResourceInfo_gives_expected_results_from_WorkHistoryType_class_different_primaryKeyName() : void
+    public function test_getResourceInfo_gives_expected_results_from_WorkHistoryType_class_different_primaryKeyName(): void
     {
         $this->createWorkHistoryTypeClassTestInfo();
 
@@ -143,7 +143,7 @@ class ResourceModelInfoProviderTest extends TestCase
         $this->assertEquals($this->expectedResourceInfo, $actualResourceInfo);
     }
 
-    protected function createWorkHistoryTypeClassTestInfo() : void
+    protected function createWorkHistoryTypeClassTestInfo(): void
     {
         $this->workHistoryType = new WorkHistoryType();
 

@@ -33,7 +33,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
     /**
      * @dataProvider classFormDataProvider
      */
-    public function test_IntResourceParameterInfoProvider_with_class_form_data_returned($type, $formData, $expectedResultPieces)
+    public function test_IntResourceParameterInfoProvider_with_class_form_data_returned(string $type, array $formData, array $expectedResultPieces): void
     {
         $this->setupTestingData();
         
@@ -47,7 +47,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
         $this->assertEquals($this->getExpectedResultWithCustomFormData($expectedResultPieces), $result);
     }
 
-    public function classFormDataProvider()
+    public function classFormDataProvider(): array
     {
         $this->setupTestingData();
 
@@ -367,7 +367,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
         ];
     }
 
-    protected function getExpectedResultWithCustomFormData(array $expectedResultPieces)
+    protected function getExpectedResultWithCustomFormData(array $expectedResultPieces): array
     {
         return [
             'apiDataType' => 'int',
@@ -379,7 +379,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
     /**
      * @dataProvider intResourceParameterInfoProvider
      */
-    public function test_IntResourceParameterInfoProvider_default_return_values($type, $expectedResultPieces)
+    public function test_IntResourceParameterInfoProvider_default_return_values(string $type, array $expectedResultPieces): void
     {
         $this->setupTestingData();
         
@@ -389,7 +389,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
         $this->assertEquals($this->getExpectedResult($expectedResultPieces), $result);
     }
 
-    public function intResourceParameterInfoProvider()
+    public function intResourceParameterInfoProvider(): array
     {
         return [
             'tinyint' => [
@@ -455,7 +455,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
         ];
     }
 
-    protected function getExpectedResult(array $expectedResultPieces)
+    protected function getExpectedResult(array $expectedResultPieces): array
     {
         return [
             'apiDataType' => 'int',

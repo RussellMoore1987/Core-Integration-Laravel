@@ -15,7 +15,7 @@ class EndpointValidatorTest extends TestCase
     protected $endpointValidator;
     protected $expectedEndpointData;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -46,7 +46,7 @@ class EndpointValidatorTest extends TestCase
      * @group rest
      * @group context
      */
-    public function test_EndpointValidator_returns_expected_result_for_setting_request_methods($requestMethod) : void
+    public function test_EndpointValidator_returns_expected_result_for_setting_request_methods($requestMethod): void
     {
         $this->validatorDataCollector->requestMethod = $requestMethod;
         $this->endpointValidator->validateEndPoint($this->validatorDataCollector);
@@ -56,7 +56,7 @@ class EndpointValidatorTest extends TestCase
         $this->assertEquals($this->expectedEndpointData, $this->validatorDataCollector->endpointData);
     }
 
-    public function requestMethodsProvider() : array
+    public function requestMethodsProvider(): array
     {
         return [
             'GET' => ['GET'],
@@ -73,7 +73,7 @@ class EndpointValidatorTest extends TestCase
      * @group rest
      * @group context
      */
-    public function test_EndpointValidator_returns_expected_result_for_getAcceptedParameters_endpoint() : void
+    public function test_EndpointValidator_returns_expected_result_for_getAcceptedParameters_endpoint(): void
     {
         $this->endpointValidator->validateEndPoint($this->validatorDataCollector);
 
@@ -90,7 +90,7 @@ class EndpointValidatorTest extends TestCase
      * @group rest
      * @group context
      */
-    public function test_EndpointValidator_returns_expected_result_for_endpointData_no_id() : void
+    public function test_EndpointValidator_returns_expected_result_for_endpointData_no_id(): void
     {
         $this->validatorDataCollector->resourceId = '';
         $this->endpointValidator->validateEndPoint($this->validatorDataCollector);
@@ -107,7 +107,7 @@ class EndpointValidatorTest extends TestCase
      * @group rest
      * @group context
      */
-    public function test_EndpointValidator_returns_expected_resourceInfo() : void
+    public function test_EndpointValidator_returns_expected_resourceInfo(): void
     {
         $this->endpointValidator->validateEndPoint($this->validatorDataCollector);
 
@@ -129,7 +129,7 @@ class EndpointValidatorTest extends TestCase
      * @group rest
      * @group context
      */
-    public function test_EndpointValidator_returns_HttpResponseException_when_resource_is_invalid($invalidResource) : void
+    public function test_EndpointValidator_returns_HttpResponseException_when_resource_is_invalid($invalidResource): void
     {
         // exception details tested in FullRestApiTest
         $this->expectException(HttpResponseException::class);
@@ -138,7 +138,7 @@ class EndpointValidatorTest extends TestCase
         $this->endpointValidator->validateEndPoint($this->validatorDataCollector);
     }
 
-    public function notValidResourceProvider() : array
+    public function notValidResourceProvider(): array
     {
         return [
             'blankString' => [''],
@@ -152,7 +152,7 @@ class EndpointValidatorTest extends TestCase
      * @group rest
      * @group context
      */
-    public function test_EndpointValidator_returns_expected_result_for_the_index_endpoint() : void
+    public function test_EndpointValidator_returns_expected_result_for_the_index_endpoint(): void
     {
         $this->validatorDataCollector->resourceId = '';
         $this->validatorDataCollector->resource = 'index';

@@ -15,7 +15,7 @@ use Illuminate\Http\JsonResponse;
 
 class PutRequestMethodResponseBuilder implements RequestMethodResponseBuilder
 {
-    public function buildResponse($validatedMetaData, $queryResult) : JsonResponse
+    public function buildResponse($validatedMetaData, $queryResult): JsonResponse
     {
         return response()->json([], 200);
     }

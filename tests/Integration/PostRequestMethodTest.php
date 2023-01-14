@@ -14,7 +14,7 @@ class PostRequestMethodTest extends TestCase
      * @group rest
      * ? https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/422#:~:text=The%20HyperText%20Transfer%20Protocol%20(HTTP,to%20process%20the%20contained%20instructions.
      */
-    public function test_post_request_return_unprocessable_entity_422_response_because_project_model_parameters_not_valid() : void
+    public function test_post_request_return_unprocessable_entity_422_response_because_project_model_parameters_not_valid(): void
     {
         $response = $this->post('/api/v1/projects',[
             'title' => '', // this throws the error
@@ -45,7 +45,7 @@ class PostRequestMethodTest extends TestCase
      * @group rest
      * @group db
      */
-    public function test_post_request_creates_new_record($resource, $primaryKey, $parameters, $classPath) : void
+    public function test_post_request_creates_new_record($resource, $primaryKey, $parameters, $classPath): void
     {
         $response = $this->post("/api/v1/$resource", $parameters);
 
@@ -66,7 +66,7 @@ class PostRequestMethodTest extends TestCase
         $this->assertEquals($expectedResponse,$responseArray);
     }
 
-    public function parameterToValidateProvider() : array
+    public function parameterToValidateProvider(): array
     {
         return [
             'projects' => ['projects', 'id', ['title' => 'Test Project'], 'App\Models\Project'],

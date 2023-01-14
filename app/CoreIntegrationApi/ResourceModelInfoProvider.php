@@ -17,7 +17,7 @@ class ResourceModelInfoProvider
         $this->resourceParameterInfoProviderFactory = $resourceParameterInfoProviderFactory;
     }
 
-    public function getResourceInfo(Model $resourceObject) : array
+    public function getResourceInfo(Model $resourceObject): array
     {
         $this->resourceFormData = $resourceObject->formData ?? [];
         
@@ -30,21 +30,21 @@ class ResourceModelInfoProvider
         ];
     }
 
-    protected function getResourceAcceptableParameters($resourceObject) : array
+    protected function getResourceAcceptableParameters($resourceObject): array
     {
         $resourceTableName = $resourceObject->gettable();
         $this->getAcceptableParameters($resourceTableName);
         return $this->availableParameters;
     }
 
-    protected function getAcceptableParameters(string $resourceTableName) : void
+    protected function getAcceptableParameters(string $resourceTableName): void
     {
         $resourceColumnData = $this->arrayOfObjectsToArrayOfArrays(DB::select("SHOW COLUMNS FROM {$resourceTableName}"));
         $this->setAcceptableParameters($resourceColumnData);
         $this->addAdditionalInfoToAcceptableParameters();
     }
 
-    protected function arrayOfObjectsToArrayOfArrays(array $arrayOfObjects) : array
+    protected function arrayOfObjectsToArrayOfArrays(array $arrayOfObjects): array
     {
         foreach ($arrayOfObjects as $object) {
             $arrayOfArrays[] = (array) $object;
@@ -53,7 +53,7 @@ class ResourceModelInfoProvider
         return $arrayOfArrays;
     }
 
-    protected function setAcceptableParameters(array $resourceColumnData) : void
+    protected function setAcceptableParameters(array $resourceColumnData): void
     {
         foreach ($resourceColumnData as $columnAttributeArray) {
             foreach ($columnAttributeArray as $attributeName => $value) {
@@ -65,7 +65,7 @@ class ResourceModelInfoProvider
         }
     }
 
-    protected function addAdditionalInfoToAcceptableParameters() : void
+    protected function addAdditionalInfoToAcceptableParameters(): void
     {
         foreach ($this->availableParameters as $parameterName => $parameterAttributeArray) {
             $resourceParameterInfoProvider = $this->resourceParameterInfoProviderFactory->getFactoryItem($parameterAttributeArray['type']);

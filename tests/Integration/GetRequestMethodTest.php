@@ -18,7 +18,7 @@ class GetRequestMethodTest extends TestCase
      * @group rest
      * @group db
      */
-    public function test_that_what_I_get_back_is_what_I_would_exsect_from_this_endpoint_testing_json_structure() : void
+    public function test_that_what_I_get_back_is_what_I_would_exsect_from_this_endpoint_testing_json_structure(): void
     {
         $this->makeProjects();
 
@@ -98,7 +98,7 @@ class GetRequestMethodTest extends TestCase
      * @group rest
      * @group db
      */
-    public function test_return_of_one_record() : void
+    public function test_return_of_one_record(): void
     {
         $this->makeProjects();
 
@@ -137,7 +137,7 @@ class GetRequestMethodTest extends TestCase
      * @group rest
      * @group db
      */
-    public function test_return_404_response() : void
+    public function test_return_404_response(): void
     {
         $this->makeProjects();
 
@@ -152,7 +152,7 @@ class GetRequestMethodTest extends TestCase
      * @group rest
      * @group db
      */
-    public function test_return_of_empty_data_set() : void
+    public function test_return_of_empty_data_set(): void
     {
         $this->makeProjects();
 
@@ -168,7 +168,7 @@ class GetRequestMethodTest extends TestCase
      * @group rest
      * @group db
      */
-    public function test_return_of_column_data() : void
+    public function test_return_of_column_data(): void
     {
         $this->makeProjects();
 
@@ -204,7 +204,7 @@ class GetRequestMethodTest extends TestCase
         );
     }
 
-    protected function makeProjects() : void
+    protected function makeProjects(): void
     {
         $content = '{"error":"error", "big":"big", "name":"Sam", "array":{"color":"red"}}';
         $this->projects[] = Project::factory()->create([
@@ -256,7 +256,7 @@ class GetRequestMethodTest extends TestCase
      * @group rest
      * ? https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/422#:~:text=The%20HyperText%20Transfer%20Protocol%20(HTTP,to%20process%20the%20contained%20instructions.
      */
-    public function test_get_request_return_unprocessable_entity_422_response_because_project_parameters_not_valid() : void
+    public function test_get_request_return_unprocessable_entity_422_response_because_project_parameters_not_valid(): void
     {
         $response = $this->get('/api/v1/projects?Ham=22.99&array=[]');
 
@@ -293,7 +293,7 @@ class GetRequestMethodTest extends TestCase
      * @group get
      * @group rest
      */
-    public function test_get_request_returns_expected_result_default_parameters_rejected($pageValue, $perPageValue) : void
+    public function test_get_request_returns_expected_result_default_parameters_rejected($pageValue, $perPageValue): void
     {
         $response = $this->get("/api/v1/projects?page={$pageValue}&perPage={$perPageValue}");
 
@@ -325,7 +325,7 @@ class GetRequestMethodTest extends TestCase
         $this->assertEquals($expectedResponse,$responseArray);
     }
 
-    public function parameterValueProvider() : array
+    public function parameterValueProvider(): array
     {
         return [
             'float values' => [2.6, 22.2],

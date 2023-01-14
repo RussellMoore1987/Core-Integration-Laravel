@@ -28,7 +28,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         $this->parameterValidatorFactory = $parameterValidatorFactory;
     }
 
-    public function validateRequest(ValidatorDataCollector &$validatorDataCollector) : void
+    public function validateRequest(ValidatorDataCollector &$validatorDataCollector): void
     {
         $this->validatorDataCollector = $validatorDataCollector;
         $parameters = $this->validatorDataCollector->parameters;
@@ -125,7 +125,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
     }
 
     // TODO: Test this method.
-    protected function checkIfValidRequest() : void
+    protected function checkIfValidRequest(): void
     {
         if ($this->validatorDataCollector->getRejectedParameters()) {
             $response = response()->json([

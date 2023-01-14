@@ -16,7 +16,7 @@ class GetDateIntegrationApiTest extends TestCase
     protected $project3Title = 'Test Project 3';
     protected $project4Title = 'Test Project 4';
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -28,7 +28,7 @@ class GetDateIntegrationApiTest extends TestCase
      * @group rest
      * @group get
      */
-    public function test_get_back_record_with_date_time_equal_to() : void
+    public function test_get_back_record_with_date_time_equal_to(): void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:30:45");
         $responseArray = json_decode($response->content(), true);
@@ -44,7 +44,7 @@ class GetDateIntegrationApiTest extends TestCase
      * @group rest
      * @group get
      */
-    public function test_get_back_records_with_date_equal_to() : void
+    public function test_get_back_records_with_date_equal_to(): void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01");
         $responseArray = json_decode($response->content(), true);
@@ -61,7 +61,7 @@ class GetDateIntegrationApiTest extends TestCase
      * @group rest
      * @group get
      */
-    public function test_get_back_records_with_date_time_between() : void
+    public function test_get_back_records_with_date_time_between(): void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:45:56,2010-01-01::bt");
         $responseArray = json_decode($response->content(), true);
@@ -79,7 +79,7 @@ class GetDateIntegrationApiTest extends TestCase
      * @group rest
      * @group get
      */
-    public function test_get_back_records_with_date_between_options($option) : void
+    public function test_get_back_records_with_date_between_options($option): void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01,2010-01-01::{$option}");
         $responseArray = json_decode($response->content(), true);
@@ -93,7 +93,7 @@ class GetDateIntegrationApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('title', $this->project3Title)->first());
     }
 
-    public function betweenOptionDataProvider() : array
+    public function betweenOptionDataProvider(): array
     {
         return [
             'bt' => ['bt'],
@@ -106,7 +106,7 @@ class GetDateIntegrationApiTest extends TestCase
      * @group rest
      * @group get
      */
-    public function test_get_back_record_with_date_time_grater_than() : void
+    public function test_get_back_record_with_date_time_grater_than(): void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 11:23:33::gt");
         $responseArray = json_decode($response->content(), true);
@@ -126,7 +126,7 @@ class GetDateIntegrationApiTest extends TestCase
      * @group rest
      * @group get
      */
-    public function test_get_back_record_with_date_grater_than_options($option) : void
+    public function test_get_back_record_with_date_grater_than_options($option): void
     {
         $response = $this->get("/api/v1/projects/?start_date=2010-01-01::{$option}");
         $responseArray = json_decode($response->content(), true);
@@ -138,7 +138,7 @@ class GetDateIntegrationApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('title', $this->project4Title)->first());
     }
 
-    public function graterThenOptionDataProvider() : array
+    public function graterThenOptionDataProvider(): array
     {
         return [
             'gt' => ['gt'],
@@ -152,7 +152,7 @@ class GetDateIntegrationApiTest extends TestCase
      * @group rest
      * @group get
      */
-    public function test_get_back_record_with_date_time_grater_than_or_equal() : void
+    public function test_get_back_record_with_date_time_grater_than_or_equal(): void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:30:45::GTE");
         $responseArray = json_decode($response->content(), true);
@@ -172,7 +172,7 @@ class GetDateIntegrationApiTest extends TestCase
      * @group rest
      * @group get
      */
-    public function test_get_back_records_with_date_grater_than_or_equal_options($option) : void
+    public function test_get_back_records_with_date_grater_than_or_equal_options($option): void
     {
         $response = $this->get("/api/v1/projects/?start_date=2010-01-01::{$option}");
         $responseArray = json_decode($response->content(), true);
@@ -185,7 +185,7 @@ class GetDateIntegrationApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('title', $this->project4Title)->first());
     }
 
-    public function greaterThanOrEqualOptionDataProvider() : array
+    public function greaterThanOrEqualOptionDataProvider(): array
     {
         return [
             'gte' => ['GTE'],
@@ -199,7 +199,7 @@ class GetDateIntegrationApiTest extends TestCase
      * @group rest
      * @group get
      */
-    public function test_get_back_records_with_date_time_less_than() : void
+    public function test_get_back_records_with_date_time_less_than(): void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:30:45::lt");
         $responseArray = json_decode($response->content(), true);
@@ -217,7 +217,7 @@ class GetDateIntegrationApiTest extends TestCase
      * @group rest
      * @group get
      */
-    public function test_get_back_records_with_date_less_than_options($option) : void
+    public function test_get_back_records_with_date_less_than_options($option): void
     {
         $response = $this->get("/api/v1/projects/?start_date=2010-01-01::{$option}");
         $responseArray = json_decode($response->content(), true);
@@ -230,7 +230,7 @@ class GetDateIntegrationApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('title', $this->project2Title)->first());
     }
 
-    public function lessThanOptionDataProvider() : array
+    public function lessThanOptionDataProvider(): array
     {
         return [
             'lte' => ['lt'],
@@ -244,7 +244,7 @@ class GetDateIntegrationApiTest extends TestCase
      * @group rest
      * @group get
      */
-    public function test_get_back_records_with_date_less_than_or_equal() : void
+    public function test_get_back_records_with_date_less_than_or_equal(): void
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:30:45::lte");
         $responseArray = json_decode($response->content(), true);
@@ -263,7 +263,7 @@ class GetDateIntegrationApiTest extends TestCase
      * @group rest
      * @group get
      */
-    public function test_get_back_records_with_date_less_than_or_equal_options($option) : void
+    public function test_get_back_records_with_date_less_than_or_equal_options($option): void
     {
         $response = $this->get("/api/v1/projects/?start_date=2010-01-01::{$option}");
         $responseArray = json_decode($response->content(), true);
@@ -277,7 +277,7 @@ class GetDateIntegrationApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('title', $this->project3Title)->first());
     }
 
-    public function lessThanOrEqualOptionDataProvider() : array
+    public function lessThanOrEqualOptionDataProvider(): array
     {
         return [
             'lte' => ['LTE'],
@@ -286,7 +286,7 @@ class GetDateIntegrationApiTest extends TestCase
         ];
     }
         
-    protected function makeProjects() : void
+    protected function makeProjects(): void
     {
         $this->projects[] = Project::factory()->create([
             'title' => $this->project1Title,

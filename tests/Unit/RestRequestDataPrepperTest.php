@@ -13,7 +13,7 @@ class RestRequestDataPrepperTest extends TestCase
     /**
      * @group get
      */
-    public function test_RestRequestDataPrepper_returns_expected_response() : void
+    public function test_RestRequestDataPrepper_returns_expected_response(): void
     {
         $response = $this->runDataPrepper([
             'resource' => 'projects',
@@ -39,7 +39,7 @@ class RestRequestDataPrepperTest extends TestCase
     /**
      * @group get
      */
-    public function test_RestRequestDataPrepper_returns_expected_response_empty_resourceId() : void
+    public function test_RestRequestDataPrepper_returns_expected_response_empty_resourceId(): void
     {
         $response = $this->runDataPrepper([
             'resource' => 'projects',
@@ -64,7 +64,7 @@ class RestRequestDataPrepperTest extends TestCase
     /**
      * @group get
      */
-    public function test_RestRequestDataPrepper_returns_expected_response_empty_parameters() : void
+    public function test_RestRequestDataPrepper_returns_expected_response_empty_parameters(): void
     {
         $response = $this->runDataPrepper([
             'resource' => 'projects',
@@ -85,7 +85,7 @@ class RestRequestDataPrepperTest extends TestCase
     /**
      * @group get
      */
-    public function test_RestRequestDataPrepper_returns_expected_response_no_parameters_sent_index_response() : void
+    public function test_RestRequestDataPrepper_returns_expected_response_no_parameters_sent_index_response(): void
     {
         $response = $this->runDataPrepper([], 'api/v1');
 
@@ -104,7 +104,7 @@ class RestRequestDataPrepperTest extends TestCase
      * @dataProvider resourceIdProvider
      * @group get
      */
-    public function test_RestRequestDataPrepper_returns_expected_response_for_different_resource_id_text($resourceIdText) : void
+    public function test_RestRequestDataPrepper_returns_expected_response_for_different_resource_id_text($resourceIdText): void
     {
         $response = $this->runDataPrepper([
             'resource' => 'projects',
@@ -127,7 +127,7 @@ class RestRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse, $response);
     }
 
-    public function resourceIdProvider() : array
+    public function resourceIdProvider(): array
     {
         return [
             'id' => ['id'],
@@ -140,7 +140,7 @@ class RestRequestDataPrepperTest extends TestCase
      * @dataProvider requestMethodProvider
      * @group allRequestMethods
      */
-    public function test_RestRequestDataPrepper_returns_expected_response_using_different_http_methods($methodText) : void
+    public function test_RestRequestDataPrepper_returns_expected_response_using_different_http_methods($methodText): void
     {
         $response = $this->runDataPrepper([
             'resource' => 'projects',
@@ -163,7 +163,7 @@ class RestRequestDataPrepperTest extends TestCase
         $this->assertEquals($expectedResponse, $response);
     }
 
-    public function requestMethodProvider() : array
+    public function requestMethodProvider(): array
     {
         return [
             'GET' => ['GET'],
@@ -177,7 +177,7 @@ class RestRequestDataPrepperTest extends TestCase
     /**
      * @group get
      */
-    public function test_RestRequestDataPrepper_returns_expected_response_for_random_parameters() : void
+    public function test_RestRequestDataPrepper_returns_expected_response_for_random_parameters(): void
     {
         $response = $this->runDataPrepper([
             'resource' => '$%#@',
@@ -209,7 +209,7 @@ class RestRequestDataPrepperTest extends TestCase
     /**
      * @group get
      */
-    public function test_RestRequestDataPrepper_does_not_return_excluded_variables_in_parameters_array() : void
+    public function test_RestRequestDataPrepper_does_not_return_excluded_variables_in_parameters_array(): void
     {
         $response = $this->runDataPrepper([
             'resource' => 'projects',
@@ -226,7 +226,7 @@ class RestRequestDataPrepperTest extends TestCase
         $this->assertTrue(!array_key_exists('resource', $response['parameters']));
     }
 
-    protected function runDataPrepper(array $parameters = [], $url = 'api/v1/projects', $method = 'GET') : array
+    protected function runDataPrepper(array $parameters = [], $url = 'api/v1/projects', $method = 'GET'): array
     {
         $request = Request::create($url, $method, $parameters);
         $restRequestDataPrepper = new RestRequestDataPrepper($request);

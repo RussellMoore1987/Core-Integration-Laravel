@@ -23,7 +23,7 @@ abstract class RequestValidator
         $this->requestMethodTypeValidatorFactory = $requestMethodTypeValidatorFactory;
     }
 
-    public function validate() : array
+    public function validate(): array
     {
         $this->requestDataPrepper->prep();
 
@@ -32,7 +32,7 @@ abstract class RequestValidator
         return $this->validatedMetaData;
     }
 
-    protected function validateRequest($preppedRequestData) : void
+    protected function validateRequest($preppedRequestData): void
     {
         $this->setUpPreppedDataForValidation($preppedRequestData);
         
@@ -43,7 +43,7 @@ abstract class RequestValidator
         $this->setValidatedMetaData();
     }
 
-    protected function setUpPreppedDataForValidation($preppedRequestData) : void
+    protected function setUpPreppedDataForValidation($preppedRequestData): void
     {
         $this->validatorDataCollector->resource = $preppedRequestData['resource'] ?? '';
         $this->validatorDataCollector->resourceId = $preppedRequestData['resourceId']  ?? [];
@@ -52,13 +52,13 @@ abstract class RequestValidator
         $this->validatorDataCollector->url = $preppedRequestData['url'] ?? '';
     }
 
-    protected function validateByRequestMethod() : void
+    protected function validateByRequestMethod(): void
     {
         $requestMethodTypeValidator = $this->requestMethodTypeValidatorFactory->getFactoryItem($this->validatorDataCollector->requestMethod);
         $requestMethodTypeValidator->validateRequest($this->validatorDataCollector);
     }
 
-    protected function setValidatedMetaData() : void
+    protected function setValidatedMetaData(): void
     {
         $this->validatedMetaData = $this->validatorDataCollector->getValidatedMetaData();
     }

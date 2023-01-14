@@ -20,7 +20,7 @@ class RequestMethodTypeValidatorFactory extends RequestMethodTypeFactory
         'delete' => DeleteRequestMethodTypeValidator::class,
     ];
 
-    public function getFactoryItem($requestMethod) : RequestMethodTypeValidator
+    public function getFactoryItem($requestMethod): RequestMethodTypeValidator
     {
         return parent::getFactoryItem($requestMethod);
     }

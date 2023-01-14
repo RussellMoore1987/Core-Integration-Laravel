@@ -21,7 +21,7 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
     private $validatedMetaData;
     private $response;
 
-    public function buildResponse($validatedMetaData, $queryResult) : JsonResponse
+    public function buildResponse($validatedMetaData, $queryResult): JsonResponse
     {
         $this->validatedMetaData = $validatedMetaData;
         $this->queryResult = $queryResult;

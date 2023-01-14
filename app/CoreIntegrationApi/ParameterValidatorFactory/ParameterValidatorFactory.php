@@ -28,7 +28,7 @@ class ParameterValidatorFactory extends DataTypeDeterminerFactory
         'methodcalls' => MethodCallsParameterValidator::class,
     ];
 
-    public function getFactoryItem($dataType) : ParameterValidator
+    public function getFactoryItem($dataType): ParameterValidator
     {
         return parent::getFactoryItem($dataType);
     }

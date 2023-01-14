@@ -7,7 +7,7 @@ use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\ClauseBuilder;
 
 class StringWhereClauseBuilder implements ClauseBuilder
 {
-    public function build(Builder $queryBuilder, $data) : Builder
+    public function build(Builder $queryBuilder, $data): Builder
     {
         return $queryBuilder;
     }

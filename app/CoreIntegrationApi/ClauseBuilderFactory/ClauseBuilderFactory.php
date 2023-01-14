@@ -28,7 +28,7 @@ class ClauseBuilderFactory extends DataTypeDeterminerFactory
         'methodcalls' => MethodCallsClauseBuilder::class,
     ];
 
-    public function getFactoryItem($dataType) : ClauseBuilder
+    public function getFactoryItem($dataType): ClauseBuilder
     {
         return parent::getFactoryItem($dataType);
     }

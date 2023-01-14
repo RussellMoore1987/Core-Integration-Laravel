@@ -10,13 +10,13 @@ class DeleteRequestMethodTypeValidator implements RequestMethodTypeValidator
 {
     protected $validatorDataCollector;
 
-    public function validateRequest(ValidatorDataCollector &$validatorDataCollector) : void
+    public function validateRequest(ValidatorDataCollector &$validatorDataCollector): void
     {
         $this->validatorDataCollector = $validatorDataCollector;
     }
 
     // TODO: Test this method.
-    protected function throwValidationException($validator) : void
+    protected function throwValidationException($validator): void
     {
         $response = response()->json([
             'error' => 'Validation failed',

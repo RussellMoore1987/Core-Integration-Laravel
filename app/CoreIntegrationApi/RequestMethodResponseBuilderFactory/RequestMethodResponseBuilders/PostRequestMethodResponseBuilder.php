@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 
 class PostRequestMethodResponseBuilder implements RequestMethodResponseBuilder
 {
-    public function buildResponse($validatedMetaData, $queryResult) : JsonResponse
+    public function buildResponse($validatedMetaData, $queryResult): JsonResponse
     {
         $resourcePrimaryKey = $queryResult->getKeyName(); // TODO: perhaps set higher up in class info
         $response = [

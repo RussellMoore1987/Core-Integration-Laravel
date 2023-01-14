@@ -8,7 +8,7 @@ use App\CoreIntegrationApi\RequestDataPrepper;
 
 class RestRequestDataPrepper extends RequestDataPrepper
 {
-    public function prepRequestData() : array
+    public function prepRequestData(): array
     {
         $this->setRequestDetails();
         $this->setEndpointDetails();
@@ -17,19 +17,19 @@ class RestRequestDataPrepper extends RequestDataPrepper
         return $this->preppedData;
     }
 
-    private function setRequestDetails() : void
+    private function setRequestDetails(): void
     {
         $this->preppedData['url'] = $this->request->url();
         $this->preppedData['requestMethod'] = $this->request->getMethod();
     }
 
-    private function setEndpointDetails() : void
+    private function setEndpointDetails(): void
     {
         $this->preppedData['resource'] = $this->request->resource ?? 'index';
         $this->preppedData['resourceId'] = $this->request->resourceId ?? $this->request->resource_id ?? $this->request->id ?? '';
     }
 
-    private function setRequestParameters() : void
+    private function setRequestParameters(): void
     {
         $this->preppedData['parameters'] = $this->request->except(['id', 'resource', 'resourceId', 'resource_id']);
     }

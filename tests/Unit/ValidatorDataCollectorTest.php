@@ -23,7 +23,7 @@ class ValidatorDataCollectorTest extends TestCase
      * @group context
      * @group allRequestMethods
      */
-    public function test_setArrayParameter_functionality_returns_expected_results($setFunction, $getFunction) : void
+    public function test_setArrayParameter_functionality_returns_expected_results($setFunction, $getFunction): void
     {
         $this->validatorDataCollector->$setFunction(['team' => 12]);
         $this->validatorDataCollector->$setFunction([
@@ -46,7 +46,7 @@ class ValidatorDataCollectorTest extends TestCase
         $this->assertEquals($expectedOutput, $this->validatorDataCollector->$getFunction());
     }
 
-    public function setArrayParameterFunctionProvider() : array
+    public function setArrayParameterFunctionProvider(): array
     {
         return [
             'rejectedParameters' => ['setRejectedParameters','getRejectedParameters'],
@@ -60,7 +60,7 @@ class ValidatorDataCollectorTest extends TestCase
      * @group context
      * @group allRequestMethods
      */
-    public function test_getValidatedMetaData_function_returns_nulls_when_no_data_is_set() : void
+    public function test_getValidatedMetaData_function_returns_nulls_when_no_data_is_set(): void
     {
         $expectedOutput = [
             'endpointData' => [],
@@ -78,7 +78,7 @@ class ValidatorDataCollectorTest extends TestCase
      * @group context
      * @group allRequestMethods
      */
-    public function test_getValidatedMetaData_function_returns_expected_results_after_being_set() : void
+    public function test_getValidatedMetaData_function_returns_expected_results_after_being_set(): void
     {
         $this->setAllValidatorDataCollectorAttributes();
 
@@ -104,7 +104,7 @@ class ValidatorDataCollectorTest extends TestCase
      * @group context
      * @group allRequestMethods
      */
-    public function test_reset_function_resets_the_validatorDataCollector() : void
+    public function test_reset_function_resets_the_validatorDataCollector(): void
     {
         $this->setAllValidatorDataCollectorAttributes();
 
@@ -127,7 +127,7 @@ class ValidatorDataCollectorTest extends TestCase
         $this->assertEquals(null, $this->validatorDataCollector->url);
     }
 
-    protected function setAllValidatorDataCollectorAttributes() : void
+    protected function setAllValidatorDataCollectorAttributes(): void
     {
         $this->validatorDataCollector->resource = 'projects';
         $this->validatorDataCollector->resourceId = '12342';

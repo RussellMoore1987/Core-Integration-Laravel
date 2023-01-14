@@ -17,41 +17,41 @@ class ValidatorDataCollector
     protected $acceptedParameters = [];
     protected $queryArguments = [];
 
-    public function setRejectedParameters(array $rejectedParameters) : void
+    public function setRejectedParameters(array $rejectedParameters): void
     {
         $this->setArrayParameter('rejectedParameters', $rejectedParameters);
     }
-    public function getRejectedParameters() : array
+    public function getRejectedParameters(): array
     {
         return $this->rejectedParameters;
     }
     
-    public function setAcceptedParameters(array $acceptedParameters) : void
+    public function setAcceptedParameters(array $acceptedParameters): void
     {
         $this->setArrayParameter('acceptedParameters', $acceptedParameters);
     }
-    public function getAcceptedParameters() : array
+    public function getAcceptedParameters(): array
     {
         return $this->acceptedParameters;
     }
 
-    public function setQueryArgument(array $queryArguments) : void
+    public function setQueryArgument(array $queryArguments): void
     {
         $this->setArrayParameter('queryArguments', $queryArguments);
     }
-    public function getQueryArguments() : array
+    public function getQueryArguments(): array
     {
         return $this->queryArguments;
     }
 
-    protected function setArrayParameter($thisArrayString, $parameters) : void
+    protected function setArrayParameter($thisArrayString, $parameters): void
     {
         foreach ($parameters as $columnName => $value) {
             $this->$thisArrayString[$columnName] = $value;
         }
     }
 
-    public function getValidatedMetaData() : array
+    public function getValidatedMetaData(): array
     {
         return [
            'endpointData' => $this->endpointData,
@@ -62,7 +62,7 @@ class ValidatorDataCollector
         ];
     }
 
-    public function reset() : void // reset for reuse, context api
+    public function reset(): void // reset for reuse, context api
     {
         $this->resource = null;
         $this->resourceId = null;
