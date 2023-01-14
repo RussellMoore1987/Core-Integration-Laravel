@@ -8,11 +8,12 @@ use Tests\TestCase;
 // TODO: add validation rules to test
 // ! Start here ******************************************************************
 // ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
-// ! (I have a stash of tests**** EndpointValidatorTest.php) (sub IntResourceParameterInfoProvider DateResourceParameterInfoProvider)
+// ! (sub IntResourceParameterInfoProvider DateResourceParameterInfoProvider)
 // [] read over
 // [] test groups, rest, context
 // [] add return type : void
 // [] testing what I need to test
+// [] run exception for abstract
 
 class IntResourceParameterInfoProviderTest extends TestCase
 {
