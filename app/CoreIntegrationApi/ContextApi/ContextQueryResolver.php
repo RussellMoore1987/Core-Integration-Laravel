@@ -22,16 +22,16 @@ class ContextQueryResolver extends QueryResolver
             // get form data
 
             // index
-            $query = $query === NULL && $queryArguments->action == 'index' ? $this->queryIndex->get() : NULL;
+            $query = $query === NULL && $queryArguments->action == 'index' ? $this->queryIndex->get(): NULL;
 
             // GET
-            $query = $query === NULL && $queryArguments->action == 'get' ? $this->queryAssembler->query($queryArguments) : NULL;
+            $query = $query === NULL && $queryArguments->action == 'get' ? $this->queryAssembler->query($queryArguments): NULL;
             
             // persist save = add/update
-            $query = $query === NULL && in_array($queryArguments->action, ['save', 'copy']) ? $this->queryPersister->persist($queryArguments) : NULL;
+            $query = $query === NULL && in_array($queryArguments->action, ['save', 'copy']) ? $this->queryPersister->persist($queryArguments): NULL;
 
             // delete
-            $query = $query === NULL && $queryArguments->action == 'delete' ? $this->queryDeleter->delete($queryArguments) : NULL;
+            $query = $query === NULL && $queryArguments->action == 'delete' ? $this->queryDeleter->delete($queryArguments): NULL;
 
             $queries[] = $query;
         }

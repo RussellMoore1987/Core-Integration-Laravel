@@ -7,7 +7,7 @@ use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\ClauseBuilder;
 
 class DateWhereClauseBuilder implements ClauseBuilder
 {
-    public function build(Builder $queryBuilder, $data) : Builder
+    public function build(Builder $queryBuilder, $data): Builder
     {
         extract($data, EXTR_OVERWRITE); // $columnName, $date and $comparisonOperator are now available
         

@@ -25,7 +25,7 @@ class GetIntIntegrationApiTest extends TestCase
      * @group get
      * @group rest
      */
-    public function test_get_back_ints_with_equal_to() : void
+    public function test_get_back_ints_with_equal_to(): void
     {
         $projectId = $this->projects[0]->id;
         $response = $this->get("/api/v1/projects/$projectId?per_page=1");
@@ -42,7 +42,7 @@ class GetIntIntegrationApiTest extends TestCase
      * @group get
      * @group rest
      */
-    public function test_get_back_record_with_not_normal_id() : void
+    public function test_get_back_record_with_not_normal_id(): void
     {
         $workHistoryType = WorkHistoryType::factory()->create(
             [
@@ -65,7 +65,7 @@ class GetIntIntegrationApiTest extends TestCase
      * @group get
      * @group rest
      */
-    public function test_get_back_record_with_not_normal_id_set_by_normal_id_parameter() : void
+    public function test_get_back_record_with_not_normal_id_set_by_normal_id_parameter(): void
     {
         $workHistoryType = WorkHistoryType::factory()->create(
             [
@@ -88,7 +88,7 @@ class GetIntIntegrationApiTest extends TestCase
      * @group get
      * @group rest
      */
-    public function test_get_back_ints_with_list_of_ids() : void
+    public function test_get_back_ints_with_list_of_ids(): void
     {
         $projectIds = $this->projects->pluck('id')->join(',');
         $response = $this->get("/api/v1/projects/{$projectIds}");
@@ -109,7 +109,7 @@ class GetIntIntegrationApiTest extends TestCase
      * @group get
      * @group rest
      */
-    public function test_get_back_ints_with_between_two_ints() : void
+    public function test_get_back_ints_with_between_two_ints(): void
     {
         $response = $this->get("/api/v1/projects/?per_page=5&is_published=3,6::bt");
         $responseArray = json_decode($response->content(), true);
@@ -128,7 +128,7 @@ class GetIntIntegrationApiTest extends TestCase
      * @group get
      * @group rest
      */
-    public function test_get_back_ints_with_between_two_ints_only_one_record_returned($option) : void
+    public function test_get_back_ints_with_between_two_ints_only_one_record_returned($option): void
     {
         // only an ID passed in should return just one record without extra details around it
         $response = $this->get("/api/v1/projects/?per_page=5&is_published=4,6::{$option}");
@@ -141,7 +141,7 @@ class GetIntIntegrationApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('is_published', 4)->first());
     }
 
-    public function betweenOptionDataProvider() : array
+    public function betweenOptionDataProvider(): array
     {
         return [
             'bt' => ['bt'],
@@ -155,7 +155,7 @@ class GetIntIntegrationApiTest extends TestCase
      * @group get
      * @group rest
      */
-    public function test_get_back_ints_with_grater_than($option) : void
+    public function test_get_back_ints_with_grater_than($option): void
     {
         $response = $this->get("/api/v1/projects/?is_published=2::{$option}");
         $responseArray = json_decode($response->content(), true);
@@ -168,7 +168,7 @@ class GetIntIntegrationApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('is_published', 4)->first());
     }
 
-    public function graterThenOptionDataProvider() : array
+    public function graterThenOptionDataProvider(): array
     {
         return [
             'gt' => ['gt'],
@@ -183,7 +183,7 @@ class GetIntIntegrationApiTest extends TestCase
      * @group get
      * @group rest
      */
-    public function test_get_back_ints_with_grater_than_or_equal_option($option) : void
+    public function test_get_back_ints_with_grater_than_or_equal_option($option): void
     {
         $response = $this->get("/api/v1/projects/?is_published=2::{$option}");
         $responseArray = json_decode($response->content(), true);
@@ -197,7 +197,7 @@ class GetIntIntegrationApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('is_published', 4)->first());
     }
 
-    public function greaterThanOrEqualOptionDataProvider() : array
+    public function greaterThanOrEqualOptionDataProvider(): array
     {
         return [
             'gte' => ['GTE'],
@@ -212,7 +212,7 @@ class GetIntIntegrationApiTest extends TestCase
      * @group get
      * @group rest
      */
-    public function test_get_back_ints_with_less_than_option($option) : void
+    public function test_get_back_ints_with_less_than_option($option): void
     {
         $response = $this->get("/api/v1/projects/?is_published=3::{$option}");
         $responseArray = json_decode($response->content(), true);
@@ -225,7 +225,7 @@ class GetIntIntegrationApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('is_published', 2)->first());
     }
 
-    public function lessThanOptionDataProvider() : array
+    public function lessThanOptionDataProvider(): array
     {
         return [
             'lte' => ['lt'],
@@ -240,7 +240,7 @@ class GetIntIntegrationApiTest extends TestCase
      * @group get
      * @group rest
      */
-    public function test_get_back_ints_with_less_than_or_equal_option($option) : void
+    public function test_get_back_ints_with_less_than_or_equal_option($option): void
     {
         $response = $this->get("/api/v1/projects/?is_published=3::{$option}");
         $responseArray = json_decode($response->content(), true);
@@ -254,7 +254,7 @@ class GetIntIntegrationApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('is_published', 3)->first());
     }
 
-    public function lessThanOrEqualOptionDataProvider() : array
+    public function lessThanOrEqualOptionDataProvider(): array
     {
         return [
             'lte' => ['LTE'],
@@ -269,7 +269,7 @@ class GetIntIntegrationApiTest extends TestCase
      * @group get
      * @group rest
      */
-    public function test_get_back_ints_with_in_option($option) : void
+    public function test_get_back_ints_with_in_option($option): void
     {
         $response = $this->get("/api/v1/projects/?is_published=1,2,3::{$option}");
         $responseArray = json_decode($response->content(), true);
@@ -283,7 +283,7 @@ class GetIntIntegrationApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('is_published', 3)->first());
     }
 
-    public function inOptionDataProvider() : array
+    public function inOptionDataProvider(): array
     {
         return [
             'in' => ['in'],
@@ -296,7 +296,7 @@ class GetIntIntegrationApiTest extends TestCase
      * @group get
      * @group rest
      */
-    public function test_get_back_int_with_not_in_option() : void
+    public function test_get_back_int_with_not_in_option(): void
     {
         $response = $this->get("/api/v1/projects/?is_published=1,2,3::notIn");
         $responseArray = json_decode($response->content(), true);
@@ -308,7 +308,7 @@ class GetIntIntegrationApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('is_published', 4)->first());
     }
         
-    protected function makeProjects() : void
+    protected function makeProjects(): void
     {
         $this->projects[] = Project::factory()->create([
             'title' => 'Test Project 1',

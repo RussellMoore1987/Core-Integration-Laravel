@@ -2,7 +2,7 @@
 
 namespace App\CoreIntegrationApi\ClauseBuilderFactory;
 
-use App\CoreIntegrationApi\CIL\CILDataTypeDeterminerFactory;
+use App\CoreIntegrationApi\DataTypeDeterminerFactory;
 use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\ClauseBuilder;
 use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\StringWhereClauseBuilder;
 use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\JsonWhereClauseBuilder;
@@ -14,9 +14,9 @@ use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\SelectClauseBuild
 use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\IncludesClauseBuilder;
 use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\MethodCallsClauseBuilder;
 
-class ClauseBuilderFactory extends CILDataTypeDeterminerFactory
+class ClauseBuilderFactory extends DataTypeDeterminerFactory
 {
-    protected $factoryReturnArray = [
+    protected $factoryItemArray = [
         'string' => StringWhereClauseBuilder::class,
         'json' => JsonWhereClauseBuilder::class,
         'date' => DateWhereClauseBuilder::class,
@@ -28,7 +28,7 @@ class ClauseBuilderFactory extends CILDataTypeDeterminerFactory
         'methodcalls' => MethodCallsClauseBuilder::class,
     ];
 
-    public function getFactoryItem($dataType) : ClauseBuilder
+    public function getFactoryItem($dataType): ClauseBuilder
     {
         return parent::getFactoryItem($dataType);
     }

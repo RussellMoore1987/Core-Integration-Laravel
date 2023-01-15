@@ -17,7 +17,7 @@ class IntParameterValidator implements ParameterValidator
     private $processedAsArray = false;
     private $requestError = false;
 
-    public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData) : void
+    public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData): void
     {
         $this->setMainVariables($validatorDataCollector, $parameterData);
         $this->processData();

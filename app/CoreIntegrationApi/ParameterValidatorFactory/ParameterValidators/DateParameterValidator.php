@@ -15,7 +15,7 @@ class DateParameterValidator implements ParameterValidator
     private $originalComparisonOperator = '';
     private $errors;
 
-    public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData) : void
+    public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData): void
     {
         $this->setMainVariables($validatorDataCollector, $parameterData);
         $this->processDateData();

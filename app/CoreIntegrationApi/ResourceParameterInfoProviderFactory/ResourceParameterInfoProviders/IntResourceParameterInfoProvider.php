@@ -3,25 +3,27 @@
 namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders;
 
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\ResourceParameterInfoProvider;
-// TODO: add validation rules to test
+
+// ? https://dev.mysql.com/doc/refman/8.0/en/integer-types.html Data type details
 class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
 {
     protected $apiDataType = 'int';
     protected $intType;
+    protected $min0 = 'min:0';
 
-    protected function getFormData()
+    protected function getParameterData(): void
     {
-        $this->checkForTinyInt();
-        $this->checkForSmallInt();
-        $this->checkForMediumInt();
-        $this->checkForInteger();
-        $this->checkForBigInt();
-        $this->checkForInt();
+        $this->isTinyInt();
+        $this->isSmallInt();
+        $this->isMediumInt();
+        $this->isInteger();
+        $this->isBigInt();
+        $this->isInt();
     }
 
-    protected function checkForTinyInt()
+    protected function isTinyInt(): void
     {
-        if (!$this->intType && $this->isIntType('tinyint')) {
+        if ($this->intTypeIsNotSet() && $this->isIntType('tinyint')) {
             
             $this->intType = true;
 
@@ -42,15 +44,15 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 255;
 
-                $this->defaultValidationRules[1] = 'min:0';
+                $this->defaultValidationRules[1] = $this->min0;
                 $this->defaultValidationRules[2] = 'max:255';
             }
         }
     }
 
-    protected function checkForSmallInt()
+    protected function isSmallInt(): void
     {
-        if (!$this->intType && $this->isIntType('smallint')) {
+        if ($this->intTypeIsNotSet() && $this->isIntType('smallint')) {
             
             $this->intType = true;
 
@@ -71,15 +73,15 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 65535;
 
-                $this->defaultValidationRules[1] = 'min:0';
+                $this->defaultValidationRules[1] = $this->min0;
                 $this->defaultValidationRules[2] = 'max:65535';
             }
         }
     }
 
-    protected function checkForMediumInt()
+    protected function isMediumInt(): void
     {
-        if (!$this->intType && $this->isIntType('mediumint')) {
+        if ($this->intTypeIsNotSet() && $this->isIntType('mediumint')) {
             
             $this->intType = true;
 
@@ -101,15 +103,15 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
                 $this->formData['max'] = 16777215;
                 $this->formData['maxlength'] = 8;
 
-                $this->defaultValidationRules[1] = 'min:0';
+                $this->defaultValidationRules[1] = $this->min0;
                 $this->defaultValidationRules[2] = 'max:16777215';
             }
         }
     }
 
-    protected function checkForInteger()
+    protected function isInteger(): void
     {
-        if (!$this->intType && $this->isIntType('integer')) {
+        if ($this->intTypeIsNotSet() && $this->isIntType('integer')) {
             
             $this->intType = true;
 
@@ -130,15 +132,15 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 4294967295;
 
-                $this->defaultValidationRules[1] = 'min:0';
+                $this->defaultValidationRules[1] = $this->min0;
                 $this->defaultValidationRules[2] = 'max:4294967295';
             }
         }
     }
 
-    protected function checkForBigInt()
+    protected function isBigInt(): void
     {
-        if (!$this->intType && $this->isIntType('bigint')) {
+        if ($this->intTypeIsNotSet() && $this->isIntType('bigint')) {
             
             $this->intType = true;
 
@@ -160,15 +162,15 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
                 $this->formData['max'] = 18446744073709551615;
                 $this->formData['maxlength'] = 20;
 
-                $this->defaultValidationRules[1] = 'min:0';
+                $this->defaultValidationRules[1] = $this->min0;
                 $this->defaultValidationRules[2] = 'max:18446744073709551615';
             }
         }
     }
 
-    protected function checkForInt()
+    protected function isInt(): void
     {
-        if (!$this->intType && $this->isIntType('int')) {
+        if ($this->intTypeIsNotSet() && $this->isIntType('int')) { // integer
             
             $this->intType = true;
 
@@ -189,27 +191,24 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
                 $this->formData['min'] = 0;
                 $this->formData['max'] = 4294967295;
 
-                $this->defaultValidationRules[1] = 'min:0';
+                $this->defaultValidationRules[1] = $this->min0;
                 $this->defaultValidationRules[2] = 'max:4294967295';
             }
         }
     }
 
-    protected function isIntType($intString)
+    protected function intTypeIsNotSet(): bool
     {
-        if (str_contains($this->dataType, $intString)) {
-            return true;
-        }
-
-        return false;
+        return !$this->intType;
     }
-
-    protected function isUnsignedInt()
+    
+    protected function isIntType($intString): bool
     {
-        if (str_contains($this->dataType, 'unsigned')) {
-            return true;
-        }
-
-        return false;
+        return str_contains($this->parameterDataType, $intString) ? true : false;
+    }
+    
+    protected function isUnsignedInt(): bool
+    {
+        return str_contains($this->parameterDataType, 'unsigned') ? true : false;
     }
 }

@@ -20,7 +20,7 @@ class RequestMethodResponseBuilderFactory extends RequestMethodTypeFactory
         'delete' => DeleteRequestMethodResponseBuilder::class,
     ];
 
-    public function getFactoryItem($requestMethod) : RequestMethodResponseBuilder
+    public function getFactoryItem($requestMethod): RequestMethodResponseBuilder
     {
         return parent::getFactoryItem($requestMethod);
     }

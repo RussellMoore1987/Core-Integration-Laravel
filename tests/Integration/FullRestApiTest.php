@@ -13,7 +13,7 @@ class FullRestApiTest extends TestCase
      * @group allRequestMethods
      * @group rest
      */
-    public function test_http_methods_return_404_response($httpMethods) : void
+    public function test_http_methods_return_404_response($httpMethods): void
     {
         $response = $this->$httpMethods('/api/v1/notProjects/');
         $responseArray = json_decode($response->content(), true);

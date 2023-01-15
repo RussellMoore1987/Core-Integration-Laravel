@@ -20,7 +20,7 @@ class RequestMethodQueryResolverFactory extends RequestMethodTypeFactory
         'delete' => DeleteRequestMethodQueryResolver::class,
     ];
 
-    public function getFactoryItem($requestMethod) : RequestMethodQueryResolver
+    public function getFactoryItem($requestMethod): RequestMethodQueryResolver
     {
         return parent::getFactoryItem($requestMethod);
     }

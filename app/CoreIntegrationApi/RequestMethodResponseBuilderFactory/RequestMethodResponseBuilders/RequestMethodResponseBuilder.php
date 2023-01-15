@@ -6,5 +6,5 @@ use Illuminate\Http\JsonResponse;
 
 interface RequestMethodResponseBuilder
 {
-    public function buildResponse($validatedMetaData, $queryResult) : JsonResponse;
+    public function buildResponse($validatedMetaData, $queryResult): JsonResponse;
 }

@@ -11,7 +11,7 @@ class CILQueryAssembler implements QueryAssembler
     protected $queryBuilder;
     protected $perPageParameter = 50;
 
-    function __construct(ClauseBuilderFactory $clauseBuilderFactory) 
+    public function __construct(ClauseBuilderFactory $clauseBuilderFactory)
     {
         $this->clauseBuilderFactory = $clauseBuilderFactory;
     }

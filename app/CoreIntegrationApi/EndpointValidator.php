@@ -18,7 +18,7 @@ class EndpointValidator
         $this->availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? [];
     }
 
-    public function validateEndPoint(ValidatorDataCollector &$validatorDataCollector) : void
+    public function validateEndPoint(ValidatorDataCollector &$validatorDataCollector): void
     {
         $this->validatorDataCollector = $validatorDataCollector;
         
@@ -30,13 +30,13 @@ class EndpointValidator
         }
     }
 
-    protected function setResourceVariables() : void
+    protected function setResourceVariables(): void
     {
         $this->validatorDataCollector->resourceObject = new $this->availableResourceEndpoints[$this->validatorDataCollector->resource]();
         $this->validatorDataCollector->resourceInfo = $this->resourceModelInfoProvider->getResourceInfo($this->validatorDataCollector->resourceObject); // TODO: this will brake if not a model
     }
 
-    protected function setEndpointData() : void
+    protected function setEndpointData(): void
     {
         $this->setMainPortionOfEndpointData();
         $this->setResourceId();
@@ -47,7 +47,7 @@ class EndpointValidator
         ]);
     }
 
-    protected function setMainPortionOfEndpointData() : void
+    protected function setMainPortionOfEndpointData(): void
     {
         $this->validatorDataCollector->endpointData = [
             'resource' => $this->validatorDataCollector->resource,
@@ -57,7 +57,7 @@ class EndpointValidator
         ];
     }
 
-    protected function setResourceId() : void
+    protected function setResourceId(): void
     {
         $this->validatorDataCollector->endpointData['resourceId'] = $this->validatorDataCollector->resourceId;
 
@@ -68,7 +68,7 @@ class EndpointValidator
         }
     }
 
-    protected function returnEndpointError() : void
+    protected function returnEndpointError(): void
     {
         $response = response()->json([
             'error' => 'Resource/Endpoint Not Found',
@@ -78,7 +78,7 @@ class EndpointValidator
         throw new HttpResponseException($response);
     }
 
-    protected function getIndexUrl() : string
+    protected function getIndexUrl(): string
     {
         return substr($this->validatorDataCollector->url, 0, strpos($this->validatorDataCollector->url, 'api/v1/') + 7);
     }

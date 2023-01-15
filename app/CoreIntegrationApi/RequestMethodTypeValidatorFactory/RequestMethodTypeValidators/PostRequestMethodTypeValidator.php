@@ -15,7 +15,7 @@ class PostRequestMethodTypeValidator implements RequestMethodTypeValidator
     protected $resourceObject;
     protected $validationRules;
 
-    public function validateRequest(ValidatorDataCollector &$validatorDataCollector) : void
+    public function validateRequest(ValidatorDataCollector &$validatorDataCollector): void
     {
         $this->validatorDataCollector = $validatorDataCollector;
 
@@ -26,16 +26,16 @@ class PostRequestMethodTypeValidator implements RequestMethodTypeValidator
         $this->validateParameters();
     }
 
-    protected function validateParameters() : void
+    protected function validateParameters(): void
     {
         $this->setUpValidationRules();
         $this->validate();
     }
 
-    protected function setUpValidationRules() : void
+    protected function setUpValidationRules(): void
     {
         // TODO: do I want $this->resourceObject->validationRules to be public or protected
-        $validationRules = $this->resourceObject->validationRules && method_exists($this->resourceObject, 'getValidationRules') ? $this->resourceObject->getValidationRules() : [];
+        $validationRules = $this->resourceObject->validationRules && method_exists($this->resourceObject, 'getValidationRules') ? $this->resourceObject->getValidationRules(): [];
 
         if (!$validationRules) {
             foreach ($this->resourceInfo['acceptableParameters'] as $parameterName => $parameterDetails) {
@@ -46,7 +46,7 @@ class PostRequestMethodTypeValidator implements RequestMethodTypeValidator
         $this->validationRules = $validationRules;
     }
 
-    protected function validate() : void
+    protected function validate(): void
     {
         $validator = Validator::make($this->parameters, $this->validationRules);
         // TODO: do this in the other RequestMethodTypeValidators ? trait, class
@@ -59,7 +59,7 @@ class PostRequestMethodTypeValidator implements RequestMethodTypeValidator
         $this->validatorDataCollector->setQueryArgument($validator->validated());
     }
 
-    protected function throwValidationException($validator) : void
+    protected function throwValidationException($validator): void
     {
         $response = response()->json([
             'error' => 'Validation failed',

@@ -7,7 +7,7 @@ use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilders\ClauseBuilder;
 
 class SelectClauseBuilder implements ClauseBuilder
 {
-    public function build(Builder $queryBuilder, $data) : Builder
+    public function build(Builder $queryBuilder, $data): Builder
     {
         return $queryBuilder;
     }

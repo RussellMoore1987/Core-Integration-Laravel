@@ -14,14 +14,14 @@ abstract class RequestDataPrepper
             $this->request = $request;
         }
 
-        public function prep() : void
+        public function prep(): void
         {
             $this->preppedData = $this->prepRequestData();
         }
 
-        abstract public function prepRequestData() : array; // Rest = request, Context = array of requests
+        abstract public function prepRequestData(): array; // Rest = request, Context = array of requests
 
-        public function getPreppedData() : array
+        public function getPreppedData(): array
         {
             return $this->preppedData;
         }

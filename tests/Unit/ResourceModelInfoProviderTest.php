@@ -4,23 +4,15 @@ namespace Tests\Unit;
 
 use App\CoreIntegrationApi\ResourceModelInfoProvider;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviderFactory;
-use App\Models\Project;
+use App\Models\Category;
 use App\Models\WorkHistoryType;
 use Tests\TestCase;
-
-// ! Start here ******************************************************************
-// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
-// ! (I have a stash of tests**** EndpointValidatorTest.php) (sub ResourceParameterInfoProviderFactory)
-// [] read over
-// [] test groups, rest, context
-// [] add return type : void
-// [] testing what I need to test
 
 class ResourceModelInfoProviderTest extends TestCase
 {
     private $resourceModelInfoProvider;
     private $expectedResourceInfo;
-    private $project;
+    private $category;
     private $workHistoryType;
 
     protected function setUp(): void
@@ -30,343 +22,87 @@ class ResourceModelInfoProviderTest extends TestCase
         $this->resourceModelInfoProvider = new ResourceModelInfoProvider(new ResourceParameterInfoProviderFactory());
     }
 
-    public function test_ResourceModelInfoProvider_functions_results_as_expected_from_project_class()
+    /**
+     * @group rest
+     * @group context
+     * @group allRequestMethods
+     */
+    public function test_getResourceInfo_gets_expected_results_from_category_class(): void
     {
-        $this->createProjectClassTestInfo();
-        $this->assertEquals($this->expectedResourceInfo, $this->resourceModelInfoProvider->getResourceInfo($this->project));
+        $this->createCategoryClassTestInfo();
 
+        $actualResourceInfo = $this->resourceModelInfoProvider->getResourceInfo($this->category);
+
+        // just asserting structure, details tested in ResourceParameterInfoProviders
+        foreach ($actualResourceInfo['acceptableParameters'] as $parameterName => $parameterAttributeArray) {
+            $this->assertArrayHasKey('apiDataType', $parameterAttributeArray);
+            $this->assertArrayHasKey('defaultValidationRules', $parameterAttributeArray);
+            $this->assertArrayHasKey('formData', $parameterAttributeArray);
+            // removing these resource info items so we can assess the details of just the other resource info items
+            unset($actualResourceInfo['acceptableParameters'][$parameterName]['apiDataType']);
+            unset($actualResourceInfo['acceptableParameters'][$parameterName]['defaultValidationRules']);
+            unset($actualResourceInfo['acceptableParameters'][$parameterName]['formData']);
+        }
+
+        $this->assertEquals($this->expectedResourceInfo, $actualResourceInfo);
     }
 
-    protected function createProjectClassTestInfo()
+    protected function createCategoryClassTestInfo(): void
     {
-        $this->project = new Project();
+        $this->category = new Category();
 
-        $this->project->formData = [
-            'is_published' => [
-                'min' => 0,
-                'max' => 1,
-                'maxlength' => 1,
-            ],
-        ];
-
-        $this->project->availableMethodCalls = [
+        $this->category->availableMethodCalls = [
             'pluse1_5',
             'budgetTimeTwo',
             'newTitle',
         ];
 
-        $this->project->availableIncludes = [
+        $this->category->availableIncludes = [
             'images',
             'tags',
             'categories',
         ];
-    
-        $this->project->validationRules = [
-            'modelValidation' => [
-                'id' => [
-                    'integer',
-                    'min:1',
-                    'max:18446744073709551615',
-                ],
-                'title' => [
-                    'string',
-                    'max:75',
-                    'min:2',
-                ],
-                'roles' => [
-                    'string',
-                    'max:50',
-                    'nullable',
-                ],
-                'client' => [
-                    'string',
-                    'max:50',
-                    'nullable',
-                ],
-                'description' => [
-                    'string',
-                    'max:255',
-                    'min:10',
-                    'nullable',
-                ],
-                'content' => [
-                    'string',
-                    'json',
-                    'nullable',
-                ],
-                'video_link' => [
-                    'string',
-                    'max:255',
-                    'nullable',
-                ],
-                'code_link' => [
-                    'string',
-                    'max:255',
-                    'nullable',
-                ],
-                'demo_link' => [
-                    'string',
-                    'max:255',
-                    'nullable',
-                ],
-                'start_date' => [
-                    'date',
-                    'nullable',
-                ],
-                'end_date' => [
-                    'date',
-                    'nullable',
-                ],
-                'is_published' => [
-                    'integer',
-                    'min:0',
-                    'max:1',
-                ],
-                'budget' => [
-                    'numeric',
-                    'max:999999.99',
-                    'min:0',
-                ],
-            ],
-            'createValidation' => [
-                'title' => [
-                    'required',
-                ],
-                'roles' => [
-                    'required',
-                ],
-                'description' => [
-                    'required',
-                ],
-                'start_date' => [
-                    'required',
-                ],
-                'budget' => [
-                    'required',
-                ],
-            ],
-        ];
 
+        $this->setUpExpectedResourceInfo();
+    }
+
+    protected function setUpExpectedResourceInfo(): void
+    {
         $this->expectedResourceInfo = [
             'primaryKeyName' => 'id',
-            'path' => 'App\Models\Project',
+            'path' => 'App\Models\Category',
             'acceptableParameters' => [
                 'id' => [
-                    'field' => 'id',
-                    'type' => 'bigint unsigned',
-                    'null' => 'no',
-                    'key' => 'pri',
-                    'default' => null,
-                    'extra' => 'auto_increment',
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => 0,
-                        'max' => 18446744073709551615,
-                        'maxlength' => 20,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:0',
-                        'max:18446744073709551615',
-                    ]
+                  'field' => 'id',
+                  'type' => 'bigint unsigned',
+                  'null' => 'no',
+                  'key' => 'pri',
+                  'default' => null,
+                  'extra' => 'auto_increment',
                 ],
-                'title' => [
-                    'field' => 'title',
-                    'type' => 'varchar(75)',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => null,
-                    'extra' => '',
-                    'apiDataType' => 'string',
-                    'formData' => [
-                        'required' => true
-                    ],
-                    'defaultValidationRules' => ['required'],
-                ],
-                'roles' => [
-                    'field' => 'roles',
-                    'type' => 'varchar(50)',
-                    'null' => 'yes',
-                    'key' => '',
-                    'default' => null,
-                    'extra' => '',
-                    'apiDataType' => 'string',
-                    'formData' => [],
-                    'defaultValidationRules' => [],
-                ],
-                'client' => [
-                    'field' => 'client',
-                    'type' => 'varchar(50)',
-                    'null' => 'yes',
-                    'key' => '',
-                    'default' => null,
-                    'extra' => '',
-                    'apiDataType' => 'string',
-                    'formData' => [],
-                    'defaultValidationRules' => [],
-                ],
-                'description' => [
-                    'field' => 'description',
-                    'type' => 'varchar(255)',
-                    'null' => 'yes',
-                    'key' => '',
-                    'default' => null,
-                    'extra' => '',
-                    'apiDataType' => 'string',
-                    'formData' => [],
-                    'defaultValidationRules' => [],
-                ],
-                'content' => [
-                    'field' => 'content',
-                    'type' => 'json',
-                    'null' => 'yes',
-                    'key' => '',
-                    'default' => null,
-                    'extra' => '',
-                    'apiDataType' => 'json',
-                    'formData' => [],
-                    'defaultValidationRules' => [],
-                ],
-                'video_link' => [
-                    'field' => 'video_link',
-                    'type' => 'varchar(255)',
-                    'null' => 'yes',
-                    'key' => '',
-                    'default' => null,
-                    'extra' => '',
-                    'apiDataType' => 'string',
-                    'formData' => [],
-                    'defaultValidationRules' => [],
-                ],
-                'code_link' => [
-                    'field' => 'code_link',
-                    'type' => 'varchar(255)',
-                    'null' => 'yes',
-                    'key' => '',
-                    'default' => null,
-                    'extra' => '',
-                    'apiDataType' => 'string',
-                    'formData' => [],
-                    'defaultValidationRules' => [],
-                ],
-                'demo_link' => [
-                    'field' => 'demo_link',
-                    'type' => 'varchar(255)',
-                    'null' => 'yes',
-                    'key' => '',
-                    'default' => null,
-                    'extra' => '',
-                    'apiDataType' => 'string',
-                    'formData' => [],
-                    'defaultValidationRules' => [],
-                ],
-                'start_date' => [
-                    'field' => 'start_date',
-                    'type' => 'timestamp',
-                    'null' => 'yes',
-                    'key' => '',
-                    'default' => null,
-                    'extra' => '',
-                    'apiDataType' => 'date',
-                    'formData' => [
-                        'type' => 'date',
-                        'min' => '1970-01-01 00:00:01',
-                        'max' => '2038-01-19 03:14:07',
-                    ],
-                    'defaultValidationRules' => [
-                        'date',
-                        'after_or_equal:1970-01-01 00:00:01',
-                        'before_or_equal:2038-01-19 03:14:07',
-                    ],
-                ],
-                'end_date' => [
-                    'field' => 'end_date',
-                    'type' => 'timestamp',
-                    'null' => 'yes',
-                    'key' => '',
-                    'default' => null,
-                    'extra' => '',
-                    'apiDataType' => 'date',
-                    'formData' => [
-                        'type' => 'date',
-                        'min' => '1970-01-01 00:00:01',
-                        'max' => '2038-01-19 03:14:07',
-                    ],
-                    'defaultValidationRules' => [
-                        'date',
-                        'after_or_equal:1970-01-01 00:00:01',
-                        'before_or_equal:2038-01-19 03:14:07',
-                    ],
-                ],
-                'is_published' => [
-                    'field' => 'is_published',
-                    'type' => 'tinyint',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0',
-                    'extra' => '',
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => 0,
-                        'max' => 1,
-                        'maxlength' => 1,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:-128',
-                        'max:127',
-                    ],
+                'name' => [
+                  'field' => 'name',
+                  'type' => 'varchar(35)',
+                  'null' => 'no',
+                  'key' => 'uni',
+                  'default' => null,
+                  'extra' => '',
                 ],
                 'created_at' => [
-                    'field' => 'created_at',
-                    'type' => 'timestamp',
-                    'null' => 'yes',
-                    'key' => '',
-                    'default' => null,
-                    'extra' => '',
-                    'apiDataType' => 'date',
-                    'formData' => [
-                        'type' => 'date',
-                        'min' => '1970-01-01 00:00:01',
-                        'max' => '2038-01-19 03:14:07',
-                    ],
-                    'defaultValidationRules' => [
-                        'date',
-                        'after_or_equal:1970-01-01 00:00:01',
-                        'before_or_equal:2038-01-19 03:14:07',
-                    ],
+                  'field' => 'created_at',
+                  'type' => 'timestamp',
+                  'null' => 'yes',
+                  'key' => '',
+                  'default' => null,
+                  'extra' => '',
                 ],
                 'updated_at' => [
-                    'field' => 'updated_at',
-                    'type' => 'timestamp',
-                    'null' => 'yes',
-                    'key' => '',
-                    'default' => null,
-                    'extra' => '',
-                    'apiDataType' => 'date',
-                    'formData' => [
-                        'type' => 'date',
-                        'min' => '1970-01-01 00:00:01',
-                        'max' => '2038-01-19 03:14:07',
-                    ],
-                    'defaultValidationRules' => [
-                        'date',
-                        'after_or_equal:1970-01-01 00:00:01',
-                        'before_or_equal:2038-01-19 03:14:07',
-                    ],
-                ],
-                'budget' => [
-                    'field' => 'budget',
-                    'type' => 'decimal(8,2)',
-                    'null' => 'no',
-                    'key' => '',
-                    'default' => '0.00',
-                    'extra' => '',
-                    'apiDataType' => 'float',
-                    'formData' => [],
-                    'defaultValidationRules' => [],
+                  'field' => 'updated_at',
+                  'type' => 'timestamp',
+                  'null' => 'yes',
+                  'key' => '',
+                  'default' => null,
+                  'extra' => '',
                 ],
             ],
             'availableMethodCalls' => [
@@ -382,49 +118,34 @@ class ResourceModelInfoProviderTest extends TestCase
         ];
     }
 
-    public function test_ResourceModelInfoProvider_functions_results_as_expected_from_WorkHistoryType_class()
+    /**
+     * @group rest
+     * @group context
+     * @group allRequestMethods
+     */
+    public function test_getResourceInfo_gives_expected_results_from_WorkHistoryType_class_different_primaryKeyName(): void
     {
         $this->createWorkHistoryTypeClassTestInfo();
-        $this->assertEquals($this->expectedResourceInfo, $this->resourceModelInfoProvider->getResourceInfo($this->workHistoryType));
+
+        $actualResourceInfo = $this->resourceModelInfoProvider->getResourceInfo($this->workHistoryType);
+
+        // just asserting structure, details tested in ResourceParameterInfoProviders
+        foreach ($actualResourceInfo['acceptableParameters'] as $parameterName => $parameterAttributeArray) {
+            $this->assertArrayHasKey('apiDataType', $parameterAttributeArray);
+            $this->assertArrayHasKey('defaultValidationRules', $parameterAttributeArray);
+            $this->assertArrayHasKey('formData', $parameterAttributeArray);
+            // removing these resource info items so we can assess the details of just the other resource info items
+            unset($actualResourceInfo['acceptableParameters'][$parameterName]['apiDataType']);
+            unset($actualResourceInfo['acceptableParameters'][$parameterName]['defaultValidationRules']);
+            unset($actualResourceInfo['acceptableParameters'][$parameterName]['formData']);
+        }
+
+        $this->assertEquals($this->expectedResourceInfo, $actualResourceInfo);
     }
 
-    protected function createWorkHistoryTypeClassTestInfo()
+    protected function createWorkHistoryTypeClassTestInfo(): void
     {
         $this->workHistoryType = new WorkHistoryType();
-
-        $this->workHistoryType->formData = [
-            'work_history_type_id' => [
-                'min' => 1,
-                'max' => 999999,
-                'maxlength' => 6,
-                'type' => 'number',
-            ],
-        ];
-
-        $this->workHistoryType->validationRules = [
-            'modelValidation' => [
-                'work_history_type_id' => [
-                    'integer',
-                    'min:1',
-                    'max:18446744073709551615',
-                ],
-                'name' => [
-                    'string',
-                    'max:35',
-                    'min:2',
-                ],
-                'icon' => [
-                    'string',
-                    'max:50',
-                    'min:2',
-                ],
-            ],
-            'createValidation' => [
-                'name' => [
-                    'required',
-                ],
-            ],
-        ];
 
         $this->expectedResourceInfo = [
             'primaryKeyName' => 'work_history_type_id',
@@ -437,18 +158,6 @@ class ResourceModelInfoProviderTest extends TestCase
                     'key' => 'pri',
                     'default' => null,
                     'extra' => 'auto_increment',
-                    'apiDataType' => 'int',
-                    'formData' => [
-                        'min' => 1,
-                        'max' => 999999,
-                        'maxlength' => 6,
-                        'type' => 'number',
-                    ],
-                    'defaultValidationRules' => [
-                        'integer',
-                        'min:0',
-                        'max:18446744073709551615',
-                    ],
                 ],
                 'name' => [
                     'field' => 'name',
@@ -457,11 +166,6 @@ class ResourceModelInfoProviderTest extends TestCase
                     'key' => 'uni',
                     'default' => null,
                     'extra' => '',
-                    'apiDataType' => 'string',
-                    'formData' => [
-                        'required' => true
-                    ],
-                    'defaultValidationRules' => ['required'],
                 ],
                 'icon' => [
                     'field' => 'icon',
@@ -470,9 +174,6 @@ class ResourceModelInfoProviderTest extends TestCase
                     'key' => '',
                     'default' => null,
                     'extra' => '',
-                    'apiDataType' => 'string',
-                    'formData' => [],
-                    'defaultValidationRules' => [],
                 ],
                 'created_at' => [
                     'field' => 'created_at',
@@ -481,17 +182,6 @@ class ResourceModelInfoProviderTest extends TestCase
                     'key' => '',
                     'default' => null,
                     'extra' => '',
-                    'apiDataType' => 'date',
-                    'formData' => [
-                        'type' => 'date',
-                        'min' => '1970-01-01 00:00:01',
-                        'max' => '2038-01-19 03:14:07',
-                    ],
-                    'defaultValidationRules' => [
-                        'date',
-                        'after_or_equal:1970-01-01 00:00:01',
-                        'before_or_equal:2038-01-19 03:14:07',
-                    ],
                 ],
                 'updated_at' => [
                     'field' => 'updated_at',
@@ -500,17 +190,6 @@ class ResourceModelInfoProviderTest extends TestCase
                     'key' => '',
                     'default' => null,
                     'extra' => '',
-                    'apiDataType' => 'date',
-                    'formData' => [
-                        'type' => 'date',
-                        'min' => '1970-01-01 00:00:01',
-                        'max' => '2038-01-19 03:14:07',
-                    ],
-                    'defaultValidationRules' => [
-                        'date',
-                        'after_or_equal:1970-01-01 00:00:01',
-                        'before_or_equal:2038-01-19 03:14:07',
-                    ],
                 ],
             ],
             'availableMethodCalls' => [],

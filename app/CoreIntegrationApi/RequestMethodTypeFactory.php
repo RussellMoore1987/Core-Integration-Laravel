@@ -16,7 +16,7 @@ abstract class RequestMethodTypeFactory
         'delete' => 'delete',
     ];
 
-    public function getFactoryItem(string $requestMethod) : object
+    public function getFactoryItem(string $requestMethod): object
     {
         $requestMethod = strtolower($requestMethod);
         
