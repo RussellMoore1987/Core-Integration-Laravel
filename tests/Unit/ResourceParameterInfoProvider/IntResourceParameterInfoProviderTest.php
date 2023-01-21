@@ -13,7 +13,7 @@ use Tests\TestCase;
 // [] test groups, rest, context
 // [] add return type : void
 // [] testing what I need to test
-// [] run exception for abstract
+// [x] run exception for abstract
 
 class IntResourceParameterInfoProviderTest extends TestCase
 {
@@ -113,71 +113,165 @@ class IntResourceParameterInfoProviderTest extends TestCase
         return [
             'tinyint' => [
                 'tinyint',
-                [-128,127,3,'min:-128','max:127',]
+                [
+                    'min' => -128,
+                    'max' => 127,
+                    'maxlength' => 3,
+                    'defaultValidationRules' => [
+                        'min:-128',
+                        'max:127',
+                    ]
+                ]
             ],
             'tinyintUnsigned' => [
                 'tinyint unsigned',
-                [0,255,3,$this->minValidationForUnsigned,'max:255']
+                [
+                    'min' => 0,
+                    'max' => 255,
+                    'maxlength' => 3,
+                    'defaultValidationRules' => [
+                        $this->minValidationForUnsigned,
+                        'max:255'
+                    ]
+                ]
             ],
             'smallint' => [
                 'smallint',
-                [-32768,32767,5,'min:-32768','max:32767']
+                [
+                    'min' => -32768,
+                    'max' => 32767,
+                    'maxlength' => 5,
+                    'defaultValidationRules' => [
+                        'min:-32768',
+                        'max:32767'
+                    ]
+                ]
             ],
             'smallintUnsigned' => [
                 'smallint unsigned',
-                [0,65535,5,$this->minValidationForUnsigned,'max:65535']
+                [
+                    'min' => 0,
+                    'max' => 65535,
+                    'maxlength' => 5,
+                    'defaultValidationRules' => [
+                        $this->minValidationForUnsigned,
+                        'max:65535'
+                    ]
+                ]
             ],
             'mediumint' => [
                 'mediumint',
-                [-8388608,8388607,7,'min:-8388608','max:8388607']
+                [
+                    'min' => -8388608,
+                    'max' => 8388607,
+                    'maxlength' => 7,
+                    'defaultValidationRules' => [
+                        'min:-8388608',
+                        'max:8388607'
+                    ]
+                ]
             ],
             'mediumintUnsigned' => [
                 'mediumint unsigned',
-                [0,16777215,8,$this->minValidationForUnsigned,'max:16777215']
+                [
+                    'min' => 0,
+                    'max' => 16777215,
+                    'maxlength' =>  8,
+                    'defaultValidationRules' => [
+                        $this->minValidationForUnsigned,
+                        'max:16777215'
+                    ]
+                ]
             ],
             'integer' => [
                 'integer',
-                [-2147483648,2147483647,10,$this->minValidationForInteger,$this->maxValidationForInteger]
+                [
+                    'min' => -2147483648,
+                    'max' => 2147483647,
+                    'maxlength' => 10,
+                    'defaultValidationRules' => [
+                        $this->minValidationForInteger,
+                        $this->maxValidationForInteger
+                    ]
+                ]
             ],
             'integerUnsigned' => [
                 'integer unsigned',
-                [0,4294967295,10,$this->minValidationForUnsigned,$this->maxValidationForIntegerUnsigned]
+                [
+                    'min' => 0,
+                    'max' => 4294967295,
+                    'maxlength' => 10,
+                    'defaultValidationRules' => [
+                        $this->minValidationForUnsigned,
+                        $this->maxValidationForIntegerUnsigned
+                    ]
+                ]
             ],
             'bigint' => [
                 'bigint',
-                [-9223372036854775808,9223372036854775807,19,'min:-9223372036854775808','max:9223372036854775807']
+                [
+                    'min' => -9223372036854775808,
+                    'max' => 9223372036854775807,
+                    'maxlength' => 19,
+                    'defaultValidationRules' => [
+                        'min:-9223372036854775808',
+                        'max:9223372036854775807'
+                    ]
+                ]
             ],
             'bigintUnsigned' => [
                 'bigint unsigned',
-                [0,18446744073709551615,20,$this->minValidationForUnsigned,'max:18446744073709551615']
+                [
+                    'min' => 0,
+                    'max' => 18446744073709551615,
+                    'maxlength' => 20,
+                    'defaultValidationRules' => [
+                        $this->minValidationForUnsigned,
+                        'max:18446744073709551615'
+                    ]
+                ]
             ],
             'int' => [
                 'int',
-                [-2147483648,2147483647,10,$this->minValidationForInteger,$this->maxValidationForInteger]
+                [
+                    'min' => -2147483648,
+                    'max' => 2147483647,
+                    'maxlength' => 10,
+                    'defaultValidationRules' => [
+                        $this->minValidationForInteger,
+                        $this->maxValidationForInteger
+                    ]
+                ]
             ],
             'intUnsigned' => [
                 'int unsigned',
-                [0,4294967295,10,$this->minValidationForUnsigned,$this->maxValidationForIntegerUnsigned]
+                [
+                    'min' => 0,
+                    'max' => 4294967295,
+                    'maxlength' => 10,
+                    'defaultValidationRules' => [
+                        $this->minValidationForUnsigned,
+                        $this->maxValidationForIntegerUnsigned
+                    ]
+                ]
             ],
         ];
     }
-
-    // TODO: test required
 
     protected function getExpectedResult(array $expectedResultPieces): array
     {
         return [
             'apiDataType' => 'int',
             'formData' => [
-                'min' => $expectedResultPieces[0],
-                'max' => $expectedResultPieces[1],
-                'maxlength' => $expectedResultPieces[2],
+                'min' => $expectedResultPieces['min'],
+                'max' => $expectedResultPieces['max'],
+                'maxlength' => $expectedResultPieces['maxlength'],
                 'type' => 'number',
             ],
             'defaultValidationRules' => [
                 'integer',
-                $expectedResultPieces[3],
-                $expectedResultPieces[4]
+                $expectedResultPieces['defaultValidationRules'][0],
+                $expectedResultPieces['defaultValidationRules'][1]
             ]
         ];
     }

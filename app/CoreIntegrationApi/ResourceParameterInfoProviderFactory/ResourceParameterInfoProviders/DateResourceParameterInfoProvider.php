@@ -9,7 +9,7 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
     protected $apiDataType = 'date';
     protected $dateType;
 
-    protected function getParameterData()
+    protected function getParameterData(): void
     {
         $this->checkForDatetime();
         $this->checkForTimestamp();

@@ -29,9 +29,9 @@ abstract class ResourceParameterInfoProvider
         ];
     }
 
-    abstract protected function getParameterData(); // needs to set $this->apiDataType : string, $this->defaultValidationRules : array, $this->formData : array
+    abstract protected function getParameterData(): void; // needs to set $this->apiDataType : string, $this->defaultValidationRules : array, $this->formData : array
 
-    protected function isParameterRequired() // TODO: test
+    protected function isParameterRequired()
     {
         if (
             $this->parameterAttributeArray['null'] == 'no' &&
@@ -50,7 +50,7 @@ abstract class ResourceParameterInfoProvider
         }
     }
 
-    protected function getApiDataType(): string // TODO: test
+    protected function getApiDataType(): string
     {
         if ($this->apiDataTypeIsNotSet()) {
             throw new \Exception('No apiDataType class property set, this must be set in the child class');

@@ -8,7 +8,7 @@ class FloatResourceParameterInfoProvider extends ResourceParameterInfoProvider
 {
     protected $apiDataType = 'float';
 
-    protected function getParameterData()
+    protected function getParameterData(): void
     {
         $this->formData = [];
         $this->defaultValidationRules = [];
