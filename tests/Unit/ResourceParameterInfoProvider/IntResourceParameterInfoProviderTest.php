@@ -10,10 +10,9 @@ use Tests\TestCase;
 // ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
 // ! (sub IntResourceParameterInfoProvider DateResourceParameterInfoProvider)
 // [] read over
-// [] test groups, rest, context
-// [] add return type : void
-// [] testing what I need to test
-// [x] run exception for abstract
+// [x] test groups, rest, context
+// [x] add return type : void
+// [x] testing what I need to test
 
 class IntResourceParameterInfoProviderTest extends TestCase
 {
@@ -41,11 +40,13 @@ class IntResourceParameterInfoProviderTest extends TestCase
     }
 
     /**
-     * @dataProvider classFormDataProvider
+     * @dataProvider formDataProvider
+     * @group rest
+     * @group context
+     * @group allRequestMethods
      */
-    public function test_IntResourceParameterInfoProvider_with_custom_class_form_data_returned(string $type, array $formData, array $expectedFormData): void
+    public function test_IntResourceParameterInfoProvider_with_custom_class_form_data_returned(array $formData, array $expectedFormData): void
     {
-        $this->parameterAttributeArray['type'] = $type;
         $formData = [
             'fakeParameterName' => $formData,
         ];
@@ -55,16 +56,16 @@ class IntResourceParameterInfoProviderTest extends TestCase
         $this->assertEquals($expectedFormData, $result['formData']);
     }
 
-    public function classFormDataProvider(): array
+    public function formDataProvider(): array
     {
         return [
-            'tinyintUnsigned' => [
-                'tinyint unsigned',
+            'overrideDefaults' => [
                 [
+                    'min' => 0,
                     'max' => 1,
                     'maxlength' => 1,
-                    'required' => true,
                     'type' => 'select',
+                    'required' => true,
                 ],
                 [
                     'min' => 0,
@@ -74,24 +75,22 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     'required' => true,
                 ]
             ],
-            'integer' => [
-                'integer',
+            'addToFormData' => [
                 [
-                    'min' => 0,
-                    'min2' => -2147483648,
-                    'max2' => 2147483647,
-                    'maxlength2' => 10,
-                    'type2' => 'number',
+                    'min2' => 0,
+                    'max2' => 10,
+                    'maxlength2' => 2,
+                    'type2' => 'text',
                 ],
                 [
-                    'min' => 0,
-                    'max' => 2147483647,
-                    'maxlength' => 10,
+                    'min' => -128,
+                    'min2' => 0,
+                    'max' => 127,
+                    'max2' => 10,
+                    'maxlength' => 3,
+                    'maxlength2' => 2,
                     'type' => 'number',
-                    'min2' => -2147483648,
-                    'max2' => 2147483647,
-                    'maxlength2' => 10,
-                    'type2' => 'number',
+                    'type2' => 'text',
                 ]
             ]
         ];
@@ -99,6 +98,9 @@ class IntResourceParameterInfoProviderTest extends TestCase
 
     /**
      * @dataProvider intResourceParameterInfoProvider
+     * @group rest
+     * @group context
+     * @group allRequestMethods
      */
     public function test_IntResourceParameterInfoProvider_default_return_values(string $type, array $expectedResultPieces): void
     {

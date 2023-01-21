@@ -10,16 +10,26 @@ use Tests\TestCase;
 class ResourceParameterInfoProviderTest extends TestCase
 {
 
+    /**
+     * @group rest
+     * @group context
+     * @group allRequestMethods
+     */
     public function test_TestResourceParameterInfoProvider_throws_exception_when_apiDataType_is_not_set(): void
     {
 
         $this->expectException(Exception::class);
 
-        $resourceParameterInfoProvider = new TestResourceParameterInfoProvider();
+        $testResourceParameterInfoProvider = new TestResourceParameterInfoProvider();
 
-        $resourceParameterInfoProvider->getData([], []);
+        $testResourceParameterInfoProvider->getData([], []);
     }
 
+    /**
+     * @group rest
+     * @group context
+     * @group allRequestMethods
+     */
     public function test_ResourceParameterInfoProvider_isParameterRequired_sets_data_correctly(): void
     {
         $parameterAttributeArray = [
