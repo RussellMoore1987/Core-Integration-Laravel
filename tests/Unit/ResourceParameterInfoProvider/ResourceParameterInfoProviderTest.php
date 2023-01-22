@@ -9,6 +9,14 @@ use Tests\TestCase;
 
 class ResourceParameterInfoProviderTest extends TestCase
 {
+    protected $parameterAttributeArray = [
+        'field' => 'fakeParameterName',
+        'type' => 'tinyint',
+        'null' => 'no',
+        'key' => '',
+        'default' => null,
+        'extra' => '',
+    ];
 
     /**
      * @group rest
@@ -19,10 +27,11 @@ class ResourceParameterInfoProviderTest extends TestCase
     {
 
         $this->expectException(Exception::class);
+        $this->expectErrorMessage('No apiDataType class property set, this must be set in the child class');
 
         $testResourceParameterInfoProvider = new TestResourceParameterInfoProvider();
 
-        $testResourceParameterInfoProvider->getData([], []);
+        $testResourceParameterInfoProvider->getData($this->parameterAttributeArray, []);
     }
 
     /**
@@ -32,18 +41,9 @@ class ResourceParameterInfoProviderTest extends TestCase
      */
     public function test_ResourceParameterInfoProvider_isParameterRequired_sets_data_correctly(): void
     {
-        $parameterAttributeArray = [
-            'field' => 'fakeParameterName',
-            'type' => 'tinyint',
-            'null' => 'no',
-            'key' => '',
-            'default' => null,
-            'extra' => '',
-        ];
-
         $intResourceParameterInfoProvider = new IntResourceParameterInfoProvider();
 
-        $result = $intResourceParameterInfoProvider->getData($parameterAttributeArray, []);
+        $result = $intResourceParameterInfoProvider->getData($this->parameterAttributeArray, []);
         
         $this->assertEquals(true, $result['formData']['required']);
         $this->assertTrue(in_array('required', $result['defaultValidationRules']));
@@ -59,4 +59,3 @@ class TestResourceParameterInfoProvider extends ResourceParameterInfoProvider
         $this->formData = [];
     }
 }
-

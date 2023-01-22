@@ -65,14 +65,12 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     'max' => 1,
                     'maxlength' => 1,
                     'type' => 'select',
-                    'required' => true,
                 ],
                 [
                     'min' => 0,
                     'max' => 1,
                     'maxlength' => 1,
                     'type' => 'select',
-                    'required' => true,
                 ]
             ],
             'addToFormData' => [
@@ -81,6 +79,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     'max2' => 10,
                     'maxlength2' => 2,
                     'type2' => 'text',
+                    'required' => true,
                 ],
                 [
                     'min' => -128,
@@ -91,6 +90,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     'maxlength2' => 2,
                     'type' => 'number',
                     'type2' => 'text',
+                    'required' => true,
                 ]
             ]
         ];
@@ -102,7 +102,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
      * @group context
      * @group allRequestMethods
      */
-    public function test_IntResourceParameterInfoProvider_default_return_values(string $type, array $expectedResultPieces): void
+    public function test_IntResourceParameterInfoProvider_returns_default_values(string $type, array $expectedResultPieces): void
     {
         $this->parameterAttributeArray['type'] = $type;
         $result = $this->intResourceParameterInfoProvider->getData($this->parameterAttributeArray, []);
