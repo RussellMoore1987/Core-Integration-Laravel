@@ -3,7 +3,6 @@
 namespace Tests\Unit\ResourceParameterInfoProvider;
 
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\DateResourceParameterInfoProvider;
-use App\Models\Project;
 use Tests\TestCase;
 
 class DateResourceParameterInfoProviderTest extends TestCase
@@ -17,8 +16,6 @@ class DateResourceParameterInfoProviderTest extends TestCase
         parent::setUp();
 
         $this->dateResourceParameterInfoProvider = new DateResourceParameterInfoProvider();
-
-        $this->project = new Project();
     }
 
     /**
@@ -26,8 +23,7 @@ class DateResourceParameterInfoProviderTest extends TestCase
      */
     public function test_DateResourceParameterInfoProvider_default_return_values($parameterDataInfo, $expectedResult)
     {
-        unset($this->project->formData);
-        $result = $this->dateResourceParameterInfoProvider->getData($parameterDataInfo, $this->project->formData ?? []);
+        $result = $this->dateResourceParameterInfoProvider->getData($parameterDataInfo, []);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -150,15 +146,13 @@ class DateResourceParameterInfoProviderTest extends TestCase
      */
     public function test_DateResourceParameterInfoProvider_with_class_form_data_returned($parameterDataInfo, $formData, $expectedResult)
     {
-        $this->project->formData = [
+        $formData = [
             'fakeParameterName' => $formData,
         ];
-        
-        $this->expectedResult = $expectedResult;
 
-        $result = $this->dateResourceParameterInfoProvider->getData($parameterDataInfo,  $this->project->formData ?? []);
+        $result = $this->dateResourceParameterInfoProvider->getData($parameterDataInfo, $formData);
 
-        $this->assertEquals($this->expectedResult, $result);
+        $this->assertEquals($expectedResult, $result);
     }
 
     public function classFormDataProvider()

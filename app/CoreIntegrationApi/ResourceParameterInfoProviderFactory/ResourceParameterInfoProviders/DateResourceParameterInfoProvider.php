@@ -4,6 +4,19 @@ namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourcePa
 
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\ResourceParameterInfoProvider;
 
+// ! Start here ******************************************************************
+// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
+// ! (sub DateResourceParameterInfoProvider)
+// [x] read over
+// [x] test groups, rest, context
+// [x] add return type : void
+// [x] testing what I need to test
+// 'date' => ['date'],
+// 'timestamp' => ['Timestamp'],
+// 'datetime' => ['datetime'],
+// 'year' => ['year'],
+
+// TODO: put link here for were I got the data
 class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
 {
     protected $apiDataType = 'date';
@@ -11,15 +24,15 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
 
     protected function getParameterData(): void
     {
-        $this->checkForDatetime();
-        $this->checkForTimestamp();
-        $this->checkForYear();
-        $this->checkForDate();
+        $this->isDatetime();
+        $this->isTimestamp();
+        $this->isYear();
+        $this->isDate();
     }
 
-    protected function checkForDatetime()
+    protected function isDatetime()
     {
-        if (!$this->dateType && $this->isDateType('datetime')) {
+        if ($this->dateTypeIsNotSet() && $this->isDateType('datetime')) {
             
             $this->dateType = true;
 
@@ -37,9 +50,9 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function checkForTimestamp()
+    protected function isTimestamp()
     {
-        if (!$this->dateType && $this->isDateType('timestamp')) {
+        if ($this->dateTypeIsNotSet() && $this->isDateType('timestamp')) {
             
             $this->dateType = true;
 
@@ -57,9 +70,9 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function checkForYear()
+    protected function isYear()
     {
-        if (!$this->dateType && $this->isDateType('year')) {
+        if ($this->dateTypeIsNotSet() && $this->isDateType('year')) {
             
             $this->dateType = true;
 
@@ -77,9 +90,9 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function checkForDate()
+    protected function isDate()
     {
-        if (!$this->dateType && $this->isDateType('date')) {
+        if ($this->dateTypeIsNotSet() && $this->isDateType('date')) {
             
             $this->dateType = true;
 
@@ -95,6 +108,11 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
                 'max' => '9999-12-31',
             ];
         }
+    }
+
+    protected function dateTypeIsNotSet(): bool
+    {
+        return !$this->dateType;
     }
 
     protected function isDateType($dateString)
