@@ -17,7 +17,7 @@ abstract class ResourceParameterInfoProvider
         $this->parameterAttributeArray = $parameterAttributeArray;
         $this->parameterDataType = $parameterAttributeArray['type'];
         
-        $this->getParameterData();
+        $this->setParameterData();
         $this->isParameterRequired();
         
         $this->mergeResourceParameterFormData($resourceFormData);
@@ -29,7 +29,7 @@ abstract class ResourceParameterInfoProvider
         ];
     }
 
-    abstract protected function getParameterData(): void; // needs to set $this->apiDataType : string, $this->defaultValidationRules : array, $this->formData : array
+    abstract protected function setParameterData(): void; // needs to set $this->apiDataType : string, $this->defaultValidationRules : array, $this->formData : array
 
     protected function isParameterRequired()
     {

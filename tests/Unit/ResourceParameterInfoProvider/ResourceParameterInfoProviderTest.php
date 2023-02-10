@@ -53,7 +53,7 @@ class ResourceParameterInfoProviderTest extends TestCase
 // test class
 class TestResourceParameterInfoProvider extends ResourceParameterInfoProvider
 {
-    protected function getParameterData(): void
+    protected function setParameterData(): void
     {
         $this->defaultValidationRules = [];
         $this->formData = [];

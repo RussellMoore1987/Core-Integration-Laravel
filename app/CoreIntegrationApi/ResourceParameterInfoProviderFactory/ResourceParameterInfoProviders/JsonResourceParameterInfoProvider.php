@@ -8,7 +8,7 @@ class JsonResourceParameterInfoProvider extends ResourceParameterInfoProvider
 {
     protected $apiDataType = 'json';
 
-    protected function getParameterData(): void
+    protected function setParameterData(): void
     {
         $this->formData = [];
         $this->defaultValidationRules = [];

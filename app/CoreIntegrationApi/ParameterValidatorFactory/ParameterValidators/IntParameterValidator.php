@@ -16,6 +16,7 @@ class IntParameterValidator implements ParameterValidator
     private $errors;
     private $processedAsArray = false;
     private $requestError = false;
+    private $validatorDataCollector;
 
     public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData): void
     {

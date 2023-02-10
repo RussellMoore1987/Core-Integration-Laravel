@@ -8,7 +8,7 @@ class StringResourceParameterInfoProvider extends ResourceParameterInfoProvider
 {
     protected $apiDataType = 'string';
 
-    protected function getParameterData(): void
+    protected function setParameterData(): void
     {
         $this->formData = [];
         $this->defaultValidationRules = [];

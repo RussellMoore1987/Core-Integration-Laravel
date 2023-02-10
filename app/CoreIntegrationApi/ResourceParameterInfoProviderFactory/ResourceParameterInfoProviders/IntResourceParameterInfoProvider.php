@@ -11,7 +11,7 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
     protected $intType;
     protected $min0 = 'min:0';
 
-    protected function getParameterData(): void
+    protected function setParameterData(): void
     {
         $this->isTinyInt();
         $this->isSmallInt();
