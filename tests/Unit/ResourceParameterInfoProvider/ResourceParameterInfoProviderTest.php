@@ -19,23 +19,23 @@ class ResourceParameterInfoProviderTest extends TestCase
     ];
 
     /**
-     * @dataProvider exceptionParameterProvider
+     * @dataProvider attributeExceptionProvider
      * @group rest
      * @group context
      * @group allRequestMethods
      */
-    public function test_TestResourceParameterInfoProvider_throws_exception_when_required_properties_are_not_set(string $classProperty, int $code, $propertyValue): void
+    public function test_TestResourceParameterInfoProvider_throws_exception_when_required_properties_are_not_set(string $classAttribute, int $code, $attributeValue): void
     {
         $this->expectException(ResourceParameterInfoProviderException::class);
-        $this->expectErrorMessage("The class attribute {$classProperty} must be set in the child class \"Tests\Unit\ResourceParameterInfoProvider\TestResourceParameterInfoProvider\".");
+        $this->expectErrorMessage("The class attribute {$classAttribute} must be set in the child class \"Tests\Unit\ResourceParameterInfoProvider\TestResourceParameterInfoProvider\".");
         $this->expectExceptionCode($code);
 
         $testResourceParameterInfoProvider = new TestResourceParameterInfoProvider();
-        $testResourceParameterInfoProvider->$classProperty = $propertyValue;
+        $testResourceParameterInfoProvider->$classAttribute = $attributeValue;
 
         $testResourceParameterInfoProvider->getData($this->parameterAttributeArray, []);
     }
-    public function exceptionParameterProvider(): array
+    public function attributeExceptionProvider(): array
     {
         return [
             'apiDataTypeException' => [

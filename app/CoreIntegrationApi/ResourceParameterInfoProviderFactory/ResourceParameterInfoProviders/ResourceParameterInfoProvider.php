@@ -34,10 +34,11 @@ abstract class ResourceParameterInfoProvider
     }
 
     abstract protected function setParameterData(): void; // see requirements below
-    // child class needs to set $this->apiDataType : string
+    // child class needs to set
+    // $this->apiDataType : string
     // $this->defaultValidationRules : array
     // $this->formData : array
-    // see example IntResourceParameterInfoProvider.php
+    // see example IntResourceParameterInfoProvider
 
     protected function isParameterRequired()
     {
@@ -61,18 +62,18 @@ abstract class ResourceParameterInfoProvider
     protected function validateRequiredChildClassConstruction(): void
     {
         if (!$this->apiDataType) {
-            $this->throwException('The class attribute apiDataType must be set in the child class "' . get_class($this) . '".', 100);
+            $this->throwException('apiDataType', 100);
         }
         if (!$this->defaultValidationRules) {
-            $this->throwException('The class attribute defaultValidationRules must be set in the child class "' . get_class($this) . '".', 101);
+            $this->throwException('defaultValidationRules', 101);
         }
         if (!$this->formData) {
-            $this->throwException('The class attribute formData must be set in the child class "' . get_class($this) . '".', 102);
+            $this->throwException('formData', 102);
         }
     }
 
-    protected function throwException(string $message, int $code): void
+    protected function throwException(string $attribute, int $code): void
     {
-        throw new ResourceParameterInfoProviderException($message, $code);
+        throw new ResourceParameterInfoProviderException("The class attribute {$attribute} must be set in the child class \"" . get_class($this) . '".', $code);
     }
 }
