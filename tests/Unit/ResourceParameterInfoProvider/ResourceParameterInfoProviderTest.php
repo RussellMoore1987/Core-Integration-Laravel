@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\ResourceParameterInfoProvider;
 
+use App\CoreIntegrationApi\Exceptions\ResourceParameterInfoProviderException;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\ResourceParameterInfoProvider;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\IntResourceParameterInfoProvider;
-use Exception;
 use Tests\TestCase;
 
 class ResourceParameterInfoProviderTest extends TestCase
@@ -12,26 +12,48 @@ class ResourceParameterInfoProviderTest extends TestCase
     protected $parameterAttributeArray = [
         'field' => 'fakeParameterName',
         'type' => 'tinyint',
-        'null' => 'no',
+        'null' => 'yes',
         'key' => '',
         'default' => null,
         'extra' => '',
     ];
 
     /**
+     * @dataProvider exceptionParameterProvider
      * @group rest
      * @group context
      * @group allRequestMethods
      */
-    public function test_TestResourceParameterInfoProvider_throws_exception_when_apiDataType_is_not_set(): void
+    public function test_TestResourceParameterInfoProvider_throws_exception_when_required_properties_are_not_set(string $classProperty, int $code, $propertyValue): void
     {
-
-        $this->expectException(Exception::class);
-        $this->expectErrorMessage('No apiDataType class property set, this must be set in the child class');
+        $this->expectException(ResourceParameterInfoProviderException::class);
+        $this->expectErrorMessage("The class attribute {$classProperty} must be set in the child class \"Tests\Unit\ResourceParameterInfoProvider\TestResourceParameterInfoProvider\".");
+        $this->expectExceptionCode($code);
 
         $testResourceParameterInfoProvider = new TestResourceParameterInfoProvider();
+        $testResourceParameterInfoProvider->$classProperty = $propertyValue;
 
         $testResourceParameterInfoProvider->getData($this->parameterAttributeArray, []);
+    }
+    public function exceptionParameterProvider(): array
+    {
+        return [
+            'apiDataTypeException' => [
+                'apiDataType',
+                100,
+                null
+            ],
+            'defaultValidationRulesException' => [
+                'defaultValidationRules',
+                101,
+                []
+            ],
+            'formDataException' => [
+                'formData',
+                102,
+                []
+            ],
+        ];
     }
 
     /**
@@ -42,6 +64,7 @@ class ResourceParameterInfoProviderTest extends TestCase
     public function test_ResourceParameterInfoProvider_isParameterRequired_sets_data_correctly(): void
     {
         $intResourceParameterInfoProvider = new IntResourceParameterInfoProvider();
+        $this->parameterAttributeArray['null'] = 'no';
 
         $result = $intResourceParameterInfoProvider->getData($this->parameterAttributeArray, []);
         
@@ -53,9 +76,12 @@ class ResourceParameterInfoProviderTest extends TestCase
 // test class
 class TestResourceParameterInfoProvider extends ResourceParameterInfoProvider
 {
+    public $apiDataType = 'date';
+    public $defaultValidationRules = ['min:-128'];
+    public $formData = ['min' => -128];
+
     protected function setParameterData(): void
     {
-        $this->defaultValidationRules = [];
-        $this->formData = [];
+        // just setting parameters individually per test
     }
 }

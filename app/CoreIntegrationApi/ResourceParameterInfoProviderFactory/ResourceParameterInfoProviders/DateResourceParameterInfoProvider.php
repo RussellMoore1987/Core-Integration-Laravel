@@ -31,7 +31,7 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         $this->isDate();
     }
 
-    protected function isDatetime()
+    protected function isDatetime(): void
     {
         if ($this->dateTypeIsNotSet() && $this->isDateType('datetime')) {
             
@@ -51,7 +51,7 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isTimestamp()
+    protected function isTimestamp(): void
     {
         if ($this->dateTypeIsNotSet() && $this->isDateType('timestamp')) {
             
@@ -71,7 +71,7 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isYear()
+    protected function isYear(): void
     {
         if ($this->dateTypeIsNotSet() && $this->isDateType('year')) {
             
@@ -91,7 +91,7 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isDate()
+    protected function isDate(): void
     {
         if ($this->dateTypeIsNotSet() && $this->isDateType('date')) {
             
@@ -116,8 +116,8 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         return !$this->dateType;
     }
 
-    protected function isDateType($dateString)
+    protected function isDateType($dateString): bool
     {
-        return str_contains($this->parameterDataType, $dateString) ? true : false;
+        return str_contains($this->parameterDataType, $dateString);
     }
 }

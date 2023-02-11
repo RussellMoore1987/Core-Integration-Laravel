@@ -10,7 +10,7 @@ class FloatResourceParameterInfoProvider extends ResourceParameterInfoProvider
 
     protected function setParameterData(): void
     {
-        $this->formData = [];
-        $this->defaultValidationRules = [];
+        $this->formData = ['min' => -128];
+        $this->defaultValidationRules = ['min:-128'];
     }
 }
