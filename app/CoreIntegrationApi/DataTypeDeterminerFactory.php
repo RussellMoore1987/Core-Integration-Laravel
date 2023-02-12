@@ -15,7 +15,6 @@ abstract class DataTypeDeterminerFactory
         'date' => 'date',
         'int' => 'int',
         'float' => 'float',
-        'id' => 'id',
         'orderby' => 'orderby',
         'select' => 'select',
         'includes' => 'includes',

@@ -5,14 +5,6 @@ namespace Tests\Unit\ResourceParameterInfoProvider;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\DateResourceParameterInfoProvider;
 use Tests\TestCase;
 
-// ! Start here ******************************************************************
-// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
-// ! (sub ...)
-// [x] read over
-// [x] test groups, rest, context
-// [x] add return type : void
-// [x] testing what I need to test
-
 class DateResourceParameterInfoProviderTest extends TestCase
 {
     protected $dateResourceParameterInfoProvider;

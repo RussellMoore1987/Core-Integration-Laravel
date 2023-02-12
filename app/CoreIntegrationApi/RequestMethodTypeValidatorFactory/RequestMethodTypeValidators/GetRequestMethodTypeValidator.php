@@ -7,10 +7,30 @@ use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
+// ! Start here ******************************************************************
+// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
+// ! (sub ParameterValidatorFactory (change if statements to api data types), PostRequestMethodTypeValidator.php)
+// [] read over
+// [x] add return type : void
+// [] add test
+// test to do
+// [] read over
+// [] test groups, rest, context
+// [] add return type : void
+// [] testing what I need to test
+
 class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
 {
     protected $parameterValidatorFactory;
-    protected $defaultAcceptableParameters = ['per_page', 'perpage', 'page', 'column_data', 'columndata', 'form_data', 'formdata'];
+    protected $validatorDataCollector;
+    protected $defaultAcceptableParameters = [
+        'per_page',
+        'perpage',
+        'page',
+        'column_data',
+        'columndata',
+        'form_data',
+        'formdata'];
     protected $getMethodParameterValidatorDefaults = [
         'columns' => 'select',
         'select' => 'select',
@@ -34,6 +54,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         $parameters = $this->validatorDataCollector->parameters;
         $resourceInfo = $this->validatorDataCollector->resourceInfo;
 
+        // ! start here *********************************************
         foreach ($parameters as $key => $value) {
             $key = strtolower($key);
             $data = [$key => $value];
@@ -43,7 +64,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
             } elseif (array_key_exists($key, $this->getMethodParameterValidatorDefaults)) {
                 $dataType = $this->getMethodParameterValidatorDefaults[$key];
                 $this->getMethodParameterValidator($dataType, $data);
-            } elseif (in_array($key ,$this->defaultAcceptableParameters)) {
+            } elseif (in_array($key, $this->defaultAcceptableParameters)) {
                 $this->handleDefaultParameters($key, $value);
             } else {
                 $this->validatorDataCollector->setRejectedParameters([
@@ -58,13 +79,13 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         $this->checkIfValidRequest();
     }
 
-    protected function getMethodParameterValidator($dataType, $data)
+    protected function getMethodParameterValidator($dataType, $data): void
     {
         $parameterValidator = $this->parameterValidatorFactory->getFactoryItem($dataType);
         $parameterValidator->validate($this->validatorDataCollector, $data);
     }
 
-    protected function handleDefaultParameters($key, $value)
+    protected function handleDefaultParameters($key, $value): void
     {
         if (in_array($key, ['perpage', 'per_page'])) {
             $this->setPerPageParameter($value);
@@ -87,7 +108,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         }
     }
 
-    protected function setPerPageParameter($value)
+    protected function setPerPageParameter($value): void
     {
         if ($this->isInt($value)) {
             $this->validatorDataCollector->setAcceptedParameters([
@@ -103,7 +124,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         }
     }
     
-    protected function setPageParameter($value)
+    protected function setPageParameter($value): void
     {
         if ($this->isInt($value)) {
             $this->validatorDataCollector->setAcceptedParameters([
@@ -119,7 +140,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         }
     }
 
-    protected function isInt($value)
+    protected function isInt($value): bool
     {
         return is_numeric($value) && !str_contains($value, '.');
     }
