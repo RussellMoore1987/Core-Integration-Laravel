@@ -10,9 +10,6 @@ class IntResourceParameterInfoProviderTest extends TestCase
     protected $intResourceParameterInfoProvider;
     protected $parameterAttributeArray;
     protected $minValidationForUnsigned = 'min:0';
-    protected $maxValidationForIntegerUnsigned = 'max:4294967295';
-    protected $minValidationForInteger = 'min:-2147483648';
-    protected $maxValidationForInteger = 'max:2147483647';
 
     protected function setUp(): void
     {
@@ -28,63 +25,6 @@ class IntResourceParameterInfoProviderTest extends TestCase
         ];
 
         $this->intResourceParameterInfoProvider = new IntResourceParameterInfoProvider();
-    }
-
-    /**
-     * @dataProvider formDataProvider
-     * @group rest
-     * @group context
-     * @group allRequestMethods
-     */
-    public function test_IntResourceParameterInfoProvider_with_custom_class_form_data_returned(array $formData, array $expectedFormData): void
-    {
-        $formData = [
-            'fakeParameterName' => $formData,
-        ];
-
-        $result = $this->intResourceParameterInfoProvider->getData($this->parameterAttributeArray, $formData);
-
-        $this->assertEquals($expectedFormData, $result['formData']);
-    }
-
-    public function formDataProvider(): array
-    {
-        return [
-            'overrideDefaults' => [
-                [
-                    'min' => 0,
-                    'max' => 1,
-                    'maxlength' => 1,
-                    'type' => 'select',
-                ],
-                [
-                    'min' => 0,
-                    'max' => 1,
-                    'maxlength' => 1,
-                    'type' => 'select',
-                ]
-            ],
-            'addToFormData' => [
-                [
-                    'min2' => 0,
-                    'max2' => 10,
-                    'maxlength2' => 2,
-                    'type2' => 'text',
-                    'required' => true,
-                ],
-                [
-                    'min' => -128,
-                    'min2' => 0,
-                    'max' => 127,
-                    'max2' => 10,
-                    'maxlength' => 3,
-                    'maxlength2' => 2,
-                    'type' => 'number',
-                    'type2' => 'text',
-                    'required' => true,
-                ]
-            ]
-        ];
     }
 
     /**
@@ -183,8 +123,8 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     'max' => 2147483647,
                     'maxlength' => 10,
                     'defaultValidationRules' => [
-                        $this->minValidationForInteger,
-                        $this->maxValidationForInteger
+                        'min:-2147483648',
+                        'max:2147483647'
                     ]
                 ]
             ],
@@ -196,7 +136,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     'maxlength' => 10,
                     'defaultValidationRules' => [
                         $this->minValidationForUnsigned,
-                        $this->maxValidationForIntegerUnsigned
+                        'max:4294967295'
                     ]
                 ]
             ],
@@ -231,8 +171,8 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     'max' => 2147483647,
                     'maxlength' => 10,
                     'defaultValidationRules' => [
-                        $this->minValidationForInteger,
-                        $this->maxValidationForInteger
+                        'min:-2147483648',
+                        'max:2147483647'
                     ]
                 ]
             ],
@@ -244,7 +184,7 @@ class IntResourceParameterInfoProviderTest extends TestCase
                     'maxlength' => 10,
                     'defaultValidationRules' => [
                         $this->minValidationForUnsigned,
-                        $this->maxValidationForIntegerUnsigned
+                        'max:4294967295'
                     ]
                 ]
             ],

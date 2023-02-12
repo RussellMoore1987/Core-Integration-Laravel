@@ -4,20 +4,7 @@ namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourcePa
 
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\ResourceParameterInfoProvider;
 
-// ! Start here ******************************************************************
-// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
-// ! (sub DateResourceParameterInfoProvider)
-// [] read over
-// [] test groups, rest, context
-// [] add return type : void
-// [] testing what I need to test
-// 'date' => ['date'],
-// 'timestamp' => ['Timestamp'],
-// 'datetime' => ['datetime'],
-// 'year' => ['year'],
-// add different exceptions to past tests
-
-// TODO: put link here for were I got the data
+// ? data type size https://dev.mysql.com/doc/refman/8.0/en/datetime.html
 class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
 {
     protected $apiDataType = 'date';
