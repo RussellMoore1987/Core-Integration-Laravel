@@ -2,6 +2,7 @@
 
 namespace App\CoreIntegrationApi;
 
+use App\CoreIntegrationApi\Exceptions\RequestMethodTypeValidatorFactoryException;
 use Illuminate\Support\Facades\App;
 
 abstract class RequestMethodTypeFactory
@@ -21,7 +22,7 @@ abstract class RequestMethodTypeFactory
         $requestMethod = strtolower($requestMethod);
         
         if (!array_key_exists($requestMethod, $this->factoryReturnArray)) {
-            throw new \Exception("RequestMethodTypeFactory: Invalid request method type \"$requestMethod\"");
+            throw new RequestMethodTypeValidatorFactoryException("RequestMethodTypeFactory: Invalid request method type \"$requestMethod\"");
         }
 
         return App::make($this->factoryReturnArray[$requestMethod]);

@@ -12,7 +12,6 @@ use Tests\TestCase;
 // [x] test groups, rest, context
 // [x] add return type : void
 // [x] testing what I need to test
-// add different/specific exceptions to past tests, like ResourceParameterInfoProviderException
 
 class DateResourceParameterInfoProviderTest extends TestCase
 {
