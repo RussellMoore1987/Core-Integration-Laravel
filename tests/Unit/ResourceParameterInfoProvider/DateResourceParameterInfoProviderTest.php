@@ -8,22 +8,15 @@ use Tests\TestCase;
 // ! Start here ******************************************************************
 // ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
 // ! (sub DateResourceParameterInfoProvider)
-// [] read over
-// [] test groups, rest, context
-// [] add return type : void
-// [] testing what I need to test
-// 'date' => ['date'],
-// 'timestamp' => ['Timestamp'],
-// 'datetime' => ['datetime'],
-// 'year' => ['year'],
+// [x] read over
+// [x] test groups, rest, context
+// [x] add return type : void
+// [x] testing what I need to test
 // add different/specific exceptions to past tests, like ResourceParameterInfoProviderException
-// *** look over changes made, when tired
 
 class DateResourceParameterInfoProviderTest extends TestCase
 {
-    protected $project;
     protected $dateResourceParameterInfoProvider;
-    protected $expectedResult;
     protected $parameterInfo = [
         'field' => 'fakeParameterName',
         'type' => 'datetime',
@@ -42,14 +35,17 @@ class DateResourceParameterInfoProviderTest extends TestCase
 
     /**
      * @dataProvider dateResourceParameterInfoProvider
+     * @group rest
+     * @group context
+     * @group allRequestMethods
      */
-    public function test_DateResourceParameterInfoProvider_default_return_values($parameterDataType, $expectedResult): void
+    public function test_DateResourceParameterInfoProvider_return_default_values($parameterDataType, $expectedResultPieces): void
     {
         $this->parameterInfo['type'] = $parameterDataType;
 
         $result = $this->dateResourceParameterInfoProvider->getData($this->parameterInfo, []);
 
-        $this->assertEquals($expectedResult, $result);
+        $this->assertEquals($this->getExpectedResult($expectedResultPieces), $result);
     }
 
     public function dateResourceParameterInfoProvider(): array
@@ -58,14 +54,9 @@ class DateResourceParameterInfoProviderTest extends TestCase
             'datetime' => [
                 'datetime',
                 [
-                    'apiDataType' => 'date',
-                    'formData' => [
-                        'type' => 'date',
-                        'min' => '1000-01-01 00:00:00',
-                        'max' => '9999-12-31 23:59:59',
-                    ],
+                    'min' => '1000-01-01 00:00:00',
+                    'max' => '9999-12-31 23:59:59',
                     'defaultValidationRules' => [
-                        'date',
                         'after_or_equal:1000-01-01 00:00:00',
                         'before_or_equal:9999-12-31 23:59:59',
                     ],
@@ -74,14 +65,9 @@ class DateResourceParameterInfoProviderTest extends TestCase
             'timestamp' => [
                 'timestamp',
                 [
-                    'apiDataType' => 'date',
-                    'formData' => [
-                        'type' => 'date',
-                        'min' => '1970-01-01 00:00:01',
-                        'max' => '2038-01-19 03:14:07',
-                    ],
+                    'min' => '1970-01-01 00:00:01',
+                    'max' => '2038-01-19 03:14:07',
                     'defaultValidationRules' => [
-                        'date',
                         'after_or_equal:1970-01-01 00:00:01',
                         'before_or_equal:2038-01-19 03:14:07',
                     ],
@@ -90,14 +76,9 @@ class DateResourceParameterInfoProviderTest extends TestCase
             'year' => [
                 'year',
                 [
-                    'apiDataType' => 'date',
-                    'formData' => [
-                        'type' => 'date',
-                        'min' => '1901',
-                        'max' => '2155',
-                    ],
+                    'min' => '1901',
+                    'max' => '2155',
                     'defaultValidationRules' => [
-                        'date',
                         'after_or_equal:1901',
                         'before_or_equal:2155',
                     ],
@@ -106,19 +87,31 @@ class DateResourceParameterInfoProviderTest extends TestCase
             'date' => [
                 'date',
                 [
-                    'apiDataType' => 'date',
-                    'formData' => [
-                        'type' => 'date',
-                        'min' => '1000-01-01',
-                        'max' => '9999-12-31',
-                    ],
+                    'min' => '1000-01-01',
+                    'max' => '9999-12-31',
                     'defaultValidationRules' => [
-                        'date',
                         'after_or_equal:1000-01-01',
                         'before_or_equal:9999-12-31',
                     ],
                 ],
             ],
+        ];
+    }
+
+    protected function getExpectedResult(array $expectedResultPieces): array
+    {
+        return [
+            'apiDataType' => 'date',
+            'formData' => [
+                'type' => 'date',
+                'min' => $expectedResultPieces['min'],
+                'max' => $expectedResultPieces['max'],
+            ],
+            'defaultValidationRules' => [
+                'date',
+                $expectedResultPieces['defaultValidationRules'][0],
+                $expectedResultPieces['defaultValidationRules'][1]
+            ]
         ];
     }
 }
