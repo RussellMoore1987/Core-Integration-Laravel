@@ -23,15 +23,20 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
 {
     protected $parameterValidatorFactory;
     protected $validatorDataCollector;
-    protected $defaultAcceptableParameters = [
+    protected $resourceInfo;
+    protected $parameterType;
+    protected $parameterName;
+    protected $parameterValue;
+    protected $defaultGetParameters = [
         'per_page',
         'perpage',
         'page',
         'column_data',
         'columndata',
         'form_data',
-        'formdata'];
-    protected $getMethodParameterValidatorDefaults = [
+        'formdata',
+    ];
+    protected $defaultResourceParameters = [
         'columns' => 'select',
         'select' => 'select',
         'orderby' => 'orderby',
@@ -51,38 +56,58 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
     public function validateRequest(ValidatorDataCollector &$validatorDataCollector): void
     {
         $this->validatorDataCollector = $validatorDataCollector;
+        $this->resourceInfo = $this->validatorDataCollector->resourceInfo;
         $parameters = $this->validatorDataCollector->parameters;
-        $resourceInfo = $this->validatorDataCollector->resourceInfo;
 
         // ! start here *********************************************
-        foreach ($parameters as $key => $value) {
-            $key = strtolower($key);
-            $data = [$key => $value];
-            if (array_key_exists($key, $resourceInfo['acceptableParameters'])) {
-                $dataType = $resourceInfo['acceptableParameters'][$key]['type'];
-                $this->getMethodParameterValidator($dataType, $data);
-            } elseif (array_key_exists($key, $this->getMethodParameterValidatorDefaults)) {
-                $dataType = $this->getMethodParameterValidatorDefaults[$key];
-                $this->getMethodParameterValidator($dataType, $data);
-            } elseif (in_array($key, $this->defaultAcceptableParameters)) {
-                $this->handleDefaultParameters($key, $value);
-            } else {
-                $this->validatorDataCollector->setRejectedParameters([
-                    $key => [
-                        'value' => $value,
-                        'parameterError' => 'This is an invalid parameter for this resource/endpoint.'
-                    ]
-                ]);
-            }
+        foreach ($parameters as $parameterName => $parameterValue) {
+            $this->parameterType = false;
+            $this->parameterName = strtolower($parameterName);
+            $this->parameterValue = $parameterValue;
+
+            $this->isAcceptableParametersThenValidate();
+            $this->isDefaultResourceParametersThenValidate();
+            $this->isDefaultGetParametersThenValidate();
+            $this->isInvalidParametersThenRejected();
         }
 
         $this->checkIfValidRequest();
+    }
+
+    protected function isAcceptableParametersThenValidate(): void
+    {
+        // TODO: test for vulnerabilities accessing or filtering based off of password or something like that ($this->resourceInfo['acceptableParameters'])
+        if ($this->isParameterTypeNotSet() && array_key_exists($this->parameterName, $this->resourceInfo['acceptableParameters'])) {
+            $this->parameterType = true;
+
+            $dataType = $this->resourceInfo['acceptableParameters'][$this->parameterName]['type'];
+            $this->getMethodParameterValidator($dataType, [$this->parameterName => $this->parameterValue]);
+        }
+    }
+
+    protected function isDefaultResourceParametersThenValidate(): void
+    {
+        if ($this->isParameterTypeNotSet() && array_key_exists($this->parameterName, $this->defaultResourceParameters)) {
+            $this->parameterType = true;
+
+            $dataType = $this->defaultResourceParameters[$this->parameterName];
+            $this->getMethodParameterValidator($dataType, [$this->parameterName => $this->parameterValue]);
+        }
     }
 
     protected function getMethodParameterValidator($dataType, $data): void
     {
         $parameterValidator = $this->parameterValidatorFactory->getFactoryItem($dataType);
         $parameterValidator->validate($this->validatorDataCollector, $data);
+    }
+
+    protected function isDefaultGetParametersThenValidate()
+    {
+        if ($this->isParameterTypeNotSet() && in_array($this->parameterName, $this->defaultGetParameters)) {
+            $this->parameterType = true;
+
+            $this->handleDefaultParameters($this->parameterName, $this->parameterValue);
+        }
     }
 
     protected function handleDefaultParameters($key, $value): void
@@ -106,6 +131,23 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
                 ]
             ]);
         }
+    }
+
+    protected function isInvalidParametersThenRejected(): void
+    {
+        if ($this->isParameterTypeNotSet()) {
+            $this->validatorDataCollector->setRejectedParameters([
+                $this->parameterName => [
+                    'value' => $this->parameterValue,
+                    'parameterError' => 'This is an invalid parameter for this resource/endpoint.'
+                ]
+            ]);
+        }
+    }
+
+    public function isParameterTypeNotSet(): bool
+    {
+        return !$this->parameterType;
     }
 
     protected function setPerPageParameter($value): void
