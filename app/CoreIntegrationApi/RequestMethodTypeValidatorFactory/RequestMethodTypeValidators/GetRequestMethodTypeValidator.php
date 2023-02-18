@@ -59,7 +59,6 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         $this->resourceInfo = $this->validatorDataCollector->resourceInfo;
         $parameters = $this->validatorDataCollector->parameters;
 
-        // ! start here *********************************************
         foreach ($parameters as $parameterName => $parameterValue) {
             $this->parameterType = false;
             $this->parameterName = strtolower($parameterName);
@@ -71,12 +70,12 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
             $this->isInvalidParametersThenRejected();
         }
 
-        $this->checkIfValidRequest();
+        $this->ifNotValidRequestThenThrowException();
     }
 
     protected function isAcceptableParametersThenValidate(): void
     {
-        // TODO: test for vulnerabilities accessing or filtering based off of password or something like that ($this->resourceInfo['acceptableParameters'])
+        // TODO: test for vulnerabilities accessing or filtering based off of 'password' or something like that ($this->resourceInfo['acceptableParameters'])
         if ($this->isParameterTypeNotSet() && array_key_exists($this->parameterName, $this->resourceInfo['acceptableParameters'])) {
             $this->parameterType = true;
 
@@ -101,6 +100,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         $parameterValidator->validate($this->validatorDataCollector, $data);
     }
 
+    // ! start here *********************************************
     protected function isDefaultGetParametersThenValidate()
     {
         if ($this->isParameterTypeNotSet() && in_array($this->parameterName, $this->defaultGetParameters)) {
@@ -188,7 +188,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
     }
 
     // TODO: Test this method.
-    protected function checkIfValidRequest(): void
+    protected function ifNotValidRequestThenThrowException(): void
     {
         if ($this->validatorDataCollector->getRejectedParameters()) {
             $response = response()->json([

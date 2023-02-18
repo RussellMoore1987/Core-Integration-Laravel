@@ -25,7 +25,6 @@ abstract class DataTypeDeterminerFactory
     public function getFactoryItem(string $dataType): object
     {
         $dataType = strtolower($dataType);
-        $this->factoryItem = null; // rests if used more then once
 
         if (!array_key_exists($dataType, $this->factoryItemArray)) {
             throw new DataTypeDeterminerFactoryException("The dataType of \"{$dataType}\" is unsupported in the factoryItemArray, located in \"" . get_class($this) . '".');
