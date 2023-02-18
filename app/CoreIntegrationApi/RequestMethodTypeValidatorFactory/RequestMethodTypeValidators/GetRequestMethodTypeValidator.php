@@ -80,7 +80,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         if ($this->isParameterTypeNotSet() && array_key_exists($this->parameterName, $this->resourceInfo['acceptableParameters'])) {
             $this->parameterType = true;
 
-            $dataType = $this->resourceInfo['acceptableParameters'][$this->parameterName]['type'];
+            $dataType = $this->resourceInfo['acceptableParameters'][$this->parameterName]['apiDataType'];
             $this->getMethodParameterValidator($dataType, [$this->parameterName => $this->parameterValue]);
         }
     }

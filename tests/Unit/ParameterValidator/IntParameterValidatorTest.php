@@ -8,6 +8,9 @@ use Tests\TestCase;
 
 class IntParameterValidatorTest extends TestCase
 {
+    protected $validatorDataCollector;
+    protected $intParameterValidator;
+    
     protected function setUp(): void
     {
         parent::setUp();

@@ -16,93 +16,53 @@ use Tests\TestCase;
 
 class ParameterValidatorFactoryTest extends TestCase
 {
+    protected $parameterValidatorFactory;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->ParameterValidatorFactory = new ParameterValidatorFactory();
+        $this->parameterValidatorFactory = new ParameterValidatorFactory();
     }
 
-    // tests ------------------------------------------------------------
     /**
-     * @dataProvider stringParameterProvider
      * @group get
      */
-    public function test_creation_of_string_parameter_validator_class($dataType)  : void
+    public function test_creation_of_string_parameter_validator_class(): void
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem($dataType);
+        $parameterValidator = $this->parameterValidatorFactory->getFactoryItem('string');
 
         $this->assertInstanceOf(StringParameterValidator::class, $parameterValidator);
     }
-    public function stringParameterProvider(): array
-    {
-        return [
-            'varchar' => ['Varchar'],
-            'char' => ['char'],
-            'blob' => ['blob'],
-            'text' => ['text'],
-        ];
-    }
 
     /**
-     * @dataProvider dateParameterProvider
      * @group get
      */
-    public function test_creation_of_date_parameter_validator_class($dataType): void
+    public function test_creation_of_date_parameter_validator_class(): void
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem($dataType);
+        $parameterValidator = $this->parameterValidatorFactory->getFactoryItem('date');
 
         $this->assertInstanceOf(DateParameterValidator::class, $parameterValidator);
     }
-    public function dateParameterProvider(): array
-    {
-        return [
-            'date' => ['date'],
-            'timestamp' => ['Timestamp'],
-            'datetime' => ['datetime'],
-        ];
-    }
 
     /**
-     * @dataProvider intParameterProvider
      * @group get
      */
-    public function test_creation_of_int_parameter_validator_class($dataType): void
+    public function test_creation_of_int_parameter_validator_class(): void
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem($dataType);
+        $parameterValidator = $this->parameterValidatorFactory->getFactoryItem('int');
 
         $this->assertInstanceOf(IntParameterValidator::class, $parameterValidator);
     }
-    public function intParameterProvider(): array
-    {
-        return [
-            'integer' => ['integer'],
-            'int' => ['Int'],
-            'smallint' => ['smallint'],
-            'tinyint' => ['tinyint'],
-            'mediumint' => ['Mediumint'],
-            'bigint' => ['bigint'],
-        ];
-    }
 
     /**
-     * @dataProvider floatParameterProvider
      * @group get
      */
-    public function test_creation_of_float_parameter_validator_class($dataType): void
+    public function test_creation_of_float_parameter_validator_class(): void
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem($dataType);
+        $parameterValidator = $this->parameterValidatorFactory->getFactoryItem('float');
 
         $this->assertInstanceOf(FloatParameterValidator::class, $parameterValidator);
-    }
-    public function floatParameterProvider(): array
-    {
-        return [
-            'decimal' => ['decimal'],
-            'numeric' => ['numeric'],
-            'float' => ['Float'],
-            'double' => ['double'],
-        ];
     }
 
     /**
@@ -110,7 +70,7 @@ class ParameterValidatorFactoryTest extends TestCase
      */
     public function test_creation_of_json_parameter_validator_class(): void
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem('json');
+        $parameterValidator = $this->parameterValidatorFactory->getFactoryItem('json');
 
         $this->assertInstanceOf(JsonParameterValidator::class, $parameterValidator);
     }
@@ -120,7 +80,7 @@ class ParameterValidatorFactoryTest extends TestCase
      */
     public function test_creation_of_order_by_parameter_validator_class(): void
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem('orderBy');
+        $parameterValidator = $this->parameterValidatorFactory->getFactoryItem('orderBy');
 
         $this->assertInstanceOf(OrderByParameterValidator::class, $parameterValidator);
     }
@@ -130,7 +90,7 @@ class ParameterValidatorFactoryTest extends TestCase
      */
     public function test_creation_of_select_parameter_validator_class(): void
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem('select');
+        $parameterValidator = $this->parameterValidatorFactory->getFactoryItem('select');
 
         $this->assertInstanceOf(SelectParameterValidator::class, $parameterValidator);
     }
@@ -140,7 +100,7 @@ class ParameterValidatorFactoryTest extends TestCase
      */
     public function test_creation_of_includes_parameter_validator_class(): void
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem('includes');
+        $parameterValidator = $this->parameterValidatorFactory->getFactoryItem('includes');
 
         $this->assertInstanceOf(IncludesParameterValidator::class, $parameterValidator);
     }
@@ -150,7 +110,7 @@ class ParameterValidatorFactoryTest extends TestCase
      */
     public function test_creation_of_method_calls_parameter_validator_class(): void
     {
-        $parameterValidator = $this->ParameterValidatorFactory->getFactoryItem('methodCalls');
+        $parameterValidator = $this->parameterValidatorFactory->getFactoryItem('methodCalls');
 
         $this->assertInstanceOf(MethodCallsParameterValidator::class, $parameterValidator);
     }

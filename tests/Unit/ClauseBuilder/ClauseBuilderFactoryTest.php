@@ -17,6 +17,8 @@ use Tests\TestCase;
 
 class ClauseBuilderFactoryTest extends TestCase
 {
+    protected $clauseBuilderFactory;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -24,113 +26,108 @@ class ClauseBuilderFactoryTest extends TestCase
         $this->clauseBuilderFactory = new ClauseBuilderFactory();
     }
 
-    // tests ------------------------------------------------------------
     /**
-     * @dataProvider stringDataTypeProvider
+     * @group get
+     * @group rest
+     * @group context
      */
-    public function test_creation_of_string_clause_builder_class($dataType)
+    public function test_creation_of_string_clause_builder_class(): void
     {
-        $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem($dataType);
+        $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('string');
 
         $this->assertInstanceOf(StringWhereClauseBuilder::class, $clauseBuilder);
     }
-    public function stringDataTypeProvider()
-    {
-        return [
-            'varchar' => ['Varchar'],
-            'char' => ['char'],
-            'blob' => ['blob'],
-            'text' => ['Text'],
-        ];
-    }
 
     /**
-     * @dataProvider dateDataTypeProvider
+     * @group get
+     * @group rest
+     * @group context
      */
-    public function test_creation_of_date_clause_builder_class($dataType)
+    public function test_creation_of_date_clause_builder_class(): void
     {
-        $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem($dataType);
+        $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('date');
 
         $this->assertInstanceOf(DateWhereClauseBuilder::class, $clauseBuilder);
     }
-    public function dateDataTypeProvider()
-    {
-        return [
-            'date' => ['date'],
-            'timestamp' => ['Timestamp'],
-            'datetime' => ['Datetime'],
-        ];
-    }
 
     /**
-     * @dataProvider intDataTypeProvider
+     * @group get
+     * @group rest
+     * @group context
      */
-    public function test_creation_of_int_clause_builder_class($dataType)
+    public function test_creation_of_int_clause_builder_class(): void
     {
-        $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem($dataType);
+        $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('int');
 
         $this->assertInstanceOf(IntWhereClauseBuilder::class, $clauseBuilder);
     }
-    public function intDataTypeProvider()
-    {
-        return [
-            'integer' => ['integer'],
-            'int' => ['Int'],
-            'smallint' => ['smallint'],
-            'tinyint' => ['tinyint'],
-            'mediumint' => ['Mediumint'],
-            'bigint' => ['bigint'],
-        ];
-    }
 
     /**
-     * @dataProvider floatDataTypeProvider
+     * @group get
+     * @group rest
+     * @group context
      */
-    public function test_creation_of_float_clause_builder_class($dataType)
+    public function test_creation_of_float_clause_builder_class(): void
     {
-        $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem($dataType);
+        $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('float');
 
         $this->assertInstanceOf(FloatWhereClauseBuilder::class, $clauseBuilder);
     }
-    public function floatDataTypeProvider()
-    {
-        return [
-            'decimal' => ['decimal'],
-            'numeric' => ['numeric'],
-            'float' => ['Float'],
-            'double' => ['double'],
-        ];
-    }
 
-    public function test_creation_of_json_clause_builder_class()
+    /**
+     * @group get
+     * @group rest
+     * @group context
+     */
+    public function test_creation_of_json_clause_builder_class(): void
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('json');
 
         $this->assertInstanceOf(JsonWhereClauseBuilder::class, $clauseBuilder);
     }
 
-    public function test_creation_of_order_by_clause_builder_class()
+    /**
+     * @group get
+     * @group rest
+     * @group context
+     */
+    public function test_creation_of_order_by_clause_builder_class(): void
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('orderBy');
 
         $this->assertInstanceOf(OrderByClauseBuilder::class, $clauseBuilder);
     }
 
-    public function test_creation_of_select_clause_builder_class()
+    /**
+     * @group get
+     * @group rest
+     * @group context
+     */
+    public function test_creation_of_select_clause_builder_class(): void
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('select');
 
         $this->assertInstanceOf(SelectClauseBuilder::class, $clauseBuilder);
     }
 
-    public function test_creation_of_includes_clause_builder_class()
+    /**
+     * @group get
+     * @group rest
+     * @group context
+     */
+    public function test_creation_of_includes_clause_builder_class(): void
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('includes');
 
         $this->assertInstanceOf(IncludesClauseBuilder::class, $clauseBuilder);
     }
 
-    public function test_creation_of_method_calls_clause_builder_class()
+    /**
+     * @group get
+     * @group rest
+     * @group context
+     */
+    public function test_creation_of_method_calls_clause_builder_class(): void
     {
         $clauseBuilder = $this->clauseBuilderFactory->getFactoryItem('methodCalls');
 
