@@ -3,6 +3,7 @@
 namespace App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators;
 
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\RequestMethodTypeValidator;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\DefaultGetParameterValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -19,9 +20,12 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 // [] add return type : void
 // [] testing what I need to test
 
+// ! start here *********************************************
+// TODO: make a test for this class
 class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
 {
     protected $parameterValidatorFactory;
+    protected $defaultGetParameterValidator;
     protected $validatorDataCollector;
     protected $resourceInfo;
     protected $parameterType;
@@ -48,9 +52,10 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         'includes' => 'includes',
     ];
 
-    public function __construct(ParameterValidatorFactory $parameterValidatorFactory)
+    public function __construct(ParameterValidatorFactory $parameterValidatorFactory, DefaultGetParameterValidator $defaultGetParameterValidator)
     {
         $this->parameterValidatorFactory = $parameterValidatorFactory;
+        $this->defaultGetParameterValidator = $defaultGetParameterValidator;
     }
 
     public function validateRequest(ValidatorDataCollector &$validatorDataCollector): void
@@ -75,7 +80,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
 
     protected function isAcceptableParametersThenValidate(): void
     {
-        // TODO: test for vulnerabilities accessing or filtering based off of 'password' or something like that ($this->resourceInfo['acceptableParameters'])
+        // TODO-Security: test for vulnerabilities accessing or filtering based off of 'password' or something like that ($this->resourceInfo['acceptableParameters'])
         if ($this->isParameterTypeNotSet() && array_key_exists($this->parameterName, $this->resourceInfo['acceptableParameters'])) {
             $this->parameterType = true;
 
@@ -94,100 +99,24 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         }
     }
 
+    // TODO: test this there, and has
     protected function getMethodParameterValidator($dataType, $data): void
     {
         $parameterValidator = $this->parameterValidatorFactory->getFactoryItem($dataType);
         $parameterValidator->validate($this->validatorDataCollector, $data);
     }
 
-    // ! start here *********************************************
+    // TODO: test this there, and has
     protected function isDefaultGetParametersThenValidate()
     {
         if ($this->isParameterTypeNotSet() && in_array($this->parameterName, $this->defaultGetParameters)) {
             $this->parameterType = true;
 
-            $this->handleDefaultParameters($this->parameterName, $this->parameterValue);
+            $this->defaultGetParameterValidator->validate($this->parameterName, $this->parameterValue, $this->validatorDataCollector);
         }
     }
 
-
-
-
-
-
-
-
-    protected function handleDefaultParameters($key, $value): void
-    {
-        if (in_array($key, ['perpage', 'per_page'])) {
-            $this->setPerPageParameter($value);
-        } elseif ($key == 'page') {
-            $this->setPageParameter($value);
-        } elseif (in_array($key, ['columndata', 'column_data'])) {
-            $this->validatorDataCollector->setAcceptedParameters([
-                'columnData' => [
-                    'value' => $value,
-                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this resource/endpoint'
-                ]
-            ]);
-        } elseif (in_array($key, ['formdata', 'form_data'])) {
-            $this->validatorDataCollector->setAcceptedParameters([
-                'formData' => [
-                    'value' => $value,
-                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter form data for this resource/endpoint'
-                ]
-            ]);
-        }
-    }
-
-    protected function setPerPageParameter($value): void
-    {
-        if ($this->isInt($value)) {
-            $this->validatorDataCollector->setAcceptedParameters([
-                'perPage' => (int) $value
-            ]);
-        } else {
-            $this->validatorDataCollector->setRejectedParameters([
-                'perPage' => [
-                    'value' => $value,
-                    'parameterError' => 'This parameter\'s value must be an int.'
-                ]
-            ]);
-        }
-    }
-    
-    protected function setPageParameter($value): void
-    {
-        if ($this->isInt($value)) {
-            $this->validatorDataCollector->setAcceptedParameters([
-                'page' => (int) $value
-            ]);
-        } else {
-            $this->validatorDataCollector->setRejectedParameters([
-                'page' => [
-                    'value' => $value,
-                    'parameterError' => 'This parameter\'s value must be an int.'
-                ]
-            ]);
-        }
-    }
-
-    protected function isInt($value): bool
-    {
-        return is_numeric($value) && !str_contains($value, '.');
-    }
-
-
-
-
-
-
-
-
-
-
-
-
+    // TODO: test this details
     protected function isInvalidParametersThenRejected(): void
     {
         if ($this->isParameterTypeNotSet()) {
@@ -205,7 +134,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         return !$this->parameterType;
     }
 
-    // TODO: Test this method.
+    // TODO: Test this method, exception, also details in full api
     protected function ifNotValidRequestThenThrowException(): void
     {
         if ($this->validatorDataCollector->getRejectedParameters()) {
