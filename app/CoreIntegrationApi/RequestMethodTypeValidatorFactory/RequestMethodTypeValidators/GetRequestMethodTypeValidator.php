@@ -110,6 +110,13 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         }
     }
 
+
+
+
+
+
+
+
     protected function handleDefaultParameters($key, $value): void
     {
         if (in_array($key, ['perpage', 'per_page'])) {
@@ -131,23 +138,6 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
                 ]
             ]);
         }
-    }
-
-    protected function isInvalidParametersThenRejected(): void
-    {
-        if ($this->isParameterTypeNotSet()) {
-            $this->validatorDataCollector->setRejectedParameters([
-                $this->parameterName => [
-                    'value' => $this->parameterValue,
-                    'parameterError' => 'This is an invalid parameter for this resource/endpoint.'
-                ]
-            ]);
-        }
-    }
-
-    public function isParameterTypeNotSet(): bool
-    {
-        return !$this->parameterType;
     }
 
     protected function setPerPageParameter($value): void
@@ -185,6 +175,34 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
     protected function isInt($value): bool
     {
         return is_numeric($value) && !str_contains($value, '.');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    protected function isInvalidParametersThenRejected(): void
+    {
+        if ($this->isParameterTypeNotSet()) {
+            $this->validatorDataCollector->setRejectedParameters([
+                $this->parameterName => [
+                    'value' => $this->parameterValue,
+                    'parameterError' => 'This is an invalid parameter for this resource/endpoint.'
+                ]
+            ]);
+        }
+    }
+
+    public function isParameterTypeNotSet(): bool
+    {
+        return !$this->parameterType;
     }
 
     // TODO: Test this method.

@@ -20,7 +20,7 @@ abstract class ResourceParameterInfoProvider
         $this->parameterDataType = $parameterAttributeArray['type'];
         
         $this->setParameterData();
-        $this->isParameterRequired();
+        $this->isParameterRequiredThenSetParameterInfoAsRequired();
         
         $this->mergeResourceParameterFormData($resourceFormData);
         
@@ -40,7 +40,7 @@ abstract class ResourceParameterInfoProvider
     // $this->formData : array
     // see example IntResourceParameterInfoProvider
 
-    protected function isParameterRequired()
+    protected function isParameterRequiredThenSetParameterInfoAsRequired()
     {
         if (
             $this->parameterAttributeArray['null'] == 'no' &&

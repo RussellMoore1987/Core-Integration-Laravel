@@ -12,13 +12,13 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
 
     protected function setParameterData(): void
     {
-        $this->isDatetime();
-        $this->isTimestamp();
-        $this->isYear();
-        $this->isDate();
+        $this->isDatetimeThenSetParameterInfo();
+        $this->isTimestampThenSetParameterInfo();
+        $this->isYearThenSetParameterInfo();
+        $this->isDateThenSetParameterInfo();
     }
 
-    protected function isDatetime(): void
+    protected function isDatetimeThenSetParameterInfo(): void
     {
         if ($this->dateTypeIsNotSet() && $this->isDateType('datetime')) {
             
@@ -38,7 +38,7 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isTimestamp(): void
+    protected function isTimestampThenSetParameterInfo(): void
     {
         if ($this->dateTypeIsNotSet() && $this->isDateType('timestamp')) {
             
@@ -58,7 +58,7 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isYear(): void
+    protected function isYearThenSetParameterInfo(): void
     {
         if ($this->dateTypeIsNotSet() && $this->isDateType('year')) {
             
@@ -78,7 +78,7 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isDate(): void
+    protected function isDateThenSetParameterInfo(): void
     {
         if ($this->dateTypeIsNotSet() && $this->isDateType('date')) {
             

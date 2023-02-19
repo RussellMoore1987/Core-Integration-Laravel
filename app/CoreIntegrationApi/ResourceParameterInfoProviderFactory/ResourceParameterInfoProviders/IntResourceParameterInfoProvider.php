@@ -13,15 +13,15 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
 
     protected function setParameterData(): void
     {
-        $this->isTinyInt();
-        $this->isSmallInt();
-        $this->isMediumInt();
-        $this->isInteger();
-        $this->isBigInt();
-        $this->isInt();
+        $this->isTinyIntThenSetParameterInfo();
+        $this->isSmallIntThenSetParameterInfo();
+        $this->isMediumIntThenSetParameterInfo();
+        $this->isIntegerThenSetParameterInfo();
+        $this->isBigIntThenSetParameterInfo();
+        $this->isIntThenSetParameterInfo();
     }
 
-    protected function isTinyInt(): void
+    protected function isTinyIntThenSetParameterInfo(): void
     {
         if ($this->intTypeIsNotSet() && $this->isIntType('tinyint')) {
             
@@ -50,7 +50,7 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isSmallInt(): void
+    protected function isSmallIntThenSetParameterInfo(): void
     {
         if ($this->intTypeIsNotSet() && $this->isIntType('smallint')) {
             
@@ -79,7 +79,7 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isMediumInt(): void
+    protected function isMediumIntThenSetParameterInfo(): void
     {
         if ($this->intTypeIsNotSet() && $this->isIntType('mediumint')) {
             
@@ -109,7 +109,7 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isInteger(): void
+    protected function isIntegerThenSetParameterInfo(): void
     {
         if ($this->intTypeIsNotSet() && $this->isIntType('integer')) {
             
@@ -138,7 +138,7 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isBigInt(): void
+    protected function isBigIntThenSetParameterInfo(): void
     {
         if ($this->intTypeIsNotSet() && $this->isIntType('bigint')) {
             
@@ -168,7 +168,7 @@ class IntResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isInt(): void
+    protected function isIntThenSetParameterInfo(): void
     {
         if ($this->intTypeIsNotSet() && $this->isIntType('int')) { // integer
             
