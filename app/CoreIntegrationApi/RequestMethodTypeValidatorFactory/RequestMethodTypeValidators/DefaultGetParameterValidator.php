@@ -7,63 +7,95 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 // TODO: make a test for this class
 class DefaultGetParameterValidator
 {
+    protected $key;
+    protected $value;
     protected $validatorDataCollector;
+    protected $parameterType;
 
     public function validate($key, $value, ValidatorDataCollector &$validatorDataCollector): void
     {
+        $this->parameterType = null; // this is set for resetting purposes
+        $this->key = $key;
+        $this->value = $value;
         $this->validatorDataCollector = $validatorDataCollector;
 
-        if (in_array($key, ['perpage', 'per_page'])) {
-            $this->setPerPageParameter($value);
-        } elseif ($key == 'page') {
-            $this->setPageParameter($value);
-        } elseif (in_array($key, ['columndata', 'column_data'])) {
+        $this->isPerPageParameterThenValidate();
+        $this->isPageParameterThenValidate();
+        $this->isColumnDataParameterThenValidate();
+        $this->isFormDataParameterThenValidate();
+    }
+
+    protected function isPerPageParameterThenValidate(): void
+    {
+        if ($this->parameterTypeIsNotSet() && in_array($this->key, ['perpage', 'per_page'])) {
+            $this->parameterType = true;
+            
+            if ($this->isInt($this->value)) {
+                $this->validatorDataCollector->setAcceptedParameters([
+                    'perPage' => (int) $this->value
+                ]);
+            } else {
+                $this->validatorDataCollector->setRejectedParameters([
+                    'perPage' => [
+                        'value' => $this->value,
+                        'parameterError' => 'This parameter\'s value must be an int.'
+                    ]
+                ]);
+            }
+        }
+    }
+    
+    protected function isPageParameterThenValidate(): void
+    {
+        if ($this->parameterTypeIsNotSet() && $this->key == 'page') {
+            $this->parameterType = true;
+            
+            if ($this->isInt($this->value)) {
+                $this->validatorDataCollector->setAcceptedParameters([
+                    'page' => (int) $this->value
+                ]);
+            } else {
+                $this->validatorDataCollector->setRejectedParameters([
+                    'page' => [
+                        'value' => $this->value,
+                        'parameterError' => 'This parameter\'s value must be an int.'
+                    ]
+                ]);
+            }
+        }
+    }
+
+    protected function isColumnDataParameterThenValidate(): void
+    {
+        if ($this->parameterTypeIsNotSet() && in_array($this->key, ['columndata', 'column_data'])) {
+            $this->parameterType = true;
+            
             $this->validatorDataCollector->setAcceptedParameters([
                 'columnData' => [
-                    'value' => $value,
+                    'value' => $this->value,
                     'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this resource/endpoint'
                 ]
             ]);
-        } elseif (in_array($key, ['formdata', 'form_data'])) {
+        }
+    }
+
+    protected function isFormDataParameterThenValidate(): void
+    {
+        if ($this->parameterTypeIsNotSet() && in_array($this->key, ['formdata', 'form_data'])) {
+            $this->parameterType = true;
+            
             $this->validatorDataCollector->setAcceptedParameters([
                 'formData' => [
-                    'value' => $value,
+                    'value' => $this->value,
                     'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter form data for this resource/endpoint'
                 ]
             ]);
         }
     }
 
-    protected function setPerPageParameter($value): void
+    protected function parameterTypeIsNotSet(): bool
     {
-        if ($this->isInt($value)) {
-            $this->validatorDataCollector->setAcceptedParameters([
-                'perPage' => (int) $value
-            ]);
-        } else {
-            $this->validatorDataCollector->setRejectedParameters([
-                'perPage' => [
-                    'value' => $value,
-                    'parameterError' => 'This parameter\'s value must be an int.'
-                ]
-            ]);
-        }
-    }
-    
-    protected function setPageParameter($value): void
-    {
-        if ($this->isInt($value)) {
-            $this->validatorDataCollector->setAcceptedParameters([
-                'page' => (int) $value
-            ]);
-        } else {
-            $this->validatorDataCollector->setRejectedParameters([
-                'page' => [
-                    'value' => $value,
-                    'parameterError' => 'This parameter\'s value must be an int.'
-                ]
-            ]);
-        }
+        return !$this->parameterType;
     }
 
     protected function isInt($value): bool

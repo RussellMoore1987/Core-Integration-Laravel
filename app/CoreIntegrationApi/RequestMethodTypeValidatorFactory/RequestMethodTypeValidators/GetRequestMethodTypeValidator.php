@@ -8,19 +8,6 @@ use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-// ! Start here ******************************************************************
-// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
-// ! (sub ParameterValidatorFactory (change if statements to api data types), PostRequestMethodTypeValidator.php)
-// [] read over
-// [x] add return type : void
-// [] add test
-// test to do
-// [] read over
-// [] test groups, rest, context
-// [] add return type : void
-// [] testing what I need to test
-
-// ! start here *********************************************
 // TODO: make a test for this class
 class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
 {
@@ -134,7 +121,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         return !$this->parameterType;
     }
 
-    // TODO: Test this method, exception, also details in full api
+    // TODO: also details in full api
     protected function ifNotValidRequestThenThrowException(): void
     {
         if ($this->validatorDataCollector->getRejectedParameters()) {

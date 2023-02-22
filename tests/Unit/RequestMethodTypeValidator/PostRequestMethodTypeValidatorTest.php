@@ -14,6 +14,8 @@ use Tests\TestCase;
 class PostRequestMethodTypeValidatorTest extends TestCase
 {
     // * End-to-end done in tests\Feature\PostRequestMethodTest.php
+    protected $postRequestMethodTypeValidator;
+    protected $validatorDataCollector;
 
     protected function setUp(): void
     {
@@ -179,9 +181,9 @@ class PostRequestMethodTypeValidatorTest extends TestCase
         // TODO: rename things to make more sens
         // TODO: make it so I can mercilessly refactor it
         $resourceModelInfoProvider = new ResourceModelInfoProvider(new ResourceParameterInfoProviderFactory());
-        $this->resourceInfo = $resourceModelInfoProvider->getResourceInfo($class);
+        $resourceInfo = $resourceModelInfoProvider->getResourceInfo($class);
 
-        $this->validatorDataCollector->resourceInfo = $this->resourceInfo;
+        $this->validatorDataCollector->resourceInfo = $resourceInfo;
         $this->validatorDataCollector->resourceObject = $class;
     }
 }
