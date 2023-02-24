@@ -9,18 +9,6 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
-// ! Start here ******************************************************************
-// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
-// ! (sub ParameterValidatorFactory (change if statements to api data types), PostRequestMethodTypeValidator.php)
-// [x] read over
-// [x] add return type : void
-// [x] add test
-// test to do
-// [x] read over
-// [x] test groups, rest, context
-// [x] add return type : void
-// [x] testing what I need to test
-
 // TODO: check to make sure I got all the HttpResponseException
 class GetRequestMethodTypeValidatorTest extends TestCase
 {

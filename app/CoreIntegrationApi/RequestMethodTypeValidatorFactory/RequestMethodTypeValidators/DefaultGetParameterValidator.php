@@ -7,37 +7,37 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 // TODO: make a test for this class
 class DefaultGetParameterValidator
 {
-    protected $key;
-    protected $value;
-    protected $validatorDataCollector;
     protected $parameterType;
+    protected $parameterName;
+    protected $parameterValue;
+    protected $validatorDataCollector;
 
-    public function validate($key, $value, ValidatorDataCollector &$validatorDataCollector): void
+    public function validate($parameterName, $parameterValue, ValidatorDataCollector &$validatorDataCollector): void
     {
         $this->parameterType = null; // this is set for resetting purposes
-        $this->key = $key;
-        $this->value = $value;
+        $this->parameterName = $parameterName;
+        $this->parameterValue = $parameterValue;
         $this->validatorDataCollector = $validatorDataCollector;
 
         $this->isPerPageParameterThenValidate();
         $this->isPageParameterThenValidate();
-        $this->isColumnDataParameterThenValidate();
-        $this->isFormDataParameterThenValidate();
+        $this->isColumnDataParameterThenSet();
+        $this->isFormDataParameterThenSet();
     }
 
     protected function isPerPageParameterThenValidate(): void
     {
-        if ($this->parameterTypeIsNotSet() && in_array($this->key, ['perpage', 'per_page'])) {
+        if ($this->parameterTypeIsNotSet() && in_array($this->parameterName, ['perpage', 'per_page'])) {
             $this->parameterType = true;
             
-            if ($this->isInt($this->value)) {
+            if ($this->isInt($this->parameterValue)) {
                 $this->validatorDataCollector->setAcceptedParameters([
-                    'perPage' => (int) $this->value
+                    'perPage' => (int) $this->parameterValue
                 ]);
             } else {
                 $this->validatorDataCollector->setRejectedParameters([
                     'perPage' => [
-                        'value' => $this->value,
+                        'value' => $this->parameterValue,
                         'parameterError' => 'This parameter\'s value must be an int.'
                     ]
                 ]);
@@ -47,17 +47,17 @@ class DefaultGetParameterValidator
     
     protected function isPageParameterThenValidate(): void
     {
-        if ($this->parameterTypeIsNotSet() && $this->key == 'page') {
+        if ($this->parameterTypeIsNotSet() && $this->parameterName == 'page') {
             $this->parameterType = true;
             
-            if ($this->isInt($this->value)) {
+            if ($this->isInt($this->parameterValue)) {
                 $this->validatorDataCollector->setAcceptedParameters([
-                    'page' => (int) $this->value
+                    'page' => (int) $this->parameterValue
                 ]);
             } else {
                 $this->validatorDataCollector->setRejectedParameters([
                     'page' => [
-                        'value' => $this->value,
+                        'value' => $this->parameterValue,
                         'parameterError' => 'This parameter\'s value must be an int.'
                     ]
                 ]);
@@ -65,28 +65,28 @@ class DefaultGetParameterValidator
         }
     }
 
-    protected function isColumnDataParameterThenValidate(): void
+    protected function isColumnDataParameterThenSet(): void
     {
-        if ($this->parameterTypeIsNotSet() && in_array($this->key, ['columndata', 'column_data'])) {
+        if ($this->parameterTypeIsNotSet() && in_array($this->parameterName, ['columndata', 'column_data'])) {
             $this->parameterType = true;
             
             $this->validatorDataCollector->setAcceptedParameters([
                 'columnData' => [
-                    'value' => $this->value,
+                    'value' => $this->parameterValue,
                     'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this resource/endpoint'
                 ]
             ]);
         }
     }
 
-    protected function isFormDataParameterThenValidate(): void
+    protected function isFormDataParameterThenSet(): void
     {
-        if ($this->parameterTypeIsNotSet() && in_array($this->key, ['formdata', 'form_data'])) {
+        if ($this->parameterTypeIsNotSet() && in_array($this->parameterName, ['formdata', 'form_data'])) {
             $this->parameterType = true;
             
             $this->validatorDataCollector->setAcceptedParameters([
                 'formData' => [
-                    'value' => $this->value,
+                    'value' => $this->parameterValue,
                     'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter form data for this resource/endpoint'
                 ]
             ]);
