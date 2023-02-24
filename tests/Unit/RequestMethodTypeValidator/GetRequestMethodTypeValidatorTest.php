@@ -32,7 +32,6 @@ class GetRequestMethodTypeValidatorTest extends TestCase
         parent::setUp();
 
         $this->getRequestMethodTypeValidator = App::make(GetRequestMethodTypeValidator::class);
-        
     }
 
     // details tested in tests\Integration\HttpResponseExceptionRequestTest.php
@@ -45,12 +44,55 @@ class GetRequestMethodTypeValidatorTest extends TestCase
         $this->getRequestMethodTypeValidator->validateRequest($this->validatorDataCollector);
     }
 
-    public function test_data()
+    public function test_GetRequestMethodTypeValidator_sets_defaultResourceParameters_has_data(): void
+    {
+        $this->setUpValidatorDataCollector(['columns' => 'title']);
+
+        $this->getRequestMethodTypeValidator->validateRequest($this->validatorDataCollector);
+
+        $this->assertEquals(2, count($this->validatorDataCollector->getAcceptedParameters()));
+        $this->assertEquals(0, count($this->validatorDataCollector->getRejectedParameters()));
+        $this->assertEquals(1, count($this->validatorDataCollector->getQueryArguments()));
+    }
+
+    public function test_GetRequestMethodTypeValidator_sets_acceptableParameters_has_data(): void
+    {
+        $this->setUpValidatorDataCollector([
+            'id' => 1234,
+            'start_date' => '2022-10-23',
+            'is_published' => 1,
+        ]);
+
+        $this->getRequestMethodTypeValidator->validateRequest($this->validatorDataCollector);
+
+        $this->assertEquals(4, count($this->validatorDataCollector->getAcceptedParameters()));
+        $this->assertEquals(0, count($this->validatorDataCollector->getRejectedParameters()));
+        $this->assertEquals(3, count($this->validatorDataCollector->getQueryArguments()));
+    }
+
+    public function test_GetRequestMethodTypeValidator_sets_defaultGetParameters_has_data(): void
+    {
+        $this->setUpValidatorDataCollector([
+            'page' => 12,
+            'perPage' => 50,
+        ]);
+
+        $this->getRequestMethodTypeValidator->validateRequest($this->validatorDataCollector);
+
+        $this->assertEquals(3, count($this->validatorDataCollector->getAcceptedParameters()));
+        $this->assertEquals(0, count($this->validatorDataCollector->getRejectedParameters()));
+        $this->assertEquals(0, count($this->validatorDataCollector->getQueryArguments()));
+    }
+
+    public function test_GetRequestMethodTypeValidator_sets_empty_arrays_for_all_parameter_types(): void
     {
         $this->setUpValidatorDataCollector();
 
         $this->getRequestMethodTypeValidator->validateRequest($this->validatorDataCollector);
-        // dd($this->validatorDataCollector);
+
+        $this->assertEquals(1, count($this->validatorDataCollector->getAcceptedParameters()));
+        $this->assertEquals(0, count($this->validatorDataCollector->getRejectedParameters()));
+        $this->assertEquals(0, count($this->validatorDataCollector->getQueryArguments()));
     }
 
     public function setUpValidatorDataCollector(array $parameters = []): void
@@ -62,10 +104,4 @@ class GetRequestMethodTypeValidatorTest extends TestCase
         $endpointValidator = App::make(EndpointValidator::class);
         $endpointValidator->validateEndPoint($this->validatorDataCollector);
     }
-
-    // ?? [
-    //     'id' => 1234,
-    //     'title' => 'So Cool!',
-    //     'roles' => 'designer'
-    // ]
 }

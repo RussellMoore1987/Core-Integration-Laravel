@@ -86,14 +86,12 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         }
     }
 
-    // TODO: test this there, and has
     protected function getMethodParameterValidator($dataType, $data): void
     {
         $parameterValidator = $this->parameterValidatorFactory->getFactoryItem($dataType);
         $parameterValidator->validate($this->validatorDataCollector, $data);
     }
 
-    // TODO: test this there, and has
     protected function isDefaultGetParametersThenValidate()
     {
         if ($this->isParameterTypeNotSet() && in_array($this->parameterName, $this->defaultGetParameters)) {
@@ -103,7 +101,6 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         }
     }
 
-    // TODO: test this details
     protected function isInvalidParametersThenRejected(): void
     {
         if ($this->isParameterTypeNotSet()) {
@@ -121,7 +118,6 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         return !$this->parameterType;
     }
 
-    // TODO: also details in full api
     protected function ifNotValidRequestThenThrowException(): void
     {
         if ($this->validatorDataCollector->getRejectedParameters()) {
