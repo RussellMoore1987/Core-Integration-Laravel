@@ -12,14 +12,14 @@ use Tests\TestCase;
 // ! Start here ******************************************************************
 // ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
 // ! (sub ParameterValidatorFactory (change if statements to api data types), PostRequestMethodTypeValidator.php)
-// [] read over
-// [] add return type : void
-// [] add test
+// [x] read over
+// [x] add return type : void
+// [x] add test
 // test to do
-// [] read over
-// [] test groups, rest, context
-// [] add return type : void
-// [] testing what I need to test
+// [x] read over
+// [x] test groups, rest, context
+// [x] add return type : void
+// [x] testing what I need to test
 
 // TODO: check to make sure I got all the HttpResponseException
 class GetRequestMethodTypeValidatorTest extends TestCase
@@ -34,6 +34,11 @@ class GetRequestMethodTypeValidatorTest extends TestCase
         $this->getRequestMethodTypeValidator = App::make(GetRequestMethodTypeValidator::class);
     }
 
+    /**
+     * @group rest
+     * @group context
+     * @group get
+     */
     // details tested in tests\Integration\HttpResponseExceptionRequestTest.php
     public function test_GetRequestMethodTypeValidator_throws_exception_when_parameters_are_rejected(): void
     {
@@ -44,6 +49,11 @@ class GetRequestMethodTypeValidatorTest extends TestCase
         $this->getRequestMethodTypeValidator->validateRequest($this->validatorDataCollector);
     }
 
+    /**
+     * @group rest
+     * @group context
+     * @group get
+     */
     public function test_GetRequestMethodTypeValidator_sets_defaultResourceParameters_has_data(): void
     {
         $this->setUpValidatorDataCollector(['columns' => 'title']);
@@ -55,6 +65,11 @@ class GetRequestMethodTypeValidatorTest extends TestCase
         $this->assertEquals(1, count($this->validatorDataCollector->getQueryArguments()));
     }
 
+    /**
+     * @group rest
+     * @group context
+     * @group get
+     */
     public function test_GetRequestMethodTypeValidator_sets_acceptableParameters_has_data(): void
     {
         $this->setUpValidatorDataCollector([
@@ -70,6 +85,11 @@ class GetRequestMethodTypeValidatorTest extends TestCase
         $this->assertEquals(3, count($this->validatorDataCollector->getQueryArguments()));
     }
 
+    /**
+     * @group rest
+     * @group context
+     * @group get
+     */
     public function test_GetRequestMethodTypeValidator_sets_defaultGetParameters_has_data(): void
     {
         $this->setUpValidatorDataCollector([
@@ -84,6 +104,11 @@ class GetRequestMethodTypeValidatorTest extends TestCase
         $this->assertEquals(0, count($this->validatorDataCollector->getQueryArguments()));
     }
 
+    /**
+     * @group rest
+     * @group context
+     * @group get
+     */
     public function test_GetRequestMethodTypeValidator_sets_empty_arrays_for_all_parameter_types(): void
     {
         $this->setUpValidatorDataCollector();
@@ -95,7 +120,7 @@ class GetRequestMethodTypeValidatorTest extends TestCase
         $this->assertEquals(0, count($this->validatorDataCollector->getQueryArguments()));
     }
 
-    public function setUpValidatorDataCollector(array $parameters = []): void
+    protected function setUpValidatorDataCollector(array $parameters = []): void
     {
         $this->validatorDataCollector = App::make(ValidatorDataCollector::class);
         $this->validatorDataCollector->resource = 'projects';
