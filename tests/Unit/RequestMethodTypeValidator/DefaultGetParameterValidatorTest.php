@@ -12,12 +12,12 @@ use Tests\TestCase;
 // ! (sub ParameterValidatorFactory, PostRequestMethodTypeValidator)
 // [x] read over
 // [x] add return type : void
-// [] add test
+// [x] add test
 // test to do
-// [] read over
-// [] test groups, rest, contet
-// [] add return type : void
-// [] testing what I need to test
+// [x] read over
+// [x] test groups, rest, contet
+// [x] add return type : void
+// [x] testing what I need to test
 
 // TODO: check to make sure I got all the HttpResponseException
 class DefaultGetParameterValidatorTest extends TestCase
@@ -34,19 +34,19 @@ class DefaultGetParameterValidatorTest extends TestCase
     }
 
     /**
-     * @dataProvider singleValueParameterProvider
+     * @dataProvider pageAndPerpageParameterProvider
      * @group rest
      * @group context
      * @group get
      */
-    public function test_AcceptedParameters_are_set_correctly_single_value($parameterName, $parameterValue, $acceptedColumnName): void
+    public function test_AcceptedParameters_are_set_correctly_page_and_perpage($parameterName, $parameterValue, $acceptedColumnName): void
     {
         $this->defaultGetParameterValidator->validate($parameterName, $parameterValue, $this->validatorDataCollector);
 
         $this->assertEquals($parameterValue, $this->validatorDataCollector->getAcceptedParameters()[$acceptedColumnName]);
     }
 
-    public function singleValueParameterProvider(): array
+    public function pageAndPerpageParameterProvider(): array
     {
         return [
             'page' => ['page', 10, 'page'],
@@ -56,19 +56,19 @@ class DefaultGetParameterValidatorTest extends TestCase
     }
 
     /**
-     * @dataProvider invalidParameterProvider
+     * @dataProvider invalidPageAndPerpageParameterProvider
      * @group rest
      * @group context
      * @group get
      */
-    public function test_RejectedParameters_are_set_correctly($parameterName, $acceptedColumnName, $expectedResult): void
+    public function test_RejectedParameters_are_set_correctly_page_and_perpage($parameterName, $acceptedColumnName, $expectedResult): void
     {
         $this->defaultGetParameterValidator->validate($parameterName, $expectedResult['value'], $this->validatorDataCollector);
 
         $this->assertEquals($expectedResult, $this->validatorDataCollector->getRejectedParameters()[$acceptedColumnName]);
     }
 
-    public function invalidParameterProvider(): array
+    public function invalidPageAndPerpageParameterProvider(): array
     {
         $expectedResult = [
             'value' => 'not a number',
@@ -95,19 +95,19 @@ class DefaultGetParameterValidatorTest extends TestCase
     }
 
     /**
-     * @dataProvider valueFieldParameterProvider
+     * @dataProvider columnDataAndFormDataParameterProvider
      * @group rest
      * @group context
      * @group get
      */
-    public function test_AcceptedParameters_are_set_correctly_value_field($parameterName, $acceptedColumnName, $expectedResult): void
+    public function test_AcceptedParameters_are_set_correctly_columnData_and_formData($parameterName, $acceptedColumnName, $expectedResult): void
     {
         $this->defaultGetParameterValidator->validate($parameterName, $expectedResult['value'], $this->validatorDataCollector);
 
         $this->assertEquals($expectedResult, $this->validatorDataCollector->getAcceptedParameters()[$acceptedColumnName]);
     }
 
-    public function valueFieldParameterProvider(): array
+    public function columnDataAndFormDataParameterProvider(): array
     {
         $columnData = [
             'value' => 'yes',
