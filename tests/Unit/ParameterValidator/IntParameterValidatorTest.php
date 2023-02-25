@@ -1042,31 +1042,12 @@ class IntParameterValidatorTest extends TestCase
                 ],
             ],
         ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => [13, 6],
-                'originalIntString' => '13,6.87,6,fugue::IN',
-                'comparisonOperatorCoveredTo' => 'in',
-                'originalComparisonOperator' => 'IN',
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => [13, 6],
-                'comparisonOperator' => 'in',
-                'originalComparisonOperator' => 'IN',
-            ]
-        ];
         
         $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
     /**
@@ -1075,35 +1056,16 @@ class IntParameterValidatorTest extends TestCase
     public function test_IntParameterValidator_validate_function_get_all_data(): void
     {
         $comparisonOperator = 'IN';
-        $int = '13,6.87,6,fugue';
+        $int = '13,7,6,33';
         $intString = $int . '::' . $comparisonOperator;
         $parameterData = [
             'team_id' => $intString
         ];
 
-        $expectedRejectedParameters = [
-            'team_id' => [
-                'intCoveredTo' => [13,6],
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'in',
-                'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [
-                    [
-                        'value' => 6.87,
-                        'valueError' => $this->valueErrorIndexMassage(1, 'float')
-                    ],
-                    [
-                        'value' => 'fugue',
-                        'valueError' => $this->valueErrorIndexMassage(3, 'string')
-                    ],
-                ],
-            ],
-        ];
-
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => [13, 6],
-                'originalIntString' => '13,6.87,6,fugue::IN',
+                'intCoveredTo' => [13,7,6,33],
+                'originalIntString' => '13,7,6,33::IN',
                 'comparisonOperatorCoveredTo' => 'in',
                 'originalComparisonOperator' => 'IN',
             ]
@@ -1113,7 +1075,7 @@ class IntParameterValidatorTest extends TestCase
             'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
-                'int' => [13, 6],
+                'int' => [13,7,6,33],
                 'comparisonOperator' => 'in',
                 'originalComparisonOperator' => 'IN',
             ]
@@ -1123,7 +1085,7 @@ class IntParameterValidatorTest extends TestCase
             'endpointData' => [],
             'resourceInfo' => [],
             'acceptedParameters' => $expectedAcceptedParameters,
-            'rejectedParameters' => $expectedRejectedParameters,
+            'rejectedParameters' => [],
             'queryArguments' => $expectedQueryArguments,
         ];
         
