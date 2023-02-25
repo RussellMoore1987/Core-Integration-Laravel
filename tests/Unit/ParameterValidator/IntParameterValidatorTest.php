@@ -999,7 +999,7 @@ class IntParameterValidatorTest extends TestCase
                     ],
                     [
                         'value' => 'sam,6.87,.01,fugue',
-                        'valueError' => 'There are no ints available in this array. This parameter was not set.'
+                        'valueError' => 'There are no ints available in this array and/or the action/comparison operator was not one fo these "between", "bt", "in", "notin". This parameter was not set.'
                     ],
                 ],
             ],
