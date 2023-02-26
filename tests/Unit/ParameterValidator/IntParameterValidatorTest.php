@@ -918,11 +918,7 @@ class IntParameterValidatorTest extends TestCase
                     ],
                     [
                         'value' => 'sam,6.87,.01,fugue',
-                        'valueError' => 'There are no ints available in this array and/or the action/comparison operator was not one fo these "between", "bt", "in", "notin". This parameter was not set.'
-                    ],
-                    [
-                        'value' => $int,
-                        'valueError' => 'The value passed in is not an int. Only ints are permitted for this parameter. Your value is a string. This parameter was not set.',
+                        'valueError' => 'There are no ints available in this array and/or the action/comparison operator was not one of these "between", "bt", "in", "notin". This parameter was not set.'
                     ],
                 ],
             ],

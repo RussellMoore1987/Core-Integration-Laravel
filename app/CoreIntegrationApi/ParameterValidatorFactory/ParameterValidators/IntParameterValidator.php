@@ -25,8 +25,9 @@ class IntParameterValidator implements ParameterValidator
     protected $originalInt;
     protected $originalComparisonOperator = '';
     protected $intAction;
-    protected $comparisonOperator;
+    protected $processedAsArray = false;
     protected $errors;
+    protected $comparisonOperator;
 
     // TODO: possibly switch to $parameter and $parameterValue from $parameterData???
     public function validate(string $parameterName, string $parameterValue, ValidatorDataCollector &$validatorDataCollector): void
@@ -38,7 +39,6 @@ class IntParameterValidator implements ParameterValidator
         
         $this->processIntParameter();
         $this->setComparisonOperator();
-        $this->isBetweenOperatorThenCheckForOtherErrors();
         $this->setErrorsIfAny();
         $this->setAcceptedParameterIfAny();
         $this->setQueryArgumentIfAny();
@@ -48,7 +48,7 @@ class IntParameterValidator implements ParameterValidator
     {
         $this->ifParameterHasActionThenSetAction();
         $this->isArrayThenProcessArray();
-        $this->isSingleIntThenProcessInt();
+        $this->isNotArrayThenProcessAsSingleInt();
     }
 
     // TODO: test details
@@ -75,6 +75,7 @@ class IntParameterValidator implements ParameterValidator
                 $this->intAction == null
             )
         ) {
+            $this->processedAsArray = true;
             $this->intAction = $this->intAction ? $this->intAction : 'in'; // defaults to in // TODO: test
             $ints = explode(',', $this->int);
             $realInts = [];
@@ -102,15 +103,15 @@ class IntParameterValidator implements ParameterValidator
             } else {
                 $this->errors[] = [
                     'value' => $this->int,
-                    'valueError' => 'There are no ints available in this array and/or the action/comparison operator was not one fo these "between", "bt", "in", "notin". This parameter was not set.', // TODO: test
+                    'valueError' => 'There are no ints available in this array and/or the action/comparison operator was not one of these "between", "bt", "in", "notin". This parameter was not set.', // TODO: test
                 ];
             }
         }
     }
 
-    protected function isSingleIntThenProcessInt(): void
+    protected function isNotArrayThenProcessAsSingleInt(): void
     {
-        if (!is_array($this->int)) {
+        if (!is_array($this->int) && !$this->processedAsArray) {
             if ($this->isInt($this->int)) {
                 $this->int = (int) $this->int;
             } elseif (is_numeric($this->int)) {
@@ -151,9 +152,11 @@ class IntParameterValidator implements ParameterValidator
         } else {
             $this->comparisonOperator = '=';
         }
+
+        $this->isBetweenOperatorThenCheckForBetweenErrors();
     }
 
-    protected function isBetweenOperatorThenCheckForOtherErrors(): void
+    protected function isBetweenOperatorThenCheckForBetweenErrors(): void
     {
         if ($this->comparisonOperator == 'bt') {
             $this->isFirstIntGreaterThenLastIntThenThrowError();
