@@ -8,3 +8,5 @@ interface ParameterValidator
 {
     public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData): void;
 }
+
+// $parameterName, $parameterValue

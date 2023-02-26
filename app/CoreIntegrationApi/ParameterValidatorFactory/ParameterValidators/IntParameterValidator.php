@@ -27,15 +27,13 @@ class IntParameterValidator implements ParameterValidator
     private $intAction;
     private $comparisonOperator;
     private $errors;
-    private $processedAsArray = false;
-    private $requestError = false;
 
     // TODO: possibly switch to $parameter and $parameterValue from $parameterData???
     public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData): void
     {
         $this->setMainVariables($validatorDataCollector, $parameterData);
         $this->processData();
-        $this->checkForOtherErrors();
+        $this->isBetweenOperatorThenCheckForOtherErrors();
         $this->setErrorsIfAny();
         $this->setAcceptedParameterIfAny();
         $this->setDataQueryArgumentIfAny();
@@ -114,7 +112,6 @@ class IntParameterValidator implements ParameterValidator
                     $this->int = [$this->int[0], $this->int[1]]; // TODO: test
                 }
             } else {
-                $this->processedAsArray = true; // TODO: do we need
                 $this->errors[] = [
                     'value' => $this->int,
                     'valueError' => 'There are no ints available in this array and/or the action/comparison operator was not one fo these "between", "bt", "in", "notin". This parameter was not set.', // TODO: test
@@ -125,7 +122,7 @@ class IntParameterValidator implements ParameterValidator
 
     private function isSingleIntThenProcessInt(): void
     {
-        if (!is_array($this->int) && !$this->processedAsArray) {
+        if (!is_array($this->int)) {
             if ($this->isInt($this->int)) {
                 $this->int = (int) $this->int;
             } elseif (is_numeric($this->int)) {
@@ -168,36 +165,31 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    private function checkForOtherErrors(): void
+    private function isBetweenOperatorThenCheckForOtherErrors(): void
     {
-        $this->checkToSeeIfFirstIntIsGreaterThenLastInt();
-        $this->checkToSeeIfWeHaveTwoInts();
+        if ($this->comparisonOperator == 'bt') {
+            $this->isFirstIntGreaterThenLastIntThenThrowError();
+            $this->isIntAnArrayAndCountLessThen2ThenThrowError();
+        }
     }
 
-    private function checkToSeeIfFirstIntIsGreaterThenLastInt(): void
+    private function isFirstIntGreaterThenLastIntThenThrowError(): void
     {
         if (
-            $this->comparisonOperator == 'bt' &&
             is_array($this->int) &&
             count($this->int) >= 2 &&
             $this->int[0] >= $this->int[1]
         ) {
             $this->errors[] = [
-                'value' => [$this->int[0], $this->int[1]],
+                'value' => $this->int,
                 'valueError' => 'The First int must be smaller then the second int, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.',
             ];
         }
     }
 
-    private function checkToSeeIfWeHaveTwoInts(): void
+    private function isIntAnArrayAndCountLessThen2ThenThrowError(): void
     {
-        if (
-            $this->comparisonOperator == 'bt' &&
-            !(
-                is_array($this->int) &&
-                count($this->int) >= 2
-            )
-        ) {
+        if (!(is_array($this->int) && count($this->int) >= 2)) {
             $this->errors[] = [
                 'value' => $this->int,
                 'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.',
