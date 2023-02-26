@@ -19,14 +19,14 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 
 class IntParameterValidator implements ParameterValidator
 {
-    private $validatorDataCollector;
-    private $parameterName;
-    private $int;
-    private $originalInt;
-    private $originalComparisonOperator = '';
-    private $intAction;
-    private $comparisonOperator;
-    private $errors;
+    protected $validatorDataCollector;
+    protected $parameterName;
+    protected $int;
+    protected $originalInt;
+    protected $originalComparisonOperator = '';
+    protected $intAction;
+    protected $comparisonOperator;
+    protected $errors;
 
     // TODO: possibly switch to $parameter and $parameterValue from $parameterData???
     public function validate(string $parameterName, string $parameterValue, ValidatorDataCollector &$validatorDataCollector): void
@@ -36,20 +36,15 @@ class IntParameterValidator implements ParameterValidator
         $this->int = $parameterValue;
         $this->originalInt = $parameterValue;
         
-        $this->processData();
+        $this->processIntParameter();
+        $this->setComparisonOperator();
         $this->isBetweenOperatorThenCheckForOtherErrors();
         $this->setErrorsIfAny();
         $this->setAcceptedParameterIfAny();
-        $this->setDataQueryArgumentIfAny();
+        $this->setQueryArgumentIfAny();
     }
 
-    private function processData(): void
-    {
-        $this->processIntString();
-        $this->setComparisonOperator();
-    }
-
-    private function processIntString(): void
+    protected function processIntParameter(): void
     {
         $this->ifParameterHasActionThenSetAction();
         $this->isArrayThenProcessArray();
@@ -57,7 +52,7 @@ class IntParameterValidator implements ParameterValidator
     }
 
     // TODO: test details
-    private function ifParameterHasActionThenSetAction(): void
+    protected function ifParameterHasActionThenSetAction(): void
     {
         if (str_contains($this->int, '::')) {
             $intArray = explode('::', $this->int);
@@ -71,7 +66,7 @@ class IntParameterValidator implements ParameterValidator
     // ! Start here ******************************
     // TODO: test or the action/comparison operator was not one fo these "between", "bt", "in", "notin".
     // TODO: test defaults to in
-    private function isArrayThenProcessArray(): void
+    protected function isArrayThenProcessArray(): void
     {
         if (
             str_contains($this->int, ',') &&
@@ -113,7 +108,7 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    private function isSingleIntThenProcessInt(): void
+    protected function isSingleIntThenProcessInt(): void
     {
         if (!is_array($this->int)) {
             if ($this->isInt($this->int)) {
@@ -132,12 +127,12 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    private function isInt($value): bool
+    protected function isInt($value): bool
     {
         return is_numeric($value) && !str_contains($value, '.');
     }
 
-    private function setComparisonOperator(): void
+    protected function setComparisonOperator(): void
     {
         if (in_array($this->intAction, ['greaterthan', 'gt', '>'])) {
             $this->comparisonOperator = '>';
@@ -158,7 +153,7 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    private function isBetweenOperatorThenCheckForOtherErrors(): void
+    protected function isBetweenOperatorThenCheckForOtherErrors(): void
     {
         if ($this->comparisonOperator == 'bt') {
             $this->isFirstIntGreaterThenLastIntThenThrowError();
@@ -166,7 +161,7 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    private function isFirstIntGreaterThenLastIntThenThrowError(): void
+    protected function isFirstIntGreaterThenLastIntThenThrowError(): void
     {
         if (
             is_array($this->int) &&
@@ -180,7 +175,7 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    private function isIntAnArrayAndCountLessThen2ThenThrowError(): void
+    protected function isIntAnArrayAndCountLessThen2ThenThrowError(): void
     {
         if (!(is_array($this->int) && count($this->int) >= 2)) {
             $this->errors[] = [
@@ -190,7 +185,7 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    private function setErrorsIfAny(): void
+    protected function setErrorsIfAny(): void
     {
         if ($this->errors) {
             $this->validatorDataCollector->setRejectedParameters([
@@ -205,7 +200,7 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    private function setAcceptedParameterIfAny(): void
+    protected function setAcceptedParameterIfAny(): void
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setAcceptedParameters([
@@ -219,7 +214,7 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    private function setDataQueryArgumentIfAny(): void
+    protected function setQueryArgumentIfAny(): void
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setQueryArgument([

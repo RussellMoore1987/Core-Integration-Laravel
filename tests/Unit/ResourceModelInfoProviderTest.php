@@ -10,10 +10,10 @@ use Tests\TestCase;
 
 class ResourceModelInfoProviderTest extends TestCase
 {
-    private $resourceModelInfoProvider;
-    private $expectedResourceInfo;
-    private $category;
-    private $workHistoryType;
+    protected $resourceModelInfoProvider;
+    protected $expectedResourceInfo;
+    protected $category;
+    protected $workHistoryType;
 
     protected function setUp(): void
     {

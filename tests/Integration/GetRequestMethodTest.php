@@ -11,7 +11,7 @@ class GetRequestMethodTest extends TestCase
 {
     use DatabaseTransactions;
 
-    private $projects;
+    protected $projects;
 
     /**
      * @group get

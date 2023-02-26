@@ -11,7 +11,7 @@ class GetIntIntegrationApiTest extends TestCase
 {
     use DatabaseTransactions;
 
-    private $projects;
+    protected $projects;
 
     protected function setUp(): void
     {

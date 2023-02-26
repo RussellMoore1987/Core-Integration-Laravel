@@ -17,19 +17,19 @@ class RestRequestDataPrepper extends RequestDataPrepper
         return $this->preppedData;
     }
 
-    private function setRequestDetails(): void
+    protected function setRequestDetails(): void
     {
         $this->preppedData['url'] = $this->request->url();
         $this->preppedData['requestMethod'] = $this->request->getMethod();
     }
 
-    private function setEndpointDetails(): void
+    protected function setEndpointDetails(): void
     {
         $this->preppedData['resource'] = $this->request->resource ?? 'index';
         $this->preppedData['resourceId'] = $this->request->resourceId ?? $this->request->resource_id ?? $this->request->id ?? '';
     }
 
-    private function setRequestParameters(): void
+    protected function setRequestParameters(): void
     {
         $this->preppedData['parameters'] = $this->request->except(['id', 'resource', 'resourceId', 'resource_id']);
     }

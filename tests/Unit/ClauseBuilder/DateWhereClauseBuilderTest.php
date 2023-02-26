@@ -8,8 +8,8 @@ use Tests\TestCase;
 
 class DateWhereClauseBuilderTest extends TestCase
 {
-    private $queryBuilder;
-    private $dateWhereClauseBuilder;
+    protected $queryBuilder;
+    protected $dateWhereClauseBuilder;
 
     protected function setUp(): void
     {

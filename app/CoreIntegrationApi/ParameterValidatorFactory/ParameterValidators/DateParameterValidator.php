@@ -7,14 +7,14 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 
 class DateParameterValidator implements ParameterValidator
 {
-    private $validatorDataCollector;
-    private $parameterName;
-    private $date;
-    private $originalDate;
-    private $dateAction;
-    private $comparisonOperator;
-    private $originalComparisonOperator = '';
-    private $errors;
+    protected $validatorDataCollector;
+    protected $parameterName;
+    protected $date;
+    protected $originalDate;
+    protected $dateAction;
+    protected $comparisonOperator;
+    protected $originalComparisonOperator = '';
+    protected $errors;
 
     public function validate(string $parameterName, string $parameterValue, ValidatorDataCollector &$validatorDataCollector): void
     {
@@ -29,13 +29,13 @@ class DateParameterValidator implements ParameterValidator
         $this->setDataQueryArgumentIfAny();
     }
 
-    private function processDateData()
+    protected function processDateData()
     {
         $this->processDateString();
         $this->setComparisonOperator();
     }
 
-    private function processDateString()
+    protected function processDateString()
     {
         if (str_contains($this->date, '::')) {
             $dateArray = explode('::', $this->date);
@@ -57,12 +57,12 @@ class DateParameterValidator implements ParameterValidator
         }
     }
 
-    private function convertStringToDate($dateString)
+    protected function convertStringToDate($dateString)
     {
         return date('Y-m-d H:i:s', strtotime($dateString));
     }
 
-    private function setComparisonOperator()
+    protected function setComparisonOperator()
     {
         if (in_array($this->dateAction, ['greaterthan', 'gt', '>'])) {
             $this->comparisonOperator = '>';
@@ -79,19 +79,19 @@ class DateParameterValidator implements ParameterValidator
         }
     }
 
-    private function checkForErrors()
+    protected function checkForErrors()
     {
         $this->validateBetweenDatesAreCorrect();
         $this->setErrorsIfAny();
     }
 
-    private function validateBetweenDatesAreCorrect()
+    protected function validateBetweenDatesAreCorrect()
     {
         $this->checkToSeeIfFirstDateIsGreaterThenLastDate();
         $this->checkToSeeIfWeHaveTwoDates();
     }
 
-    private function checkToSeeIfFirstDateIsGreaterThenLastDate()
+    protected function checkToSeeIfFirstDateIsGreaterThenLastDate()
     {
         if (
             $this->comparisonOperator == 'bt' &&
@@ -106,7 +106,7 @@ class DateParameterValidator implements ParameterValidator
         }
     }
 
-    private function checkToSeeIfWeHaveTwoDates()
+    protected function checkToSeeIfWeHaveTwoDates()
     {
         if (
             $this->comparisonOperator == 'bt' &&
@@ -120,7 +120,7 @@ class DateParameterValidator implements ParameterValidator
         }
     }
 
-    private function setErrorsIfAny()
+    protected function setErrorsIfAny()
     {
         if ($this->errors) {
             $this->validatorDataCollector->setRejectedParameters([
@@ -135,7 +135,7 @@ class DateParameterValidator implements ParameterValidator
         }
     }
 
-    private function setAcceptedParameterIfAny()
+    protected function setAcceptedParameterIfAny()
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setAcceptedParameters([
@@ -149,7 +149,7 @@ class DateParameterValidator implements ParameterValidator
         }
     }
 
-    private function setDataQueryArgumentIfAny()
+    protected function setDataQueryArgumentIfAny()
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setQueryArgument([
