@@ -7,7 +7,9 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 
 class OrderByParameterValidator implements ParameterValidator
 {
-    public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData): void
+    protected $validatorDataCollector;
+    
+    public function validate(string $parameterName, string $parameterValue, ValidatorDataCollector &$validatorDataCollector): void
     {
         $this->validatorDataCollector = $validatorDataCollector;
     }

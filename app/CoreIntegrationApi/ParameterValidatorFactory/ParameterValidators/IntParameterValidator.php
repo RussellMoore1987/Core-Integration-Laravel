@@ -20,7 +20,7 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 class IntParameterValidator implements ParameterValidator
 {
     private $validatorDataCollector;
-    private $columnName;
+    private $parameterName;
     private $int;
     private $originalInt;
     private $originalComparisonOperator = '';
@@ -29,25 +29,18 @@ class IntParameterValidator implements ParameterValidator
     private $errors;
 
     // TODO: possibly switch to $parameter and $parameterValue from $parameterData???
-    public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData): void
+    public function validate(string $parameterName, string $parameterValue, ValidatorDataCollector &$validatorDataCollector): void
     {
-        $this->setMainVariables($validatorDataCollector, $parameterData);
+        $this->validatorDataCollector = $validatorDataCollector;
+        $this->parameterName = $parameterName;
+        $this->int = $parameterValue;
+        $this->originalInt = $parameterValue;
+        
         $this->processData();
         $this->isBetweenOperatorThenCheckForOtherErrors();
         $this->setErrorsIfAny();
         $this->setAcceptedParameterIfAny();
         $this->setDataQueryArgumentIfAny();
-    }
-
-    private function setMainVariables($validatorDataCollector, $parameterData): void
-    {
-        $this->validatorDataCollector = $validatorDataCollector;
-
-        foreach ($parameterData as $columnName => $int) { // we should only have one array item
-            $this->columnName = $columnName;
-            $this->int = $int;
-            $this->originalInt = $int;
-        }
     }
 
     private function processData(): void
@@ -201,7 +194,7 @@ class IntParameterValidator implements ParameterValidator
     {
         if ($this->errors) {
             $this->validatorDataCollector->setRejectedParameters([
-                "$this->columnName" => [
+                "$this->parameterName" => [
                     'intCoveredTo' => $this->int,
                     'originalIntString' => $this->originalInt,
                     'comparisonOperatorCoveredTo' => $this->comparisonOperator,
@@ -216,7 +209,7 @@ class IntParameterValidator implements ParameterValidator
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setAcceptedParameters([
-                "$this->columnName" => [
+                "$this->parameterName" => [
                     'intCoveredTo' => $this->int,
                     'originalIntString' => $this->originalInt,
                     'comparisonOperatorCoveredTo' => $this->comparisonOperator,
@@ -230,9 +223,9 @@ class IntParameterValidator implements ParameterValidator
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setQueryArgument([
-                "$this->columnName" => [
+                "$this->parameterName" => [
                     'dataType' => 'int',
-                    'columnName' => $this->columnName,
+                    'columnName' => $this->parameterName,
                     'int' => $this->int,
                     'comparisonOperator' => $this->comparisonOperator,
                     'originalComparisonOperator' => $this->originalComparisonOperator,

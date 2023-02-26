@@ -7,13 +7,14 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 
 class SelectParameterValidator implements ParameterValidator
 {
-    protected ValidatorDataCollector $validatorDataCollector;
+    protected $validatorDataCollector;
 
-    public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData): void
+    public function validate(string $parameterName, string $parameterValue, ValidatorDataCollector &$validatorDataCollector): void
     {
         $this->validatorDataCollector = $validatorDataCollector;
 
-        $this->validatorDataCollector->setAcceptedParameters($parameterData);
-        $this->validatorDataCollector->setQueryArgument($parameterData);
+        // just for testing purposes
+        $this->validatorDataCollector->setAcceptedParameters([$parameterName => $parameterValue]);
+        $this->validatorDataCollector->setQueryArgument([$parameterName => $parameterValue]);
     }
 }

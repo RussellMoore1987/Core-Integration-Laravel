@@ -8,12 +8,15 @@ use Tests\TestCase;
 
 class DateParameterValidatorTest extends TestCase
 {
+    protected $validatorDataCollector;
+    protected $dateParameterValidator;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->validatorDataCollector = new validatorDataCollector();
-        $this->DateParameterValidator = new DateParameterValidator();
+        $this->dateParameterValidator = new DateParameterValidator();
     }
 
     /**
@@ -23,9 +26,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = '';
         $dateString = 'I am not a date' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -46,7 +46,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData);
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -60,9 +60,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = '';
         $dateString = '' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -83,7 +80,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData);
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -97,9 +94,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = '';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -120,7 +114,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData);
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -134,9 +128,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'sam';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -157,7 +148,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -171,9 +162,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'GT';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -194,7 +182,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -208,9 +196,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'greaterThan';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -231,7 +216,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -245,9 +230,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = '>';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -268,7 +250,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -282,9 +264,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'greaterThanOrEqual';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -305,7 +284,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -319,9 +298,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = '>=';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -342,7 +318,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -356,9 +332,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'GTE';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -379,7 +352,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -393,9 +366,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'lessThan';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -416,7 +386,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -430,9 +400,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = '<';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -453,7 +420,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -467,9 +434,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'LT';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -490,7 +454,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -504,9 +468,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'lessThanOrEqual';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -527,7 +488,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -541,9 +502,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = '<=';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -564,7 +522,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -578,9 +536,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'LTE';
         $dateString = '2020-01-01 12:45:59::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -601,7 +556,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -615,9 +570,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'BT';
         $dateString = 'Soso!!!,NoDateForYou::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -644,7 +596,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -658,9 +610,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'bt';
         $dateString = '1/1/2020 01:01:59,2020-12-31::'  . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -687,7 +636,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -701,9 +650,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'between';
         $dateString = '1/1/2222,2021-01-01::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedRejectedParameters = [
             'start_date' => [
@@ -720,7 +666,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -734,9 +680,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'BETWEEN';
         $dateString = '2021-01-01::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedRejectedParameters = [
             'start_date' => [
@@ -750,7 +693,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -764,9 +707,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'BT';
         $dateString = '::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedRejectedParameters = [
             'start_date' => [
@@ -780,7 +720,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
 
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -794,9 +734,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'BT';
         $dateString = '1970-01-01,1978-01-01,1999-01-01::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -823,7 +760,7 @@ class DateParameterValidatorTest extends TestCase
             ]
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
 
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -837,9 +774,6 @@ class DateParameterValidatorTest extends TestCase
     {
         $comparisonOperator = 'BT';
         $dateString = '1970-01-01,1978-01-01,1999-01-01::' . $comparisonOperator;
-        $parameterData = [
-            'start_date' => $dateString
-        ];
 
         $expectedAcceptedParameters = [
             'start_date' => [
@@ -874,7 +808,7 @@ class DateParameterValidatorTest extends TestCase
             'queryArguments' => $expectedQueryArguments,
         ];
         
-        $this->DateParameterValidator->validate($this->validatorDataCollector, $parameterData); 
+        $this->dateParameterValidator->validate('start_date', $dateString, $this->validatorDataCollector);
 
         $this->assertEquals($expectedGetValidatedMetaData, $this->validatorDataCollector->getValidatedMetaData());
     }

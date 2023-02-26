@@ -72,7 +72,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
             $this->parameterType = true;
 
             $dataType = $this->resourceInfo['acceptableParameters'][$this->parameterName]['apiDataType'];
-            $this->getMethodParameterValidator($dataType, [$this->parameterName => $this->parameterValue]);
+            $this->getMethodParameterValidator($dataType);
         }
     }
 
@@ -82,14 +82,14 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
             $this->parameterType = true;
 
             $dataType = $this->defaultResourceParameters[$this->parameterName];
-            $this->getMethodParameterValidator($dataType, [$this->parameterName => $this->parameterValue]);
+            $this->getMethodParameterValidator($dataType);
         }
     }
 
-    protected function getMethodParameterValidator($dataType, $data): void
+    protected function getMethodParameterValidator($dataType): void
     {
         $parameterValidator = $this->parameterValidatorFactory->getFactoryItem($dataType);
-        $parameterValidator->validate($this->validatorDataCollector, $data);
+        $parameterValidator->validate($this->parameterName, $this->parameterValue, $this->validatorDataCollector);
     }
 
     protected function isDefaultGetParametersThenValidate()

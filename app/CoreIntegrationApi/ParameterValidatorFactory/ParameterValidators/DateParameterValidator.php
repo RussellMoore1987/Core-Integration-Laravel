@@ -7,7 +7,8 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 
 class DateParameterValidator implements ParameterValidator
 {
-    private $columnName;
+    private $validatorDataCollector;
+    private $parameterName;
     private $date;
     private $originalDate;
     private $dateAction;
@@ -15,24 +16,17 @@ class DateParameterValidator implements ParameterValidator
     private $originalComparisonOperator = '';
     private $errors;
 
-    public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData): void
+    public function validate(string $parameterName, string $parameterValue, ValidatorDataCollector &$validatorDataCollector): void
     {
-        $this->setMainVariables($validatorDataCollector, $parameterData);
+        $this->validatorDataCollector = $validatorDataCollector;
+        $this->parameterName = $parameterName;
+        $this->date = $parameterValue;
+        $this->originalDate = $parameterValue;
+
         $this->processDateData();
         $this->checkForErrors();
         $this->setAcceptedParameterIfAny();
         $this->setDataQueryArgumentIfAny();
-    }
-
-    private function setMainVariables($validatorDataCollector, $parameterData)
-    {
-        $this->validatorDataCollector = $validatorDataCollector;
-
-        foreach ($parameterData as $columnName => $date) { // we should only have one array item
-            $this->columnName = $columnName;
-            $this->date = $date;
-            $this->originalDate = $date;
-        }
     }
 
     private function processDateData()
@@ -44,18 +38,18 @@ class DateParameterValidator implements ParameterValidator
     private function processDateString()
     {
         if (str_contains($this->date, '::')) {
-            $date_array = explode('::', $this->date);
+            $dateArray = explode('::', $this->date);
     
-            $this->originalComparisonOperator = $date_array[1];
-            $this->dateAction = strtolower($date_array[1]);
+            $this->originalComparisonOperator = $dateArray[1];
+            $this->dateAction = strtolower($dateArray[1]);
     
-            if (str_contains($date_array[0], ',') && in_array($this->dateAction, ['between', 'bt'])) {
-                $between_dates = explode(',', $date_array[0]);
+            if (str_contains($dateArray[0], ',') && in_array($this->dateAction, ['between', 'bt'])) {
+                $between_dates = explode(',', $dateArray[0]);
                 $this->date = [];
                 $this->date[] = $this->convertStringToDate($between_dates[0]);
                 $this->date[] = date('Y-m-d H:i:s', strtotime("tomorrow", strtotime($between_dates[1])) - 1); // End of day
             } else {
-                $this->date = $this->convertStringToDate($date_array[0]);
+                $this->date = $this->convertStringToDate($dateArray[0]);
             }
 
         } else {
@@ -130,7 +124,7 @@ class DateParameterValidator implements ParameterValidator
     {
         if ($this->errors) {
             $this->validatorDataCollector->setRejectedParameters([
-                "$this->columnName" => [
+                "$this->parameterName" => [
                     'dateCoveredTo' => $this->date,
                     'originalDate' => $this->originalDate,
                     'comparisonOperatorCoveredTo' => $this->comparisonOperator,
@@ -145,7 +139,7 @@ class DateParameterValidator implements ParameterValidator
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setAcceptedParameters([
-                "$this->columnName" => [
+                "$this->parameterName" => [
                     'dateCoveredTo' => $this->date,
                     'originalDate' => $this->originalDate,
                     'comparisonOperatorCoveredTo' => $this->comparisonOperator,
@@ -159,9 +153,9 @@ class DateParameterValidator implements ParameterValidator
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setQueryArgument([
-                "$this->columnName" => [
+                "$this->parameterName" => [
                     'dataType' => 'date',
-                    'columnName' => $this->columnName,
+                    'columnName' => $this->parameterName,
                     'date' => $this->date,
                     'comparisonOperator' => $this->comparisonOperator,
                     'originalComparisonOperator' => $this->originalComparisonOperator,
