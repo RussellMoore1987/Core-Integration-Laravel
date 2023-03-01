@@ -22,6 +22,52 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
+    public function test_IntParameterValidator_finds_and_function_with_random_string(): void
+    {
+        $comparisonOperator = '';
+        $intString = 'I am not a int' . $comparisonOperator;
+
+        $expectedRejectedParameters = [
+            'team_id' => [
+                'intConvertedTo' => $intString,
+                'originalIntString' => $intString,
+                'comparisonOperatorConvertedTo' => '=',
+                'originalComparisonOperator' => $comparisonOperator,
+                'parameterError' => [
+                    [
+                      'value' => 'I am not a int',
+                      'valueError' => $this->valueErrorMassage('string')
+                    ],
+                ],
+            ],
+        ];
+
+        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
+
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * @group get
+     */
+    // TODO: combine into one sets errors???
     public function test_IntParameterValidator_validate_function_with_random_string(): void
     {
         $comparisonOperator = '';
@@ -29,9 +75,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedRejectedParameters = [
             'team_id' => [
-                'intCoveredTo' => $intString,
+                'intConvertedTo' => $intString,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '=',
+                'comparisonOperatorConvertedTo' => '=',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     [
@@ -52,15 +98,16 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
+    // TODO: combine into one sets errors???
     public function test_IntParameterValidator_validate_function_with_extra_action(): void
     {
         $intString = "13,33::bt::something'";
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => [13,33],
+                'intConvertedTo' => [13,33],
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'bt',
+                'comparisonOperatorConvertedTo' => 'bt',
                 'originalComparisonOperator' => 'bt',
             ]
         ];
@@ -85,6 +132,7 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
+    // TODO: combine into one sets errors???
     public function test_IntParameterValidator_validate_function_with_no_int_blank_string(): void
     {
         $comparisonOperator = '';
@@ -92,9 +140,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedRejectedParameters = [
             'team_id' => [
-                'intCoveredTo' => $intString,
+                'intConvertedTo' => $intString,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '=',
+                'comparisonOperatorConvertedTo' => '=',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     [
@@ -115,6 +163,7 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
+    // TODO: combine into one sets comparisonOperator
     public function test_IntParameterValidator_validate_function_with_equal_to_with_out_action_operator(): void
     {
         $comparisonOperator = '';
@@ -122,9 +171,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => 1,
+                'intConvertedTo' => 1,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '=',
+                'comparisonOperatorConvertedTo' => '=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -149,6 +198,7 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
+    // TODO: combine into one sets comparisonOperator
     public function test_IntParameterValidator_validate_function_with_equal_to_by_default(): void
     {
         $comparisonOperator = 'sam';
@@ -156,9 +206,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => 1,
+                'intConvertedTo' => 1,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '=',
+                'comparisonOperatorConvertedTo' => '=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -183,16 +233,17 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_greater_then_using_gt(): void
+    // TODO: combine into one sets comparisonOperator
+    public function test_IntParameterValidator_validate_function_with_greater_Than_using_gt(): void
     {
         $comparisonOperator = 'GT';
         $intString = '4::' . $comparisonOperator;
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => 4,
+                'intConvertedTo' => 4,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '>',
+                'comparisonOperatorConvertedTo' => '>',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -217,16 +268,17 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_greater_then_using_greater_than(): void
+    // TODO: combine into one sets comparisonOperator
+    public function test_IntParameterValidator_validate_function_with_greater_Than_using_greater_than(): void
     {
         $comparisonOperator = 'greaterThan';
         $intString = '4::' . $comparisonOperator;
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => 4,
+                'intConvertedTo' => 4,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '>',
+                'comparisonOperatorConvertedTo' => '>',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -251,16 +303,17 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_greater_then_using_greater_than_symbol(): void
+    // TODO: combine into one sets comparisonOperator
+    public function test_IntParameterValidator_validate_function_with_greater_Than_using_greater_than_symbol(): void
     {
         $comparisonOperator = '>';
         $intString = '4::' . $comparisonOperator;
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => 4,
+                'intConvertedTo' => 4,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '>',
+                'comparisonOperatorConvertedTo' => '>',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -285,16 +338,17 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal(): void
+    // TODO: combine into one sets comparisonOperator
+    public function test_IntParameterValidator_validate_function_with_greater_Than_or_equal_to_using_greater_than_or_equal(): void
     {
         $comparisonOperator = 'greaterThanOrEqual';
         $intString = '4::' . $comparisonOperator;
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => 4,
+                'intConvertedTo' => 4,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '>=',
+                'comparisonOperatorConvertedTo' => '>=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -319,16 +373,17 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_gte(): void
+    // TODO: combine into one sets comparisonOperator
+    public function test_IntParameterValidator_validate_function_with_greater_Than_or_equal_to_using_gte(): void
     {
         $comparisonOperator = 'GTE';
         $intString = '4::' . $comparisonOperator;
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => 4,
+                'intConvertedTo' => 4,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '>=',
+                'comparisonOperatorConvertedTo' => '>=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -353,16 +408,17 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal_symbol(): void
+    // TODO: combine into one sets comparisonOperator
+    public function test_IntParameterValidator_validate_function_with_greater_Than_or_equal_to_using_greater_than_or_equal_symbol(): void
     {
         $comparisonOperator = '>=';
         $intString = '4::' . $comparisonOperator;
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => 4,
+                'intConvertedTo' => 4,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '>=',
+                'comparisonOperatorConvertedTo' => '>=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -387,16 +443,17 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_less_then_using_less_than(): void
+    // TODO: combine into one sets comparisonOperator
+    public function test_IntParameterValidator_validate_function_with_less_Than_using_less_than(): void
     {
         $comparisonOperator = 'lessThan';
         $intString = '4::' . $comparisonOperator;
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => 4,
+                'intConvertedTo' => 4,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '<',
+                'comparisonOperatorConvertedTo' => '<',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -421,16 +478,17 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_less_then_using_less_than_symbol(): void
+    // TODO: combine into one sets comparisonOperator
+    public function test_IntParameterValidator_validate_function_with_less_Than_using_less_than_symbol(): void
     {
         $comparisonOperator = '<';
         $intString = '4::' . $comparisonOperator;
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => 4,
+                'intConvertedTo' => 4,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '<',
+                'comparisonOperatorConvertedTo' => '<',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -455,16 +513,17 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_less_then_using_lt(): void
+    // TODO: combine into one sets comparisonOperator
+    public function test_IntParameterValidator_validate_function_with_less_Than_using_lt(): void
     {
         $comparisonOperator = 'lt';
         $intString = '4::' . $comparisonOperator;
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => 4,
+                'intConvertedTo' => 4,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '<',
+                'comparisonOperatorConvertedTo' => '<',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -489,6 +548,7 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
+    // TODO: combine into one sets comparisonOperator
     public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_less_than_or_equal(): void
     {
         $comparisonOperator = 'lessThanOrEqual';
@@ -496,9 +556,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => 10,
+                'intConvertedTo' => 10,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '<=',
+                'comparisonOperatorConvertedTo' => '<=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -523,6 +583,7 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
+    // TODO: combine into one sets comparisonOperator
     public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_less_than_or_equal_symbol(): void
     {
         $comparisonOperator = '<=';
@@ -530,9 +591,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => 10,
+                'intConvertedTo' => 10,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '<=',
+                'comparisonOperatorConvertedTo' => '<=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -557,6 +618,7 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
+    // TODO: combine into one sets comparisonOperator
     public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_lte(): void
     {
         $comparisonOperator = 'LTE';
@@ -564,9 +626,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => 10,
+                'intConvertedTo' => 10,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '<=',
+                'comparisonOperatorConvertedTo' => '<=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -591,6 +653,8 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
+    // TODO: combine into one sets errors???
+    // TODO: test error of this 4,3:: or sam:: -> takes care of this
     public function test_IntParameterValidator_validate_function_with_action_that_is_not_in_notin_or_bt(): void
     {
         // arrays or int strings that have a comma are only used in these actions IN, NotIn, BT, or Between
@@ -600,9 +664,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedRejectedParameters = [
             'team_id' => [
-                'intCoveredTo' => $int,
+                'intConvertedTo' => $int,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '<=',
+                'comparisonOperatorConvertedTo' => '<=',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     [
@@ -623,6 +687,7 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
+    // TODO: combine into one sets comparisonOperator
     public function test_IntParameterValidator_validate_function_with_between(): void
     {
         $comparisonOperator = 'bt';
@@ -630,9 +695,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => [1,100],
+                'intConvertedTo' => [1,100],
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'bt',
+                'comparisonOperatorConvertedTo' => 'bt',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -657,6 +722,7 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
+    // TODO: combine into one sets comparisonOperator
     public function test_IntParameterValidator_validate_function_with_between_error_first_int_grater_than_last_int(): void
     {
         $comparisonOperator = 'between';
@@ -664,14 +730,14 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedRejectedParameters = [
             'team_id' => [
-                'intCoveredTo' => [100,1],
+                'intConvertedTo' => [100,1],
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'bt',
+                'comparisonOperatorConvertedTo' => 'bt',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     [
                       'value' => [100,1],
-                      'valueError' => 'The First int must be smaller then the second int, ex: 10,60::BT. This parameter was not set.'
+                      'valueError' => 'The First int must be smaller than the second int, ex: 10,60::BT.'
                     ],
                 ],
             ],
@@ -687,6 +753,7 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
+    // TODO: combine into one sets errors???
     public function test_IntParameterValidator_validate_function_with_between_error_no_second_int(): void
     {
         $comparisonOperator = 'BETWEEN';
@@ -694,14 +761,14 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedRejectedParameters = [
             'team_id' => [
-                'intCoveredTo' => 1,
+                'intConvertedTo' => 1,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'bt',
+                'comparisonOperatorConvertedTo' => 'bt',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     [
                       'value' => 1,
-                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This parameter was not set.'
+                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT.'
                     ],
                 ],
             ],
@@ -717,6 +784,7 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
+    // TODO: combine into one sets errors???
     public function test_IntParameterValidator_validate_function_with_between_error_no_ints(): void
     {
         $comparisonOperator = 'BT';
@@ -724,9 +792,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedRejectedParameters = [
             'team_id' => [
-                'intCoveredTo' => '',
+                'intConvertedTo' => '',
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'bt',
+                'comparisonOperatorConvertedTo' => 'bt',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     [
@@ -735,7 +803,7 @@ class IntParameterValidatorTest extends TestCase
                     ],
                     [
                       'value' => '',
-                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This parameter was not set.'
+                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT.'
                     ],
                 ],
             ],
@@ -751,35 +819,32 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_between_more_then_two_ints(): void
+    // TODO: combine into one sets errors???
+    public function test_IntParameterValidator_validate_function_with_between_more_Than_two_ints(): void
     {
         $comparisonOperator = 'BT';
         $intString = '1,100,33::' . $comparisonOperator;
 
-        $expectedAcceptedParameters = [
+        $expectedRejectedParameters = [
             'team_id' => [
-                'intCoveredTo' => [1,100],
+                'intConvertedTo' => [1,100,33],
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'bt',
+                'comparisonOperatorConvertedTo' => 'bt',
                 'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => [1,100],
-                'comparisonOperator' => 'bt',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
+                'parameterError' => [
+                    [
+                      'value' => [1,100,33],
+                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT.'
+                    ],
+                ],
+            ],
         ];
         
         $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
+
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
     /**
@@ -792,9 +857,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => [1,100,33,88,99,55],
+                'intConvertedTo' => [1,100,33,88,99,55],
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'in',
+                'comparisonOperatorConvertedTo' => 'in',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -826,9 +891,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => [1,100,33,88,99,55],
+                'intConvertedTo' => [1,100,33,88,99,55],
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'in',
+                'comparisonOperatorConvertedTo' => 'in',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -860,9 +925,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => [1,100,33,88,99,55],
+                'intConvertedTo' => [1,100,33,88,99,55],
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'notin',
+                'comparisonOperatorConvertedTo' => 'notin',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -895,9 +960,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedRejectedParameters = [
             'team_id' => [
-                'intCoveredTo' => $int,
+                'intConvertedTo' => $int,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'in',
+                'comparisonOperatorConvertedTo' => 'in',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     [
@@ -918,7 +983,7 @@ class IntParameterValidatorTest extends TestCase
                     ],
                     [
                         'value' => 'sam,6.87,.01,fugue',
-                        'valueError' => 'There are no ints available in this array and/or the action/comparison operator was not one of these "between", "bt", "in", "notin". This parameter was not set.'
+                        'valueError' => 'There are no ints available in this array and/or the action/comparison operator was not one of these "between", "bt", "in", "notin".'
                     ],
                 ],
             ],
@@ -942,9 +1007,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedRejectedParameters = [
             'team_id' => [
-                'intCoveredTo' => [13,6],
+                'intConvertedTo' => [13,6],
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'in',
+                'comparisonOperatorConvertedTo' => 'in',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     [
@@ -977,9 +1042,9 @@ class IntParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => [13,7,6,33],
+                'intConvertedTo' => [13,7,6,33],
                 'originalIntString' => '13,7,6,33::IN',
-                'comparisonOperatorCoveredTo' => 'in',
+                'comparisonOperatorConvertedTo' => 'in',
                 'originalComparisonOperator' => 'IN',
             ]
         ];
@@ -1013,7 +1078,7 @@ class IntParameterValidatorTest extends TestCase
     }
     protected function valueErrorMassage(string $dataType): string
     {
-        return "The value passed in is not an int. Only ints are permitted for this parameter. Your value is a {$dataType}. This parameter was not set.";
+        return "The value passed in is not an int. Only ints are permitted for this parameter. Your value is a {$dataType}.";
         
     }
 }

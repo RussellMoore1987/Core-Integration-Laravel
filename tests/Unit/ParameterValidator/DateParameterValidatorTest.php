@@ -29,9 +29,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '1970-01-01 00:00:00',
+                'dateConvertedTo' => '1970-01-01 00:00:00',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '=',
+                'comparisonOperatorConvertedTo' => '=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -63,9 +63,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '1970-01-01 00:00:00',
+                'dateConvertedTo' => '1970-01-01 00:00:00',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '=',
+                'comparisonOperatorConvertedTo' => '=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -97,9 +97,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2020-01-01 12:45:59',
+                'dateConvertedTo' => '2020-01-01 12:45:59',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '=',
+                'comparisonOperatorConvertedTo' => '=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -131,9 +131,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2020-01-01 12:45:59',
+                'dateConvertedTo' => '2020-01-01 12:45:59',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '=',
+                'comparisonOperatorConvertedTo' => '=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -165,9 +165,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2020-01-01 12:45:59',
+                'dateConvertedTo' => '2020-01-01 12:45:59',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '>',
+                'comparisonOperatorConvertedTo' => '>',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -199,9 +199,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2020-01-01 12:45:59',
+                'dateConvertedTo' => '2020-01-01 12:45:59',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '>',
+                'comparisonOperatorConvertedTo' => '>',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -233,9 +233,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2020-01-01 12:45:59',
+                'dateConvertedTo' => '2020-01-01 12:45:59',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '>',
+                'comparisonOperatorConvertedTo' => '>',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -267,9 +267,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2020-01-01 12:45:59',
+                'dateConvertedTo' => '2020-01-01 12:45:59',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '>=',
+                'comparisonOperatorConvertedTo' => '>=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -301,9 +301,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2020-01-01 12:45:59',
+                'dateConvertedTo' => '2020-01-01 12:45:59',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '>=',
+                'comparisonOperatorConvertedTo' => '>=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -335,9 +335,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2020-01-01 12:45:59',
+                'dateConvertedTo' => '2020-01-01 12:45:59',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '>=',
+                'comparisonOperatorConvertedTo' => '>=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -369,9 +369,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2020-01-01 12:45:59',
+                'dateConvertedTo' => '2020-01-01 12:45:59',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '<',
+                'comparisonOperatorConvertedTo' => '<',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -403,9 +403,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2020-01-01 12:45:59',
+                'dateConvertedTo' => '2020-01-01 12:45:59',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '<',
+                'comparisonOperatorConvertedTo' => '<',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -437,9 +437,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2020-01-01 12:45:59',
+                'dateConvertedTo' => '2020-01-01 12:45:59',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '<',
+                'comparisonOperatorConvertedTo' => '<',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -471,9 +471,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2020-01-01 12:45:59',
+                'dateConvertedTo' => '2020-01-01 12:45:59',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '<=',
+                'comparisonOperatorConvertedTo' => '<=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -505,9 +505,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2020-01-01 12:45:59',
+                'dateConvertedTo' => '2020-01-01 12:45:59',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '<=',
+                'comparisonOperatorConvertedTo' => '<=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -539,9 +539,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2020-01-01 12:45:59',
+                'dateConvertedTo' => '2020-01-01 12:45:59',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => '<=',
+                'comparisonOperatorConvertedTo' => '<=',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -573,12 +573,12 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => [
+                'dateConvertedTo' => [
                   '1970-01-01 00:00:00',
                   '1970-01-01 23:59:59',
                 ],
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => 'bt',
+                'comparisonOperatorConvertedTo' => 'bt',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -613,12 +613,12 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => [
+                'dateConvertedTo' => [
                   '2020-01-01 01:01:59',
                   '2020-12-31 23:59:59'
                 ],
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => 'bt',
+                'comparisonOperatorConvertedTo' => 'bt',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -653,12 +653,12 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedRejectedParameters = [
             'start_date' => [
-                'dateCoveredTo' => [
+                'dateConvertedTo' => [
                   '2222-01-01 00:00:00',
                   '2021-01-01 23:59:59'
                 ],
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => 'bt',
+                'comparisonOperatorConvertedTo' => 'bt',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     'The first date "2222-01-01 00:00:00" must be smaller than the last date "2021-01-01 23:59:59" sent in.'
@@ -683,9 +683,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedRejectedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '2021-01-01 00:00:00',
+                'dateConvertedTo' => '2021-01-01 00:00:00',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => 'bt',
+                'comparisonOperatorConvertedTo' => 'bt',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     'The between date action requires two dates, ex: 2021-01-01,2021-12-31::BT. It only utilizes the first two if more are passed in.'
@@ -710,9 +710,9 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedRejectedParameters = [
             'start_date' => [
-                'dateCoveredTo' => '1970-01-01 00:00:00',
+                'dateConvertedTo' => '1970-01-01 00:00:00',
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => 'bt',
+                'comparisonOperatorConvertedTo' => 'bt',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     'The between date action requires two dates, ex: 2021-01-01,2021-12-31::BT. It only utilizes the first two if more are passed in.'
@@ -737,12 +737,12 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => [
+                'dateConvertedTo' => [
                     '1970-01-01 00:00:00',
                     '1978-01-01 23:59:59',
                 ],
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => 'bt',
+                'comparisonOperatorConvertedTo' => 'bt',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -777,12 +777,12 @@ class DateParameterValidatorTest extends TestCase
 
         $expectedAcceptedParameters = [
             'start_date' => [
-                'dateCoveredTo' => [
+                'dateConvertedTo' => [
                     '1970-01-01 00:00:00',
                     '1978-01-01 23:59:59',
                 ],
                 'originalDate' => $dateString,
-                'comparisonOperatorCoveredTo' => 'bt',
+                'comparisonOperatorConvertedTo' => 'bt',
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];

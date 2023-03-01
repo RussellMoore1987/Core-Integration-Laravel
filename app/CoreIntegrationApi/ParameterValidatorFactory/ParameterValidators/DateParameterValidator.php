@@ -125,9 +125,9 @@ class DateParameterValidator implements ParameterValidator
         if ($this->errors) {
             $this->validatorDataCollector->setRejectedParameters([
                 "$this->parameterName" => [
-                    'dateCoveredTo' => $this->date,
+                    'dateConvertedTo' => $this->date,
                     'originalDate' => $this->originalDate,
-                    'comparisonOperatorCoveredTo' => $this->comparisonOperator,
+                    'comparisonOperatorConvertedTo' => $this->comparisonOperator,
                     'originalComparisonOperator' => $this->originalComparisonOperator,
                     'parameterError' => $this->errors,
                 ]
@@ -140,9 +140,9 @@ class DateParameterValidator implements ParameterValidator
         if (!$this->errors) {
             $this->validatorDataCollector->setAcceptedParameters([
                 "$this->parameterName" => [
-                    'dateCoveredTo' => $this->date,
+                    'dateConvertedTo' => $this->date,
                     'originalDate' => $this->originalDate,
-                    'comparisonOperatorCoveredTo' => $this->comparisonOperator,
+                    'comparisonOperatorConvertedTo' => $this->comparisonOperator,
                     'originalComparisonOperator' => $this->originalComparisonOperator,
                 ]
             ]);
