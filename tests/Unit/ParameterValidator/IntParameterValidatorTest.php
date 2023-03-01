@@ -671,7 +671,7 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                       'value' => [100,1],
-                      'valueError' => 'The First int must be smaller then the second int, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.'
+                      'valueError' => 'The First int must be smaller then the second int, ex: 10,60::BT. This parameter was not set.'
                     ],
                 ],
             ],
@@ -701,7 +701,7 @@ class IntParameterValidatorTest extends TestCase
                 'parameterError' => [
                     [
                       'value' => 1,
-                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.'
+                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This parameter was not set.'
                     ],
                 ],
             ],
@@ -735,7 +735,7 @@ class IntParameterValidatorTest extends TestCase
                     ],
                     [
                       'value' => '',
-                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.'
+                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This parameter was not set.'
                     ],
                 ],
             ],

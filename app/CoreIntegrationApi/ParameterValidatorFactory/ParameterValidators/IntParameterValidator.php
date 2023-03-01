@@ -26,6 +26,7 @@ class IntParameterValidator implements ParameterValidator
     protected $originalComparisonOperator = '';
     protected $intAction;
     protected $processedAsArray = false;
+    protected $realInts;
     protected $errors;
     protected $comparisonOperator;
 
@@ -40,8 +41,8 @@ class IntParameterValidator implements ParameterValidator
         $this->processIntParameter();
         $this->setComparisonOperator();
         $this->setErrorsIfAny();
-        $this->setAcceptedParameterIfAny();
-        $this->setQueryArgumentIfAny();
+        $this->setAcceptedParameterIfNoErrors();
+        $this->setQueryArgumentIfNoErrors();
     }
 
     protected function processIntParameter(): void
@@ -63,9 +64,7 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    // ! Start here ******************************
     // TODO: test or the action/comparison operator was not one fo these "between", "bt", "in", "notin".
-    // TODO: test defaults to in
     protected function isArrayThenProcessArray(): void
     {
         if (
@@ -76,12 +75,20 @@ class IntParameterValidator implements ParameterValidator
             )
         ) {
             $this->processedAsArray = true;
-            $this->intAction = $this->intAction ? $this->intAction : 'in'; // defaults to in // TODO: test
+            $this->evaluateEachIntInArray();
+            $this->isIntArrayValidThenSetElseSetError();
+        }
+    }
+
+    // TODO: test defaults to in
+    protected function evaluateEachIntInArray()
+    {
+        $this->intAction = $this->intAction ? $this->intAction : 'in'; // defaults to in // TODO: test
             $ints = explode(',', $this->int);
-            $realInts = [];
+            $this->realInts = [];
             foreach ($ints as $index => $value) {
                 if ($this->isInt($value)) {
-                    $realInts[] = (int) $value;
+                    $this->realInts[] = (int) $value;
                 } elseif (is_numeric($value)) { // TODO: test
                     $this->errors[] = [
                         'value' => (float) $value,
@@ -94,18 +101,20 @@ class IntParameterValidator implements ParameterValidator
                     ];
                 }
             }
+    }
 
-            if ($realInts) {
-                $this->int = $realInts;
-                if (in_array($this->intAction, ['between', 'bt']) && count($this->int) >= 2) {
-                    $this->int = [$this->int[0], $this->int[1]]; // TODO: test
-                }
-            } else {
-                $this->errors[] = [
-                    'value' => $this->int,
-                    'valueError' => 'There are no ints available in this array and/or the action/comparison operator was not one of these "between", "bt", "in", "notin". This parameter was not set.', // TODO: test
-                ];
+    protected function isIntArrayValidThenSetElseSetError()
+    {
+        if ($this->realInts) {
+            $this->int = $this->realInts;
+            if (in_array($this->intAction, ['between', 'bt']) && count($this->int) >= 2) {
+                $this->int = [$this->int[0], $this->int[1]]; // TODO: test
             }
+        } else {
+            $this->errors[] = [
+                'value' => $this->int,
+                'valueError' => 'There are no ints available in this array and/or the action/comparison operator was not one of these "between", "bt", "in", "notin". This parameter was not set.', // TODO: test
+            ];
         }
     }
 
@@ -168,22 +177,22 @@ class IntParameterValidator implements ParameterValidator
     {
         if (
             is_array($this->int) &&
-            count($this->int) >= 2 &&
+            count($this->int) == 2 &&
             $this->int[0] >= $this->int[1]
         ) {
             $this->errors[] = [
                 'value' => $this->int,
-                'valueError' => 'The First int must be smaller then the second int, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.',
+                'valueError' => 'The First int must be smaller then the second int, ex: 10,60::BT. This parameter was not set.',
             ];
         }
     }
 
     protected function isIntAnArrayAndCountLessThen2ThenThrowError(): void
     {
-        if (!(is_array($this->int) && count($this->int) >= 2)) {
+        if (!(is_array($this->int) && count($this->int) == 2)) {
             $this->errors[] = [
                 'value' => $this->int,
-                'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.',
+                'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This parameter was not set.',
             ];;
         }
     }
@@ -203,7 +212,7 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    protected function setAcceptedParameterIfAny(): void
+    protected function setAcceptedParameterIfNoErrors(): void
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setAcceptedParameters([
@@ -217,7 +226,7 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    protected function setQueryArgumentIfAny(): void
+    protected function setQueryArgumentIfNoErrors(): void
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setQueryArgument([
