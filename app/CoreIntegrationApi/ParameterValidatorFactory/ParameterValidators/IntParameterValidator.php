@@ -17,6 +17,7 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 // [] add return type : void
 // [] testing what I need to test
 
+// ! Start here - refactor tests ***************
 class IntParameterValidator implements ParameterValidator
 {
     protected $validatorDataCollector;
@@ -56,10 +57,21 @@ class IntParameterValidator implements ParameterValidator
     {
         if (str_contains($this->int, '::')) {
             $intArray = explode('::', $this->int);
-    
+
+            $errorInt = $this->int;
             $this->originalComparisonOperator = $intArray[1];
             $this->intAction = strtolower($intArray[1]);
             $this->int = $intArray[0];
+
+            if (count($intArray) > 2) {
+                $this->errors[] = [
+                    'value' => $errorInt,
+                    'valueError' => "Only one comparison operator is permitted per parameter, ex: 123::lt.",
+                ];
+                unset($intArray[0]);
+                $this->intAction = 'inconclusive';
+                $this->originalComparisonOperator = $intArray;
+            }
         }
     }
 
@@ -159,12 +171,18 @@ class IntParameterValidator implements ParameterValidator
             $this->comparisonOperator = 'in';
         } elseif ($this->intAction == 'notin') {
             $this->comparisonOperator = 'notin';
-        } else {
+        } elseif ($this->intAction == null || in_array($this->intAction, ['equal', 'e', '='])) {
             $this->comparisonOperator = '=';
+        } elseif ($this->intAction == 'inconclusive') {
+            $this->comparisonOperator = null;
+        } else {
+            $this->errors[] = [
+                'value' => $this->intAction,
+                'valueError' => "The comparison operator is invalid. The comparison operator of \"{$this->intAction}\" does not exist for this parameter.",
+            ];
         }
     }
 
-    // ! Start here ***************
     // TODO: posable move not in array, and error not for array
     protected function isBetweenActionThenValidateAsSuch(): void
     {

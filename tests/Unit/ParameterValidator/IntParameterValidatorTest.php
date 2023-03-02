@@ -19,36 +19,7 @@ class IntParameterValidatorTest extends TestCase
         $this->intParameterValidator = new IntParameterValidator();
     }
 
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_finds_and_function_with_random_string(): void
-    {
-        $comparisonOperator = '';
-        $intString = 'I am not a int' . $comparisonOperator;
-
-        $expectedRejectedParameters = [
-            'team_id' => [
-                'intConvertedTo' => $intString,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '=',
-                'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [
-                    [
-                      'value' => 'I am not a int',
-                      'valueError' => $this->valueErrorMassage('string')
-                    ],
-                ],
-            ],
-        ];
-
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-
-        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
-    }
-
+    
 
 
 
@@ -101,32 +72,39 @@ class IntParameterValidatorTest extends TestCase
     // TODO: combine into one sets errors???
     public function test_IntParameterValidator_validate_function_with_extra_action(): void
     {
-        $intString = "13,33::bt::something'";
+        $intString = "13,33::bt::lt";
+        // $intString = "33::bt::sam'"; // TODO: test this
+        // $intString = "33::bt::lt"; // TODO: test this
 
-        $expectedAcceptedParameters = [
+        $expectedRejectedParameters = [
             'team_id' => [
-                'intConvertedTo' => [13,33],
+                'intConvertedTo' => '13,33',
                 'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => 'bt',
-                'originalComparisonOperator' => 'bt',
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => [13,33],
-                'comparisonOperator' => 'bt',
-                'originalComparisonOperator' => 'bt',
-            ]
+                'comparisonOperatorConvertedTo' => null,
+                'originalComparisonOperator' => [
+                    1 => 'bt',
+                    2 => 'lt'
+                ],
+                'parameterError' => [
+                    [
+                        'value' => $intString,
+                        'valueError' => 'Only one comparison operator is permitted per parameter, ex: 123::lt.'
+                    ],
+                    [
+                        'value' => '13,33',
+                        'valueError' => $this->valueErrorMassage('string')
+                    ],
+                ],
+            ],
         ];
 
         $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
 
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
+        // dd($this->validatorDataCollector->getRejectedParameters());
+
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
     /**
@@ -198,36 +176,32 @@ class IntParameterValidatorTest extends TestCase
     /**
      * @group get
      */
-    // TODO: combine into one sets comparisonOperator
+    // TODO: combine into one sets comparisonOperator *****error???
     public function test_IntParameterValidator_validate_function_with_equal_to_by_default(): void
     {
         $comparisonOperator = 'sam';
         $intString = '1::' . $comparisonOperator;
 
-        $expectedAcceptedParameters = [
+        $expectedRejectedParameters = [
             'team_id' => [
                 'intConvertedTo' => 1,
                 'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '=',
+                'comparisonOperatorConvertedTo' => null,
                 'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 1,
-                'comparisonOperator' => '=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
+                'parameterError' => [
+                    [
+                        'value' => $comparisonOperator,
+                        'valueError' => "The comparison operator is invalid. The comparison operator of \"{$comparisonOperator}\" does not exist for this parameter."
+                    ]
+                ],
+            ],
         ];
         
         $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
 
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
     /**
