@@ -10,6 +10,7 @@ class IntParameterValidatorTest extends TestCase
 {
     protected $validatorDataCollector;
     protected $intParameterValidator;
+    protected $numString = '13,33';
     
     protected function setUp(): void
     {
@@ -19,86 +20,28 @@ class IntParameterValidatorTest extends TestCase
         $this->intParameterValidator = new IntParameterValidator();
     }
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
+     * @dataProvider multiActionErrorProvider
+     * @group rest
+     * @group context
      * @group get
      */
-    // TODO: combine into one sets errors???
-    public function test_IntParameterValidator_validate_function_with_random_string(): void
+    public function test_IntParameterValidator_validation_returns_appropriate_error_messages_multi_action($comparisonOperator, $intString, $errors): void
     {
-        $comparisonOperator = '';
-        $intString = 'I am not a int' . $comparisonOperator;
+        $comparisonOperatorString = $comparisonOperator ? '::' . implode('::', $comparisonOperator) : '';
+        $fullIntString = $intString . $comparisonOperatorString;
 
         $expectedRejectedParameters = [
             'team_id' => [
                 'intConvertedTo' => $intString,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '=',
-                'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [
-                    [
-                      'value' => 'I am not a int',
-                      'valueError' => $this->valueErrorMassage('string')
-                    ],
-                ],
-            ],
-        ];
-
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-
-        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    // TODO: combine into one sets errors???
-    public function test_IntParameterValidator_validate_function_with_extra_action(): void
-    {
-        $intString = "13,33::bt::lt";
-        // $intString = "33::bt::sam'"; // TODO: test this
-        // $intString = "33::bt::lt"; // TODO: test this
-
-        $expectedRejectedParameters = [
-            'team_id' => [
-                'intConvertedTo' => '13,33',
-                'originalIntString' => $intString,
+                'originalIntString' => $fullIntString,
                 'comparisonOperatorConvertedTo' => null,
-                'originalComparisonOperator' => [
-                    1 => 'bt',
-                    2 => 'lt'
-                ],
-                'parameterError' => [
-                    [
-                        'value' => $intString,
-                        'valueError' => 'Only one comparison operator is permitted per parameter, ex: 123::lt.'
-                    ],
-                    [
-                        'value' => '13,33',
-                        'valueError' => $this->valueErrorMassage('string')
-                    ],
-                ],
+                'originalComparisonOperator' => $comparisonOperator,
+                'parameterError' => $errors,
             ],
         ];
 
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
+        $this->intParameterValidator->validate('team_id', $fullIntString, $this->validatorDataCollector);
 
         // dd($this->validatorDataCollector->getRejectedParameters());
 
@@ -107,117 +50,102 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
+    public function multiActionErrorProvider(): array
+     {
+        return [
+            'intArrayAndTooManyActionsSent' => [
+                [1 => 'bt', 2 => 'lt'],
+                $this->numString,
+                [
+                    [
+                        'value' => $this->numString . '::bt::lt',
+                        'valueError' => 'Only one comparison operator is permitted per parameter, ex: 123::lt.'
+                    ],
+                    $this->stringError($this->numString),
+                ]
+            ],
+            'intAndTooManyActionsSent' => [
+                [1 => 'bt', 2 => 'sam\''],
+                33,
+                [
+                    [
+                        'value' => 33 . '::bt::sam\'',
+                        'valueError' => 'Only one comparison operator is permitted per parameter, ex: 123::lt.'
+                    ],
+                ]
+            ],
+        ];
+     }
+
+
     /**
+     * @dataProvider intParameterValidatorErrorProvider
+     * @group rest
+     * @group context
      * @group get
      */
-    // TODO: combine into one sets errors???
-    public function test_IntParameterValidator_validate_function_with_no_int_blank_string(): void
+    public function test_IntParameterValidator_validation_returns_appropriate_error_messages($comparisonOperator, $intString, $comparisonOperatorConvertedTo, $errors): void
     {
-        $comparisonOperator = '';
-        $intString = '' . $comparisonOperator;
+        $comparisonOperatorString = $comparisonOperator ? '::'.$comparisonOperator : '';
+        $fullIntString = $intString . $comparisonOperatorString;
 
         $expectedRejectedParameters = [
             'team_id' => [
                 'intConvertedTo' => $intString,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '=',
+                'originalIntString' => $fullIntString,
+                'comparisonOperatorConvertedTo' => $comparisonOperatorConvertedTo,
                 'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [
-                    [
-                      'value' => '',
-                      'valueError' => $this->valueErrorMassage('string')
-                    ],
-                ],
+                'parameterError' => $errors,
             ],
         ];
 
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
+        $this->intParameterValidator->validate('team_id', $fullIntString, $this->validatorDataCollector);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-    /**
-     * @group get
-     */
-    // TODO: combine into one sets comparisonOperator
-    public function test_IntParameterValidator_validate_function_with_equal_to_with_out_action_operator(): void
-    {
-        $comparisonOperator = '';
-        $intString = '1' . $comparisonOperator;
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intConvertedTo' => 1,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 1,
-                'comparisonOperator' => '=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    // TODO: combine into one sets comparisonOperator *****error???
-    public function test_IntParameterValidator_validate_function_with_equal_to_by_default(): void
-    {
-        $comparisonOperator = 'sam';
-        $intString = '1::' . $comparisonOperator;
-
-        $expectedRejectedParameters = [
-            'team_id' => [
-                'intConvertedTo' => 1,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => null,
-                'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [
+    public function intParameterValidatorErrorProvider(): array
+     {
+        return [
+            'stringError' => ['', 'I am not a int', '=', [$this->stringError('I am not a int')]],
+            'emptyString' => ['', '', '=', [$this->stringError('')]],
+            'invalidAction' => [
+                'sam', 1, null,
+                [
                     [
-                        'value' => $comparisonOperator,
-                        'valueError' => "The comparison operator is invalid. The comparison operator of \"{$comparisonOperator}\" does not exist for this parameter."
+                        'value' => 'sam',
+                        'valueError' => "The comparison operator is invalid. The comparison operator of \"sam\" does not exist for this parameter."
                     ]
-                ],
+                ]
             ],
         ];
-        
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
+     }
 
-        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
-    }
+     protected function stringError(string $string = ''): array
+     {
+        return [
+            'value' => $string,
+            'valueError' => $this->valueErrorMassage('string')
+        ];
+     }
 
     /**
+     * @dataProvider nonArrayComparisonOperatorProvider
+     * @group rest
+     * @group context
      * @group get
      */
-    // TODO: combine into one sets comparisonOperator
-    public function test_IntParameterValidator_validate_function_with_greater_Than_using_gt(): void
+    public function test_IntParameterValidator_sets_correct_comparison_operator($comparisonOperator, $comparisonOperatorConvertedTo): void
     {
-        $comparisonOperator = 'GT';
         $intString = '4::' . $comparisonOperator;
 
         $expectedAcceptedParameters = [
             'team_id' => [
                 'intConvertedTo' => 4,
                 'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '>',
+                'comparisonOperatorConvertedTo' => $comparisonOperatorConvertedTo,
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -227,7 +155,7 @@ class IntParameterValidatorTest extends TestCase
                 'dataType' => 'int',
                 'columnName' => 'team_id',
                 'int' => 4,
-                'comparisonOperator' => '>',
+                'comparisonOperator' => $comparisonOperatorConvertedTo,
                 'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
@@ -239,396 +167,36 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
     }
 
-    /**
-     * @group get
-     */
-    // TODO: combine into one sets comparisonOperator
-    public function test_IntParameterValidator_validate_function_with_greater_Than_using_greater_than(): void
-    {
-        $comparisonOperator = 'greaterThan';
-        $intString = '4::' . $comparisonOperator;
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intConvertedTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '>',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
+    public function nonArrayComparisonOperatorProvider(): array
+     {
+        return [
+            'equalsUsing_equal' => ['equal', '='],
+            'equalsUsing__e' => ['e', '='],
+            'equalsUsing_=' => ['=', '='],
+            'greaterThanUsing_greaterThan' => ['greaterThan', '>'],
+            'greaterThanUsing_gt' => ['gt', '>'],
+            'greaterThanUsing_>' => ['>', '>'],
+            'greaterThanOrEqualUsing_greaterThanOrEqual' => ['greaterThanOrEqual', '>='],
+            'greaterThanOrEqualUsing_gt' => ['gte', '>='],
+            'greaterThanOrEqualUsing_>=' => ['>=', '>='],
+            'lessThanUsing_lessThan' => ['lessThan', '<'],
+            'lessThanUsing_lt' => ['lt', '<'],
+            'lessThanUsing_<' => ['<', '<'],
+            'lessThanOrEqualUsing_lessThanOrEqual' => ['lessThanOrEqual', '<='],
+            'lessThanOrEqualUsing_lte' => ['lte', '<='],
+            'lessThanOrEqualUsing_<=' => ['<=', '<='],
+            // show that casing does not matter, all comparison operators are converted to string lower small example below
+            'showThatCasingDoesNotMatterUsing_greaterThan' => ['GreAterThaN', '>'],
+            'showThatCasingDoesNotMatterUsing_GTE' => ['GTE', '>='],
+            'showThatCasingDoesNotMatterUsing_LT' => ['LT', '<'],
         ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '>',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    // TODO: combine into one sets comparisonOperator
-    public function test_IntParameterValidator_validate_function_with_greater_Than_using_greater_than_symbol(): void
-    {
-        $comparisonOperator = '>';
-        $intString = '4::' . $comparisonOperator;
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intConvertedTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '>',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '>',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    // TODO: combine into one sets comparisonOperator
-    public function test_IntParameterValidator_validate_function_with_greater_Than_or_equal_to_using_greater_than_or_equal(): void
-    {
-        $comparisonOperator = 'greaterThanOrEqual';
-        $intString = '4::' . $comparisonOperator;
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intConvertedTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '>=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '>=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    // TODO: combine into one sets comparisonOperator
-    public function test_IntParameterValidator_validate_function_with_greater_Than_or_equal_to_using_gte(): void
-    {
-        $comparisonOperator = 'GTE';
-        $intString = '4::' . $comparisonOperator;
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intConvertedTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '>=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '>=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    // TODO: combine into one sets comparisonOperator
-    public function test_IntParameterValidator_validate_function_with_greater_Than_or_equal_to_using_greater_than_or_equal_symbol(): void
-    {
-        $comparisonOperator = '>=';
-        $intString = '4::' . $comparisonOperator;
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intConvertedTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '>=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '>=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    // TODO: combine into one sets comparisonOperator
-    public function test_IntParameterValidator_validate_function_with_less_Than_using_less_than(): void
-    {
-        $comparisonOperator = 'lessThan';
-        $intString = '4::' . $comparisonOperator;
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intConvertedTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '<',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '<',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    // TODO: combine into one sets comparisonOperator
-    public function test_IntParameterValidator_validate_function_with_less_Than_using_less_than_symbol(): void
-    {
-        $comparisonOperator = '<';
-        $intString = '4::' . $comparisonOperator;
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intConvertedTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '<',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '<',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    // TODO: combine into one sets comparisonOperator
-    public function test_IntParameterValidator_validate_function_with_less_Than_using_lt(): void
-    {
-        $comparisonOperator = 'lt';
-        $intString = '4::' . $comparisonOperator;
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intConvertedTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '<',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '<',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    // TODO: combine into one sets comparisonOperator
-    public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_less_than_or_equal(): void
-    {
-        $comparisonOperator = 'lessThanOrEqual';
-        $intString = '10::' . $comparisonOperator;
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intConvertedTo' => 10,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '<=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 10,
-                'comparisonOperator' => '<=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    // TODO: combine into one sets comparisonOperator
-    public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_less_than_or_equal_symbol(): void
-    {
-        $comparisonOperator = '<=';
-        $intString = '10::' . $comparisonOperator;
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intConvertedTo' => 10,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '<=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 10,
-                'comparisonOperator' => '<=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    // TODO: combine into one sets comparisonOperator
-    public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_lte(): void
-    {
-        $comparisonOperator = 'LTE';
-        $intString = '10::' . $comparisonOperator;
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intConvertedTo' => 10,
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => '<=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 10,
-                'comparisonOperator' => '<=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
+     }
 
     /**
      * @group get
      */
     // TODO: combine into one sets errors???
-    // TODO: test error of this 4,3:: or sam:: -> takes care of this
+    // TODO: test error of this 4,3::LTE or sam:: -> takes care of this, array::notArrayAction
     public function test_IntParameterValidator_validate_function_with_action_that_is_not_in_notin_or_bt(): void
     {
         // arrays or int strings that have a comma are only used in these actions IN, NotIn, BT, or Between
