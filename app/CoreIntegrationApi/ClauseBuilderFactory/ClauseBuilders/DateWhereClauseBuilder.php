@@ -20,5 +20,5 @@ class DateWhereClauseBuilder implements ClauseBuilder
         }
 
         return $queryBuilder;
-    } 
+    }
 }

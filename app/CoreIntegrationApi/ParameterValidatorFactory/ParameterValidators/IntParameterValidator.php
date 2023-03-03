@@ -140,6 +140,11 @@ class IntParameterValidator implements ParameterValidator
                     'value' => (float) $this->int,
                     'valueError' => 'The value passed in is not an int. Only ints are permitted for this parameter. Your value is a float.',
                 ];
+            } elseif (str_contains($this->int, ',')) {
+                $this->errors[] = [
+                    'value' => $this->int,
+                    'valueError' => 'Unable to process array of ints. You must use one of the accepted comparison operator such as "between", "bt", "in", or "notin" to process an array.',
+                ];
             } else {
                 $this->errors[] = [
                     'value' => $this->int,
