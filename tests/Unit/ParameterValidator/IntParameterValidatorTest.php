@@ -135,22 +135,10 @@ class IntParameterValidatorTest extends TestCase
                 'comparisonOperatorConvertedTo' => 'in',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
-                    [
-                        'value' => 'sam',
-                        'valueError' => $this->valueErrorIndexMassage(0, 'string')
-                    ],
-                    [
-                        'value' => 6.87,
-                        'valueError' => $this->valueErrorIndexMassage(1, 'float')
-                    ],
-                    [
-                        'value' => 0.01,
-                        'valueError' => $this->valueErrorIndexMassage(2, 'float')
-                    ],
-                    [
-                        'value' => 'fugue',
-                        'valueError' => $this->valueErrorIndexMassage(3, 'string')
-                    ],
+                    $this->valueErrorIndexMassage('sam', 0, 'string'),
+                    $this->valueErrorIndexMassage(6.87, 1, 'float'),
+                    $this->valueErrorIndexMassage(0.01, 2, 'float'),
+                    $this->valueErrorIndexMassage('fugue', 3, 'string'),
                     [
                         'value' => 'sam,6.87,.01,fugue',
                         'valueError' => 'There are no ints available in this array.'
@@ -184,14 +172,8 @@ class IntParameterValidatorTest extends TestCase
                 'comparisonOperatorConvertedTo' => 'notin',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
-                    [
-                        'value' => 6.87,
-                        'valueError' => $this->valueErrorIndexMassage(1, 'float')
-                    ],
-                    [
-                        'value' => 'fugue',
-                        'valueError' => $this->valueErrorIndexMassage(3, 'string')
-                    ],
+                    $this->valueErrorIndexMassage(6.87, 1, 'float'),
+                    $this->valueErrorIndexMassage('fugue', 3, 'string'),
                 ],
             ],
         ];
@@ -438,9 +420,12 @@ class IntParameterValidatorTest extends TestCase
         ];
      }
 
-    protected function valueErrorIndexMassage(int $index, string $dataType): string
+    protected function valueErrorIndexMassage($value, int $index, string $dataType): array
     {
-        return "The value at the index of {$index} is not an int. Only ints are permitted for this parameter. Your value is a {$dataType}.";
+        return [
+            'value' => $value,
+            'valueError' => "The value at the index of {$index} is not an int. Only ints are permitted for this parameter. Your value is a {$dataType}."
+        ];
     }
 
     protected function betweenIntActionRequiresTwoIntsErrorMassage($value): array
