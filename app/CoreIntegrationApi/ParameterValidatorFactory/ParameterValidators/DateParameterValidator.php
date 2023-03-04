@@ -23,9 +23,9 @@ class DateParameterValidator implements ParameterValidator
     protected $parameterName;
     protected $date;
     protected $originalDate;
+    protected $originalComparisonOperator = '';
     protected $dateAction;
     protected $comparisonOperator;
-    protected $originalComparisonOperator = '';
     protected $errors;
 
     public function validate(string $parameterName, string $parameterValue, ValidatorDataCollector &$validatorDataCollector): void
