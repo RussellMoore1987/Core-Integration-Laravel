@@ -5,6 +5,18 @@ namespace App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ParameterValidator;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 
+// ! Start here ******************************************************************
+// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
+// ! (sub DateParameterValidator, PostRequestMethodTypeValidator)
+// [] read over
+// [] add return type : void
+// [] add test
+// test to do
+// [] read over
+// [] test groups, rest, context
+// [] add return type : void
+// [] testing what I need to test
+
 class DateParameterValidator implements ParameterValidator
 {
     protected $validatorDataCollector;
@@ -98,8 +110,6 @@ class DateParameterValidator implements ParameterValidator
             is_array($this->date) &&
             $this->date[0] > $this->date[1]
         ) {
-            $this->error = true;
-
             $firstDate = $this->date[0];
             $secondDate = $this->date[1];
             $this->errors[] = "The first date \"{$firstDate}\" must be smaller than the last date \"{$secondDate}\" sent in.";
@@ -115,7 +125,6 @@ class DateParameterValidator implements ParameterValidator
                 count($this->date) == 2
             )
         ) {
-            $this->error = true;
             $this->errors[] = "The between date action requires two dates, ex: 2021-01-01,2021-12-31::BT. It only utilizes the first two if more are passed in.";
         }
     }

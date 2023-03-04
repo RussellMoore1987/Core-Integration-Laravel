@@ -5,17 +5,7 @@ namespace App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ParameterValidator;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 
-// ! Start here ******************************************************************
-// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
-// ! (sub IntParameterValidator, DateParameterValidator, PostRequestMethodTypeValidator)
-// [x] read over
-// [x] add return type : void
-// [x] add test
-// test to do
-// [] read over
-// [] test groups, rest, context
-// [] add return type : void
-// [] testing what I need to test
+// TODO: ask Rami what he thinks about coverage "The between int action requires two ints, ex: 10,60::BT." only covered by LTE
 
 class IntParameterValidator implements ParameterValidator
 {
