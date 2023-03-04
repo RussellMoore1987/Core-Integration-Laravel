@@ -123,7 +123,7 @@ class IntParameterValidator implements ParameterValidator
         } else {
             $this->errors[] = [
                 'value' => $this->int,
-                'valueError' => 'There are no ints available in this array and/or the action/comparison operator was not one of these "between", "bt", "in", "notin".', // TODO: test
+                'valueError' => 'There are no ints available in this array.', // TODO: test
             ];
         }
     }
