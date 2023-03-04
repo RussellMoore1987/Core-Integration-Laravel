@@ -17,7 +17,6 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 // [] add return type : void
 // [] testing what I need to test
 
-// ! Start here - refactor tests ***************
 class IntParameterValidator implements ParameterValidator
 {
     protected $validatorDataCollector;
@@ -74,14 +73,13 @@ class IntParameterValidator implements ParameterValidator
             }
         }
     }
-
-    // TODO: test or the action/comparison operator was not one fo these "between", "bt", "in", "notin".
+    
     protected function isArrayThenProcessArray(): void
     {
         if (
             str_contains($this->int, ',') &&
             (
-                in_array($this->intAction, ['between', 'bt', 'in', 'notin']) || // TODO: test
+                in_array($this->intAction, ['between', 'bt', 'in', 'notin']) ||
                 $this->intAction == null
             )
         ) {
@@ -91,22 +89,20 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    // TODO: test defaults to in
-    // TODO: test details
     protected function evaluateEachIntInArray(): void
     {
-        $this->intAction = $this->intAction ? $this->intAction : 'in'; // defaults to in // TODO: test
+        $this->intAction = $this->intAction ? $this->intAction : 'in'; // defaults to in
         $ints = explode(',', $this->int);
         $this->realInts = [];
         foreach ($ints as $index => $value) {
             if ($this->isInt($value)) {
                 $this->realInts[] = (int) $value;
-            } elseif (is_numeric($value)) { // TODO: test
+            } elseif (is_numeric($value)) {
                 $this->errors[] = [
                     'value' => (float) $value,
                     'valueError' => "The value at the index of {$index} is not an int. Only ints are permitted for this parameter. Your value is a float.",
                 ];
-            } else { // TODO: test
+            } else {
                 $this->errors[] = [
                     'value' => $value,
                     'valueError' => "The value at the index of {$index} is not an int. Only ints are permitted for this parameter. Your value is a string.",
@@ -115,7 +111,6 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    // TODO: test details
     protected function isIntArrayValidThenSetElseSetError(): void
     {
         if ($this->realInts) {
@@ -123,13 +118,15 @@ class IntParameterValidator implements ParameterValidator
         } else {
             $this->errors[] = [
                 'value' => $this->int,
-                'valueError' => 'There are no ints available in this array.', // TODO: test
+                'valueError' => 'There are no ints available in this array.',
             ];
         }
     }
 
+    // ! Start here - testing, am I covering the code ***************
     // TODO: test details
     // TODO: BT error not processed as array
+    // TODO: single int no action
     protected function isNotArrayThenProcessAsSingleInt(): void
     {
         if (!is_array($this->int) && !$this->processedAsArray) {
@@ -144,7 +141,7 @@ class IntParameterValidator implements ParameterValidator
                 $this->errors[] = [
                     'value' => $this->int,
                     'valueError' => 'Unable to process array of ints. You must use one of the accepted comparison operator such as "between", "bt", "in", or "notin" to process an array.',
-                ];
+                ];// TODO: test for the action/comparison operator was not one fo these "between", "bt", "in", "notin".
             } else {
                 $this->errors[] = [
                     'value' => $this->int,

@@ -24,6 +24,69 @@ class IntParameterValidatorTest extends TestCase
      * @group context
      * @group get
      */
+    public function test_IntParameterValidator_returns_appropriate_error_messages_multi_action_int_array(): void
+    {
+        $intString = '13,33';
+        $fullIntString = $intString . '::bt::lt';
+
+        $expectedRejectedParameters = [
+            'team_id' => [
+                'intConvertedTo' => $intString,
+                'originalIntString' => $fullIntString,
+                'comparisonOperatorConvertedTo' => null,
+                'originalComparisonOperator' => [1 => 'bt', 2 => 'lt'],
+                'parameterError' => [
+                    [
+                        'value' => $fullIntString,
+                        'valueError' => 'Only one comparison operator is permitted per parameter, ex: 123::lt.'
+                    ],
+                    [
+                        'value' => $intString,
+                        'valueError' => 'Unable to process array of ints. You must use one of the accepted comparison operator such as "between", "bt", "in", or "notin" to process an array.',
+                    ]
+                ],
+            ],
+        ];
+
+        $this->intParameterValidator->validate('team_id', $fullIntString, $this->validatorDataCollector);
+
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
+    }
+
+    public function test_IntParameterValidator_returns_appropriate_error_messages_multi_action_single_int(): void
+    {
+        $intString = 33;
+        $fullIntString = $intString . '::bt::sam\'';
+
+        $expectedRejectedParameters = [
+            'team_id' => [
+                'intConvertedTo' => $intString,
+                'originalIntString' => $fullIntString,
+                'comparisonOperatorConvertedTo' => null,
+                'originalComparisonOperator' => [1 => 'bt', 2 => 'sam\''],
+                'parameterError' => [
+                    [
+                        'value' => $fullIntString,
+                        'valueError' => 'Only one comparison operator is permitted per parameter, ex: 123::lt.'
+                    ],
+                ],
+            ],
+        ];
+
+        $this->intParameterValidator->validate('team_id', $fullIntString, $this->validatorDataCollector);
+
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
+    }
+
+    /**
+     * @group rest
+     * @group context
+     * @group get
+     */
     public function test_IntParameterValidator_validate_function_processing_int_array_using_in_by_default(): void
     {
         $intString = '1,100,33,88,99,55';
@@ -141,69 +204,6 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
-     * @group rest
-     * @group context
-     * @group get
-     */
-    public function test_IntParameterValidator_returns_appropriate_error_messages_multi_action_int_array(): void
-    {
-        $intString = '13,33';
-        $fullIntString = $intString . '::bt::lt';
-
-        $expectedRejectedParameters = [
-            'team_id' => [
-                'intConvertedTo' => $intString,
-                'originalIntString' => $fullIntString,
-                'comparisonOperatorConvertedTo' => null,
-                'originalComparisonOperator' => [1 => 'bt', 2 => 'lt'],
-                'parameterError' => [
-                    [
-                        'value' => $intString . '::bt::lt',
-                        'valueError' => 'Only one comparison operator is permitted per parameter, ex: 123::lt.'
-                    ],
-                    [
-                        'value' => $intString,
-                        'valueError' => 'Unable to process array of ints. You must use one of the accepted comparison operator such as "between", "bt", "in", or "notin" to process an array.',
-                    ]
-                ],
-            ],
-        ];
-
-        $this->intParameterValidator->validate('team_id', $fullIntString, $this->validatorDataCollector);
-
-        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
-    }
-
-    public function test_IntParameterValidator_returns_appropriate_error_messages_multi_action_single_int(): void
-    {
-        $intString = 33;
-        $fullIntString = $intString . '::bt::sam\'';
-
-        $expectedRejectedParameters = [
-            'team_id' => [
-                'intConvertedTo' => $intString,
-                'originalIntString' => $fullIntString,
-                'comparisonOperatorConvertedTo' => null,
-                'originalComparisonOperator' => [1 => 'bt', 2 => 'sam\''],
-                'parameterError' => [
-                    [
-                        'value' => 33 . '::bt::sam\'',
-                        'valueError' => 'Only one comparison operator is permitted per parameter, ex: 123::lt.'
-                    ],
-                ],
-            ],
-        ];
-
-        $this->intParameterValidator->validate('team_id', $fullIntString, $this->validatorDataCollector);
-
-        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
      * @dataProvider intParameterValidatorErrorProvider
      * @group rest
      * @group context
@@ -234,8 +234,8 @@ class IntParameterValidatorTest extends TestCase
     public function intParameterValidatorErrorProvider(): array
      {
         return [
-            'stringError' => ['', 'I am not a int', '=', [$this->valueErrorMassage('I am not a int')]],
-            'floatError' => ['gt', 3.9, '>', [$this->valueErrorMassage(3.9, 'float')]],
+            'singleIntStringError' => ['', 'I am not a int', '=', [$this->valueErrorMassage('I am not a int')]],
+            'singleIntFloatError' => ['gt', 3.9, '>', [$this->valueErrorMassage(3.9, 'float')]],
             'emptyStringError' => ['', '', '=', [$this->valueErrorMassage('')]],
             'invalidActionError' => [
                 'sam', 1, null,
