@@ -123,10 +123,6 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    // ! Start here - testing, am I covering the code ***************
-    // TODO: test details
-    // TODO: BT error not processed as array
-    // TODO: single int no action
     protected function isNotArrayThenProcessAsSingleInt(): void
     {
         if (!is_array($this->int) && !$this->processedAsArray) {
@@ -141,7 +137,7 @@ class IntParameterValidator implements ParameterValidator
                 $this->errors[] = [
                     'value' => $this->int,
                     'valueError' => 'Unable to process array of ints. You must use one of the accepted comparison operator such as "between", "bt", "in", or "notin" to process an array.',
-                ];// TODO: test for the action/comparison operator was not one fo these "between", "bt", "in", "notin".
+                ];
             } else {
                 $this->errors[] = [
                     'value' => $this->int,
@@ -156,7 +152,6 @@ class IntParameterValidator implements ParameterValidator
         return is_numeric($value) && !str_contains($value, '.');
     }
 
-    // TODO: test details
     protected function setComparisonOperator(): void
     {
         if (in_array($this->intAction, ['greaterthan', 'gt', '>'])) {
@@ -185,7 +180,6 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    // TODO: posable move not in array, and error not for array
     protected function isBetweenActionThenValidateAsSuch(): void
     {
         if (in_array($this->intAction, ['between', 'bt'])) {
@@ -194,7 +188,6 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    // TODO: test details
     protected function isFirstIntGreaterThanLastIntThenThrowError(): void
     {
         if (
@@ -209,7 +202,6 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    // TODO: test details
     protected function isIntAnArrayAndCountEqualToTwoThenThrowError(): void
     {
         if (!(is_array($this->int) && count($this->int) == 2)) {
@@ -220,7 +212,6 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    // TODO: test details
     protected function setErrorsIfAny(): void
     {
         if ($this->errors) {
@@ -236,7 +227,6 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    // TODO: test details
     protected function setAcceptedParameterIfNoErrors(): void
     {
         if (!$this->errors) {
@@ -251,7 +241,6 @@ class IntParameterValidator implements ParameterValidator
         }
     }
 
-    // TODO: test details
     protected function setQueryArgumentIfNoErrors(): void
     {
         if (!$this->errors) {

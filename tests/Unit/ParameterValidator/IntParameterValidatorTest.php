@@ -264,33 +264,6 @@ class IntParameterValidatorTest extends TestCase
      }
 
     /**
-     * @group rest
-     * @group context
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_between_more_Than_two_ints(): void
-    {
-        $comparisonOperator = 'BT';
-        $intString = '1,100,33::' . $comparisonOperator;
-
-        $expectedRejectedParameters = [
-            'team_id' => [
-                'intConvertedTo' => [1,100,33],
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => 'bt',
-                'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [$this->betweenIntActionRequiresTwoIntsErrorMassage([1,100,33])],
-            ],
-        ];
-        
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-
-        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
      * @dataProvider nonArrayComparisonOperatorProvider
      * @group rest
      * @group context
@@ -397,6 +370,65 @@ class IntParameterValidatorTest extends TestCase
             'notInUsing_notIn' => ['notIn', 'notin'],
         ];
      }
+
+     /**
+     * @group rest
+     * @group context
+     * @group get
+     */
+    public function test_IntParameterValidator_validate_function_with_between_more_Than_two_ints(): void
+    {
+        $comparisonOperator = 'BT';
+        $intString = '1,100,33::' . $comparisonOperator;
+
+        $expectedRejectedParameters = [
+            'team_id' => [
+                'intConvertedTo' => [1,100,33],
+                'originalIntString' => $intString,
+                'comparisonOperatorConvertedTo' => 'bt',
+                'originalComparisonOperator' => $comparisonOperator,
+                'parameterError' => [$this->betweenIntActionRequiresTwoIntsErrorMassage([1,100,33])],
+            ],
+        ];
+        
+        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
+
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
+    }
+
+     /**
+     * @group rest
+     * @group context
+     * @group get
+     */
+    public function test_IntParameterValidator_with_between_first_int_greater_Than_second_int_error(): void
+    {
+        $comparisonOperator = 'BT';
+        $intString = '100,33::' . $comparisonOperator;
+
+        $expectedRejectedParameters = [
+            'team_id' => [
+                'intConvertedTo' => [100,33],
+                'originalIntString' => $intString,
+                'comparisonOperatorConvertedTo' => 'bt',
+                'originalComparisonOperator' => $comparisonOperator,
+                'parameterError' => [
+                    [
+                        'value' => [100,33],
+                        'valueError' => 'The First int must be smaller than the second int, ex: 10,60::BT.',
+                    ]
+                ],
+            ],
+        ];
+        
+        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
+
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
+    }
 
      protected function valueErrorMassage(string $value = '', string $dataType = 'string'): array
      {
