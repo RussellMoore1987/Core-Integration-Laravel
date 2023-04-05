@@ -122,7 +122,7 @@ class IntParameterValidatorTest extends TestCase
      * @group context
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_where_all_int_array_items_are_bad(): void
+    public function test_IntParameterValidator_validate_function_where_all_int_array_items_are_bad(): void // TODO: ask Rami more thoro coverage,
     {
         $comparisonOperator = 'IN';
         $int = 'sam,6.87,.01,fugue';
@@ -159,7 +159,7 @@ class IntParameterValidatorTest extends TestCase
      * @group context
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_where_we_have_a_mixed_array_of_good_and_bad_items(): void
+    public function test_IntParameterValidator_validate_function_where_we_have_a_mixed_array_of_good_and_bad_items(): void // TODO: ask Rami more thoro coverage,
     {
         $comparisonOperator = 'notIn';
         $int = '13,6.87,6,fugue';
@@ -228,7 +228,7 @@ class IntParameterValidatorTest extends TestCase
                     ]
                 ]
             ],
-            'invalidIntArrayAction' => [
+            'invalidIntArrayAction' => [ // TODO: ask Rami more thoro coverage, gt, gte, lt, >, >=, ect...
                 'LTE', '10,56', '<=',
                 [
                     [
@@ -237,8 +237,8 @@ class IntParameterValidatorTest extends TestCase
                     ]
                 ]
             ],
-            'onlyOneIntForBetweenOperator' => ['bt', 1, 'bt', [$this->betweenIntActionRequiresTwoIntsErrorMassage(1)]],
-            'noIntsForBetweenOperator' => [ 'between', '', 'bt', [
+            'onlyOneIntForBetweenOperator' => ['bt', 1, 'bt', [$this->betweenIntActionRequiresTwoIntsErrorMassage(1)]],// TODO: ask Rami more thoro coverage, between
+            'noIntsForBetweenOperator' => [ 'between', '', 'bt', [ // TODO: ask Rami more thoro coverage, bt
                 $this->valueErrorMassage(''),
                 $this->betweenIntActionRequiresTwoIntsErrorMassage('')
             ]],
@@ -358,7 +358,7 @@ class IntParameterValidatorTest extends TestCase
      * @group context
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_between_more_Than_two_ints(): void
+    public function test_IntParameterValidator_validate_function_with_between_more_Than_two_ints(): void // TODO: ask Rami more thoro coverage, between
     {
         $comparisonOperator = 'BT';
         $intString = '1,100,33::' . $comparisonOperator;
@@ -385,7 +385,7 @@ class IntParameterValidatorTest extends TestCase
      * @group context
      * @group get
      */
-    public function test_IntParameterValidator_with_between_first_int_greater_Than_second_int_error(): void
+    public function test_IntParameterValidator_with_between_first_int_greater_Than_second_int_error(): void // TODO: ask Rami more thoro coverage, between
     {
         $comparisonOperator = 'BT';
         $intString = '100,33::' . $comparisonOperator;
