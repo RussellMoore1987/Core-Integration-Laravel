@@ -7,6 +7,8 @@ use App\Models\WorkHistoryType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
+// TODO: test 'equal', 'e', '='
+
 class GetIntIntegrationApiTest extends TestCase
 {
     use DatabaseTransactions;
