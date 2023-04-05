@@ -271,7 +271,7 @@ class GetIntIntegrationApiTest extends TestCase
      */
     public function test_get_back_ints_with_in_option($option): void
     {
-        $response = $this->get("/api/v1/projects/?is_published=1,2,3::{$option}");
+        $response = $this->get("/api/v1/projects/?is_published=1,2,3{$option}");
         $responseArray = json_decode($response->content(), true);
         
         $projects = collect($responseArray['data']);
@@ -286,7 +286,7 @@ class GetIntIntegrationApiTest extends TestCase
     public function inOptionDataProvider(): array
     {
         return [
-            'in' => ['in'],
+            'in' => ['::in'],
             'in by default' => [''],
         ];
     }

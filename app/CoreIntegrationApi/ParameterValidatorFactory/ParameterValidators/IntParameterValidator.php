@@ -5,7 +5,20 @@ namespace App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ParameterValidator;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 
+// ! Start here ******************************************************************
+// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
+// ! (sub DateParameterValidator, PostRequestMethodTypeValidator)
+// [x] read over
+// [x] add return type : void
+// [x] add test
+// test to do
+// [x] read over
+// [x] test groups, rest, context
+// [x] add return type : void
+// [x] testing what I need to test
 // TODO: ask Rami what he thinks about coverage "The between int action requires two ints, ex: 10,60::BT." only covered by LTE
+// TODO: am I testing /projects?perPage=5&page=1&is_published=1::
+// TODO: am I testing /projects?perPage=5&page=1&is_published=1,2,3,4,5::
 
 class IntParameterValidator implements ParameterValidator
 {
@@ -70,7 +83,7 @@ class IntParameterValidator implements ParameterValidator
             str_contains($this->int, ',') &&
             (
                 in_array($this->intAction, ['between', 'bt', 'in', 'notin']) ||
-                $this->intAction == null
+                $this->intAction === null
             )
         ) {
             $this->processedAsArray = true;
@@ -158,7 +171,7 @@ class IntParameterValidator implements ParameterValidator
             $this->comparisonOperator = 'in';
         } elseif ($this->intAction == 'notin') {
             $this->comparisonOperator = 'notin';
-        } elseif ($this->intAction == null || in_array($this->intAction, ['equal', 'e', '='])) {
+        } elseif ($this->intAction === null || in_array($this->intAction, ['equal', 'e', '='])) {
             $this->comparisonOperator = '=';
         } elseif ($this->intAction == 'inconclusive') {
             $this->comparisonOperator = null;
