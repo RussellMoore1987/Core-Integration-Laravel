@@ -5,57 +5,63 @@ namespace App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ParameterValidator;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 
+// ! Start here ******************************************************************
+// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
+// ! (sub DateParameterValidator, PostRequestMethodTypeValidator)
+// [] read over
+// [] add return type : void
+// [] add test
+// test to do
+// [] read over
+// [] test groups, rest, context
+// [] add return type : void
+// [] testing what I need to test
+
 class DateParameterValidator implements ParameterValidator
 {
-    private $columnName;
-    private $date;
-    private $originalDate;
-    private $dateAction;
-    private $comparisonOperator;
-    private $originalComparisonOperator = '';
-    private $errors;
+    protected $validatorDataCollector;
+    protected $parameterName;
+    protected $date;
+    protected $originalDate;
+    protected $originalComparisonOperator = '';
+    protected $dateAction;
+    protected $comparisonOperator;
+    protected $errors;
 
-    public function validate(ValidatorDataCollector &$validatorDataCollector, $parameterData): void
+    public function validate(string $parameterName, string $parameterValue, ValidatorDataCollector &$validatorDataCollector): void
     {
-        $this->setMainVariables($validatorDataCollector, $parameterData);
+        $this->validatorDataCollector = $validatorDataCollector;
+        $this->parameterName = $parameterName;
+        $this->date = $parameterValue;
+        $this->originalDate = $parameterValue;
+
         $this->processDateData();
         $this->checkForErrors();
         $this->setAcceptedParameterIfAny();
         $this->setDataQueryArgumentIfAny();
     }
 
-    private function setMainVariables($validatorDataCollector, $parameterData)
-    {
-        $this->validatorDataCollector = $validatorDataCollector;
-
-        foreach ($parameterData as $columnName => $date) { // we should only have one array item
-            $this->columnName = $columnName;
-            $this->date = $date;
-            $this->originalDate = $date;
-        }
-    }
-
-    private function processDateData()
+    protected function processDateData()
     {
         $this->processDateString();
         $this->setComparisonOperator();
     }
 
-    private function processDateString()
+    protected function processDateString()
     {
         if (str_contains($this->date, '::')) {
-            $date_array = explode('::', $this->date);
+            $dateArray = explode('::', $this->date);
     
-            $this->originalComparisonOperator = $date_array[1];
-            $this->dateAction = strtolower($date_array[1]);
+            $this->originalComparisonOperator = $dateArray[1];
+            $this->dateAction = strtolower($dateArray[1]);
     
-            if (str_contains($date_array[0], ',') && in_array($this->dateAction, ['between', 'bt'])) {
-                $between_dates = explode(',', $date_array[0]);
+            if (str_contains($dateArray[0], ',') && in_array($this->dateAction, ['between', 'bt'])) {
+                $between_dates = explode(',', $dateArray[0]);
                 $this->date = [];
                 $this->date[] = $this->convertStringToDate($between_dates[0]);
                 $this->date[] = date('Y-m-d H:i:s', strtotime("tomorrow", strtotime($between_dates[1])) - 1); // End of day
             } else {
-                $this->date = $this->convertStringToDate($date_array[0]);
+                $this->date = $this->convertStringToDate($dateArray[0]);
             }
 
         } else {
@@ -63,12 +69,12 @@ class DateParameterValidator implements ParameterValidator
         }
     }
 
-    private function convertStringToDate($dateString)
+    protected function convertStringToDate($dateString)
     {
         return date('Y-m-d H:i:s', strtotime($dateString));
     }
 
-    private function setComparisonOperator()
+    protected function setComparisonOperator()
     {
         if (in_array($this->dateAction, ['greaterthan', 'gt', '>'])) {
             $this->comparisonOperator = '>';
@@ -85,34 +91,32 @@ class DateParameterValidator implements ParameterValidator
         }
     }
 
-    private function checkForErrors()
+    protected function checkForErrors()
     {
         $this->validateBetweenDatesAreCorrect();
         $this->setErrorsIfAny();
     }
 
-    private function validateBetweenDatesAreCorrect()
+    protected function validateBetweenDatesAreCorrect()
     {
         $this->checkToSeeIfFirstDateIsGreaterThenLastDate();
         $this->checkToSeeIfWeHaveTwoDates();
     }
 
-    private function checkToSeeIfFirstDateIsGreaterThenLastDate()
+    protected function checkToSeeIfFirstDateIsGreaterThenLastDate()
     {
         if (
             $this->comparisonOperator == 'bt' &&
             is_array($this->date) &&
             $this->date[0] > $this->date[1]
         ) {
-            $this->error = true;
-
             $firstDate = $this->date[0];
             $secondDate = $this->date[1];
             $this->errors[] = "The first date \"{$firstDate}\" must be smaller than the last date \"{$secondDate}\" sent in.";
         }
     }
 
-    private function checkToSeeIfWeHaveTwoDates()
+    protected function checkToSeeIfWeHaveTwoDates()
     {
         if (
             $this->comparisonOperator == 'bt' &&
@@ -121,19 +125,18 @@ class DateParameterValidator implements ParameterValidator
                 count($this->date) == 2
             )
         ) {
-            $this->error = true;
             $this->errors[] = "The between date action requires two dates, ex: 2021-01-01,2021-12-31::BT. It only utilizes the first two if more are passed in.";
         }
     }
 
-    private function setErrorsIfAny()
+    protected function setErrorsIfAny()
     {
         if ($this->errors) {
             $this->validatorDataCollector->setRejectedParameters([
-                "$this->columnName" => [
-                    'dateCoveredTo' => $this->date,
+                "$this->parameterName" => [
+                    'dateConvertedTo' => $this->date,
                     'originalDate' => $this->originalDate,
-                    'comparisonOperatorCoveredTo' => $this->comparisonOperator,
+                    'comparisonOperatorConvertedTo' => $this->comparisonOperator,
                     'originalComparisonOperator' => $this->originalComparisonOperator,
                     'parameterError' => $this->errors,
                 ]
@@ -141,27 +144,27 @@ class DateParameterValidator implements ParameterValidator
         }
     }
 
-    private function setAcceptedParameterIfAny()
+    protected function setAcceptedParameterIfAny()
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setAcceptedParameters([
-                "$this->columnName" => [
-                    'dateCoveredTo' => $this->date,
+                "$this->parameterName" => [
+                    'dateConvertedTo' => $this->date,
                     'originalDate' => $this->originalDate,
-                    'comparisonOperatorCoveredTo' => $this->comparisonOperator,
+                    'comparisonOperatorConvertedTo' => $this->comparisonOperator,
                     'originalComparisonOperator' => $this->originalComparisonOperator,
                 ]
             ]);
         }
     }
 
-    private function setDataQueryArgumentIfAny()
+    protected function setDataQueryArgumentIfAny()
     {
         if (!$this->errors) {
             $this->validatorDataCollector->setQueryArgument([
-                "$this->columnName" => [
+                "$this->parameterName" => [
                     'dataType' => 'date',
-                    'columnName' => $this->columnName,
+                    'columnName' => $this->parameterName,
                     'date' => $this->date,
                     'comparisonOperator' => $this->comparisonOperator,
                     'originalComparisonOperator' => $this->originalComparisonOperator,

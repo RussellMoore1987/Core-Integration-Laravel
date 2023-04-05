@@ -2,6 +2,8 @@
 
 namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders;
 
+use App\CoreIntegrationApi\Exceptions\ResourceParameterInfoProviderException;
+
 abstract class ResourceParameterInfoProvider
 {
     protected $apiDataType;
@@ -17,21 +19,28 @@ abstract class ResourceParameterInfoProvider
         $this->parameterAttributeArray = $parameterAttributeArray;
         $this->parameterDataType = $parameterAttributeArray['type'];
         
-        $this->getParameterData();
-        $this->isParameterRequired();
+        $this->setParameterData();
+        $this->isParameterRequiredThenSetParameterInfoAsRequired();
         
         $this->mergeResourceParameterFormData($resourceFormData);
+        
+        $this->validateRequiredChildClassConstruction();
 
         return [
-            'apiDataType' => $this->getApiDataType(),
+            'apiDataType' => $this->apiDataType,
             'defaultValidationRules' => $this->defaultValidationRules,
             'formData' => $this->formData,
         ];
     }
 
-    abstract protected function getParameterData(); // needs to set $this->apiDataType : string, $this->defaultValidationRules : array, $this->formData : array
+    abstract protected function setParameterData(): void; // see requirements below
+    // child class needs to set
+    // $this->apiDataType : string
+    // $this->defaultValidationRules : array
+    // $this->formData : array
+    // see example IntResourceParameterInfoProvider
 
-    protected function isParameterRequired()
+    protected function isParameterRequiredThenSetParameterInfoAsRequired()
     {
         if (
             $this->parameterAttributeArray['null'] == 'no' &&
@@ -50,17 +59,21 @@ abstract class ResourceParameterInfoProvider
         }
     }
 
-    protected function getApiDataType(): string
+    protected function validateRequiredChildClassConstruction(): void
     {
-        if ($this->apiDataTypeIsNotSet()) {
-            throw new \Exception('No apiDataType class property set, this must be set in the child class');
+        if (!$this->apiDataType) {
+            $this->throwException('apiDataType', 100);
         }
-
-        return $this->apiDataType;
+        if (!$this->defaultValidationRules) {
+            $this->throwException('defaultValidationRules', 101);
+        }
+        if (!$this->formData) {
+            $this->throwException('formData', 102);
+        }
     }
 
-    protected function apiDataTypeIsNotSet(): string
+    protected function throwException(string $attribute, int $code): void
     {
-        return !$this->apiDataType;
+        throw new ResourceParameterInfoProviderException("The class attribute {$attribute} must be set in the child class \"" . get_class($this) . '".', $code);
     }
 }

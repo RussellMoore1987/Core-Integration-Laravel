@@ -8,6 +8,9 @@ use Illuminate\Http\JsonResponse;
 
 class CILApiController extends Controller
 {
+    protected $restRequestProcessor;
+    protected $contextRequestProcessor;
+
     public function __construct(RestRequestProcessor $restRequestProcessor, ContextRequestProcessor $contextRequestProcessor)
     {
         $this->restRequestProcessor = $restRequestProcessor;

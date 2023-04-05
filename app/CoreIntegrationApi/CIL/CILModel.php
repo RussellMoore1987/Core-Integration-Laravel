@@ -2,7 +2,8 @@
     
     namespace App\CoreIntegrationApi\CIL;
 
-    use Illuminate\Support\Facades\Validator;
+use App\CoreIntegrationApi\Exceptions\CILModelException;
+use Illuminate\Support\Facades\Validator;
 
     trait CILModel
     {
@@ -44,7 +45,7 @@
                 (!isset($this->validationRules['modelValidation']) || !is_array($this->validationRules['modelValidation'])) ||
                 (!isset($this->validationRules['createValidation']) || !is_array($this->validationRules['createValidation']))
             ) {
-                throw new \Exception('validationRules rules not set. A class utilizing the CILModel trait must have validationRules, see the documentation located at app\CoreIntegrationApi\docs\CILModel.php');
+                throw new CILModelException('validationRules rules not set. A class utilizing the CILModel trait must have validationRules, see the documentation located at app\CoreIntegrationApi\docs\CILModel.php');
             }
             
             $validationRulesToReturn = $this->validationRules['modelValidation'];

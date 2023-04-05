@@ -32,3 +32,5 @@ class CILQueryAssembler implements QueryAssembler
         return $this->queryBuilder->paginate($this->perPageParameter);
     }
 }
+
+// TODO: sql injection attack, test

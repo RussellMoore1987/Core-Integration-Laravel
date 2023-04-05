@@ -30,6 +30,8 @@ return [
         'tests' => 'App\Models\Test',
     ],
 
+    // TODO: look into auto admin, genre of software that we are producing
+
     /*
     |--------------------------------------------------------------------------
     | Default Return Request Structure

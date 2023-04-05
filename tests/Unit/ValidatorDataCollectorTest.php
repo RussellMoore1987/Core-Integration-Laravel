@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class ValidatorDataCollectorTest extends TestCase
 {
-    private $validatorDataCollector;
+    protected $validatorDataCollector;
 
     protected function setUp(): void
     {

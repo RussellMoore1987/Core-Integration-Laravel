@@ -27,16 +27,16 @@ class ResourceParameterInfoProviderFactory
         $this->dataType = strtolower($dataType);
         $this->factoryItem = null; // rests if used more then once
 
-        $this->isString();
-        $this->isJson();
-        $this->isDate();
-        $this->isInt();
-        $this->isFloat();
+        $this->isStringThenSetFactoryItem();
+        $this->isJsonThenSetFactoryItem();
+        $this->isDateThenSetFactoryItem();
+        $this->isIntThenSetFactoryItem();
+        $this->isFloatThenSetFactoryItem();
 
         return $this->factoryItem;
     }
 
-    protected function isString(): void
+    protected function isStringThenSetFactoryItem(): void
     {
         if (
             $this->factoryItemIsNotSet() &&
@@ -53,14 +53,14 @@ class ResourceParameterInfoProviderFactory
         }
     }
 
-    protected function isJson(): void
+    protected function isJsonThenSetFactoryItem(): void
     {
         if ($this->factoryItemIsNotSet() && str_contains($this->dataType, 'json')) {
             $this->setFactoryItem($this->factoryItemArray['json']);
         }
     }
 
-    protected function isDate(): void
+    protected function isDateThenSetFactoryItem(): void
     {
         if (
             $this->factoryItemIsNotSet() &&
@@ -74,14 +74,14 @@ class ResourceParameterInfoProviderFactory
         }
     }
 
-    protected function isInt(): void
+    protected function isIntThenSetFactoryItem(): void
     {
         if ($this->factoryItemIsNotSet() && str_contains($this->dataType, 'int')) {
             $this->setFactoryItem($this->factoryItemArray['int']);
         }
     }
 
-    protected function isFloat(): void
+    protected function isFloatThenSetFactoryItem(): void
     {
         if (
             $this->factoryItemIsNotSet() &&

@@ -4,22 +4,23 @@ namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourcePa
 
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\ResourceParameterInfoProvider;
 
+// ? data type size https://dev.mysql.com/doc/refman/8.0/en/datetime.html
 class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
 {
     protected $apiDataType = 'date';
     protected $dateType;
 
-    protected function getParameterData()
+    protected function setParameterData(): void
     {
-        $this->checkForDatetime();
-        $this->checkForTimestamp();
-        $this->checkForYear();
-        $this->checkForDate();
+        $this->isDatetimeThenSetParameterInfo();
+        $this->isTimestampThenSetParameterInfo();
+        $this->isYearThenSetParameterInfo();
+        $this->isDateThenSetParameterInfo();
     }
 
-    protected function checkForDatetime()
+    protected function isDatetimeThenSetParameterInfo(): void
     {
-        if (!$this->dateType && $this->isDateType('datetime')) {
+        if ($this->dateTypeIsNotSet() && $this->isDateType('datetime')) {
             
             $this->dateType = true;
 
@@ -37,9 +38,9 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function checkForTimestamp()
+    protected function isTimestampThenSetParameterInfo(): void
     {
-        if (!$this->dateType && $this->isDateType('timestamp')) {
+        if ($this->dateTypeIsNotSet() && $this->isDateType('timestamp')) {
             
             $this->dateType = true;
 
@@ -57,9 +58,9 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function checkForYear()
+    protected function isYearThenSetParameterInfo(): void
     {
-        if (!$this->dateType && $this->isDateType('year')) {
+        if ($this->dateTypeIsNotSet() && $this->isDateType('year')) {
             
             $this->dateType = true;
 
@@ -77,9 +78,9 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function checkForDate()
+    protected function isDateThenSetParameterInfo(): void
     {
-        if (!$this->dateType && $this->isDateType('date')) {
+        if ($this->dateTypeIsNotSet() && $this->isDateType('date')) {
             
             $this->dateType = true;
 
@@ -97,8 +98,13 @@ class DateResourceParameterInfoProvider extends ResourceParameterInfoProvider
         }
     }
 
-    protected function isDateType($dateString)
+    protected function dateTypeIsNotSet(): bool
     {
-        return str_contains($this->parameterDataType, $dateString) ? true : false;
+        return !$this->dateType;
+    }
+
+    protected function isDateType($dateString): bool
+    {
+        return str_contains($this->parameterDataType, $dateString);
     }
 }

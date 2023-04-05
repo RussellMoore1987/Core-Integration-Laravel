@@ -18,8 +18,8 @@ use Illuminate\Http\JsonResponse;
 
 class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
 {
-    private $validatedMetaData;
-    private $response;
+    protected $validatedMetaData;
+    protected $response;
 
     public function buildResponse($validatedMetaData, $queryResult): JsonResponse
     {

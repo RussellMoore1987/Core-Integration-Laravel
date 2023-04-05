@@ -8,6 +8,9 @@ use Tests\TestCase;
 
 class IntParameterValidatorTest extends TestCase
 {
+    protected $validatorDataCollector;
+    protected $intParameterValidator;
+    
     protected function setUp(): void
     {
         parent::setUp();
@@ -17,32 +20,62 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
+     * @group rest
+     * @group context
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_random_string(): void
+    public function test_IntParameterValidator_returns_appropriate_error_messages_multi_action_int_array(): void
     {
-        $comparisonOperator = '';
-        $intString = 'I am not a int' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
+        $intString = '13,33';
+        $fullIntString = $intString . '::bt::lt';
 
         $expectedRejectedParameters = [
             'team_id' => [
-                'intCoveredTo' => $intString,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '=',
-                'originalComparisonOperator' => $comparisonOperator,
+                'intConvertedTo' => $intString,
+                'originalIntString' => $fullIntString,
+                'comparisonOperatorConvertedTo' => null,
+                'originalComparisonOperator' => [1 => 'bt', 2 => 'lt'],
                 'parameterError' => [
                     [
-                      'value' => 'I am not a int',
-                      'valueError' => $this->valueErrorMassage('string')
+                        'value' => $fullIntString,
+                        'valueError' => 'Only one comparison operator is permitted per parameter, ex: 123::lt.'
+                    ],
+                    [
+                        'value' => $intString,
+                        'valueError' => 'Unable to process array of ints. You must use one of the accepted comparison operator such as "between", "bt", "in", or "notin" to process an array.',
+                    ]
+                ],
+            ],
+        ];
+
+        $this->intParameterValidator->validate('team_id', $fullIntString, $this->validatorDataCollector);
+
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
+    }
+
+    public function test_IntParameterValidator_returns_appropriate_error_messages_multi_action_single_int(): void
+    {
+        $intString = 33;
+        $fullIntString = $intString . '::bt::sam\'';
+
+        $expectedRejectedParameters = [
+            'team_id' => [
+                'intConvertedTo' => $intString,
+                'originalIntString' => $fullIntString,
+                'comparisonOperatorConvertedTo' => null,
+                'originalComparisonOperator' => [1 => 'bt', 2 => 'sam\''],
+                'parameterError' => [
+                    [
+                        'value' => $fullIntString,
+                        'valueError' => 'Only one comparison operator is permitted per parameter, ex: 123::lt.'
                     ],
                 ],
             ],
         ];
 
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
+        $this->intParameterValidator->validate('team_id', $fullIntString, $this->validatorDataCollector);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -50,821 +83,20 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
+     * @group rest
+     * @group context
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_extra_action(): void
+    public function test_IntParameterValidator_validate_function_processing_int_array_using_in_by_default(): void
     {
-        $intString = "13,33::bt::something'";
-        $parameterData = [
-            'team_id' => $intString
-        ];
+        $intString = '1,100,33,88,99,55';
 
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => [13,33],
+                'intConvertedTo' => [1,100,33,88,99,55],
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'bt',
-                'originalComparisonOperator' => 'bt',
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => [13,33],
-                'comparisonOperator' => 'bt',
-                'originalComparisonOperator' => 'bt',
-            ]
-        ];
-
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_no_int_blank_string(): void
-    {
-        $comparisonOperator = '';
-        $intString = '' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedRejectedParameters = [
-            'team_id' => [
-                'intCoveredTo' => $intString,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '=',
-                'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [
-                    [
-                      'value' => '',
-                      'valueError' => $this->valueErrorMassage('string')
-                    ],
-                ],
-            ],
-        ];
-
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-
-        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_equal_to_with_out_action_operator(): void
-    {
-        $comparisonOperator = '';
-        $intString = '1' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 1,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 1,
-                'comparisonOperator' => '=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_equal_to_by_default(): void
-    {
-        $comparisonOperator = 'sam';
-        $intString = '1::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 1,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 1,
-                'comparisonOperator' => '=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_greater_then_using_gt(): void
-    {
-        $comparisonOperator = 'GT';
-        $intString = '4::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '>',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '>',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_greater_then_using_greater_than(): void
-    {
-        $comparisonOperator = 'greaterThan';
-        $intString = '4::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '>',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '>',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_greater_then_using_greater_than_symbol(): void
-    {
-        $comparisonOperator = '>';
-        $intString = '4::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '>',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '>',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal(): void
-    {
-        $comparisonOperator = 'greaterThanOrEqual';
-        $intString = '4::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '>=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '>=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_gte(): void
-    {
-        $comparisonOperator = 'GTE';
-        $intString = '4::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '>=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '>=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_greater_then_or_equal_to_using_greater_than_or_equal_symbol(): void
-    {
-        $comparisonOperator = '>=';
-        $intString = '4::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '>=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '>=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_less_then_using_less_than(): void
-    {
-        $comparisonOperator = 'lessThan';
-        $intString = '4::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '<',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '<',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_less_then_using_less_than_symbol(): void
-    {
-        $comparisonOperator = '<';
-        $intString = '4::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '<',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '<',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_less_then_using_lt(): void
-    {
-        $comparisonOperator = 'lt';
-        $intString = '4::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 4,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '<',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 4,
-                'comparisonOperator' => '<',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_less_than_or_equal(): void
-    {
-        $comparisonOperator = 'lessThanOrEqual';
-        $intString = '10::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 10,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '<=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 10,
-                'comparisonOperator' => '<=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_less_than_or_equal_symbol(): void
-    {
-        $comparisonOperator = '<=';
-        $intString = '10::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 10,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '<=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 10,
-                'comparisonOperator' => '<=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_less_than_or_equal_to_using_lte(): void
-    {
-        $comparisonOperator = 'LTE';
-        $intString = '10::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 10,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '<=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => 10,
-                'comparisonOperator' => '<=',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_action_that_is_not_in_notin_or_bt(): void
-    {
-        // arrays or int strings that have a comma are only used in these actions IN, NotIn, BT, or Between
-        $comparisonOperator = 'LTE';
-        $int = '10,56';
-        $intString = $int . '::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedRejectedParameters = [
-            'team_id' => [
-                'intCoveredTo' => $int,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => '<=',
-                'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [
-                    [
-                      'value' => $int,
-                      'valueError' => $this->valueErrorMassage('string')
-                    ],
-                ],
-            ],
-        ];
-
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-        
-        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_between(): void
-    {
-        $comparisonOperator = 'bt';
-        $intString = '1,100::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => [1,100],
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'bt',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => [1,100],
-                'comparisonOperator' => 'bt',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_between_error_first_int_grater_than_last_int(): void
-    {
-        $comparisonOperator = 'between';
-        $intString = '100,1::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedRejectedParameters = [
-            'team_id' => [
-                'intCoveredTo' => [100,1],
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'bt',
-                'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [
-                    [
-                      'value' => [100,1],
-                      'valueError' => 'The First int must be smaller then the second int, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.'
-                    ],
-                ],
-            ],
-        ];
-
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-
-        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_between_error_no_second_int(): void
-    {
-        $comparisonOperator = 'BETWEEN';
-        $intString = '1::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedRejectedParameters = [
-            'team_id' => [
-                'intCoveredTo' => 1,
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'bt',
-                'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [
-                    [
-                      'value' => 1,
-                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.'
-                    ],
-                ],
-            ],
-        ];
-
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-
-        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_between_error_no_ints(): void
-    {
-        $comparisonOperator = 'BT';
-        $intString = '::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedRejectedParameters = [
-            'team_id' => [
-                'intCoveredTo' => '',
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'bt',
-                'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [
-                    [
-                      'value' => '',
-                      'valueError' => $this->valueErrorMassage('string')
-                    ],
-                    [
-                      'value' => '',
-                      'valueError' => 'The between int action requires two ints, ex: 10,60::BT. This between action only utilizes the first two array items if more are passed in. This parameter was not set.'
-                    ],
-                ],
-            ],
-        ];
-
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-
-        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_between_more_then_two_ints(): void
-    {
-        $comparisonOperator = 'BT';
-        $intString = '1,100,33::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => [1,100],
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'bt',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => [1,100],
-                'comparisonOperator' => 'bt',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_in(): void
-    {
-        $comparisonOperator = 'in';
-        $intString = '1,100,33,88,99,55::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => [1,100,33,88,99,55],
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'in',
-                'originalComparisonOperator' => $comparisonOperator,
+                'comparisonOperatorConvertedTo' => 'in',
+                'originalComparisonOperator' => '',
             ]
         ];
 
@@ -874,11 +106,11 @@ class IntParameterValidatorTest extends TestCase
                 'columnName' => 'team_id',
                 'int' => [1,100,33,88,99,55],
                 'comparisonOperator' => 'in',
-                'originalComparisonOperator' => $comparisonOperator,
+                'originalComparisonOperator' => '',
             ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
+        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
         
         $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
@@ -886,123 +118,36 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
+     * @group rest
+     * @group context
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_in_by_default(): void
-    {
-        $comparisonOperator = '';
-        $intString = '1,100,33,88,99,55' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => [1,100,33,88,99,55],
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'in',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => [1,100,33,88,99,55],
-                'comparisonOperator' => 'in',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_with_not_in(): void
-    {
-        $comparisonOperator = 'notIn';
-        $intString = '1,100,33,88,99,55::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => [1,100,33,88,99,55],
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'notin',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => [1,100,33,88,99,55],
-                'comparisonOperator' => 'notin',
-                'originalComparisonOperator' => $comparisonOperator,
-            ]
-        ];
-        
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-        
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
-    }
-
-    /**
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_where_all_array_items_are_bad(): void
+    public function test_IntParameterValidator_validate_function_where_all_int_array_items_are_bad(): void // TODO: ask Rami more thoro coverage,
     {
         $comparisonOperator = 'IN';
         $int = 'sam,6.87,.01,fugue';
         $intString = $int . '::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
 
         $expectedRejectedParameters = [
             'team_id' => [
-                'intCoveredTo' => $int,
+                'intConvertedTo' => $int,
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'in',
+                'comparisonOperatorConvertedTo' => 'in',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
-                    [
-                        'value' => 'sam',
-                        'valueError' => $this->valueErrorIndexMassage(0, 'string')
-                    ],
-                    [
-                        'value' => 6.87,
-                        'valueError' => $this->valueErrorIndexMassage(1, 'float')
-                    ],
-                    [
-                        'value' => 0.01,
-                        'valueError' => $this->valueErrorIndexMassage(2, 'float')
-                    ],
-                    [
-                        'value' => 'fugue',
-                        'valueError' => $this->valueErrorIndexMassage(3, 'string')
-                    ],
+                    $this->valueErrorIndexMassage('sam', 0, 'string'),
+                    $this->valueErrorIndexMassage(6.87, 1, 'float'),
+                    $this->valueErrorIndexMassage(0.01, 2, 'float'),
+                    $this->valueErrorIndexMassage('fugue', 3, 'string'),
                     [
                         'value' => 'sam,6.87,.01,fugue',
-                        'valueError' => 'There are no ints available in this array. This parameter was not set.'
+                        'valueError' => 'There are no ints available in this array.'
                     ],
                 ],
             ],
         ];
 
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
+        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
@@ -1010,99 +155,112 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
+     * @group rest
+     * @group context
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_where_we_have_a_mixed_array_of_good_and_bad_items(): void
+    public function test_IntParameterValidator_validate_function_where_we_have_a_mixed_array_of_good_and_bad_items(): void // TODO: ask Rami more thoro coverage,
     {
-        $comparisonOperator = 'IN';
+        $comparisonOperator = 'notIn';
         $int = '13,6.87,6,fugue';
         $intString = $int . '::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
 
         $expectedRejectedParameters = [
             'team_id' => [
-                'intCoveredTo' => [13,6],
+                'intConvertedTo' => [13,6],
                 'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'in',
+                'comparisonOperatorConvertedTo' => 'notin',
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
-                    [
-                        'value' => 6.87,
-                        'valueError' => $this->valueErrorIndexMassage(1, 'float')
-                    ],
-                    [
-                        'value' => 'fugue',
-                        'valueError' => $this->valueErrorIndexMassage(3, 'string')
-                    ],
+                    $this->valueErrorIndexMassage(6.87, 1, 'float'),
+                    $this->valueErrorIndexMassage('fugue', 3, 'string'),
                 ],
             ],
         ];
-
-        $expectedAcceptedParameters = [
-            'team_id' => [
-                'intCoveredTo' => [13, 6],
-                'originalIntString' => '13,6.87,6,fugue::IN',
-                'comparisonOperatorCoveredTo' => 'in',
-                'originalComparisonOperator' => 'IN',
-            ]
-        ];
-
-        $expectedQueryArguments = [
-            'team_id' => [
-                'dataType' => 'int',
-                'columnName' => 'team_id',
-                'int' => [13, 6],
-                'comparisonOperator' => 'in',
-                'originalComparisonOperator' => 'IN',
-            ]
-        ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
+        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
 
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
     /**
+     * @dataProvider intParameterValidatorErrorProvider
+     * @group rest
+     * @group context
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_get_all_data(): void
+    public function test_IntParameterValidator_validation_returns_appropriate_error_messages($comparisonOperator, $intString, $comparisonOperatorConvertedTo, $errors): void
     {
-        $comparisonOperator = 'IN';
-        $int = '13,6.87,6,fugue';
-        $intString = $int . '::' . $comparisonOperator;
-        $parameterData = [
-            'team_id' => $intString
-        ];
+        $comparisonOperatorString = $comparisonOperator ? '::'.$comparisonOperator : '';
+        $fullIntString = $intString . $comparisonOperatorString;
 
         $expectedRejectedParameters = [
             'team_id' => [
-                'intCoveredTo' => [13,6],
-                'originalIntString' => $intString,
-                'comparisonOperatorCoveredTo' => 'in',
+                'intConvertedTo' => $intString,
+                'originalIntString' => $fullIntString,
+                'comparisonOperatorConvertedTo' => $comparisonOperatorConvertedTo,
                 'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [
-                    [
-                        'value' => 6.87,
-                        'valueError' => $this->valueErrorIndexMassage(1, 'float')
-                    ],
-                    [
-                        'value' => 'fugue',
-                        'valueError' => $this->valueErrorIndexMassage(3, 'string')
-                    ],
-                ],
+                'parameterError' => $errors,
             ],
         ];
 
+        $this->intParameterValidator->validate('team_id', $fullIntString, $this->validatorDataCollector);
+
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
+    }
+
+    public function intParameterValidatorErrorProvider(): array
+     {
+        return [
+            'singleIntStringError' => ['', 'I am not a int', '=', [$this->valueErrorMassage('I am not a int')]],
+            'singleIntFloatError' => ['gt', 3.9, '>', [$this->valueErrorMassage(3.9, 'float')]],
+            'emptyStringError' => ['', '', '=', [$this->valueErrorMassage('')]],
+            'invalidActionError' => [
+                'sam', 1, null,
+                [
+                    [
+                        'value' => 'sam',
+                        'valueError' => "The comparison operator is invalid. The comparison operator of \"sam\" does not exist for this parameter."
+                    ]
+                ]
+            ],
+            'invalidIntArrayAction' => [ // TODO: ask Rami more thoro coverage, gt, gte, lt, >, >=, ect...
+                'LTE', '10,56', '<=',
+                [
+                    [
+                        'value' => '10,56',
+                        'valueError' => 'Unable to process array of ints. You must use one of the accepted comparison operator such as "between", "bt", "in", or "notin" to process an array.',
+                    ]
+                ]
+            ],
+            'onlyOneIntForBetweenOperator' => ['bt', 1, 'bt', [$this->betweenIntActionRequiresTwoIntsErrorMassage(1)]],// TODO: ask Rami more thoro coverage, between
+            'noIntsForBetweenOperator' => [ 'between', '', 'bt', [ // TODO: ask Rami more thoro coverage, bt
+                $this->valueErrorMassage(''),
+                $this->betweenIntActionRequiresTwoIntsErrorMassage('')
+            ]],
+        ];
+     }
+
+    /**
+     * @dataProvider nonArrayComparisonOperatorProvider
+     * @group rest
+     * @group context
+     * @group get
+     */
+    public function test_IntParameterValidator_sets_correct_non_array_comparison_operators($comparisonOperator, $comparisonOperatorConvertedTo): void
+    {
+        $intString = '4::' . $comparisonOperator;
+
         $expectedAcceptedParameters = [
             'team_id' => [
-                'intCoveredTo' => [13, 6],
-                'originalIntString' => '13,6.87,6,fugue::IN',
-                'comparisonOperatorCoveredTo' => 'in',
-                'originalComparisonOperator' => 'IN',
+                'intConvertedTo' => 4,
+                'originalIntString' => $intString,
+                'comparisonOperatorConvertedTo' => $comparisonOperatorConvertedTo,
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
@@ -1110,32 +268,171 @@ class IntParameterValidatorTest extends TestCase
             'team_id' => [
                 'dataType' => 'int',
                 'columnName' => 'team_id',
-                'int' => [13, 6],
-                'comparisonOperator' => 'in',
-                'originalComparisonOperator' => 'IN',
+                'int' => 4,
+                'comparisonOperator' => $comparisonOperatorConvertedTo,
+                'originalComparisonOperator' => $comparisonOperator,
+            ]
+        ];
+        
+        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
+        
+        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
+    }
+
+    public function nonArrayComparisonOperatorProvider(): array
+     {
+        return [
+            'equalsUsing_equal' => ['equal', '='],
+            'equalsUsing__e' => ['e', '='],
+            'equalsUsing_=' => ['=', '='],
+            'greaterThanUsing_greaterThan' => ['greaterThan', '>'],
+            'greaterThanUsing_gt' => ['gt', '>'],
+            'greaterThanUsing_>' => ['>', '>'],
+            'greaterThanOrEqualUsing_greaterThanOrEqual' => ['greaterThanOrEqual', '>='],
+            'greaterThanOrEqualUsing_gt' => ['gte', '>='],
+            'greaterThanOrEqualUsing_>=' => ['>=', '>='],
+            'lessThanUsing_lessThan' => ['lessThan', '<'],
+            'lessThanUsing_lt' => ['lt', '<'],
+            'lessThanUsing_<' => ['<', '<'],
+            'lessThanOrEqualUsing_lessThanOrEqual' => ['lessThanOrEqual', '<='],
+            'lessThanOrEqualUsing_lte' => ['lte', '<='],
+            'lessThanOrEqualUsing_<=' => ['<=', '<='],
+            // show that casing does not matter, all comparison operators are converted to string lower, small example below
+            'showThatCasingDoesNotMatterUsing_greaterThan' => ['GreAterThaN', '>'],
+            'showThatCasingDoesNotMatterUsing_GTE' => ['GtE', '>='],
+            'showThatCasingDoesNotMatterUsing_LT' => ['Lt', '<'],
+        ];
+     }
+
+     /**
+     * @dataProvider arrayComparisonOperatorProvider
+     * @group rest
+     * @group context
+     * @group get
+     */
+    public function test_IntParameterValidator_sets_correct_array_comparison_operators($comparisonOperator, $comparisonOperatorConvertedTo): void
+    {
+        $intArray = [1,100];
+        $intString = implode(',', $intArray) . '::' . $comparisonOperator;
+
+        $expectedAcceptedParameters = [
+            'team_id' => [
+                'intConvertedTo' => $intArray,
+                'originalIntString' => $intString,
+                'comparisonOperatorConvertedTo' => $comparisonOperatorConvertedTo,
+                'originalComparisonOperator' => $comparisonOperator,
             ]
         ];
 
-        $expectedGetValidatedMetaData = [
-            'endpointData' => [],
-            'resourceInfo' => [],
-            'acceptedParameters' => $expectedAcceptedParameters,
-            'rejectedParameters' => $expectedRejectedParameters,
-            'queryArguments' => $expectedQueryArguments,
+        $expectedQueryArguments = [
+            'team_id' => [
+                'dataType' => 'int',
+                'columnName' => 'team_id',
+                'int' => $intArray,
+                'comparisonOperator' => $comparisonOperatorConvertedTo,
+                'originalComparisonOperator' => $comparisonOperator,
+            ]
         ];
         
-        $this->intParameterValidator->validate($this->validatorDataCollector, $parameterData);
-
-        $this->assertEquals($expectedGetValidatedMetaData, $this->validatorDataCollector->getValidatedMetaData());
-    }
-
-    protected function valueErrorIndexMassage(int $index, string $dataType): string
-    {
-        return "The value at the index of {$index} is not an int. Only ints are permitted for this parameter. Your value is a {$dataType}.";
-    }
-    protected function valueErrorMassage(string $dataType): string
-    {
-        return "The value passed in is not an int. Only ints are permitted for this parameter. Your value is a {$dataType}. This parameter was not set.";
+        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
         
+        $this->assertEquals($expectedAcceptedParameters, $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals($expectedQueryArguments, $this->validatorDataCollector->getQueryArguments());
+    }
+
+    public function arrayComparisonOperatorProvider(): array
+     {
+        return [
+            'betweenUsing_between' => ['between', 'bt'],
+            'betweenUsing_bt' => ['bt', 'bt'],
+            'inUsing_in' => ['in', 'in'],
+            'notInUsing_notIn' => ['notIn', 'notin'],
+        ];
+     }
+
+     /**
+     * @group rest
+     * @group context
+     * @group get
+     */
+    public function test_IntParameterValidator_validate_function_with_between_more_Than_two_ints(): void // TODO: ask Rami more thoro coverage, between
+    {
+        $comparisonOperator = 'BT';
+        $intString = '1,100,33::' . $comparisonOperator;
+
+        $expectedRejectedParameters = [
+            'team_id' => [
+                'intConvertedTo' => [1,100,33],
+                'originalIntString' => $intString,
+                'comparisonOperatorConvertedTo' => 'bt',
+                'originalComparisonOperator' => $comparisonOperator,
+                'parameterError' => [$this->betweenIntActionRequiresTwoIntsErrorMassage([1,100,33])],
+            ],
+        ];
+        
+        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
+
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
+    }
+
+     /**
+     * @group rest
+     * @group context
+     * @group get
+     */
+    public function test_IntParameterValidator_with_between_first_int_greater_Than_second_int_error(): void // TODO: ask Rami more thoro coverage, between
+    {
+        $comparisonOperator = 'BT';
+        $intString = '100,33::' . $comparisonOperator;
+
+        $expectedRejectedParameters = [
+            'team_id' => [
+                'intConvertedTo' => [100,33],
+                'originalIntString' => $intString,
+                'comparisonOperatorConvertedTo' => 'bt',
+                'originalComparisonOperator' => $comparisonOperator,
+                'parameterError' => [
+                    [
+                        'value' => [100,33],
+                        'valueError' => 'The First int must be smaller than the second int, ex: 10,60::BT.',
+                    ]
+                ],
+            ],
+        ];
+        
+        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
+
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
+    }
+
+     protected function valueErrorMassage(string $value = '', string $dataType = 'string'): array
+     {
+        return [
+            'value' => $value,
+            'valueError' => "The value passed in is not an int. Only ints are permitted for this parameter. Your value is a {$dataType}."
+        ];
+     }
+
+    protected function valueErrorIndexMassage($value, int $index, string $dataType): array
+    {
+        return [
+            'value' => $value,
+            'valueError' => "The value at the index of {$index} is not an int. Only ints are permitted for this parameter. Your value is a {$dataType}."
+        ];
+    }
+
+    protected function betweenIntActionRequiresTwoIntsErrorMassage($value): array
+    {
+        return [
+            'value' => $value,
+            'valueError' => 'The between int action requires two ints, ex: 10,60::BT.'
+        ];
     }
 }

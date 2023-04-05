@@ -8,8 +8,8 @@ use Tests\TestCase;
 
 class IntWhereClauseBuilderTest extends TestCase
 {
-    private $queryBuilder;
-    private $intWhereClauseBuilder;
+    protected $queryBuilder;
+    protected $intWhereClauseBuilder;
 
     protected function setUp(): void
     {

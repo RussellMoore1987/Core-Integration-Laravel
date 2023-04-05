@@ -7,6 +7,7 @@ use App\CoreIntegrationApi\CIL\CILQueryAssembler;
 use App\CoreIntegrationApi\EndpointValidator;
 use App\CoreIntegrationApi\ResourceModelInfoProvider;
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\GetRequestMethodTypeValidator;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\DefaultGetParameterValidator;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviderFactory;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use Illuminate\Support\ServiceProvider;
@@ -46,6 +47,7 @@ class CILProvider extends ServiceProvider
         $this->app->bind(GetRequestMethodTypeValidator::class, function ($app) {
             return new GetRequestMethodTypeValidator(
                 $app->make(ParameterValidatorFactory::class),
+                $app->make(DefaultGetParameterValidator::class),
             );
         });
     }
