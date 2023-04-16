@@ -40,10 +40,7 @@ class IntParameterValidatorTest extends TestCase
                         'value' => $fullIntString,
                         'valueError' => 'Only one comparison operator is permitted per parameter, ex: 123::lt.'
                     ],
-                    [
-                        'value' => $intString,
-                        'valueError' => 'Unable to process array of ints. You must use one of the accepted comparison operator such as "between", "bt", "in", or "notin" to process an array.',
-                    ]
+                    $this->unableToProcessArrayOfIntsErrorMassage($intString)
                 ],
             ],
         ];
@@ -186,6 +183,65 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
+     * @group rest
+     * @group context
+     * @group get
+     */
+    public function test_IntParameterValidator_validate_function_where_we_have_no_comparison_operator_int_value(): void
+    {
+        $int = '13';
+        $intString = $int . '::';
+
+        $expectedRejectedParameters = [
+            'team_id' => [
+                'intConvertedTo' => 13,
+                'originalIntString' => $intString,
+                'comparisonOperatorConvertedTo' => null,
+                'originalComparisonOperator' => '',
+                'parameterError' => [
+                    $this->invalidComparisonOperatorErrorMassage(),
+                ],
+            ],
+        ];
+        
+        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
+
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
+    }
+
+    /**
+     * @group rest
+     * @group context
+     * @group get
+     */
+    public function test_IntParameterValidator_validate_function_where_we_have_no_comparison_operator_array_of_ints_value(): void
+    {
+        $int = '13,22,55';
+        $intString = $int . '::';
+
+        $expectedRejectedParameters = [
+            'team_id' => [
+                'intConvertedTo' => '13,22,55',
+                'originalIntString' => $intString,
+                'comparisonOperatorConvertedTo' => null,
+                'originalComparisonOperator' => '',
+                'parameterError' => [
+                    $this->unableToProcessArrayOfIntsErrorMassage($int),
+                    $this->invalidComparisonOperatorErrorMassage(),
+                ],
+            ],
+        ];
+        
+        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
+
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
+    }
+
+    /**
      * @dataProvider intParameterValidatorErrorProvider
      * @group rest
      * @group context
@@ -219,24 +275,8 @@ class IntParameterValidatorTest extends TestCase
             'singleIntStringError' => ['', 'I am not a int', '=', [$this->valueErrorMassage('I am not a int')]],
             'singleIntFloatError' => ['gt', 3.9, '>', [$this->valueErrorMassage(3.9, 'float')]],
             'emptyStringError' => ['', '', '=', [$this->valueErrorMassage('')]],
-            'invalidActionError' => [
-                'sam', 1, null,
-                [
-                    [
-                        'value' => 'sam',
-                        'valueError' => "The comparison operator is invalid. The comparison operator of \"sam\" does not exist for this parameter."
-                    ]
-                ]
-            ],
-            'invalidIntArrayAction' => [ // TODO: ask Rami more thoro coverage, gt, gte, lt, >, >=, ect...
-                'LTE', '10,56', '<=',
-                [
-                    [
-                        'value' => '10,56',
-                        'valueError' => 'Unable to process array of ints. You must use one of the accepted comparison operator such as "between", "bt", "in", or "notin" to process an array.',
-                    ]
-                ]
-            ],
+            'invalidActionError' => ['sam', 1, null,[$this->invalidComparisonOperatorErrorMassage('sam')]],
+            'invalidIntArrayAction' => [ 'LTE', '10,56', '<=',[$this->unableToProcessArrayOfIntsErrorMassage('10,56')]], // TODO: ask Rami more thoro coverage, gt, gte, lt, >, >=, ect...
             'onlyOneIntForBetweenOperator' => ['bt', 1, 'bt', [$this->betweenIntActionRequiresTwoIntsErrorMassage(1)]],// TODO: ask Rami more thoro coverage, between
             'noIntsForBetweenOperator' => [ 'between', '', 'bt', [ // TODO: ask Rami more thoro coverage, bt
                 $this->valueErrorMassage(''),
@@ -301,8 +341,8 @@ class IntParameterValidatorTest extends TestCase
             'lessThanOrEqualUsing_<=' => ['<=', '<='],
             // show that casing does not matter, all comparison operators are converted to string lower, small example below
             'showThatCasingDoesNotMatterUsing_greaterThan' => ['GreAterThaN', '>'],
-            'showThatCasingDoesNotMatterUsing_GTE' => ['GtE', '>='],
-            'showThatCasingDoesNotMatterUsing_LT' => ['Lt', '<'],
+            'showThatCasingDoesNotMatterUsing_GTE' => ['GtE', '>='], // TODO: not totally necessary to do other examples
+            'showThatCasingDoesNotMatterUsing_LT' => ['Lt', '<'], // TODO: not totally necessary to do other examples
         ];
      }
 
@@ -425,6 +465,22 @@ class IntParameterValidatorTest extends TestCase
         return [
             'value' => $value,
             'valueError' => "The value at the index of {$index} is not an int. Only ints are permitted for this parameter. Your value is a {$dataType}."
+        ];
+    }
+
+    protected function invalidComparisonOperatorErrorMassage($value = ''): array
+    {
+        return [
+            'value' => $value,
+            'valueError' => "The comparison operator is invalid. The comparison operator of \"{$value}\" does not exist for this parameter."
+        ];
+    }
+
+    protected function unableToProcessArrayOfIntsErrorMassage($intString): array
+    {
+        return [
+            'value' => $intString,
+            'valueError' => 'Unable to process array of ints. You must use one of the accepted comparison operator such as "between", "bt", "in", or "notin" to process an array.',
         ];
     }
 

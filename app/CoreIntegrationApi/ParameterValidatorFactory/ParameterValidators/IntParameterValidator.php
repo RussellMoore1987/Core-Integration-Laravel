@@ -17,8 +17,6 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 // [x] add return type : void
 // [x] testing what I need to test
 // TODO: ask Rami what he thinks about coverage "The between int action requires two ints, ex: 10,60::BT." only covered by LTE
-// TODO: am I testing /projects?perPage=5&page=1&is_published=1::
-// TODO: am I testing /projects?perPage=5&page=1&is_published=1,2,3,4,5::
 
 class IntParameterValidator implements ParameterValidator
 {
