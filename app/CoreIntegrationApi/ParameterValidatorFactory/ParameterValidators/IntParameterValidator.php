@@ -223,7 +223,7 @@ class IntParameterValidator implements ParameterValidator
                     'originalIntString' => $this->originalInt,
                     'comparisonOperatorConvertedTo' => $this->comparisonOperator,
                     'originalComparisonOperator' => $this->originalComparisonOperator,
-                    'parameterError' => $this->errors,
+                    'parameterError' => $this->errors, // TODO: errors (s) add
                 ]
             ]);
         }

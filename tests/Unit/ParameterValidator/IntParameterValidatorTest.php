@@ -120,24 +120,17 @@ class IntParameterValidatorTest extends TestCase
      * @group context
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_where_all_int_array_items_are_bad_in_notin($comparisonOperator): void
+    public function test_IntParameterValidator_validate_function_array_items_errors_in_notin($int, $intConvertedTo, $comparisonOperator, $parameterError): void
     {
-        $int = 'sam,6.87,.01,fugue';
         $intString = $int . '::' . $comparisonOperator;
 
         $expectedRejectedParameters = [
             'team_id' => [
-                'intConvertedTo' => $int,
+                'intConvertedTo' => $intConvertedTo,
                 'originalIntString' => $intString,
                 'comparisonOperatorConvertedTo' => $comparisonOperator,
                 'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [
-                    $this->valueErrorIndexMassage('sam', 0, 'string'),
-                    $this->valueErrorIndexMassage(6.87, 1, 'float'),
-                    $this->valueErrorIndexMassage(0.01, 2, 'float'),
-                    $this->valueErrorIndexMassage('fugue', 3, 'string'),
-                    $this->noIntsAvailableInArrayErrorMassage($int),
-                ],
+                'parameterError' => $parameterError,
             ],
         ];
 
@@ -150,9 +143,32 @@ class IntParameterValidatorTest extends TestCase
 
     public function inNotInErrorIntArrayProvider(): array
     {
+        $int1 = 'sam,6.87,.01,fugue';
+        $int2 = '13,6.87,6,fugue';
+
         return [
-            'inPath' => ['in'],
-            'notInPath' => ['notin'],
+            'inPathAllIntItemsAreBad' => [$int1, $int1, 'in', [
+                $this->valueErrorIndexMassage('sam', 0, 'string'),
+                $this->valueErrorIndexMassage(6.87, 1, 'float'),
+                $this->valueErrorIndexMassage(0.01, 2, 'float'),
+                $this->valueErrorIndexMassage('fugue', 3, 'string'),
+                $this->noIntsAvailableInArrayErrorMassage($int1),
+            ]],
+            'notInPathAllIntItemsAreBad' => [$int1, $int1, 'notin', [
+                $this->valueErrorIndexMassage('sam', 0, 'string'),
+                $this->valueErrorIndexMassage(6.87, 1, 'float'),
+                $this->valueErrorIndexMassage(0.01, 2, 'float'),
+                $this->valueErrorIndexMassage('fugue', 3, 'string'),
+                $this->noIntsAvailableInArrayErrorMassage($int1),
+            ]],
+            'inPathMixedArrayGoodAndBadItems' => [$int2, [13,6], 'in', [
+                $this->valueErrorIndexMassage(6.87, 1, 'float'),
+                $this->valueErrorIndexMassage('fugue', 3, 'string'),
+            ]],
+            'notInPathMixedArrayGoodAndBadItems' => [$int2, [13,6], 'notin', [
+                $this->valueErrorIndexMassage(6.87, 1, 'float'),
+                $this->valueErrorIndexMassage('fugue', 3, 'string'),
+            ]],
         ];
     }
 
@@ -195,37 +211,6 @@ class IntParameterValidatorTest extends TestCase
             'btPath' => ['bt', 'bt'],
             'betweenPath' => ['between', 'bt'],
         ];
-    }
-
-    /**
-     * @group rest
-     * @group context
-     * @group get
-     */
-    public function test_IntParameterValidator_validate_function_where_we_have_a_mixed_array_of_good_and_bad_items(): void // TODO: ask Rami more thoro coverage,
-    {
-        $comparisonOperator = 'notIn';
-        $int = '13,6.87,6,fugue';
-        $intString = $int . '::' . $comparisonOperator;
-
-        $expectedRejectedParameters = [
-            'team_id' => [
-                'intConvertedTo' => [13,6],
-                'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => 'notin',
-                'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [
-                    $this->valueErrorIndexMassage(6.87, 1, 'float'),
-                    $this->valueErrorIndexMassage('fugue', 3, 'string'),
-                ],
-            ],
-        ];
-        
-        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
-
-        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
-        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
     /**
