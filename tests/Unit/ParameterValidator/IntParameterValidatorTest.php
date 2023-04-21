@@ -328,13 +328,37 @@ class IntParameterValidatorTest extends TestCase
             'singleIntFloatError' => ['gt', 3.9, '>', [$this->valueErrorMassage(3.9, 'float')]],
             'emptyStringError' => ['', '', '=', [$this->valueErrorMassage('')]],
             'invalidActionError' => ['sam', 1, null,[$this->invalidComparisonOperatorErrorMassage('sam')]],
-            'invalidIntArrayAction' => [ 'LTE', '10,56', '<=',[$this->unableToProcessArrayOfIntsErrorMassage('10,56')]], // TODO: ask Rami more thoro coverage, gt, gte, lt, >, >=, ect...
-            'onlyOneIntForBetweenOperator' => ['bt', 1, 'bt', [$this->betweenIntActionRequiresTwoIntsErrorMassage(1)]],// TODO: ask Rami more thoro coverage, between
-            'noIntsForBetweenOperator' => [ 'between', '', 'bt', [ // TODO: ask Rami more thoro coverage, bt
+            'invalidIntArrayActionWith_equal' => $this->invalidIntArrayActionErrorProvider('equal', '='),
+            'invalidIntArrayActionWith_e' => $this->invalidIntArrayActionErrorProvider('e', '='),
+            'invalidIntArrayActionWith_=' => $this->invalidIntArrayActionErrorProvider('=', '='),
+            'invalidIntArrayActionWith_greaterThan' => $this->invalidIntArrayActionErrorProvider('greaterThan', '>'),
+            'invalidIntArrayActionWith_gt' => $this->invalidIntArrayActionErrorProvider('gt', '>'),
+            'invalidIntArrayActionWith_>' => $this->invalidIntArrayActionErrorProvider('>', '>'),
+            'invalidIntArrayActionWith_greaterThanOrEqual' => $this->invalidIntArrayActionErrorProvider('greaterThanOrEqual', '>='),
+            'invalidIntArrayActionWith_gte' => $this->invalidIntArrayActionErrorProvider('gte', '>='),
+            'invalidIntArrayActionWith_>=' => $this->invalidIntArrayActionErrorProvider('>=', '>='),
+            'invalidIntArrayActionWith_lessThan' => $this->invalidIntArrayActionErrorProvider('lessThan', '<'),
+            'invalidIntArrayActionWith_lt' => $this->invalidIntArrayActionErrorProvider('lt', '<'),
+            'invalidIntArrayActionWith_<' => $this->invalidIntArrayActionErrorProvider('<', '<'),
+            'invalidIntArrayActionWith_lessThanOrEqual' => $this->invalidIntArrayActionErrorProvider('lessThanOrEqual', '<='),
+            'invalidIntArrayActionWith_lte' => $this->invalidIntArrayActionErrorProvider('lte', '<='),
+            'invalidIntArrayActionWith_<=' => $this->invalidIntArrayActionErrorProvider('<=', '<='),
+            'onlyOneIntForBetweenOperator_bt' => ['bt', 1, 'bt', [$this->betweenIntActionRequiresTwoIntsErrorMassage(1)]],
+            'onlyOneIntForBetweenOperator_between' => ['between', 1, 'bt', [$this->betweenIntActionRequiresTwoIntsErrorMassage(1)]],
+            'noIntsForBetweenOperator_bt' => [ 'bt', '', 'bt', [
+                $this->valueErrorMassage(''),
+                $this->betweenIntActionRequiresTwoIntsErrorMassage('')
+            ]],
+            'noIntsForBetweenOperator_between' => [ 'between', '', 'bt', [
                 $this->valueErrorMassage(''),
                 $this->betweenIntActionRequiresTwoIntsErrorMassage('')
             ]],
         ];
+     }
+
+     protected function invalidIntArrayActionErrorProvider($comparisonOperator, $comparisonOperatorConvertedTo): array
+     {
+        return [ 'LTE', '10,56', '<=',[$this->unableToProcessArrayOfIntsErrorMassage('10,56')]];
      }
 
     /**
@@ -393,8 +417,8 @@ class IntParameterValidatorTest extends TestCase
             'lessThanOrEqualUsing_<=' => ['<=', '<='],
             // show that casing does not matter, all comparison operators are converted to string lower, small example below
             'showThatCasingDoesNotMatterUsing_greaterThan' => ['GreAterThaN', '>'],
-            'showThatCasingDoesNotMatterUsing_GTE' => ['GtE', '>='], // TODO: not totally necessary to do other examples
-            'showThatCasingDoesNotMatterUsing_LT' => ['Lt', '<'], // TODO: not totally necessary to do other examples
+            'showThatCasingDoesNotMatterUsing_GTE' => ['GtE', '>='],
+            'showThatCasingDoesNotMatterUsing_LT' => ['Lt', '<'],
         ];
      }
 
