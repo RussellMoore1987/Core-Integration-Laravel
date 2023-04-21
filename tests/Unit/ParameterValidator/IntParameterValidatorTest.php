@@ -498,13 +498,13 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-     protected function valueErrorMassage(string $value = '', string $dataType = 'string'): array
-     {
+    protected function unableToProcessArrayOfIntsErrorMassage($intString): array
+    {
         return [
-            'value' => $value,
-            'valueError' => "The value passed in is not an int. Only ints are permitted for this parameter. Your value is a {$dataType}."
+            'value' => $intString,
+            'valueError' => 'Unable to process array of ints. You must use one of the accepted comparison operator such as "between", "bt", "in", or "notin" to process an array.',
         ];
-     }
+    }
 
     protected function valueErrorIndexMassage($value, int $index, string $dataType): array
     {
@@ -514,19 +514,11 @@ class IntParameterValidatorTest extends TestCase
         ];
     }
 
-    protected function invalidComparisonOperatorErrorMassage($value = ''): array
+    protected function noIntsAvailableInArrayErrorMassage($value): array
     {
         return [
             'value' => $value,
-            'valueError' => "The comparison operator is invalid. The comparison operator of \"{$value}\" does not exist for this parameter."
-        ];
-    }
-
-    protected function unableToProcessArrayOfIntsErrorMassage($intString): array
-    {
-        return [
-            'value' => $intString,
-            'valueError' => 'Unable to process array of ints. You must use one of the accepted comparison operator such as "between", "bt", "in", or "notin" to process an array.',
+            'valueError' => 'There are no ints available in this array.'
         ];
     }
 
@@ -538,11 +530,19 @@ class IntParameterValidatorTest extends TestCase
         ];
     }
 
-    protected function noIntsAvailableInArrayErrorMassage($value): array
+    protected function invalidComparisonOperatorErrorMassage($value = ''): array
     {
         return [
             'value' => $value,
-            'valueError' => 'There are no ints available in this array.'
+            'valueError' => "The comparison operator is invalid. The comparison operator of \"{$value}\" does not exist for this parameter."
+        ];
+    }
+
+    protected function valueErrorMassage(string $value = '', string $dataType = 'string'): array
+    {
+        return [
+            'value' => $value,
+            'valueError' => "The value passed in is not an int. Only ints are permitted for this parameter. Your value is a {$dataType}."
         ];
     }
 }
