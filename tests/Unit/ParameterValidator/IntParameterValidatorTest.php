@@ -178,23 +178,17 @@ class IntParameterValidatorTest extends TestCase
      * @group context
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_where_all_int_array_items_are_bad_bt_between($comparisonOperator, $comparisonOperatorConvertedTo): void
+    public function test_IntParameterValidator_validate_function_array_items_errors_bt_between($int, $intConvertedTo, $comparisonOperator, $comparisonOperatorConvertedTo, $parameterError): void
     {
-        $int = 'Sammy,7.85';
         $intString = $int . '::' . $comparisonOperator;
 
         $expectedRejectedParameters = [
             'team_id' => [
-                'intConvertedTo' => $int,
+                'intConvertedTo' => $intConvertedTo,
                 'originalIntString' => $intString,
                 'comparisonOperatorConvertedTo' => $comparisonOperatorConvertedTo,
                 'originalComparisonOperator' => $comparisonOperator,
-                'parameterError' => [
-                    $this->valueErrorIndexMassage('Sammy', 0, 'string'),
-                    $this->valueErrorIndexMassage(7.85, 1, 'float'),
-                    $this->noIntsAvailableInArrayErrorMassage($int),
-                    $this->betweenIntActionRequiresTwoIntsErrorMassage($int),
-                ],
+                'parameterError' => $parameterError,
             ],
         ];
 
@@ -207,9 +201,31 @@ class IntParameterValidatorTest extends TestCase
 
     public function btBetweenErrorIntArrayProvider(): array
     {
+        $int1 = 'Sammy,7.85';
+        $int2 = 'Sam,7';
+        $int2ConvertedTo = [7];
+
         return [
-            'btPath' => ['bt', 'bt'],
-            'betweenPath' => ['between', 'bt'],
+            'btPathAllIntItemsAreBad' => [$int1, $int1, 'bt', 'bt', [
+                $this->valueErrorIndexMassage('Sammy', 0, 'string'),
+                $this->valueErrorIndexMassage(7.85, 1, 'float'),
+                $this->noIntsAvailableInArrayErrorMassage($int1),
+                $this->betweenIntActionRequiresTwoIntsErrorMassage($int1),
+            ]],
+            'betweenPathAllIntItemsAreBad' => [$int1, $int1, 'between', 'bt', [
+                $this->valueErrorIndexMassage('Sammy', 0, 'string'),
+                $this->valueErrorIndexMassage(7.85, 1, 'float'),
+                $this->noIntsAvailableInArrayErrorMassage($int1),
+                $this->betweenIntActionRequiresTwoIntsErrorMassage($int1),
+            ]],
+            'btPathMixedArrayGoodAndBadItems' => [$int2, $int2ConvertedTo, 'bt', 'bt', [
+                $this->valueErrorIndexMassage('Sam', 0, 'string'),
+                $this->betweenIntActionRequiresTwoIntsErrorMassage($int2ConvertedTo),
+            ]],
+            'betweenPathMixedArrayGoodAndBadItems' => [$int2, $int2ConvertedTo, 'between', 'bt', [
+                $this->valueErrorIndexMassage('Sam', 0, 'string'),
+                $this->betweenIntActionRequiresTwoIntsErrorMassage($int2ConvertedTo),
+            ]],
         ];
     }
 
