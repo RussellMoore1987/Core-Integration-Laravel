@@ -115,13 +115,13 @@ class IntParameterValidatorTest extends TestCase
     }
 
     /**
+     * @dataProvider inNotInErrorIntArrayProvider
      * @group rest
      * @group context
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_where_all_int_array_items_are_bad(): void // TODO: ask Rami more thoro coverage,
+    public function test_IntParameterValidator_validate_function_where_all_int_array_items_are_bad_in_notin($comparisonOperator): void
     {
-        $comparisonOperator = 'IN';
         $int = 'sam,6.87,.01,fugue';
         $intString = $int . '::' . $comparisonOperator;
 
@@ -129,17 +129,14 @@ class IntParameterValidatorTest extends TestCase
             'team_id' => [
                 'intConvertedTo' => $int,
                 'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => 'in',
+                'comparisonOperatorConvertedTo' => $comparisonOperator,
                 'originalComparisonOperator' => $comparisonOperator,
                 'parameterError' => [
                     $this->valueErrorIndexMassage('sam', 0, 'string'),
                     $this->valueErrorIndexMassage(6.87, 1, 'float'),
                     $this->valueErrorIndexMassage(0.01, 2, 'float'),
                     $this->valueErrorIndexMassage('fugue', 3, 'string'),
-                    [
-                        'value' => 'sam,6.87,.01,fugue',
-                        'valueError' => 'There are no ints available in this array.'
-                    ],
+                    $this->noIntsAvailableInArrayErrorMassage($int),
                 ],
             ],
         ];
@@ -149,6 +146,55 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
+    }
+
+    public function inNotInErrorIntArrayProvider(): array
+    {
+        return [
+            'inPath' => ['in'],
+            'notInPath' => ['notin'],
+        ];
+    }
+
+    /**
+     * @dataProvider btBetweenErrorIntArrayProvider
+     * @group rest
+     * @group context
+     * @group get
+     */
+    public function test_IntParameterValidator_validate_function_where_all_int_array_items_are_bad_bt_between($comparisonOperator, $comparisonOperatorConvertedTo): void
+    {
+        $int = 'Sammy,7.85';
+        $intString = $int . '::' . $comparisonOperator;
+
+        $expectedRejectedParameters = [
+            'team_id' => [
+                'intConvertedTo' => $int,
+                'originalIntString' => $intString,
+                'comparisonOperatorConvertedTo' => $comparisonOperatorConvertedTo,
+                'originalComparisonOperator' => $comparisonOperator,
+                'parameterError' => [
+                    $this->valueErrorIndexMassage('Sammy', 0, 'string'),
+                    $this->valueErrorIndexMassage(7.85, 1, 'float'),
+                    $this->noIntsAvailableInArrayErrorMassage($int),
+                    $this->betweenIntActionRequiresTwoIntsErrorMassage($int),
+                ],
+            ],
+        ];
+
+        $this->intParameterValidator->validate('team_id', $intString, $this->validatorDataCollector);
+
+        $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
+    }
+
+    public function btBetweenErrorIntArrayProvider(): array
+    {
+        return [
+            'btPath' => ['bt', 'bt'],
+            'betweenPath' => ['between', 'bt'],
+        ];
     }
 
     /**
@@ -489,6 +535,14 @@ class IntParameterValidatorTest extends TestCase
         return [
             'value' => $value,
             'valueError' => 'The between int action requires two ints, ex: 10,60::BT.'
+        ];
+    }
+
+    protected function noIntsAvailableInArrayErrorMassage($value): array
+    {
+        return [
+            'value' => $value,
+            'valueError' => 'There are no ints available in this array.'
         ];
     }
 }
