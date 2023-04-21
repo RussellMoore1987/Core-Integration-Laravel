@@ -422,7 +422,7 @@ class IntParameterValidatorTest extends TestCase
         ];
      }
 
-     /**
+    /**
      * @dataProvider arrayComparisonOperatorProvider
      * @group rest
      * @group context
@@ -469,14 +469,14 @@ class IntParameterValidatorTest extends TestCase
         ];
      }
 
-     /**
+    /**
+     * @dataProvider betweenComparisonOperatorProvider
      * @group rest
      * @group context
      * @group get
      */
-    public function test_IntParameterValidator_validate_function_with_between_more_Than_two_ints(): void // TODO: ask Rami more thoro coverage, between
+    public function test_IntParameterValidator_validate_function_with_between_more_than_two_ints($comparisonOperator): void
     {
-        $comparisonOperator = 'BT';
         $intString = '1,100,33::' . $comparisonOperator;
 
         $expectedRejectedParameters = [
@@ -496,14 +496,14 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
     }
 
-     /**
+    /**
+     * @dataProvider betweenComparisonOperatorProvider
      * @group rest
      * @group context
      * @group get
      */
-    public function test_IntParameterValidator_with_between_first_int_greater_Than_second_int_error(): void // TODO: ask Rami more thoro coverage, between
+    public function test_IntParameterValidator_with_between_first_int_greater_than_second_int_error($comparisonOperator): void
     {
-        $comparisonOperator = 'BT';
         $intString = '100,33::' . $comparisonOperator;
 
         $expectedRejectedParameters = [
@@ -526,6 +526,14 @@ class IntParameterValidatorTest extends TestCase
         $this->assertEquals($expectedRejectedParameters, $this->validatorDataCollector->getRejectedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
         $this->assertEquals([], $this->validatorDataCollector->getQueryArguments());
+    }
+
+    public function betweenComparisonOperatorProvider(): array
+    {
+        return [
+            'betweenUsing_between' => ['between'],
+            'betweenUsing_bt' => ['bt'],
+        ];
     }
 
     protected function unableToProcessArrayOfIntsErrorMassage($intString): array
