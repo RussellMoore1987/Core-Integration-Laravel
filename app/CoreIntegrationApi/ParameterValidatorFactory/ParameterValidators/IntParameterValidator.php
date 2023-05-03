@@ -36,6 +36,7 @@ class IntParameterValidator implements ParameterValidator
     protected $errors;
     protected $comparisonOperator;
 
+    // ! start here ***************************************************************** add in new classes
     // public function __construct(ComparisonOperatorProvider $comparisonOperatorProvider, ErrorCollector $errorCollector) {
     //     $this->comparisonOperatorProvider = $comparisonOperatorProvider;
     //     $this->errorCollector = $errorCollector;

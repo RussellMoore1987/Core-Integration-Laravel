@@ -6,8 +6,6 @@ use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ErrorCo
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ComparisonOperatorProvider;
 use Tests\TestCase;
 
-// TODO: look over and review
-
 class ComparisonOperatorProviderTest extends TestCase
 {
     protected $errorCollector;
@@ -27,7 +25,7 @@ class ComparisonOperatorProviderTest extends TestCase
      * @group context
      * @group get
      */
-    public function test_selecting_the_correct_comparison_operator($action, $expectedComparisonOperator): void
+    public function test_selecting_the_correct_comparison_operator_using_default_acceptable_comparison_operators($action, $expectedComparisonOperator): void
     {
         $comparisonOperator = $this->comparisonOperatorProvider->select($action, $this->errorCollector);
 
@@ -55,9 +53,9 @@ class ComparisonOperatorProviderTest extends TestCase
      */
     public function test_getting_an_error_for_invalid_action_based_on_comparison_operator_sub_set($action, $expectedComparisonOperator): void
     {
-        $acceptableComparisonOperators = array_diff(['=','>','>=','<','<=','bt','in','notin'], [$expectedComparisonOperator]); // removes comparison operator in question
+        $filterOptions = array_diff(['=','>','>=','<','<=','bt','in','notin'], [$expectedComparisonOperator]); // removes comparison operator in question
 
-        $comparisonOperator = $this->comparisonOperatorProvider->select($action, $this->errorCollector, $acceptableComparisonOperators);
+        $comparisonOperator = $this->comparisonOperatorProvider->select($action, $this->errorCollector, $filterOptions);
 
         $action = strtolower($action);
         $this->assertEquals('', $comparisonOperator);
@@ -98,7 +96,7 @@ class ComparisonOperatorProviderTest extends TestCase
      * @group context
      * @group get
      */
-    public function test_we_get_an_error_when_selecting_an_invalid_parameter(): void
+    public function test_we_get_an_error_when_selecting_an_invalid_parameter_using_default_acceptable_comparison_operators(): void
     {
         $comparisonOperator = $this->comparisonOperatorProvider->select('HAM', $this->errorCollector);
 
