@@ -360,7 +360,7 @@ class IntParameterValidatorTest extends TestCase
 
      protected function invalidIntArrayActionErrorProvider($comparisonOperator, $comparisonOperatorConvertedTo): array
      {
-        return [ 'LTE', '10,56', '<=',[$this->unableToProcessArrayOfIntsErrorMassage('10,56')]];
+        return [ $comparisonOperator, '10,56', $comparisonOperatorConvertedTo,[$this->unableToProcessArrayOfIntsErrorMassage('10,56')]];
      }
 
     /**
