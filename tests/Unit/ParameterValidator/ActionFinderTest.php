@@ -37,7 +37,7 @@ class ActionFinderTest extends TestCase
     }
 
     public function requestValueProvider(): array
-     {
+    {
         return [
             'oneValueOneAction' => ['123::gt', '123', 'gt'],
             'arrayValueOneActionWithSpaces' => [' 1,2,3 :: gt ', '1,2,3', 'gt'],
@@ -47,10 +47,40 @@ class ActionFinderTest extends TestCase
             'oneValueOneActionWithSpacesWithADoubleQuote' => ['123::gt"', '123', 'gt"'],
             'oneValueOneActionWithSpacesWithASingleQuoteAndDoubleQuote' => ["123::gt'\"", '123', "gt'\""],
             'oneValueNoAction' => ['123', '123', null],
+            'oneValueOnlyOneColonNoAction' => ['123:gt', '123:gt', null],
+            'oneValueNoAction' => ['123::', '123', ''],
+            'oneValueNoActionAndSpaces' => ['123  ::  ', '123', ''],
         ];
-     }
+    }
 
-    //  ! start here **************************************************************
-    // error
-    // other???
+    /**
+     * @dataProvider requestValueErrorProvider
+     * @group rest
+     * @group context
+     * @group get
+     */
+    public function test_ActionFinder_produces_appropriate_errors($requestValue, $expectedValue, $expectedAction, $expectedComparisonOperator): void
+    {
+        [$value, $action, $originalComparisonOperator] = $this->actionFinder->parseValue($requestValue, $this->errorCollector);
+
+        $this->assertEquals($expectedValue, $value);
+        $this->assertEquals($expectedAction, $action);
+        $this->assertEquals($expectedComparisonOperator, $originalComparisonOperator);
+        $this->assertEquals([
+            [
+                'value' => $requestValue,
+                'valueError' => "Only one comparison operator is permitted per parameter, ex: 123::lt."
+            ]
+        ], $this->errorCollector->getErrors());
+    }
+
+    public function requestValueErrorProvider(): array
+    {
+        return [
+            'errorMultipleAction' => ['123::gt::sam', '123', 'inconclusive', [1 => "gt", 2 => "sam"]],
+        ];
+    }
+
+    //  ! start here ************************************************************** am I testing everything?
+    
 }

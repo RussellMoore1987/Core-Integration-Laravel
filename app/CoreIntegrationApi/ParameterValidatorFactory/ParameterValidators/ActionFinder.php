@@ -14,7 +14,7 @@ class ActionFinder
             $requestValueArray = explode('::', $requestValue);
     
             $originalComparisonOperator = trim($requestValueArray[1]);
-            $action = strtolower(trim($requestValueArray[1]));
+            $action = strtolower(trim($requestValueArray[1])); // TODO: test this
             $value = trim($requestValueArray[0]);
     
             if (count($requestValueArray) > 2) {
