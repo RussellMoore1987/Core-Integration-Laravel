@@ -4,6 +4,7 @@ namespace Tests\Unit\ParameterValidator;
 
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ComparisonOperatorProvider;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ErrorCollector;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ActionFinder;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IntParameterValidator;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use Tests\TestCase;
@@ -18,7 +19,7 @@ class IntParameterValidatorTest extends TestCase
         parent::setUp();
 
         $this->validatorDataCollector = new ValidatorDataCollector();
-        $this->intParameterValidator = new IntParameterValidator(new ComparisonOperatorProvider(), new ErrorCollector());
+        $this->intParameterValidator = new IntParameterValidator(new ComparisonOperatorProvider(), new ErrorCollector(), new ActionFinder());
     }
 
     /**

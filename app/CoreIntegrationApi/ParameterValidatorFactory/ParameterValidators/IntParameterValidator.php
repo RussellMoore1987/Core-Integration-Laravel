@@ -5,6 +5,7 @@ namespace App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ParameterValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ComparisonOperatorProvider;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ErrorCollector;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ActionFinder;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 
 // ! Start here ******************************************************************
@@ -25,6 +26,7 @@ class IntParameterValidator implements ParameterValidator
 {
     protected $comparisonOperatorProvider;
     protected $errorCollector;
+    protected $actionFinder;
     protected $validatorDataCollector;
     protected $parameterName;
     protected $int;
@@ -36,10 +38,11 @@ class IntParameterValidator implements ParameterValidator
     protected $errors;
     protected $comparisonOperator;
 
-    public function __construct(ComparisonOperatorProvider $comparisonOperatorProvider, ErrorCollector $errorCollector)
+    public function __construct(ComparisonOperatorProvider $comparisonOperatorProvider, ErrorCollector $errorCollector, ActionFinder $actionFinder)
     {
         $this->comparisonOperatorProvider = $comparisonOperatorProvider;
         $this->errorCollector = $errorCollector;
+        $this->actionFinder = $actionFinder;
     }
 
     public function validate(string $parameterName, string $parameterValue, ValidatorDataCollector &$validatorDataCollector): void
@@ -59,7 +62,7 @@ class IntParameterValidator implements ParameterValidator
 
     protected function processIntParameter(): void
     {
-        $this->ifParameterHasActionThenSetAction();
+        [$this->int, $this->intAction, $this->originalComparisonOperator] = $this->actionFinder->parseValue($this->int, $this->errorCollector);
         $this->isArrayThenProcessArray();
         $this->isNotArrayThenProcessAsSingleInt();
     }

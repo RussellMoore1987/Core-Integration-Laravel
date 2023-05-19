@@ -10,6 +10,7 @@ use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeVa
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\DefaultGetParameterValidator;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviderFactory;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ActionFinder;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ComparisonOperatorProvider;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ErrorCollector;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IntParameterValidator;
@@ -69,6 +70,7 @@ class CILProvider extends ServiceProvider
             return new IntParameterValidator(
                 $app->make(ComparisonOperatorProvider::class),
                 $app->make(ErrorCollector::class),
+                $app->make(ActionFinder::class),
             );
         });
     }
