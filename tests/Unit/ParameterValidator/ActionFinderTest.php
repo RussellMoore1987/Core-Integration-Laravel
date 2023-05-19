@@ -6,8 +6,6 @@ use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ErrorCo
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ActionFinder;
 use Tests\TestCase;
 
-// TODO: relook at this class
-
 class ActionFinderTest extends TestCase
 {
     private $actionFinder;
@@ -22,21 +20,21 @@ class ActionFinderTest extends TestCase
     }
 
     /**
-     * @dataProvider requestValueProvider
+     * @dataProvider parameterValueProvider
      * @group rest
      * @group context
      * @group get
      */
-    public function test_ActionFinder_can_create_correct_responses($requestValue, $expectedValue, $expectedComparisonOperator): void
+    public function test_ActionFinder_can_create_correct_responses($parameterValue, $expectedValue, $expectedComparisonOperator): void
     {
-        [$value, $action, $originalComparisonOperator] = $this->actionFinder->parseValue($requestValue, $this->errorCollector);
+        [$value, $action, $originalComparisonOperator] = $this->actionFinder->parseValue($parameterValue, $this->errorCollector);
 
         $this->assertEquals($expectedValue, $value);
         $this->assertEquals($expectedComparisonOperator, $action);
         $this->assertEquals($expectedComparisonOperator, $originalComparisonOperator);
     }
 
-    public function requestValueProvider(): array
+    public function parameterValueProvider(): array
     {
         return [
             'oneValueOneAction' => ['123::gt', '123', 'gt'],
@@ -45,42 +43,48 @@ class ActionFinderTest extends TestCase
             'oneValueOneActionWithSpacesAndTabsAndNewLines' => ["\t123\t::\n\tgt\t\n", '123', 'gt'],
             'oneValueOneActionWithSpacesWithASingleQuote' => ["123::gt'", '123', "gt'"],
             'oneValueOneActionWithSpacesWithADoubleQuote' => ['123::gt"', '123', 'gt"'],
-            'oneValueOneActionWithSpacesWithASingleQuoteAndDoubleQuote' => ["123::gt'\"", '123', "gt'\""],
             'oneValueNoAction' => ['123', '123', null],
             'oneValueOnlyOneColonNoAction' => ['123:gt', '123:gt', null],
             'oneValueNoAction' => ['123::', '123', ''],
             'oneValueNoActionAndSpaces' => ['123  ::  ', '123', ''],
+            'noValueOneAction' => ["::gt", '', 'gt'],
+            'noValueNoAction' => ["::", '', ''],
+            'noValueNoActionNoColons' => ["", '', ''],
         ];
     }
 
     /**
-     * @dataProvider requestValueErrorProvider
      * @group rest
      * @group context
      * @group get
      */
-    public function test_ActionFinder_produces_appropriate_errors($requestValue, $expectedValue, $expectedAction, $expectedComparisonOperator): void
+    public function test_ActionFinder_produces_appropriate_error(): void
     {
-        [$value, $action, $originalComparisonOperator] = $this->actionFinder->parseValue($requestValue, $this->errorCollector);
+        $parameterValue = '123::gt::sam';
+        [$value, $action, $originalComparisonOperator] = $this->actionFinder->parseValue($parameterValue, $this->errorCollector);
 
-        $this->assertEquals($expectedValue, $value);
-        $this->assertEquals($expectedAction, $action);
-        $this->assertEquals($expectedComparisonOperator, $originalComparisonOperator);
+        $this->assertEquals('123', $value);
+        $this->assertEquals('inconclusive', $action);
+        $this->assertEquals([1 => "gt", 2 => "sam"], $originalComparisonOperator);
         $this->assertEquals([
             [
-                'value' => $requestValue,
+                'value' => $parameterValue,
                 'valueError' => "Only one comparison operator is permitted per parameter, ex: 123::lt."
             ]
         ], $this->errorCollector->getErrors());
     }
 
-    public function requestValueErrorProvider(): array
+    /**
+     * @group rest
+     * @group context
+     * @group get
+     */
+    public function test_ActionFinder_can_create_correct_response_case_insensitive(): void
     {
-        return [
-            'errorMultipleAction' => ['123::gt::sam', '123', 'inconclusive', [1 => "gt", 2 => "sam"]],
-        ];
-    }
+        [$value, $action, $originalComparisonOperator] = $this->actionFinder->parseValue('sam::LiKE', $this->errorCollector);
 
-    //  ! start here ************************************************************** am I testing everything?
-    
+        $this->assertEquals('sam', $value);
+        $this->assertEquals('like', $action);
+        $this->assertEquals('LiKE', $originalComparisonOperator);
+    }
 }
