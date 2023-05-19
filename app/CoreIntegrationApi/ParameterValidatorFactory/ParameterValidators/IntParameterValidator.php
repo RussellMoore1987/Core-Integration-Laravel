@@ -66,28 +66,6 @@ class IntParameterValidator implements ParameterValidator
         $this->isArrayThenProcessArray();
         $this->isNotArrayThenProcessAsSingleInt();
     }
-
-    protected function ifParameterHasActionThenSetAction(): void
-    {
-        if (str_contains($this->int, '::')) {
-            $intArray = explode('::', $this->int);
-
-            $errorInt = $this->int;
-            $this->originalComparisonOperator = $intArray[1];
-            $this->intAction = strtolower($intArray[1]);
-            $this->int = $intArray[0];
-
-            if (count($intArray) > 2) {
-                $this->errorCollector->add([
-                    'value' => $errorInt,
-                    'valueError' => "Only one comparison operator is permitted per parameter, ex: 123::lt.",
-                ]);
-                unset($intArray[0]);
-                $this->intAction = 'inconclusive';
-                $this->originalComparisonOperator = $intArray;
-            }
-        }
-    }
     
     protected function isArrayThenProcessArray(): void
     {
