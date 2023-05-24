@@ -69,6 +69,8 @@ class IntParameterValidator implements ParameterValidator
     
     protected function isArrayThenProcessArray(): void
     {
+        // if isArray
+        // $this->int = $this->intArrayProcessor->process($this->int, $this->comparisonOperator, $this->errorCollector);
         if (
             str_contains($this->int, ',') &&
             (
@@ -118,6 +120,9 @@ class IntParameterValidator implements ParameterValidator
 
     protected function isNotArrayThenProcessAsSingleInt(): void
     {
+        // ! start here ****************************************************************** make a class for this
+        // if int
+        // $this->int = $this->intProcessor->process($this->int, $this->errorCollector);
         if (!is_array($this->int) && !$this->processedAsArray) {
             if ($this->isInt($this->int)) {
                 $this->int = (int) $this->int;
