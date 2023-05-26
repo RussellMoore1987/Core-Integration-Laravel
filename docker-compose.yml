@@ -37,6 +37,7 @@ services:
         command: "--log-bin-trust-function-creators=1"
         volumes:
             - mysql:/var/lib/mysql
+            - ./docker/mysql:/docker-entrypoint-initdb.d
         networks:
             - network
         cap_add:
