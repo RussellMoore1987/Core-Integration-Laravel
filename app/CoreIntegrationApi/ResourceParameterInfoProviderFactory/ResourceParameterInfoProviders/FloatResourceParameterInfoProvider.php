@@ -42,7 +42,7 @@ class FloatResourceParameterInfoProvider extends ResourceParameterInfoProvider
             $precisionAndScale = substr($this->parameterDataType, $firstParen + 1, $lastParen - $firstParen - 1); // decimal(8,2) = 8,2
             $precisionAndScale = explode(',', $precisionAndScale);
             $this->precision = $precisionAndScale[0];
-            $this->scale = $precisionAndScale[1];
+            $this->scale = $precisionAndScale[1] ?? 0;
 
             $this->floatParameterDataType = substr($this->parameterDataType, 0, $firstParen); // decimal(8,2) = decimal
         }
@@ -100,14 +100,13 @@ class FloatResourceParameterInfoProvider extends ResourceParameterInfoProvider
 
             $precision = str_repeat('9', $this->precision - $this->scale);
             $scale = str_repeat('9', $this->scale);
-            $decimal = $precision;
+            $decimal = $precision == '' ? '0' : $precision;
             if ($this->scale > 0) {
                 $decimal .= '.' . $scale;
             }
 
             $this->defaultValidationRules = [
                 'numeric',
-
                 'min: -' . $decimal,
                 'max: ' . $decimal,
             ];

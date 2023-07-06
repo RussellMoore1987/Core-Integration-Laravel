@@ -10,7 +10,6 @@ class FloatResourceParameterInfoProviderTest extends TestCase
 {
     protected $floatResourceParameterInfoProvider;
     protected $parameterAttributeArray;
-    protected $minValidationForUnsigned = 'min:0';
 
     protected function setUp(): void
     {
@@ -34,9 +33,9 @@ class FloatResourceParameterInfoProviderTest extends TestCase
      * @group context
      * @group allRequestMethods
      */
-    public function test_floatResourceParameterInfoProvider_returns_correct_values(string $parameterAttributeType, array $expectedResultPieces): void
+    public function test_floatResourceParameterInfoProvider_returns_correct_values(string $parameterType, array $expectedResultPieces): void
     {
-        $this->parameterAttributeArray['type'] = $parameterAttributeType;
+        $this->parameterAttributeArray['type'] = $parameterType;
         $result = $this->floatResourceParameterInfoProvider->getData($this->parameterAttributeArray, []);
 
         $expectedResultPieces['defaultValidationRules'] = [
@@ -44,6 +43,7 @@ class FloatResourceParameterInfoProviderTest extends TestCase
             'min: ' . $expectedResultPieces['min'],
             'max: ' . $expectedResultPieces['max'],
         ];
+
         $this->assertEquals($this->getExpectedResult($expectedResultPieces), $result);
     }
 
@@ -58,7 +58,7 @@ class FloatResourceParameterInfoProviderTest extends TestCase
                     'max' => 9999999999,
                 ],
             ],
-            // 'defaultDecimalUnsigned' => [
+            // 'defaultDecimalUnsigned' => [ // decimal(5,5) unsigned
             //     'decimal unsigned', // what does this look like in the database?
             //     [
             //         'min' => 0,
@@ -84,6 +84,20 @@ class FloatResourceParameterInfoProviderTest extends TestCase
                 [
                     'min' => -9999999999,
                     'max' => 9999999999,
+                ],
+            ],
+            'decimalWithPrecision_5' => [
+                'decimal(5)',
+                [
+                    'min' => -99999,
+                    'max' => 99999,
+                ],
+            ],
+            'decimalWithPrecision_5,5' => [
+                'decimal(5,5)',
+                [
+                    'min' => -0.99999,
+                    'max' => 0.99999,
                 ],
             ],
             'decimalWithPrecision_5,3' => [
