@@ -105,14 +105,16 @@ class FloatResourceParameterInfoProvider extends ResourceParameterInfoProvider
                 $decimal .= '.' . $scale;
             }
 
+            $min = str_contains($this->parameterDataType, 'unsigned') ? '0' : (-$decimal);
+
             $this->defaultValidationRules = [
                 'numeric',
-                'min: -' . $decimal,
-                'max: ' . $decimal,
+                'min:' . $min,
+                'max:' . $decimal,
             ];
 
             $this->formData = [
-                'min' => (-$decimal),
+                'min' => $min,
                 'max' => $decimal,
                 'type' => 'number',
             ];

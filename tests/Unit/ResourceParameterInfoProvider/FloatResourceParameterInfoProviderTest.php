@@ -40,14 +40,13 @@ class FloatResourceParameterInfoProviderTest extends TestCase
 
         $expectedResultPieces['defaultValidationRules'] = [
             'numeric',
-            'min: ' . $expectedResultPieces['min'],
-            'max: ' . $expectedResultPieces['max'],
+            'min:' . $expectedResultPieces['min'],
+            'max:' . $expectedResultPieces['max'],
         ];
 
         $this->assertEquals($this->getExpectedResult($expectedResultPieces), $result);
     }
 
-    // TODO make sure tests fail
     public function decimalResourceParameterInfoProvider(): array
     {
         return [
@@ -58,13 +57,13 @@ class FloatResourceParameterInfoProviderTest extends TestCase
                     'max' => 9999999999,
                 ],
             ],
-            // 'defaultDecimalUnsigned' => [ // decimal(5,5) unsigned
-            //     'decimal unsigned', // what does this look like in the database?
-            //     [
-            //         'min' => 0,
-            //         'max' => 9999999999,
-            //     ],
-            // ],
+            'defaultDecimalUnsigned' => [
+                'decimal unsigned', // ex of what this could look like in the database: decimal(5,5) unsigned
+                [
+                    'min' => 0,
+                    'max' => 9999999999,
+                ],
+            ],
             'decimalWithPrecision_10,2' => [
                 'decimal(10,2)',
                 [
@@ -72,13 +71,13 @@ class FloatResourceParameterInfoProviderTest extends TestCase
                     'max' => 99999999.99,
                 ],
             ],
-            // 'decimalWithPrecision_10,2Unsigned' => [
-            //     'decimal(10,2) unsigned',
-            //     [
-            //         'min' => 0,
-            //         'max' => 9999999999.99,
-            //     ],
-            // ],
+            'decimalWithPrecision_3,2Unsigned' => [
+                'decimal(3,2) unsigned',
+                [
+                    'min' => 0,
+                    'max' => 9.99,
+                ],
+            ],
             'decimalWithPrecision_10,0' => [
                 'decimal(10,0)',
                 [
