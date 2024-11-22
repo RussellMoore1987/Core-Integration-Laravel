@@ -7,3 +7,7 @@
 
 
 Run: "docker-compose down -v" to take the containers down and remove any named volumes (Delete mysql, node_modules and vendor data)
+
+Run: "php artisan db:seed" to populate your app with fake data
+
+Start at: routes\api.php, config\coreintegration.php
