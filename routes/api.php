@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\CILApiController;
+use App\Http\Controllers\ApiCilController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,12 +16,12 @@ use Illuminate\Support\Facades\Route;
 
 // TODO: clean up notes
 
-Route::any("v1/{resource?}/{resourceId?}", [CILApiController::class, 'processRestRequest']); // REST only route
+Route::any("v1/{resource?}/{resourceId?}", [ApiCilController::class, 'processRestRequest']); // REST only route
 
-Route::post("context/v1", [CILApiController::class, 'processContextRequest']); // Context only route
+Route::post("context/v1", [ApiCilController::class, 'processContextRequest']); // Context only route
 
 // TODO: To utilize leader for perhaps building out a more complex pathing rest request
-// Route::any("rest/v1/{class?}/{id?}/{path?}", [CILApiController::class, 'processRestRequest'])->where('path', '.+');
+// Route::any("rest/v1/{class?}/{id?}/{path?}", [ApiCilController::class, 'processRestRequest'])->where('path', '.+');
 // last endpoint valid then work up
 
 // TODO: make sure api works with model hidden properties, not showing in the api********

@@ -6,7 +6,7 @@ use App\CoreIntegrationApi\RestApi\RestRequestProcessor;
 use App\CoreIntegrationApi\ContextApi\ContextRequestProcessor;
 use Illuminate\Http\JsonResponse;
 
-class CILApiController extends Controller
+class ApiCilController extends Controller
 {
     protected $restRequestProcessor;
     protected $contextRequestProcessor;
