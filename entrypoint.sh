@@ -13,7 +13,7 @@ composer install &&
 echo "php artisan migrate" &&
 php artisan migrate &&
 
-echo "php artisan migrate testing db" &&
+echo "php artisan migrate --database=testing" &&
 php artisan migrate --database=testing &&
 
 echo "php-fpm" &&
