@@ -15,10 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 // TODO: page and perpage have been causing some query issues, causing some things to be out of scope, look into and see what we want to do with them
-// TODO: page parameter affects selecting data, and also making it not found /posts/?perPage=5&page=2&id=10
+// TODO: page parameter affects selecting data, and also making it not found /posts/?perPage=5&page=2&id=10*
 // TODO: look into between not working (int) should include both ends of the range /posts/?perPage=5&id=15
-
-// TODO: not working correctly, /workHistoryTypes/?id=2::>, only gives me back one record
 
 // TODO: clean up notes
 

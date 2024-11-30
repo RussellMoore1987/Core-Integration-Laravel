@@ -19,6 +19,7 @@ use Illuminate\Http\JsonResponse;
 class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
 {
     protected $validatedMetaData;
+    protected $queryResult;
     protected $response;
 
     public function buildResponse($validatedMetaData, $queryResult): JsonResponse
@@ -40,7 +41,7 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
 
             $resourceId = $this->validatedMetaData['endpointData']['resourceId'];
 
-            if ($resourceId && !str_contains($resourceId, ',')) {
+            if ($this->isIdMultiRequest($resourceId)) {
                 if (count($paginateObj['data']) == 0) {
                     $resource = $this->validatedMetaData['endpointData']['resource'];
                     $this->response = response()->json(['message' => "The record with the id of $resourceId at the \"$resource\" endpoint was not found"], 404);
@@ -53,7 +54,12 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
         }
     }
 
-    protected function setGetResponse($paginateObj)
+    private function isIdMultiRequest($resourceId)
+    {
+        return $resourceId && !str_contains($resourceId, ',') && !str_contains($resourceId, '::');
+    }
+
+    private function setGetResponse($paginateObj)
     {
         if (isset($this->validatedMetaData['resourceInfo']['acceptableParameters'])) {
             foreach ($this->validatedMetaData['resourceInfo']['acceptableParameters'] as $columnName => $columnArray) {
@@ -81,7 +87,7 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
                 'includeData' => true,
                 'methodCallData' => true,
                 'info' => [
-                    'message' => 'Documentation on how to utilize default parameter data types can be found in the index response, in the apiDocumentation.defaultParameterDataTypes section.', 
+                    'message' => 'Documentation on how to utilize default parameter data types can be found in the index response, in the apiDocumentation.defaultParameterDataTypes section.',
                     'index_url' => $this->validatedMetaData['endpointData']['indexUrl']
                 ]
             ];
