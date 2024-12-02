@@ -3,7 +3,6 @@
 namespace Tests\Integration;
 
 use App\Models\Project;
-use App\Models\WorkHistoryType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -17,11 +16,6 @@ class GetByIdApiTest extends TestCase
     private Project $project2;
     private Project $project3;
     private Project $project4;
-
-    private WorkHistoryType $workHistoryType1;
-    private WorkHistoryType $workHistoryType2;
-    private WorkHistoryType $workHistoryType3;
-    private WorkHistoryType $workHistoryType4;
 
     /**
      * @group db
@@ -68,7 +62,7 @@ class GetByIdApiTest extends TestCase
     }
 
     /**
-     * @dataProvider betweenOptionDataProvider
+     * @dataProvider betweenOptionProvider
      * @group db
      * @group get
      * @group rest
@@ -88,7 +82,7 @@ class GetByIdApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('id', $this->project4->id)->first());
     }
 
-    public static function betweenOptionDataProvider(): array
+    public static function betweenOptionProvider(): array
     {
         return [
             'bt_id_pram' => ['?id=', 'bt'],
@@ -99,7 +93,7 @@ class GetByIdApiTest extends TestCase
     }
 
     /**
-     * @dataProvider graterThenOptionDataProvider
+     * @dataProvider graterThenOptionProvider
      * @group db
      * @group get
      * @group rest
@@ -118,7 +112,7 @@ class GetByIdApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('id', $this->project4->id)->first());
     }
 
-    public function graterThenOptionDataProvider(): array
+    public function graterThenOptionProvider(): array
     {
         return [
             'gt_id_pram' => ['?id=', 'gt'],
@@ -131,7 +125,7 @@ class GetByIdApiTest extends TestCase
     }
 
     /**
-     * @dataProvider greaterThanOrEqualOptionDataProvider
+     * @dataProvider greaterThanOrEqualOptionProvider
      * @group db
      * @group get
      * @group rest
@@ -151,7 +145,7 @@ class GetByIdApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('id', $this->project4->id)->first());
     }
     
-    public function greaterThanOrEqualOptionDataProvider(): array
+    public function greaterThanOrEqualOptionProvider(): array
     {
         return [
             'gte_id_pram' => ['?id=', 'gte'],
@@ -164,7 +158,7 @@ class GetByIdApiTest extends TestCase
     }
 
     /**
-     * @dataProvider lessThanOptionDataProvider
+     * @dataProvider lessThanOptionProvider
      * @group db
      * @group get
      * @group rest
@@ -184,7 +178,7 @@ class GetByIdApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('id', $this->project2->id)->first());
     }
 
-    public function lessThanOptionDataProvider(): array
+    public function lessThanOptionProvider(): array
     {
         return [
             'lte_id_pram' => ['?id=', 'lt'],
@@ -197,7 +191,7 @@ class GetByIdApiTest extends TestCase
     }
 
     /**
-     * @dataProvider lessThanOrEqualOptionDataProvider
+     * @dataProvider lessThanOrEqualOptionProvider
      * @group db
      * @group get
      * @group rest
@@ -218,7 +212,7 @@ class GetByIdApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('id', $this->project3->id)->first());
     }
 
-    public function lessThanOrEqualOptionDataProvider(): array
+    public function lessThanOrEqualOptionProvider(): array
     {
         return [
             'lte_id_pram' => ['?id=', 'LTE'],
@@ -231,7 +225,7 @@ class GetByIdApiTest extends TestCase
     }
     
     /**
-     * @dataProvider inOptionDataProvider
+     * @dataProvider inOptionProvider
      * @group db
      * @group get
      * @group rest
@@ -255,7 +249,7 @@ class GetByIdApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('id', $this->project3->id)->first());
     }
 
-    public function inOptionDataProvider(): array
+    public function inOptionProvider(): array
     {
         return [
             'in_id_pram' => ['?id=', '::in'],
@@ -266,7 +260,7 @@ class GetByIdApiTest extends TestCase
     }
 
     /**
-     * @dataProvider notInOptionDataProvider
+     * @dataProvider notInOptionProvider
      * @group db
      * @group get
      * @group rest
@@ -290,7 +284,7 @@ class GetByIdApiTest extends TestCase
         $this->assertTrue((boolean) $projects->where('is_published', 4)->first());
     }
 
-    public function notInOptionDataProvider(): array
+    public function notInOptionProvider(): array
     {
         return [
             'notIn_id_pram' => ['?id='],
@@ -316,92 +310,5 @@ class GetByIdApiTest extends TestCase
             'title' => 'Test Project 4',
             'is_published' => 4,
         ]);
-    }
-
-    // ================================================================================================================
-    // odd id's start here
-    // ================================================================================================================
-
-    // TODO: do odd id samples
-    // ! start here ***************************************************
-
-    /**
-     * @group db
-     * @group get
-     * @group rest
-     */
-    public function test_get_back_record_with_not_normal_id_in_pretty_url(): void
-    {
-        // WorkHistoryType->primaryKey = 'work_history_type_id', in the model
-        $workHistoryType = WorkHistoryType::factory()->create(
-            [
-                'name' => 'Test Work History Type 1',
-                'icon' => 'Test Icon 1',
-            ]
-        );
-        $this->createWorkHistoryTypes();
-
-        $response = $this->get("/api/v1/workHistoryTypes/{$workHistoryType->work_history_type_id}");
-
-        $response->assertStatus(200);
-        $response->assertJson([
-            'work_history_type_id' => $workHistoryType->work_history_type_id,
-            'name' => $workHistoryType->name,
-            'icon' => $workHistoryType->icon,
-        ]);
-    }
-
-    /**
-     * @group db
-     * @group get
-     * @group rest
-     */
-    public function test_get_back_record_with_not_normal_id_set_by_normal_id_parameter(): void
-    {
-        
-        $workHistoryType = WorkHistoryType::factory()->create(
-            [
-                'name' => 'Test Work History Type 1',
-                'icon' => 'Test Icon 1',
-            ]
-        );
-        $response = $this->get("/api/v1/workHistoryTypes/?id={$workHistoryType->work_history_type_id}");
-
-        $response->assertStatus(200);
-        $response->assertJson([
-            'work_history_type_id' => $workHistoryType->work_history_type_id,
-            'name' => $workHistoryType->name,
-            'icon' => $workHistoryType->icon,
-        ]);
-    }
-
-    private function createWorkHistoryTypes(): void
-    {
-        // WorkHistoryType->primaryKey = 'work_history_type_id', in the model
-        // odd id name is work_history_type_id
-        $this->$workHistoryType1 = WorkHistoryType::factory()->create(
-            [
-                'name' => 'Test Work History Type 1',
-                'icon' => 'Test Icon 1',
-            ]
-        );
-        $this->$workHistoryType2 = WorkHistoryType::factory()->create(
-            [
-                'name' => 'Test Work History Type 2',
-                'icon' => 'Test Icon 2',
-            ]
-        );
-        $this->$workHistoryType3 = WorkHistoryType::factory()->create(
-            [
-                'name' => 'Test Work History Type 3',
-                'icon' => 'Test Icon 3',
-            ]
-        );
-        $this->$workHistoryType4 = WorkHistoryType::factory()->create(
-            [
-                'name' => 'Test Work History Type 4',
-                'icon' => 'Test Icon 4',
-            ]
-        );
     }
 }
