@@ -30,7 +30,7 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
         return $this->response;
     }
 
-    protected function makeGetRequest()
+    protected function makeGetRequest(): void
     {
         if (is_array($this->queryResult)) {
             // form data or column data
@@ -54,12 +54,12 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
         }
     }
 
-    private function isIdMultiRequest($resourceId)
+    private function isIdMultiRequest($resourceId): bool
     {
         return $resourceId && !str_contains($resourceId, ',') && !str_contains($resourceId, '::');
     }
 
-    private function setGetResponse($paginateObj)
+    private function setGetResponse(array $paginateObj): array
     {
         if (isset($this->validatedMetaData['resourceInfo']['acceptableParameters'])) {
             foreach ($this->validatedMetaData['resourceInfo']['acceptableParameters'] as $columnName => $columnArray) {
