@@ -1,3 +1,5 @@
+version: "3.8"
+
 networks:
     network:
 
@@ -28,14 +30,13 @@ services:
         restart: unless-stopped
         tty: true
         ports:
-            - 3307:3306
+            - 3306:3306
         environment:
             MYSQL_DATABASE: coreintegrationdb
             MYSQL_ROOT_PASSWORD: secret
         command: "--log-bin-trust-function-creators=1"
         volumes:
             - mysql:/var/lib/mysql
-            - ./docker/mysql:/docker-entrypoint-initdb.d
         networks:
             - network
         cap_add:
