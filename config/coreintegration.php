@@ -51,7 +51,8 @@ return [
         // 'requestedDataOnly', // this will override all other options
     ]
 
-    // Available methods (GET, POST) per endpoint
+    // TODO:
+    // Available methods (ex: GET, POST) per endpoint
         // require API key for mutation requests
     // filtering (WHERE...) per endpoint
     // API keys, overarching, per endpoint

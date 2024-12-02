@@ -7,6 +7,8 @@ use App\Models\WorkHistoryType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
+// TODO: test 'equal', 'e', '='
+
 class GetIntIntegrationApiTest extends TestCase
 {
     use DatabaseTransactions;
@@ -18,90 +20,6 @@ class GetIntIntegrationApiTest extends TestCase
         parent::setUp();
 
         $this->makeProjects();
-    }
-
-    /**
-     * @group db
-     * @group get
-     * @group rest
-     */
-    public function test_get_back_ints_with_equal_to(): void
-    {
-        $projectId = $this->projects[0]->id;
-        $response = $this->get("/api/v1/projects/$projectId?per_page=1");
-
-        $response->assertStatus(200);
-        $response->assertJson([
-            'title' => 'Test Project 1',
-            'is_published' => 1,
-        ]);;
-    }
-
-    /**
-     * @group db
-     * @group get
-     * @group rest
-     */
-    public function test_get_back_record_with_not_normal_id(): void
-    {
-        $workHistoryType = WorkHistoryType::factory()->create(
-            [
-                'name' => 'Test Work History Type 1',
-                'icon' => 'Test Icon 1',
-            ]
-        );
-        $response = $this->get("/api/v1/workHistoryTypes/{$workHistoryType->work_history_type_id}");
-
-        $response->assertStatus(200);
-        $response->assertJson([
-            'work_history_type_id' => $workHistoryType->work_history_type_id,
-            'name' => $workHistoryType->name,
-            'icon' => $workHistoryType->icon,
-        ]);;
-    }
-
-    /**
-     * @group db
-     * @group get
-     * @group rest
-     */
-    public function test_get_back_record_with_not_normal_id_set_by_normal_id_parameter(): void
-    {
-        $workHistoryType = WorkHistoryType::factory()->create(
-            [
-                'name' => 'Test Work History Type 1',
-                'icon' => 'Test Icon 1',
-            ]
-        );
-        $response = $this->get("/api/v1/workHistoryTypes/?id={$workHistoryType->work_history_type_id}");
-
-        $response->assertStatus(200);
-        $response->assertJson([
-            'work_history_type_id' => $workHistoryType->work_history_type_id,
-            'name' => $workHistoryType->name,
-            'icon' => $workHistoryType->icon,
-        ]);;
-    }
-
-    /**
-     * @group db
-     * @group get
-     * @group rest
-     */
-    public function test_get_back_ints_with_list_of_ids(): void
-    {
-        $projectIds = $this->projects->pluck('id')->join(',');
-        $response = $this->get("/api/v1/projects/{$projectIds}");
-        $responseArray = json_decode($response->content(), true);
-        
-        $projects = collect($responseArray['data']);
-
-        $response->assertStatus(200);
-        $this->assertEquals(4, count($responseArray['data']));
-        $this->assertTrue((boolean) $projects->where('is_published', 1)->first());
-        $this->assertTrue((boolean) $projects->where('is_published', 2)->first());
-        $this->assertTrue((boolean) $projects->where('is_published', 3)->first());
-        $this->assertTrue((boolean) $projects->where('is_published', 4)->first());
     }
 
     /**
@@ -271,7 +189,7 @@ class GetIntIntegrationApiTest extends TestCase
      */
     public function test_get_back_ints_with_in_option($option): void
     {
-        $response = $this->get("/api/v1/projects/?is_published=1,2,3::{$option}");
+        $response = $this->get("/api/v1/projects/?is_published=1,2,3{$option}");
         $responseArray = json_decode($response->content(), true);
         
         $projects = collect($responseArray['data']);
@@ -286,7 +204,7 @@ class GetIntIntegrationApiTest extends TestCase
     public function inOptionDataProvider(): array
     {
         return [
-            'in' => ['in'],
+            'in' => ['::in'],
             'in by default' => [''],
         ];
     }

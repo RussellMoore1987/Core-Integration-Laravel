@@ -10,6 +10,10 @@ use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeVa
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\DefaultGetParameterValidator;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviderFactory;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ActionFinder;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ComparisonOperatorProvider;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ErrorCollector;
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IntParameterValidator;
 use Illuminate\Support\ServiceProvider;
 
 class CILProvider extends ServiceProvider
@@ -25,6 +29,7 @@ class CILProvider extends ServiceProvider
         $this->bindResourceModelInfoProvider();
         $this->bindGetRequestMethodTypeValidator();
         $this->bindEndpointValidator();
+        $this->bindIntParameterValidator();
     }
 
     private function bindCILQueryAssembler() {
@@ -56,6 +61,16 @@ class CILProvider extends ServiceProvider
         $this->app->bind(EndpointValidator::class, function ($app) {
             return new EndpointValidator(
                 $app->make(ResourceModelInfoProvider::class),
+            );
+        });
+    }
+
+    private function bindIntParameterValidator() {
+        $this->app->bind(IntParameterValidator::class, function ($app) {
+            return new IntParameterValidator(
+                $app->make(ComparisonOperatorProvider::class),
+                $app->make(ErrorCollector::class),
+                $app->make(ActionFinder::class),
             );
         });
     }
