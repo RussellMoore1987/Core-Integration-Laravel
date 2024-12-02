@@ -17,10 +17,6 @@ class GetByOddIdApiTest extends TestCase
     private WorkHistoryType $workHistoryType3;
     private WorkHistoryType $workHistoryType4;
 
-    // ================================================================================================================
-    // odd id's start here
-    // ================================================================================================================
-
     /**
      * @group db
      * @group get

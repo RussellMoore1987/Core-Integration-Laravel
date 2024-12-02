@@ -9,10 +9,10 @@ use Illuminate\Http\JsonResponse;
 
 abstract class RequestProcessor
 {
-    protected $requestValidator;
-    protected $queryResolver;
-    protected $responseBuilder;
-    protected $validatedMetaData;
+    protected RequestValidator $requestValidator;
+    protected QueryResolver $queryResolver;
+    protected ResponseBuilder $responseBuilder;
+    protected array $validatedMetaData;
 
     public function __construct(RequestValidator $requestValidator, QueryResolver $queryResolver, ResponseBuilder $responseBuilder)
     {

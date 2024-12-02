@@ -2,7 +2,7 @@
 
 namespace App\CoreIntegrationApi;
 
-interface QueryDeleter 
+interface QueryDeleter
 {
     public function delete();
 }

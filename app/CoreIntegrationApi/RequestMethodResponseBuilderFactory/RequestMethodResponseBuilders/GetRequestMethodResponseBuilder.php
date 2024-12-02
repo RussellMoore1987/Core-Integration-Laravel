@@ -3,6 +3,7 @@
 namespace App\CoreIntegrationApi\RequestMethodResponseBuilderFactory\RequestMethodResponseBuilders;
 
 use App\CoreIntegrationApi\RequestMethodResponseBuilderFactory\RequestMethodResponseBuilders\RequestMethodResponseBuilder;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
 // TODO: GET =======================================
@@ -14,7 +15,7 @@ use Illuminate\Http\JsonResponse;
 // TODO: just pagination data
 // TODO: form data with data types
 // TODO: add default Parameters
-// TODO: resourceData add not default, pagination is default 
+// TODO: resourceData add not default, pagination is default
 
 class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
 {
@@ -41,7 +42,7 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
 
             $resourceId = $this->validatedMetaData['endpointData']['resourceId'];
 
-            if ($this->isIdMultiRequest($resourceId)) {
+            if ($this->isSingleIdRequest($resourceId)) {
                 if (count($paginateObj['data']) == 0) {
                     $resource = $this->validatedMetaData['endpointData']['resource'];
                     $this->response = response()->json(['message' => "The record with the id of $resourceId at the \"$resource\" endpoint was not found"], 404);
@@ -49,14 +50,11 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
                     $this->response = response()->json($paginateObj['data'][0], 200);
                 }
             } else {
+                $this->isPagePramTooHigh($paginateObj);
+
                 $this->response = response()->json($paginateObj, 200);
             }
         }
-    }
-
-    private function isIdMultiRequest($resourceId): bool
-    {
-        return $resourceId && !str_contains($resourceId, ',') && !str_contains($resourceId, '::');
     }
 
     private function setGetResponse(array $paginateObj): array
@@ -99,5 +97,24 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
         $paginateObj['endpointData'] = $this->validatedMetaData['endpointData'];
 
         return $paginateObj;
+    }
+
+    private function isPagePramTooHigh(array $paginateObj): void
+    {
+        $lastPage = $paginateObj['last_page'];
+        $currentPage = $paginateObj['current_page'];
+        if($currentPage > $lastPage) {
+            $response = response()->json([
+                'error' => 'Default page parameter is invalid',
+                'message' => "The page parameter is too high for the current data set. The last page is {$lastPage} and you requested page {$currentPage}.",
+                'statusCode' => 422,
+            ], 422);
+            throw new HttpResponseException($response);
+        }
+    }
+
+    private function isSingleIdRequest($resourceId): bool // @IsSingleIdRequest
+    {
+        return $resourceId && !str_contains($resourceId, ',') && !str_contains($resourceId, '::');
     }
 }

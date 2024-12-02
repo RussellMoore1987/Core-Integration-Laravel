@@ -2,7 +2,7 @@
 
 namespace App\CoreIntegrationApi;
 
-interface QueryIndex 
+interface QueryIndex
 {
     public function get();
 }

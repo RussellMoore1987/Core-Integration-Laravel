@@ -2,7 +2,7 @@
 
 namespace App\CoreIntegrationApi;
 
-interface QueryAssembler 
+interface QueryAssembler
 {
     public function query($validatedMetaData);
 }

@@ -2,7 +2,7 @@
 
 namespace App\CoreIntegrationApi;
 
-interface QueryPersister 
+interface QueryPersister
 {
     public function persist($validatedQueryData);
 }
