@@ -7,6 +7,16 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 // id are treated as integers but are utilized differently in the api, so they are tested separately
+// ! start here **************************************************************
+// TODO: test this
+// {
+//     "message": "The record with the id of 200 at the \"projects\" endpoint was not found" // just id
+// }
+// to
+// {
+//     "message": "The record with the id of 200 and the criteria provided for the \"projects\" endpoint yielded no results" // id and criteria
+// maybe add accepted parameters to the response
+// }
 
 class GetByIdApiTest extends TestCase
 {
