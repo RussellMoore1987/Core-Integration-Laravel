@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 // id are treated as integers but are utilized differently in the api, so they are tested separately
-// ! start here **************************************************************
+// ! start here ************************************************************** after this look at other starting point in GetDefaultParamsTest.php
 // TODO: test this
 // {
 //     "message": "The record with the id of 200 at the \"projects\" endpoint was not found" // just id
