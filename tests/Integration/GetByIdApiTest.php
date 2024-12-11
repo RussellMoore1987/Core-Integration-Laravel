@@ -119,7 +119,45 @@ class GetByIdApiTest extends TestCase
                     'originalComparisonOperator' => null,
                 ],
             ],
-            'ignoredParameters' => [], // not there / there when needed
+            'ignoredParameters' => [],
+        ]);
+    }
+
+    /**
+     * @group db
+     * @group get
+     * @group rest
+     */
+    public function test_get_back_correct_404_status_extra_prams_page_per_page(): void
+    {
+        $this->createProjects();
+        
+        $response = $this->get("/api/v1/projects/200?is_published=12&page=2&perPage=0");
+        
+        $response->assertStatus(404);
+        $response->assertJson([
+            'message' => 'The record with the id of 200 and the criteria provided for the "projects" endpoint yielded no results',
+            'acceptedParameters' => [
+                'endpoint' => [
+                    'message' => '"projects" is a valid resource/endpoint for this API. You can also review available resources/endpoints at http://localhost:8000/api/v1/',
+                ],
+                'id' => [
+                    'intConvertedTo' => 200,
+                    'originalIntString' => '200',
+                    'comparisonOperatorConvertedTo' => '=',
+                    'originalComparisonOperator' => null,
+                ],
+                'is_published' => [
+                    'intConvertedTo' => 12,
+                    'originalIntString' => '12',
+                    'comparisonOperatorConvertedTo' => '=',
+                    'originalComparisonOperator' => null,
+                ],
+            ],
+            'ignoredParameters' => [
+                'page' => 2,
+                'perPage' => 0,
+            ],
         ]);
     }
 

@@ -86,7 +86,7 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
                 $paginateObj['availableResourceParameters']['parameters'][$columnName] = $columnArray['apiDataType'];
             }
             $paginateObj['availableResourceParameters']['parameters']['info'] = [
-                'message' => 'Documentation on how to utilize parameter data types can be found in the index response, in the apiDocumentation.parameterDataTypes section.', 
+                'message' => 'Documentation on how to utilize parameter data types can be found in the index response, in the apiDocumentation.parameterDataTypes section.',
                 'index_url' => $this->validatedMetaData['endpointData']['indexUrl']
             ];
             $paginateObj['availableResourceParameters']['defaultParameters'] = [
