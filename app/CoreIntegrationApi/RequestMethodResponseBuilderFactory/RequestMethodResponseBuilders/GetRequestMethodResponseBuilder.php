@@ -45,7 +45,11 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
             if ($this->isSingleIdRequest($resourceId)) {
                 if (count($paginateObj['data']) == 0) {
                     $resource = $this->validatedMetaData['endpointData']['resource'];
-                    $this->response = response()->json(['message' => "The record with the id of $resourceId at the \"$resource\" endpoint was not found"], 404);
+                    if (count($this->validatedMetaData['acceptedParameters']) > 2) { // endpoint and id
+                        $this->getResponseIdAndCriteria($resourceId, $resource);
+                    } else {
+                        $this->response = response()->json(['message' => "The record with the id of $resourceId at the \"$resource\" endpoint was not found"], 404);
+                    }
                 } else {
                     $this->response = response()->json($paginateObj['data'][0], 200);
                 }
@@ -55,6 +59,24 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
                 $this->response = response()->json($paginateObj, 200);
             }
         }
+    }
+
+    private function getResponseIdAndCriteria(int $resourceId, string $resource): void
+    {
+        $acceptedParameters = $this->validatedMetaData['acceptedParameters'];
+        $ignoredParameters = [];
+        foreach ($acceptedParameters as $key => $value) {
+            if ($key == 'page' || $key == 'perPage') {
+                $ignoredParameters[$key] = $value;
+                unset($acceptedParameters[$key]);
+            }
+        }
+
+        $this->response = response()->json([
+            'message' => "The record with the id of $resourceId and the criteria provided for the \"$resource\" endpoint yielded no results",
+            'acceptedParameters' => $acceptedParameters,
+            'ignoredParameters' => $ignoredParameters,
+        ], 404);
     }
 
     private function setGetResponse(array $paginateObj): array
