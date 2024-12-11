@@ -7,10 +7,13 @@ use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilderFactory;
 
 class CILQueryAssembler implements QueryAssembler
 {
+    const DEFAULT_PER_PAGE = 50;
+    const DEFAULT_PAGE = 1;
+
     protected $clauseBuilderFactory;
     protected $queryBuilder;
-    protected $perPageParameter = 50;
-    protected $pageParameter = 1;
+    protected $perPageParameter = self::DEFAULT_PER_PAGE;
+    protected $pageParameter = self::DEFAULT_PAGE;
 
     public function __construct(ClauseBuilderFactory $clauseBuilderFactory)
     {
@@ -44,18 +47,19 @@ class CILQueryAssembler implements QueryAssembler
         );
     }
 
-    private function isSingleIdRequest($validatedMetaData): void // if id is a single request switch back to default parameters
+    // if id is a single request, if there, switch back to default page and perPage parameters
+    private function isSingleIdRequest($validatedMetaData): void
     {
         $id = $validatedMetaData['endpointData']['resourceId'];
-        if ($this->isSingleRequest($id)) {
-            $this->perPageParameter = 50;
+        if ($this->isItASingleIdRequest($id)) {
+            $this->perPageParameter = self::DEFAULT_PER_PAGE;
             if (isset($validatedMetaData['acceptedParameters']['page'])) {
-                $this->pageParameter = 1;
+                $this->pageParameter = self::DEFAULT_PAGE;
             }
         }
     }
 
-    private function isSingleRequest($resourceId): bool // @IsSingleIdRequest
+    private function isItASingleIdRequest($resourceId): bool // @IsSingleIdRequest
     {
         return $resourceId && !str_contains($resourceId, ',') && !str_contains($resourceId, '::');
     }
