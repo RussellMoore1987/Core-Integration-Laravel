@@ -41,8 +41,8 @@ class CILQueryAssembler implements QueryAssembler
 
         return $this->queryBuilder->paginate(
             $this->perPageParameter,
-            ['*'],
-            'page',
+            ['*'], // columns
+            'page', // pageName
             $this->pageParameter
         );
     }
