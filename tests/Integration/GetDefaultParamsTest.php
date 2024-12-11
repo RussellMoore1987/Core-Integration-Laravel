@@ -116,6 +116,11 @@ class GetDefaultParamsTest extends TestCase
         ];
     }
 
+    /**
+     * @group db
+     * @group get
+     * @group rest
+     */
     public function test_page_x_is_not_there_exception(): void
     {
         $this->createProjects();
@@ -132,6 +137,11 @@ class GetDefaultParamsTest extends TestCase
         );
     }
 
+    /**
+     * @group db
+     * @group get
+     * @group rest
+     */
     public function test_page_or_per_page_does_not_affect_single_id_request(): void
     {
         $this->createProjects();
@@ -142,7 +152,6 @@ class GetDefaultParamsTest extends TestCase
         $responseArray = json_decode($response->content(), true);
         $this->assertEquals($this->project3->id, $responseArray['id']);
         $this->assertEquals($this->project3->title, $responseArray['title']);
-
     }
 
     private function createProjects(): void

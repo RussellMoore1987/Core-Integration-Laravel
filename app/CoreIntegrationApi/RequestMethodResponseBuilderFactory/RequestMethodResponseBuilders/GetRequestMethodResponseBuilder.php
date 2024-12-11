@@ -2,6 +2,7 @@
 
 namespace App\CoreIntegrationApi\RequestMethodResponseBuilderFactory\RequestMethodResponseBuilders;
 
+use App\CoreIntegrationApi\FunctionalityProviders\Helper;
 use App\CoreIntegrationApi\RequestMethodResponseBuilderFactory\RequestMethodResponseBuilders\RequestMethodResponseBuilder;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
@@ -42,10 +43,10 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
 
             $resourceId = $this->validatedMetaData['endpointData']['resourceId'];
 
-            if ($this->isSingleIdRequest($resourceId)) {
+            if (Helper::isSingleRestIdRequest($resourceId)) {
                 if (count($paginateObj['data']) == 0) {
                     $resource = $this->validatedMetaData['endpointData']['resource'];
-                    if (count($this->validatedMetaData['acceptedParameters']) > 2) { // endpoint and id
+                    if (count($this->validatedMetaData['acceptedParameters']) > 2) { // 2 = endpoint and id prams
                         $this->getResponseIdAndCriteria($resourceId, $resource);
                     } else {
                         $this->response = response()->json(['message' => "The record with the id of $resourceId at the \"$resource\" endpoint was not found"], 404);
@@ -133,10 +134,5 @@ class GetRequestMethodResponseBuilder implements RequestMethodResponseBuilder
             ], 422);
             throw new HttpResponseException($response);
         }
-    }
-
-    private function isSingleIdRequest($resourceId): bool // @IsSingleIdRequest
-    {
-        return $resourceId && !str_contains($resourceId, ',') && !str_contains($resourceId, '::');
     }
 }

@@ -4,6 +4,7 @@ namespace App\CoreIntegrationApi\CIL;
 
 use App\CoreIntegrationApi\QueryAssembler;
 use App\CoreIntegrationApi\ClauseBuilderFactory\ClauseBuilderFactory;
+use App\CoreIntegrationApi\FunctionalityProviders\Helper;
 
 class CILQueryAssembler implements QueryAssembler
 {
@@ -51,15 +52,10 @@ class CILQueryAssembler implements QueryAssembler
     private function isSingleIdRequest($validatedMetaData): void
     {
         $id = $validatedMetaData['endpointData']['resourceId'];
-        if ($this->isItASingleIdRequest($id)) {
+        if (Helper::isSingleRestIdRequest($id)) {
             $this->perPageParameter = self::DEFAULT_PER_PAGE;
             $this->pageParameter = self::DEFAULT_PAGE;
         }
-    }
-
-    private function isItASingleIdRequest($resourceId): bool // @IsSingleIdRequest
-    {
-        return $resourceId && !str_contains($resourceId, ',') && !str_contains($resourceId, '::');
     }
 }
 
