@@ -53,9 +53,7 @@ class CILQueryAssembler implements QueryAssembler
         $id = $validatedMetaData['endpointData']['resourceId'];
         if ($this->isItASingleIdRequest($id)) {
             $this->perPageParameter = self::DEFAULT_PER_PAGE;
-            if (isset($validatedMetaData['acceptedParameters']['page'])) {
-                $this->pageParameter = self::DEFAULT_PAGE;
-            }
+            $this->pageParameter = self::DEFAULT_PAGE;
         }
     }
 
