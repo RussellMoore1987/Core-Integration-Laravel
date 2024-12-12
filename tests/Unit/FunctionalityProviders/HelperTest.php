@@ -29,6 +29,7 @@ class HelperTest extends TestCase
             'single text id with action' => ['gjdie753jd::in', false],
             'comma not pass' => [',', false],
             'double colon not pass' => ['::', false],
+            'single colon in id' => ['fsDf:fvVb453', true],
         ];
     }
 }

@@ -6,8 +6,6 @@ use App\Models\Project;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
-// id are treated as integers but are utilized differently in the api, so they are tested separately
-
 class GetDefaultParamsTest extends TestCase
 {
     use DatabaseTransactions;
@@ -45,20 +43,23 @@ class GetDefaultParamsTest extends TestCase
     {
         return [
             'perPage' => ['perPage'],
+            'perpagE' => ['perpagE'], // showing case insensitivity
             'per_page' => ['per_page'],
+            'pEr_Page' => ['pEr_Page'], // showing case insensitivity
         ];
     }
 
     /**
+     * @dataProvider pageProvider
      * @group db
      * @group get
      * @group rest
      */
-    public function test_page_default_pram_works_as_expected(): void
+    public function test_page_default_pram_works_as_expected(string $pageString): void
     {
         $this->createProjects();
 
-        $response = $this->get('/api/v1/projects/?perPage=2&page=3');
+        $response = $this->get("/api/v1/projects/?perPage=2&{$pageString}=3");
 
         $response->assertStatus(200);
         $responseArray = json_decode($response->content(), true);
@@ -69,6 +70,14 @@ class GetDefaultParamsTest extends TestCase
         $this->assertEquals(5, $responseArray['to']);
         $this->assertEquals(5, $responseArray['total']);
         $this->assertCount(1, $responseArray['data']);
+    }
+
+    public function pageProvider(): array
+    {
+        return [
+            'page' => ['page'],
+            'pAge' => ['pAge'], // showing case insensitivity
+        ];
     }
 
     /**
@@ -89,11 +98,11 @@ class GetDefaultParamsTest extends TestCase
             'rejectedParameters' => [
                 'page' => [
                     'value' => $pageValue,
-                    'parameterError' => 'This parameter\'s value must be an int.',
+                    'parameterError' => "This parameter's value must be an int.",
                 ],
                 'perPage' => [
                     'value' => $perPageValue,
-                    'parameterError' => 'This parameter\'s value must be an int.',
+                    'parameterError' => "This parameter's value must be an int.",
                 ],
             ],
             'acceptedParameters' => [
