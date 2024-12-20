@@ -163,6 +163,161 @@ class GetDefaultParamsTest extends TestCase
         $this->assertEquals($this->project3->title, $responseArray['title']);
     }
 
+    /**
+     * @dataProvider columnProvider
+     * @group db
+     * @group get
+     * @group rest
+     */
+    public function test_columnData_returns_just_the_endpoints_column_data(string $url, string $column, string $value): void
+    {
+        $this->createProjects();
+        
+        $response = $this->get("/api/v1/projects/{$url}/?{$column}={$value}");
+
+        $response->assertStatus(200);
+        $responseArray = json_decode($response->content(), true);
+        $this->assertEquals([
+            'id' => 'int',
+            'title' => 'string',
+            'roles' => 'string',
+            'client' => 'string',
+            'description' => 'string',
+            'content' => 'json',
+            'video_link' => 'string',
+            'code_link' => 'string',
+            'demo_link' => 'string',
+            'start_date' => 'date',
+            'end_date' => 'date',
+            'is_published' => 'int',
+            'created_at' => 'date',
+            'updated_at' => 'date',
+            'budget' => 'float',
+        ], $responseArray['availableResourceParameters']);
+        $this->assertEquals([
+            'message' => 'Documentation on how to utilize parameter data types can be found in the index response, in the ApiDocumentation section.',
+            'index_url' => 'http://localhost:8000/api/v1/',
+        ], $responseArray['info']);
+        $this->assertArrayHasKey('acceptedParameters', $responseArray);
+        $this->assertArrayHasKey('endpoint', $responseArray['acceptedParameters']);
+        $this->assertEquals([
+            'value' => $value,
+            'message' => "This parameter's value dose not matter. If this parameter is set it will high jack the request and only return parameter data for this resource/endpoint",
+        ], $responseArray['acceptedParameters']['columnData']);
+        if ($url) {
+            $this->assertArrayHasKey('id', $responseArray['acceptedParameters']);
+        }
+    }
+
+    public static function columnProvider(): array
+    {
+        return [
+            'columnData' => ['200', 'columnData', 'true'],
+            'column_data' => ['200,300', 'column_data', '1'],
+            'coLumndAtA' => ['200,300', 'coLumndAtA', 'no'],
+            'columN_datA' => ['', 'columN_datA', ''],
+        ];
+    }
+
+    /**
+     * @dataProvider formDataProvider
+     * @group db
+     * @group get
+     * @group rest
+     */
+    public function test_formData_returns_just_the_endpoints_forms_data(string $url, string $formData, string $value): void
+    {
+        $this->createProjects();
+        
+        $response = $this->get("/api/v1/projects/{$url}/?{$formData}={$value}");
+
+        $response->assertStatus(200);
+        $responseArray = json_decode($response->content(), true);
+        $this->assertEquals([
+            'id' => [
+                'min' => 0,
+                'max' => 1.8446744073709552E+19,
+                'maxlength' => 20,
+                'type' => 'number',
+            ],
+            'title' => [
+                'min' => -128,
+                'required' => true,
+            ],
+            'roles' => [
+                'min' => -128,
+            ],
+            'client' => [
+                'min' => -128,
+            ],
+            'description' => [
+                'min' => -128,
+            ],
+            'content' => [
+                'min' => -128,
+            ],
+            'video_link' => [
+                'min' => -128,
+            ],
+            'code_link' => [
+                'min' => -128,
+            ],
+            'demo_link' => [
+                'min' => -128,
+            ],
+            'start_date' => [
+                'type' => 'date',
+                'min' => '1970-01-01 00:00:01',
+                'max' => '2038-01-19 03:14:07',
+            ],
+            'end_date' => [
+                'type' => 'date',
+                'min' => '1970-01-01 00:00:01',
+                'max' => '2038-01-19 03:14:07',
+            ],
+            'is_published' => [
+                'min' => -128,
+                'max' => 127,
+                'maxlength' => 3,
+                'type' => 'number',
+            ],
+            'created_at' => [
+                'type' => 'date',
+                'min' => '1970-01-01 00:00:01',
+                'max' => '2038-01-19 03:14:07',
+            ],
+            'updated_at' => [
+                'type' => 'date',
+                'min' => '1970-01-01 00:00:01',
+                'max' => '2038-01-19 03:14:07',
+            ],
+            'budget' => [
+                'min' => -999999.99,
+                'max' => '999999.99',
+                'type' => 'number',
+            ],
+        ], $responseArray['formData']);
+        $this->assertArrayHasKey('acceptedParameters', $responseArray);
+        $this->assertArrayHasKey('endpoint', $responseArray['acceptedParameters']);
+        $this->assertEquals([
+            'value' => $value,
+            'message' => "This parameter's value dose not matter. If this parameter is set it will high jack the request and only return parameter form data for this resource/endpoint",
+        ], $responseArray['acceptedParameters']['formData']);
+        if ($url) {
+            $this->assertArrayHasKey('id', $responseArray['acceptedParameters']);
+        }
+    }
+
+    public static function formDataProvider(): array
+    {
+        return [
+            'formData' => ['200', 'formData', 'true'],
+            'form_data' => ['200,300', 'form_data', '1'],
+            'foRmData' => ['200,300', 'foRmData', 'no'],
+            'fOrM_datA' => ['', 'fOrM_datA', ''],
+        ];
+    }
+
     private function createProjects(): void
     {
         $this->project1 = Project::factory()->create([

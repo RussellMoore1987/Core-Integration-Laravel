@@ -73,7 +73,7 @@ class DefaultGetParameterValidator
             $this->validatorDataCollector->setAcceptedParameters([
                 'columnData' => [
                     'value' => $this->parameterValue,
-                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this resource/endpoint'
+                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it will high jack the request and only return parameter data for this resource/endpoint'
                 ]
             ]);
         }
@@ -87,7 +87,7 @@ class DefaultGetParameterValidator
             $this->validatorDataCollector->setAcceptedParameters([
                 'formData' => [
                     'value' => $this->parameterValue,
-                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter form data for this resource/endpoint'
+                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it will high jack the request and only return parameter form data for this resource/endpoint'
                 ]
             ]);
         }

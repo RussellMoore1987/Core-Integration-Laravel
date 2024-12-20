@@ -99,12 +99,12 @@ class DefaultGetParameterValidatorTest extends TestCase
     {
         $columnData = [
             'value' => 'yes',
-            'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter data for this resource/endpoint'
+            'message' => 'This parameter\'s value dose not matter. If this parameter is set it will high jack the request and only return parameter data for this resource/endpoint'
         ];
 
         $formData = [
             'value' => 'yes',
-            'message' => 'This parameter\'s value dose not matter. If this parameter is set it well high jack the request and only return parameter form data for this resource/endpoint'
+            'message' => 'This parameter\'s value dose not matter. If this parameter is set it will high jack the request and only return parameter form data for this resource/endpoint'
         ];
 
         return [

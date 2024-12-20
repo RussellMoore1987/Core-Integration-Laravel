@@ -8,17 +8,7 @@ use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ErrorCo
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ActionFinder;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 
-// ! Start here ******************************************************************
-// ! read over file and test readability, test coverage, test organization, tests grouping, go one by one
-// ! (sub DateParameterValidator, PostRequestMethodTypeValidator)
-// [x] read over
-// [x] add return type : void
-// [x] add test
-// test to do
-// [x] read over
-// [x] test groups, rest, context
-// [x] add return type : void
-// [x] testing what I need to test
+// TODO: read over file and test readability, test coverage, test organization, tests grouping, go one by one
 // TODO: split processing int / array into own class??? it is getting big and hard to know if I'm covering everything in tests***
 // TODO: Perhaps remove multiple options and just force them to use 1 [bt] not [bt,between], ect...
 
@@ -120,7 +110,7 @@ class IntParameterValidator implements ParameterValidator
 
     protected function isNotArrayThenProcessAsSingleInt(): void
     {
-        // ! start here ****************************************************************** make a class for this
+        // TODO: make a class for this
         // if int
         // $this->int = $this->intProcessor->process($this->int, $this->errorCollector);
         if (!is_array($this->int) && !$this->processedAsArray) {

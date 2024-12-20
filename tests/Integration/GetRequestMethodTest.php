@@ -163,47 +163,6 @@ class GetRequestMethodTest extends TestCase
         $this->assertTrue(count($response_array['data']) == 0);
     }
 
-    /**
-     * @group get
-     * @group rest
-     * @group db
-     */
-    public function test_return_of_column_data(): void
-    {
-        $this->makeProjects();
-
-        $response = $this->get('/api/v1/projects/?columnData=yes');
-
-        $response->assertStatus(200);
-        $response->assertJson(fn (AssertableJson $json) =>
-            $json->has('availableResourceParameters', fn ($json) =>
-                $json->hasAll(
-                    'id',
-                    'title',
-                    'roles',
-                    'client',
-                    'description',
-                    'content',
-                    'video_link',
-                    'code_link',
-                    'demo_link',
-                    'start_date',
-                    'end_date',
-                    'is_published',
-                    'created_at',
-                    'updated_at',
-                    'budget'
-                )->etc()
-            )
-            ->has('info', fn ($json) =>
-                $json->hasAll(
-                    'message',
-                    'index_url'
-                )
-            )
-        );
-    }
-
     protected function makeProjects(): void
     {
         $content = '{"error":"error", "big":"big", "name":"Sam", "array":{"color":"red"}}';

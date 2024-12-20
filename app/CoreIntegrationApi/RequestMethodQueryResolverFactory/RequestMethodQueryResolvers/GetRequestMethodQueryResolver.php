@@ -23,7 +23,7 @@ class GetRequestMethodQueryResolver implements RequestMethodQueryResolver
     {
         $this->validatedMetaData = $validatedMetaData;
 
-        $this->checkResourceColumnData(); // get,    has, set*** if statement
+        $this->checkResourceColumnData(); // get, has, set*** if statement
         $this->checkIndex();
         $this->checkFormData();
         $this->checkGetRequest();
@@ -41,6 +41,7 @@ class GetRequestMethodQueryResolver implements RequestMethodQueryResolver
                 'message' => 'Documentation on how to utilize parameter data types can be found in the index response, in the ApiDocumentation section.',
                 'index_url' => $this->validatedMetaData['endpointData']['indexUrl']
             ];
+            $this->queryResult['acceptedParameters'] = $this->validatedMetaData['acceptedParameters'];
         }
     }
 
@@ -54,8 +55,10 @@ class GetRequestMethodQueryResolver implements RequestMethodQueryResolver
     protected function checkFormData()
     {
         if (!$this->queryResult && isset($this->validatedMetaData['acceptedParameters']['formData'])) {
-            // TODO: get form data
-            $this->queryResult = 'form data';
+            foreach ($this->validatedMetaData['resourceInfo']['acceptableParameters'] as $parameterName => $parameterArray) {
+                $this->queryResult['formData'][$parameterName] = $parameterArray['formData'];
+            }
+            $this->queryResult['acceptedParameters'] = $this->validatedMetaData['acceptedParameters'];
         }
     }
 
