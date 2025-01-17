@@ -31,6 +31,7 @@ class EndpointValidatorTest extends TestCase
             'resourceId' => '33',
             'indexUrl' => 'http://localhost/api/v1/',
             'url' => 'http://localhost/api/v1/projects',
+            'defaultReturnRequestStructure' => 'dataOnly', // set in config/coreintegration.php, look at EndpointValidator.php > setMainPortionOfEndpointData
             'requestMethod' => 'GET',
             'resourceIdConvertedTo' => [
                 'id' => 33

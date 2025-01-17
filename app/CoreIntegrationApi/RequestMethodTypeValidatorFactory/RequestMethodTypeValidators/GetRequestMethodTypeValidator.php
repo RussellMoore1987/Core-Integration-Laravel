@@ -18,15 +18,6 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
     protected $parameterType;
     protected $parameterName;
     protected $parameterValue;
-    protected $defaultGetParameters = [
-        'per_page',
-        'perpage',
-        'page',
-        'column_data',
-        'columndata',
-        'form_data',
-        'formdata',
-    ];
     protected $defaultResourceParameters = [
         'columns' => 'select',
         'select' => 'select',
@@ -94,9 +85,9 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
 
     protected function isDefaultGetParametersThenValidate()
     {
-        if ($this->isParameterTypeNotSet() && in_array($this->parameterName, $this->defaultGetParameters)) {
+        if ($this->isParameterTypeNotSet() && in_array($this->parameterName, DefaultGetParameterValidator::DEFAULT_GET_PARAMETERS)) {
             $this->parameterType = true;
-
+            
             $this->defaultGetParameterValidator->validate($this->parameterName, $this->parameterValue, $this->validatorDataCollector);
         }
     }

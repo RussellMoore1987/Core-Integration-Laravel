@@ -72,7 +72,7 @@ class GetByOddIdApiTest extends TestCase
         $workHistoryTypesIds = implode(',', $workHistoryTypesIds);
         $response = $this->get("/api/v1/workHistoryTypes/{$type}{$workHistoryTypesIds}{$option}");
         $responseArray = json_decode($response->content(), true);
-        $workHistoryTypes = collect($responseArray['data']);
+        $workHistoryTypes = collect($responseArray);
         
         $response->assertStatus(200);
         $this->assertEquals(2, $workHistoryTypes->count());

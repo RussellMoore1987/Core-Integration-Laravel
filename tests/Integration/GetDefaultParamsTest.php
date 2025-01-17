@@ -26,7 +26,7 @@ class GetDefaultParamsTest extends TestCase
     {
         $this->createProjects();
 
-        $response = $this->get("/api/v1/projects/?{$perPageString}=2");
+        $response = $this->get("/api/v1/projects/?{$perPageString}=2&fullInfo=true");
 
         $response->assertStatus(200);
         $responseArray = json_decode($response->content(), true);
@@ -59,7 +59,7 @@ class GetDefaultParamsTest extends TestCase
     {
         $this->createProjects();
 
-        $response = $this->get("/api/v1/projects/?perPage=2&{$pageString}=3");
+        $response = $this->get("/api/v1/projects/?perPage=2&{$pageString}=3&fullInfo=true");
 
         $response->assertStatus(200);
         $responseArray = json_decode($response->content(), true);
@@ -318,12 +318,81 @@ class GetDefaultParamsTest extends TestCase
         ];
     }
 
+    /**
+     * @dataProvider dataOnlyProvider
+     * @group db
+     * @group get
+     * @group rest
+     */
+    public function test_dataOnly_returns_just_the_endpoints_data(string $url, string $pram, string $value): void
+    {
+        $this->createProjects();
+
+        $response = $this->get("/api/v1/projects/{$url}/?{$pram}={$value}");
+
+        $response->assertStatus(200);
+        $responseArray = json_decode($response->content(), true);
+
+        $this->assertCount(2, $responseArray);
+        $this->assertEquals('Test Project 1', $responseArray[0]['title']);
+        $this->assertEquals('Test Project 2', $responseArray[1]['title']);
+        $this->assertArrayNotHasKey('data', $responseArray);
+        $this->assertArrayNotHasKey('acceptedParameters', $responseArray);
+    }
+
+    public static function dataOnlyProvider(): array
+    {
+        return [
+            'dataOnly' => ['200,300', 'dataOnly', 'true'],
+            'data_only' => ['200,300', 'data_only', '1'],
+            'daTaOnLy' => ['200,300', 'daTaOnLy', 'no'],
+            'dAtA_onlY' => ['200,300', 'dAtA_onlY', ''],
+        ];
+    }
+
+    /**
+     * @dataProvider fullInfoProvider
+     * @group db
+     * @group get
+     * @group rest
+     */
+    public function test_fullInfo_returns_the_endpoints_full_info(string $url, string $pram, string $value): void
+    {
+        $this->createProjects();
+
+        $response = $this->get("/api/v1/projects/{$url}/?{$pram}={$value}");
+
+        $response->assertStatus(200);
+        $responseArray = json_decode($response->content(), true);
+
+        $this->assertEquals('Test Project 1', $responseArray['data'][0]['title']);
+        $this->assertEquals('Test Project 2', $responseArray['data'][1]['title']);
+        $this->assertGreaterThan(4, $responseArray);
+        $this->assertArrayHasKey('endpointData', $responseArray);
+        $this->assertArrayHasKey('acceptedParameters', $responseArray);
+        $this->assertArrayHasKey('fullInfo', $responseArray['acceptedParameters']);
+        $this->assertArrayHasKey('rejectedParameters', $responseArray);
+        $this->assertArrayHasKey('current_page', $responseArray);
+    }
+
+    public static function fullInfoProvider(): array
+    {
+        return [
+            'fullInfo' => ['200,300', 'fullInfo', 'true'],
+            'full_info' => ['200,300', 'full_info', '1'],
+            'fuLlInfO' => ['200,300', 'fuLlInfO', 'false'], // false has no effect
+            'fUlL_inFo' => ['200,300', 'fUlL_inFo', ''],
+        ];
+    }
+
     private function createProjects(): void
     {
         $this->project1 = Project::factory()->create([
+            'id' => 200,
             'title' => 'Test Project 1',
         ]);
         $this->project2 = Project::factory()->create([
+            'id' => 300,
             'title' => 'Test Project 2',
         ]);
         $this->project3 = Project::factory()->create([

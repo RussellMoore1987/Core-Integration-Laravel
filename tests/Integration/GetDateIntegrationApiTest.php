@@ -32,10 +32,10 @@ class GetDateIntegrationApiTest extends TestCase
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:30:45");
         $responseArray = json_decode($response->content(), true);
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(1, count($responseArray['data']));
+        $this->assertEquals(1, $projects->count());
         $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
     }
 
@@ -48,10 +48,10 @@ class GetDateIntegrationApiTest extends TestCase
     {
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01");
         $responseArray = json_decode($response->content(), true);
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(2, count($responseArray['data']));
+        $this->assertEquals(2, $projects->count());
         $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
         $this->assertTrue((boolean) $projects->where('title', $this->project2Title)->first());
     }
@@ -66,10 +66,10 @@ class GetDateIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:45:56,2010-01-01::bt");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(1, count($responseArray['data']));
+        $this->assertEquals(1, $projects->count());
         $this->assertTrue((boolean) $projects->where('title', $this->project3Title)->first());
     }
 
@@ -84,10 +84,10 @@ class GetDateIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01,2010-01-01::{$option}");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(3, count($responseArray['data']));
+        $this->assertEquals(3, $projects->count());
         $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
         $this->assertTrue((boolean) $projects->where('title', $this->project2Title)->first());
         $this->assertTrue((boolean) $projects->where('title', $this->project3Title)->first());
@@ -111,10 +111,10 @@ class GetDateIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 11:23:33::gt");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(3, count($responseArray['data']));
+        $this->assertEquals(3, $projects->count());
         $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
         $this->assertTrue((boolean) $projects->where('title', $this->project3Title)->first());
         $this->assertTrue((boolean) $projects->where('title', $this->project4Title)->first());
@@ -131,10 +131,10 @@ class GetDateIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?start_date=2010-01-01::{$option}");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(1, count($responseArray['data']));
+        $this->assertEquals(1, $projects->count());
         $this->assertTrue((boolean) $projects->where('title', $this->project4Title)->first());
     }
 
@@ -157,10 +157,10 @@ class GetDateIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:30:45::GTE");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(3, count($responseArray['data']));
+        $this->assertEquals(3, $projects->count());
         $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
         $this->assertTrue((boolean) $projects->where('title', $this->project3Title)->first());
         $this->assertTrue((boolean) $projects->where('title', $this->project4Title)->first());
@@ -177,10 +177,10 @@ class GetDateIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?start_date=2010-01-01::{$option}");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(2, count($responseArray['data']));
+        $this->assertEquals(2, $projects->count());
         $this->assertTrue((boolean) $projects->where('title', $this->project3Title)->first());
         $this->assertTrue((boolean) $projects->where('title', $this->project4Title)->first());
     }
@@ -204,10 +204,10 @@ class GetDateIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:30:45::lt");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(1, count($responseArray['data']));
+        $this->assertEquals(1, $projects->count());
         $this->assertTrue((boolean) $projects->where('title', $this->project2Title)->first());
     }
 
@@ -222,10 +222,10 @@ class GetDateIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?start_date=2010-01-01::{$option}");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(2, count($responseArray['data']));
+        $this->assertEquals(2, $projects->count());
         $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
         $this->assertTrue((boolean) $projects->where('title', $this->project2Title)->first());
     }
@@ -249,10 +249,10 @@ class GetDateIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?start_date=1979-01-01 12:30:45::lte");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(2, count($responseArray['data']));
+        $this->assertEquals(2, $projects->count());
         $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
         $this->assertTrue((boolean) $projects->where('title', $this->project2Title)->first());
     }
@@ -268,10 +268,10 @@ class GetDateIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?start_date=2010-01-01::{$option}");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(3, count($responseArray['data']));
+        $this->assertEquals(3, $projects->count());
         $this->assertTrue((boolean) $projects->where('title', $this->project1Title)->first());
         $this->assertTrue((boolean) $projects->where('title', $this->project2Title)->first());
         $this->assertTrue((boolean) $projects->where('title', $this->project3Title)->first());

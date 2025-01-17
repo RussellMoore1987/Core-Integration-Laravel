@@ -53,7 +53,7 @@ class GetByIdApiTest extends TestCase
         $projectIds = implode(',', $projectIds);
         $response = $this->get("/api/v1/projects/{$projectIds}");
         $responseArray = json_decode($response->content(), true);
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
         
         $response->assertStatus(200);
         $this->assertEquals(2, $projects->count());
@@ -165,7 +165,7 @@ class GetByIdApiTest extends TestCase
         $project_ids = $this->project4->id . ',' . ($this->project4->id + 10);
         $response = $this->get("/api/v1/projects/{$type}{$project_ids}::{$option}");
         $responseArray = json_decode($response->content(), true);
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
         
         $response->assertStatus(200);
         $this->assertEquals(1, $projects->count());
@@ -195,7 +195,7 @@ class GetByIdApiTest extends TestCase
         $project_id = $this->project3->id;
         $response = $this->get("/api/v1/projects/{$type}{$project_id}::{$option}");
         $responseArray = json_decode($response->content(), true);
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
         
         $response->assertStatus(200);
         $this->assertEquals(1, $projects->count());
@@ -227,7 +227,7 @@ class GetByIdApiTest extends TestCase
         $project_id = $this->project3->id;
         $response = $this->get("/api/v1/projects/{$type}{$project_id}::{$option}");
         $responseArray = json_decode($response->content(), true);
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
         
         $response->assertStatus(200);
         $this->assertEquals(2, $projects->count());
@@ -260,7 +260,7 @@ class GetByIdApiTest extends TestCase
         $projectId = $this->project3->id;
         $response = $this->get("/api/v1/projects/{$type}{$projectId}::{$option}");
         $responseArray = json_decode($response->content(), true);
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
         $this->assertEquals(2, $projects->count());
@@ -293,7 +293,7 @@ class GetByIdApiTest extends TestCase
         $projectId = $this->project3->id;
         $response = $this->get("/api/v1/projects/{$type}{$projectId}::{$option}");
         $responseArray = json_decode($response->content(), true);
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
         $this->assertEquals(3, $projects->count());
@@ -331,7 +331,7 @@ class GetByIdApiTest extends TestCase
         $projectIds = implode(',', $projectIds);
         $response = $this->get("/api/v1/projects/{$type}{$projectIds}{$option}");
         $responseArray = json_decode($response->content(), true);
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
         
         $response->assertStatus(200);
         $this->assertEquals(2, $projects->count());
@@ -366,10 +366,10 @@ class GetByIdApiTest extends TestCase
         $projectIds = implode(',', $projectIds);
         $response = $this->get("/api/v1/projects/{$type}{$projectIds}::notIn");
         $responseArray = json_decode($response->content(), true);
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(2, count($responseArray['data']));
+        $this->assertEquals(2, $projects->count());
         $this->assertTrue((boolean) $projects->where('is_published', 2)->first());
         $this->assertTrue((boolean) $projects->where('is_published', 4)->first());
     }

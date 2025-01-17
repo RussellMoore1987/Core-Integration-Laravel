@@ -7,6 +7,15 @@ use App\CoreIntegrationApi\ValidatorDataCollector;
 // TODO: make a test for this class
 class DefaultGetParameterValidator
 {
+    const DEFAULT_GET_PARAMETERS = [
+        'per_page', 'perpage',
+        'page',
+        'column_data', 'columndata',
+        'form_data', 'formdata',
+        'data_only', 'dataonly',
+        'full_info', 'fullinfo',
+    ];
+
     protected $parameterType;
     protected $parameterName;
     protected $parameterValue;
@@ -23,6 +32,8 @@ class DefaultGetParameterValidator
         $this->isPageParameterThenValidate();
         $this->isColumnDataParameterThenSet();
         $this->isFormDataParameterThenSet();
+        $this->isDataOnlyParameterThenSet();
+        $this->isFullInfoParameterThenSet();
     }
 
     protected function isPerPageParameterThenValidate(): void
@@ -93,6 +104,33 @@ class DefaultGetParameterValidator
         }
     }
 
+    protected function isDataOnlyParameterThenSet(): void
+    {
+        if ($this->parameterTypeIsNotSet() && in_array($this->parameterName, ['dataonly', 'data_only'])) {
+            $this->parameterType = true;
+            
+            $this->validatorDataCollector->setAcceptedParameters([
+                'dataOnly' => [
+                    'value' => $this->parameterValue,
+                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it will high jack the request and only return the resource/endpoint data'
+                ]
+            ]);
+        }
+    }
+
+    protected function isFullInfoParameterThenSet(): void
+    {
+        if ($this->parameterTypeIsNotSet() && in_array($this->parameterName, ['fullinfo', 'full_info'])) {
+            $this->parameterType = true;
+            
+            $this->validatorDataCollector->setAcceptedParameters([
+                'fullInfo' => [
+                    'value' => $this->parameterValue,
+                    'message' => 'This parameter\'s value dose not matter. If this parameter is set it will high jack the request and will return all resource/endpoint information'
+                ]
+            ]);
+        }
+    }
     protected function parameterTypeIsNotSet(): bool
     {
         return !$this->parameterType;

@@ -107,6 +107,16 @@ class DefaultGetParameterValidatorTest extends TestCase
             'message' => 'This parameter\'s value dose not matter. If this parameter is set it will high jack the request and only return parameter form data for this resource/endpoint'
         ];
 
+        $dataOnly = [
+            'value' => 'yes',
+            'message' => 'This parameter\'s value dose not matter. If this parameter is set it will high jack the request and only return the resource/endpoint data'
+        ];
+
+        $fullInfo = [
+            'value' => 'yes',
+            'message' => 'This parameter\'s value dose not matter. If this parameter is set it will high jack the request and will return all resource/endpoint information'
+        ];
+
         return [
             'columndata' => [
                 'columndata',
@@ -127,6 +137,26 @@ class DefaultGetParameterValidatorTest extends TestCase
                 'form_data',
                 'formData',
                 $formData,
+            ],
+            'dataonly' => [
+                'dataonly',
+                'dataOnly',
+                $dataOnly,
+            ],
+            'data_only' => [
+                'data_only',
+                'dataOnly',
+                $dataOnly,
+            ],
+            'fullinfo' => [
+                'fullinfo',
+                'fullInfo',
+                $fullInfo,
+            ],
+            'full_info' => [
+                'full_info',
+                'fullInfo',
+                $fullInfo,
             ],
         ];
     }

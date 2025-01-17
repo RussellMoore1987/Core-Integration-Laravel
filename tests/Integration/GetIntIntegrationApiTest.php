@@ -3,7 +3,6 @@
 namespace Tests\Integration;
 
 use App\Models\Project;
-use App\Models\WorkHistoryType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -32,10 +31,10 @@ class GetIntIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?per_page=5&is_published=3,6::bt");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(2, count($responseArray['data']));
+        $this->assertEquals(2, $projects->count());
         $this->assertTrue((boolean) $projects->where('is_published', 3)->first());
         $this->assertTrue((boolean) $projects->where('is_published', 4)->first());
     }
@@ -52,10 +51,10 @@ class GetIntIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?per_page=5&is_published=4,6::{$option}");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
-        $this->assertEquals(1, count($responseArray['data']));
+        $this->assertEquals(1, $projects->count());
         $this->assertTrue((boolean) $projects->where('is_published', 4)->first());
     }
 
@@ -78,7 +77,7 @@ class GetIntIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?is_published=2::{$option}");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
         $this->assertEquals(2, $projects->count());
@@ -106,7 +105,7 @@ class GetIntIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?is_published=2::{$option}");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
         $this->assertEquals(3, $projects->count());
@@ -135,7 +134,7 @@ class GetIntIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?is_published=3::{$option}");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
         $this->assertEquals(2, $projects->count());
@@ -163,7 +162,7 @@ class GetIntIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?is_published=3::{$option}");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
         $this->assertEquals(3, $projects->count());
@@ -192,7 +191,7 @@ class GetIntIntegrationApiTest extends TestCase
         $response = $this->get("/api/v1/projects/?is_published=1,2,3{$option}");
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
         $this->assertEquals(3, $projects->count());
@@ -216,10 +215,10 @@ class GetIntIntegrationApiTest extends TestCase
      */
     public function test_get_back_int_with_not_in_option(): void
     {
-        $response = $this->get("/api/v1/projects/?is_published=1,2,3::notIn");
+        $response = $this->get("/api/v1/projects/?IS_publIShed=1,2,3::notIn"); // IS_publIShed, shows case insensitivity
         $responseArray = json_decode($response->content(), true);
         
-        $projects = collect($responseArray['data']);
+        $projects = collect($responseArray);
 
         $response->assertStatus(200);
         $this->assertEquals(1, $projects->count());

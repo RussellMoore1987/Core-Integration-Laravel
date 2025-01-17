@@ -23,7 +23,7 @@ class GetRequestMethodTest extends TestCase
         $this->makeProjects();
 
         $projectIds = implode(',',$this->projects->pluck('id')->toArray());
-        $response = $this->get("/api/v1/projects/$projectIds?per_page=1&page=2");
+        $response = $this->get("/api/v1/projects/$projectIds?per_page=1&page=2&fullInfo=true");
 
         $response->assertStatus(200);
         $response->assertJsonCount(17);
@@ -61,6 +61,8 @@ class GetRequestMethodTest extends TestCase
                 'availableResourceParameters.defaultParameters.formData',
                 'availableResourceParameters.defaultParameters.includeData',
                 'availableResourceParameters.defaultParameters.methodCallData',
+                'availableResourceParameters.defaultParameters.dataOnly',
+                'availableResourceParameters.defaultParameters.fullInfo',
                 'availableResourceParameters.defaultParameters.info',
                 'rejectedParameters',
                 'acceptedParameters',
@@ -160,7 +162,7 @@ class GetRequestMethodTest extends TestCase
 
         $response->assertStatus(200);
         $response_array = json_decode($response->content(), true);
-        $this->assertTrue(count($response_array['data']) == 0);
+        $this->assertTrue(count($response_array) == 0);
     }
 
     protected function makeProjects(): void

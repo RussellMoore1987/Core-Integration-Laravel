@@ -54,6 +54,7 @@ class EndpointValidator
             'indexUrl' => $this->getIndexUrl(),
             'url' => $this->validatorDataCollector->url,
             'requestMethod' => $this->validatorDataCollector->requestMethod,
+            'defaultReturnRequestStructure' => config('coreintegration.defaultReturnRequestStructure', 'dataOnly'), // effects lots of tests
         ];
     }
 
