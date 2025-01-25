@@ -4,5 +4,5 @@ namespace App\CoreIntegrationApi;
 
 interface QueryIndex
 {
-    public function get();
+    public function get(): array;
 }

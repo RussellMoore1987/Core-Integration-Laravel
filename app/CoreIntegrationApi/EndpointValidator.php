@@ -24,16 +24,27 @@ class EndpointValidator
         
         if (array_key_exists($this->validatorDataCollector->resource, $this->availableResourceEndpoints)) {
             $this->setResourceVariables();
-            $this->setEndpointData();
         } elseif ($this->validatorDataCollector->resource != 'index') {
             $this->returnEndpointError();
         }
+
+        $this->setEndpointData();
     }
 
     protected function setResourceVariables(): void
     {
         $this->validatorDataCollector->resourceObject = new $this->availableResourceEndpoints[$this->validatorDataCollector->resource]();
         $this->validatorDataCollector->resourceInfo = $this->resourceModelInfoProvider->getResourceInfo($this->validatorDataCollector->resourceObject); // TODO: this will brake if not a model
+    }
+
+    protected function returnEndpointError(): void
+    {
+        $response = response()->json([
+            'error' => 'Resource/Endpoint Not Found',
+            'message' => "\"{$this->validatorDataCollector->resource}\" is not a valid resource/endpoint for this API. Please review available resources/endpoints at " . $this->getIndexUrl(),
+            'statusCode' => 404,
+        ], 404);
+        throw new HttpResponseException($response);
     }
 
     protected function setEndpointData(): void
@@ -58,6 +69,16 @@ class EndpointValidator
         ];
     }
 
+    protected function getIndexUrl(): string
+    {
+        $lengthHelper = strpos($this->validatorDataCollector->url, 'api/v1/') + 7;
+        if (strpos($this->validatorDataCollector->url, 'api/v1/') === false) {
+            $lengthHelper = strpos($this->validatorDataCollector->url, 'api/v1') + 7;
+        }
+
+        return substr($this->validatorDataCollector->url, 0, $lengthHelper);
+    }
+
     protected function setResourceId(): void
     {
         $this->validatorDataCollector->endpointData['resourceId'] = $this->validatorDataCollector->resourceId;
@@ -67,20 +88,5 @@ class EndpointValidator
             $this->validatorDataCollector->parameters[$primaryKeyName] = $this->validatorDataCollector->resourceId;
             $this->validatorDataCollector->endpointData['resourceIdConvertedTo'] = [$primaryKeyName => $this->validatorDataCollector->resourceId];
         }
-    }
-
-    protected function returnEndpointError(): void
-    {
-        $response = response()->json([
-            'error' => 'Resource/Endpoint Not Found',
-            'message' => "\"{$this->validatorDataCollector->resource}\" is not a valid resource/endpoint for this API. Please review available resources/endpoints at " . $this->getIndexUrl(),
-            'statusCode' => 404,
-        ], 404);
-        throw new HttpResponseException($response);
-    }
-
-    protected function getIndexUrl(): string
-    {
-        return substr($this->validatorDataCollector->url, 0, strpos($this->validatorDataCollector->url, 'api/v1/') + 7);
     }
 }

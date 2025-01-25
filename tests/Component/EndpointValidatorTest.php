@@ -31,7 +31,7 @@ class EndpointValidatorTest extends TestCase
             'resourceId' => '33',
             'indexUrl' => 'http://localhost/api/v1/',
             'url' => 'http://localhost/api/v1/projects',
-            'defaultReturnRequestStructure' => 'dataOnly', // set in config/coreintegration.php, look at EndpointValidator.php > setMainPortionOfEndpointData
+            'defaultReturnRequestStructure' => 'dataOnly', // @DefaultReturnRequestStructure
             'requestMethod' => 'GET',
             'resourceIdConvertedTo' => [
                 'id' => 33
@@ -163,8 +163,21 @@ class EndpointValidatorTest extends TestCase
 
         $this->endpointValidator->validateEndPoint($this->validatorDataCollector);
 
-        $this->assertEquals([], $this->validatorDataCollector->endpointData);
+        $expected_endpoint_data = [
+            'resource' => 'index',
+            'indexUrl' => 'http://localhost/api/v1',
+            'url' => 'http://localhost/api/v1',
+            'requestMethod' => 'GET',
+            'defaultReturnRequestStructure' => 'dataOnly', // @DefaultReturnRequestStructure
+            'resourceId' => ''
+        ];
+
+        $this->assertEquals($expected_endpoint_data, $this->validatorDataCollector->endpointData);
         $this->assertFalse((boolean) $this->validatorDataCollector->resourceInfo);
-        $this->assertEquals([], $this->validatorDataCollector->getAcceptedParameters());
+        $this->assertEquals([
+            'endpoint' => [
+                'message' => '"index" is a valid resource/endpoint for this API. You can also review available resources/endpoints at http://localhost/api/v1'
+            ]
+        ], $this->validatorDataCollector->getAcceptedParameters());
     }
 }
