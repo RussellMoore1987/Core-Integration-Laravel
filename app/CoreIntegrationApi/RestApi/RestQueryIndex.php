@@ -3,50 +3,193 @@
 namespace App\CoreIntegrationApi\RestApi;
 
 use App\CoreIntegrationApi\QueryIndex;
+use App\CoreIntegrationApi\ResourceModelInfoProvider;
+
+// TODO: these
+// limiting HTTP methods per route, overall
+// authentication, authentication by route
+// SQL restrictions per route
 
 class RestQueryIndex implements QueryIndex
 {
-    public function get(): array
-    {
-        $apiRoot = $this->getApiRoot();
+    private ResourceModelInfoProvider $resourceProvider;
+    private array $validatedMetaData;
+    private array $index = [];
 
-        return $apiRoot;
+    public function __construct(ResourceModelInfoProvider $resourceProvider)
+    {
+        $this->resourceProvider = $resourceProvider;
     }
 
-    private function getApiRoot(): array
+    public function get(array $validatedMetaData): array
+    {
+        $this->validatedMetaData = $validatedMetaData;
+
+        return $this->getApiIndex();
+    }
+
+    private function getApiIndex(): array
+    {
+        $this->compileMainInformation();
+        $this->compileOverarchingAuthentication();
+        $this->compileApiDocumentation();
+        $this->compileRoutes();
+
+        return $this->index;
+    }
+
+    private function compileMainInformation(): void
+    {
+        $this->index = $this->getMainInformation();
+
+        $partialOverride = config('coreintegration.partialOverride') ?? true;
+        $overrides = config('coreintegration.indexOverrides') ?? [];
+        if ($partialOverride === true) {
+            foreach ($overrides as $key => $value) {
+                $this->index[$key] = $value;
+            }
+        } else {
+            $overrides = config('coreintegration.indexOverrides');
+        }
+    }
+
+    private function getMainInformation(): array
     {
         return [
-            // General Info
             'companyName' => 'Placeholder Company',
             'termsOfUse' => 'Placeholder Terms URL',
             'version' => '1.0.0',
             'contact' => 'someone@someone.com',
-            'description' => 'v1.0.0 of the api. This API may be used to retrieve data from the CMS system and in some cases create data. If the system has an API key it is required on all requests.',
-            'siteRoot' => 'MAIN_LINK_PATH',
-            'apiRoot' => '$rootLink',
-            // general route documentation
-            'generalRoutDocumentation' => [
-                // Main Authentication
-                // TODO: 'authToken' vs bearer token
-                'mainAuthentication' => [
-                    'authToken' => 'NEEDS NEW INSTRUCTIONS', // TODO: needs new instructions
-                    // get bearer token only for get auth
-                    // authToken for all other requests is ok
-                        // authToken can not be sent in the url
-                ],
-                'httpMethods' => [
-                    'GET' => 'Accepts urlcoded data',
-                    'POST' => 'Accepts form data',
-                    'PUT' => 'Accepts form data',
-                    'PATCH' => 'Accepts form data',
-                    'DELETE' => 'Accepts URL/GET variables'
-                ],
-                'generalInformation' => [
-                    'documentationNote' => ''
-                ]
-            ],
-            // routs
-            'routs' => []
+            'description' => 'v1.0.0 of the api. This API may be used to retrieve data. restrictions and limitations are detailed below in the _______ section.', // TODO: fix this _______
+            'siteRoot' => substr($this->validatedMetaData['endpointData']['indexUrl'], 0, -7),
+            'apiRoot' => $this->validatedMetaData['endpointData']['indexUrl'],
+            'defaultReturnRequestStructure' => config('coreintegration.defaultReturnRequestStructure', 'dataOnly'),
         ];
     }
+
+    private function compileOverarchingAuthentication(): void
+    {
+        $authenticationType = config('coreintegration.authenticationType') ?? 'Bearer';
+        $getProtected = config('coreintegration.getProtected') ?? true;
+
+        $getMessage = '';
+        if ($getProtected === true && $authenticationType === 'Bearer') {
+            $getMessage = ", {$authenticationType} token required";
+        }
+
+        $this->index['generalDocumentation'] = [
+            'mainAuthentication' => "{$authenticationType} token required",
+            'httpMethods' => [
+                'GET' => "Accepts URL/GET variables{$getMessage}",
+                'POST' => "Accepts form data, {$authenticationType} token required",
+                'PUT' => "Accepts form data, {$authenticationType} token required",
+                'PATCH' => "Accepts form data, {$authenticationType} token required",
+                'DELETE' => "Accepts URL/GET variables, {$authenticationType} token required",
+            ],
+        ];
+    }
+
+    private function compileApiDocumentation(): void
+    {
+        $this->index['generalDocumentation']['defaultParametersForRoutes'] = $this->getDefaultParameters();
+        $this->index['generalDocumentation']['parameterDataTypes'] = $this->getParameterDataTypes();
+    }
+
+    private function getDefaultParameters(): array
+    {
+        return [
+            'columns' => 'Resources only return the specified columns/parameter per resource item.',
+            'orderBy' => [
+                'Supply parameter name(s) to order your request.',
+                'Options are ::DESC and ::ASC, ::ASC is default ,parameter are separated by a comma.',
+                'Example: orderBy=column1::DESC,column2::ASC,column3',
+            ],
+            'methodCalls' => [
+                'Provides the ability to utilize a resources/models custom function, per model returned.',
+                'Available method calls are shown on the individual resources.',
+            ],
+            'includes' => [
+                'Provides the ability to include related resources/models.',
+                'Available includes are shown on the individual resources.',
+                'Example: includes=relatedResource1::columns=column1,column2,relatedResource2::orderBy=column1',
+            ],
+            'page' => 'Allows you to paginate the results.',
+            'perPage' => 'Allows you to set the number of items per page returned.',
+            'columnData' => 'Shows only the resource parameter data types.',
+            'formData' => 'Shows only the resource form data.',
+            'dataOnly' => 'Returns only the data requested.',
+            'fullInfo' => 'Returns all information on the resource, including pagination, links, documentation, etc.',
+        ];
+    }
+
+    // TODO: find a way to make this dynamic
+    private function getParameterDataTypes(): array
+    {
+        return [];
+    }
+
+    private function compileRoutes(): void
+    {
+        $availableResourceEndpoints = config('coreintegration.availableResourceEndpoints') ?? [];
+        $restrictedMethods = config('coreintegration.restrictedHttpMethods') ?? [];
+
+        foreach ($availableResourceEndpoints as $resource => $resourceClass) {
+            $route = $this->validatedMetaData['endpointData']['indexUrl'] . '/' . $resource;
+            $this->index['quickRouteReference'][$resource]['url'] = $route;
+
+            $availableMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+            $restrictedRouteMethods = config("coreintegration.routeOptions.{$resource}.restrictedHttpMethods") ?? [];
+            $restrictedRouteMethods = array_merge($restrictedMethods, $restrictedRouteMethods);
+
+            $availableMethods = array_diff($availableMethods, $restrictedRouteMethods);
+            $this->index['quickRouteReference'][$resource]['availableMethods'] = implode(',', $availableMethods);
+
+            $resourceInfo = $this->resourceProvider->getResourceInfo(new $resourceClass());
+            unset($resourceInfo['primaryKeyName']);
+            unset($resourceInfo['path']);
+
+            foreach ($resourceInfo['acceptableParameters'] as $parameterName => $parameterArray) {
+                unset($resourceInfo['acceptableParameters'][$parameterName]['field']);
+                unset($resourceInfo['acceptableParameters'][$parameterName]['type']);
+                unset($resourceInfo['acceptableParameters'][$parameterName]['key']);
+                unset($resourceInfo['acceptableParameters'][$parameterName]['extra']);
+                $resourceInfo['acceptableParameters'][$parameterName]['parameterDataType'] = $parameterArray['apiDataType'];
+                unset($resourceInfo['acceptableParameters'][$parameterName]['apiDataType']);
+                unset($resourceInfo['acceptableParameters'][$parameterName]['defaultValidationRules']);
+            }
+
+            $this->index['routes'][$resource] = $resourceInfo;
+
+            $routeAuth = (bool) config("coreintegration.routeOptions.{$resource}.authenticationToken");
+            if ($routeAuth) {
+                $this->index['routes'][$resource]['routeSpecificAuthentication'] = true;
+                $this->index['quickRouteReference'][$resource]['routeSpecificAuthentication'] = true;
+            }
+        }
+    }
 }
+
+// TODO: add this
+// "info": {
+//         "message": "Documentation on how to utilize parameter data types can be found in the index response, in the ApiDocumentation section.",
+//         "index_url": "http://localhost:8000/api/v1/"
+//     },
+
+// // general route documentation
+// 'generalRoutDocumentation' => [
+//     // Main Authentication
+//     // TODO: 'authToken' vs bearer token
+//     'mainAuthentication' => [
+//         'authToken' => 'NEEDS NEW INSTRUCTIONS', // TODO: needs new instructions
+//         // get bearer token only for get auth
+//         // authToken for all other requests is ok
+//             // authToken can not be sent in the url
+//     ],
+//     'httpMethods' => [
+//         'GET' => 'Accepts urlcoded data',
+//         'POST' => 'Accepts form data',
+//         'PUT' => 'Accepts form data',
+//         'PATCH' => 'Accepts form data',
+//         'DELETE' => 'Accepts URL/GET variables'
+//     ],
+// ],

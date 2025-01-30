@@ -4,5 +4,5 @@ namespace App\CoreIntegrationApi;
 
 interface QueryIndex
 {
-    public function get(): array;
+    public function get(array $validatedMetaData): array;
 }

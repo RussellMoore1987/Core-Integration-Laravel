@@ -31,7 +31,7 @@ class GetRequestMethodQueryResolver implements RequestMethodQueryResolver
         return $this->queryResult; // TODO: test if casting to an array brakes anything, if not make array the correct return
     }
 
-    protected function checkResourceColumnData()
+    protected function checkResourceColumnData(): void
     {
         if (isset($this->validatedMetaData['acceptedParameters']['columnData'])) {
             foreach ($this->validatedMetaData['resourceInfo']['acceptableParameters'] as $columnName => $columnArray) {
@@ -45,14 +45,14 @@ class GetRequestMethodQueryResolver implements RequestMethodQueryResolver
         }
     }
 
-    protected function checkIndex()
+    protected function checkIndex(): void
     {
         if (!$this->queryResult && $this->validatedMetaData['endpointData']['resource'] == 'index') {
-            $this->queryResult = $this->queryIndex->get();
+            $this->queryResult = $this->queryIndex->get($this->validatedMetaData);
         }
     }
 
-    protected function checkFormData()
+    protected function checkFormData(): void
     {
         if (!$this->queryResult && isset($this->validatedMetaData['acceptedParameters']['formData'])) {
             foreach ($this->validatedMetaData['resourceInfo']['acceptableParameters'] as $parameterName => $parameterArray) {
@@ -62,7 +62,7 @@ class GetRequestMethodQueryResolver implements RequestMethodQueryResolver
         }
     }
 
-    protected function checkGetRequest()
+    protected function checkGetRequest(): void
     {
         if (!$this->queryResult && strtolower($this->validatedMetaData['endpointData']['requestMethod']) == 'get') {
             $this->queryResult = $this->queryAssembler->query($this->validatedMetaData);

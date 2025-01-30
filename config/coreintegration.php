@@ -27,7 +27,26 @@ return [
         'skills' => 'App\Models\Skill',
         'workHistoryTypes' => 'App\Models\WorkHistoryType',
         'workHistory' => 'App\Models\WorkHistory',
-        'tests' => 'App\Models\Test',
+        // 'tests' => 'App\Models\Test', // TODO broken because of time property
+    ],
+
+    'authenticationToken' => env('CORE_INTEGRATION_API_TOKEN', 'test'), // TODO: in production remove the default value 'test'
+
+    // 'authenticationType' => 'Bearer', // formDataToken, Bearer, Bearer is default/preferred // TODO: test this
+
+    'getProtected' => false, // effective for all endpoints, GET can only be protected if Bearer token is required, default true // TODO: test this
+
+    // 'restrictedHttpMethods' => ['DELETE'], // effective for all endpoints // TODO: test this
+
+    'routeOptions' => [ // TODO: test this
+        'caseStudies' => [
+            // token
+            // sql restrictions
+            // token sql restrictions
+            // getProtected // GET can only be protected if Bearer token is required
+            'authenticationToken' => env('CASE_STUDIES_API_TOKEN', 'test'),
+            'restrictedHttpMethods' => ['POST', 'PUT', 'PATCH', 'DELETE'],
+        ],
     ],
 
     // TODO: look into auto admin, genre of software that we are producing
@@ -43,6 +62,7 @@ return [
     */
 
     'defaultReturnRequestStructure' => 'dataOnly', // @DefaultReturnRequestStructure
+    // TODO: maybe add a trimmed pagination structure total, perPage, currentPage, lastPage, data
 
     // TODO:
     // Available methods (ex: GET, POST) per endpoint

@@ -33,6 +33,10 @@ class ResourceParameterInfoProviderFactory
         $this->isIntThenSetFactoryItem();
         $this->isFloatThenSetFactoryItem();
 
+        if ($this->factoryItem === null) {
+            dd($this->dataType);
+        }
+
         return $this->factoryItem;
     }
 
