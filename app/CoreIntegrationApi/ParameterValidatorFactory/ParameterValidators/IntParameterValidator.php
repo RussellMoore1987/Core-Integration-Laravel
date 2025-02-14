@@ -61,17 +61,20 @@ class IntParameterValidator implements ParameterValidator
     {
         // if isArray
         // $this->int = $this->intArrayProcessor->process($this->int, $this->comparisonOperator, $this->errorCollector);
-        if (
-            str_contains($this->int, ',') &&
-            (
-                in_array($this->intAction, ['between', 'bt', 'in', 'notin']) ||
-                $this->intAction === null
-            )
-        ) {
+        // if $this->intAction = '' then it is a single int
+        if ($this->shouldProcessAsArray()) {
             $this->processedAsArray = true;
             $this->evaluateEachIntInArray();
             $this->isIntArrayValidThenSetElseSetError();
         }
+    }
+
+    protected function shouldProcessAsArray(): bool
+    {
+        return str_contains($this->int, ',') && (
+            in_array($this->intAction, ['between', 'bt', 'in', 'notin']) ||
+            $this->intAction === null
+        );
     }
 
     protected function evaluateEachIntInArray(): void

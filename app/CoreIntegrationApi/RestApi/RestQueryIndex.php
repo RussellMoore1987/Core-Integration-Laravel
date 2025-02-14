@@ -125,7 +125,43 @@ class RestQueryIndex implements QueryIndex
     // TODO: find a way to make this dynamic
     private function getParameterDataTypes(): array
     {
-        return [];
+        return [ // @See ResourceParameterInfoProviderFactory.php
+            // @IntTypeDeterminer
+            'int' => [
+                'databaseDataTypes' => [
+                    'tinyint',
+                    'smallint',
+                    'mediumint',
+                    'int',
+                    'bigint',
+                    'contains-int'
+                ],
+                // @See IntParameterValidator.php
+                'documentation' => [
+                    
+                ]
+            ],
+            'string' => 'string',
+            'json' => 'json',
+            'date' => 'date',
+            'float' => 'float',
+        ];
+
+        // "id": "int",
+        // "title": "string",
+        // "roles": "string",
+        // "client": "string",
+        // "description": "string",
+        // "content": "json",
+        // "video_link": "string",
+        // "code_link": "string",
+        // "demo_link": "string",
+        // "start_date": "date",
+        // "end_date": "date",
+        // "is_published": "int",
+        // "created_at": "date",
+        // "updated_at": "date",
+        // "budget": "float"
     }
 
     private function compileRoutes(): void
@@ -168,6 +204,8 @@ class RestQueryIndex implements QueryIndex
         }
     }
 }
+
+// TODO: Need to find a better way to test config values ***************************************************************
 
 // TODO: add this
 // "info": {

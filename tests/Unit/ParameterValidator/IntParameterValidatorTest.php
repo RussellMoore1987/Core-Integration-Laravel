@@ -251,9 +251,10 @@ class IntParameterValidatorTest extends TestCase
             'team_id' => [
                 'intConvertedTo' => 13,
                 'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => null,
+                'comparisonOperatorConvertedTo' => '',
                 'originalComparisonOperator' => '',
                 'parameterError' => [
+                    $this->invalidActionErrorMassage($intString),
                     $this->invalidComparisonOperatorErrorMassage(),
                 ],
             ],
@@ -280,9 +281,10 @@ class IntParameterValidatorTest extends TestCase
             'team_id' => [
                 'intConvertedTo' => '13,22,55',
                 'originalIntString' => $intString,
-                'comparisonOperatorConvertedTo' => null,
+                'comparisonOperatorConvertedTo' => '',
                 'originalComparisonOperator' => '',
                 'parameterError' => [
+                    $this->invalidActionErrorMassage($intString),
                     $this->unableToProcessArrayOfIntsErrorMassage($int),
                     $this->invalidComparisonOperatorErrorMassage(),
                 ],
@@ -584,6 +586,14 @@ class IntParameterValidatorTest extends TestCase
         return [
             'value' => $value,
             'valueError' => "The value passed in is not an int. Only ints are permitted for this parameter. Your value is a {$dataType}."
+        ];
+    }
+
+    private function invalidActionErrorMassage(string $value): array
+    {
+        return [
+            'value' => $value,
+            'valueError' => 'Comparison operator is required if using the "::", ex: 123::lt.'
         ];
     }
 }

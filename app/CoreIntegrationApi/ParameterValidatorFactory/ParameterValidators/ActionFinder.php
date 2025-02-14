@@ -11,14 +11,21 @@ class ActionFinder
         if (str_contains($parameterValue, '::')) {
             $parameterValueArray = explode('::', $parameterValue);
     
+            $value = trim($parameterValueArray[0]);
             $originalComparisonOperator = trim($parameterValueArray[1]);
             $action = strtolower($originalComparisonOperator);
-            $value = trim($parameterValueArray[0]);
+
+            if ($action === '') {
+                $errorCollector->add([
+                    'value' => $parameterValue,
+                    'valueError' => 'Comparison operator is required if using the "::", ex: 123::lt.',
+                ]);
+            }
     
             if (count($parameterValueArray) > 2) {
                 $errorCollector->add([
                     'value' => $parameterValue,
-                    'valueError' => "Only one comparison operator is permitted per parameter, ex: 123::lt.",
+                    'valueError' => 'Only one comparison operator is permitted per parameter, ex: 123::lt.',
                 ]);
                 unset($parameterValueArray[0]);
                 $action = 'inconclusive';
