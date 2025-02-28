@@ -20,6 +20,49 @@ class ComparisonOperatorProviderTest extends TestCase
     }
 
     /**
+     * @dataProvider optionsProvider
+     * @group rest
+     * @group context
+     * @group get
+     */
+    public function test_getOptions_specific_options(array $getOptions): void
+    {
+        $options = ComparisonOperatorProvider::getOptions($getOptions);
+
+        $expectedOptions = [];
+
+        foreach ($getOptions as $option) {
+            $expectedOptions[$option] = ComparisonOperatorProvider::COMPARISON_OPERATOR_MATRIX[$option];
+        }
+
+        $this->assertEquals($expectedOptions, $options);
+    }
+
+    public function optionsProvider(): array
+    {
+        return [
+            'options 1' => [['=', '>', '>=', '<', '<=', 'bt', 'in', 'notin']],
+            'options 2' => [['=', '>', '>=', '<', '<=', 'bt', 'in']],
+            'options 3' => [['=', '>', '>=', '<', '<=', 'bt']],
+            'options 4' => [['=']],
+        ];
+    }
+
+    /**
+     * @group rest
+     * @group context
+     * @group get
+     */
+    public function test_getOptions_all_options(): void
+    {
+        $options = ComparisonOperatorProvider::getOptions([]);
+
+        $expectedOptions = ComparisonOperatorProvider::COMPARISON_OPERATOR_MATRIX;
+
+        $this->assertEquals($expectedOptions, $options);
+    }
+
+    /**
      * @dataProvider actionProvider
      * @group rest
      * @group context

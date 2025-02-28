@@ -2,8 +2,10 @@
 
 namespace App\CoreIntegrationApi\RestApi;
 
+use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ComparisonOperatorProvider;
 use App\CoreIntegrationApi\QueryIndex;
 use App\CoreIntegrationApi\ResourceModelInfoProvider;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviderFactory;
 
 // TODO: these
 // limiting HTTP methods per route, overall
@@ -126,19 +128,33 @@ class RestQueryIndex implements QueryIndex
     private function getParameterDataTypes(): array
     {
         return [ // @See ResourceParameterInfoProviderFactory.php
-            // @IntTypeDeterminer
+            'notes' => [
+                '"parameterDataTypes" references how you can access a given resource parameter.',
+                'For "databaseDataTypes" "contains-" triggers functionality that looks for the word after the hyphen in the given data type name of the resource parameter. ex: "contains-int" finds the word "int" in the database data type of "bigint", which determines that resource parameter to be an parameter data type of int.',
+            ],
+            'options' => ComparisonOperatorProvider::getOptions(),
             'int' => [
-                'databaseDataTypes' => [
-                    'tinyint',
-                    'smallint',
-                    'mediumint',
-                    'int',
-                    'bigint',
-                    'contains-int'
+                'notes' => [
+                    'Only ints, whole numbers are allowed.',
                 ],
-                // @See IntParameterValidator.php
+                'databaseDataTypes' => ResourceParameterInfoProviderFactory::INT_TYPE_DETERMINERS, // TODO: is this needed?
                 'documentation' => [
-                    
+                    'arrayOptions' => 'in,notin,between',
+                    // arrayExamples: 'in=1,2,3', 'notin=1,2,3', 'between=1,3',
+                    'arrayExamples' => [
+                        'in' => [
+                            'intParameter=1,2,3',
+                            'intParameter=1,2,3::in',
+                        ],
+                        'notin' => [
+                            'intParameter=1,2,3::notin',
+                        ],
+                        'between' => [
+                            'intParameter=1,3::between',
+                        ],
+                    ],
+                    // 'singleOptions' => 'gt,gte,lt,lte,equal',
+                    'singleOptions' => '>,>=,<,<=,=',
                 ]
             ],
             'string' => 'string',

@@ -471,6 +471,7 @@ class IntParameterValidatorTest extends TestCase
             'betweenUsing_bt' => ['bt', 'bt'],
             'inUsing_in' => ['in', 'in'],
             'notInUsing_notIn' => ['notIn', 'notin'],
+            'notInUsing_ni' => ['ni', 'notin'],
         ];
      }
 

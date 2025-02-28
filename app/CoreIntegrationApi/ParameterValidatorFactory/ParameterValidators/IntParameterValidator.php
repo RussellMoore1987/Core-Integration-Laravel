@@ -27,7 +27,7 @@ class IntParameterValidator implements ParameterValidator
     protected $realInts;
     protected $errors;
     protected $comparisonOperator;
-
+    
     public function __construct(ComparisonOperatorProvider $comparisonOperatorProvider, ErrorCollector $errorCollector, ActionFinder $actionFinder)
     {
         $this->comparisonOperatorProvider = $comparisonOperatorProvider;
@@ -71,8 +71,10 @@ class IntParameterValidator implements ParameterValidator
 
     protected function shouldProcessAsArray(): bool
     {
+        $array_options = ComparisonOperatorProvider::getOptions(['bt', 'in', 'notin']);
+        $array_options = array_merge(...array_values($array_options)); // flatten array
         return str_contains($this->int, ',') && (
-            in_array($this->intAction, ['between', 'bt', 'in', 'notin']) ||
+            in_array($this->intAction, $array_options) ||
             $this->intAction === null
         );
     }

@@ -8,7 +8,7 @@ class ComparisonOperatorProvider
 {
     protected $filterOptions;
     protected $comparisonOperatorOptions;
-    protected $comparisonOperatorMatrix = [
+    const COMPARISON_OPERATOR_MATRIX = [
         '=' => ['equal', 'e', '='],
         '>' => ['greaterthan', 'gt', '>'],
         '>=' => ['greaterthanorequal', 'gte', '>='],
@@ -18,12 +18,26 @@ class ComparisonOperatorProvider
         'in' => ['in'],
         'notin' => ['notin', 'ni'],
     ];
+    
+    public static function getOptions(array $getOptions = []): array
+    {
+        if ($getOptions) {
+            foreach ($getOptions as $option) {
+                $options[$option] = self::COMPARISON_OPERATOR_MATRIX[$option];
+            }
+        } else {
+            $options = self::COMPARISON_OPERATOR_MATRIX;
+        }
 
+        return $options;
+    }
+
+     // TODO: change to getOptions ???
     public function select(string $action, ErrorCollector &$errorCollector, array $filterOptions = null): string
     {
         $this->filterOptions = $filterOptions;
 
-        $this->comparisonOperatorOptions = $this->filterOptionsIsNotSet() ? $this->comparisonOperatorMatrix : $this->findComparisonOperatorSubSet();
+        $this->comparisonOperatorOptions = $this->filterOptionsIsNotSet() ? self::COMPARISON_OPERATOR_MATRIX : $this->findComparisonOperatorSubSet();
 
         return $this->findComparisonOperator(strtolower($action), $errorCollector);
     }
@@ -36,7 +50,7 @@ class ComparisonOperatorProvider
     protected function findComparisonOperatorSubSet(): array
     {
         foreach ($this->filterOptions as $operator) {
-            $comparisonOperatorOptions[$operator] = $this->comparisonOperatorMatrix[$operator]; // TODO: test for error
+            $comparisonOperatorOptions[$operator] = self::COMPARISON_OPERATOR_MATRIX[$operator]; // TODO: test for error
         }
         return $comparisonOperatorOptions ?? [];
     }

@@ -12,9 +12,18 @@ use Illuminate\Support\Facades\App;
 
 class ResourceParameterInfoProviderFactory
 {
-    protected $factoryItem;
-    protected $dataType;
-    protected $factoryItemArray = [
+    const INT_TYPE_DETERMINERS = [
+        'contains-int',
+        'tinyint',
+        'smallint',
+        'mediumint',
+        'int',
+        'bigint',
+    ];
+
+    protected ?ResourceParameterInfoProvider $factoryItem;
+    protected string $dataType;
+    protected array $factoryItemArray = [
         'string' => StringResourceParameterInfoProvider::class,
         'json' => JsonResourceParameterInfoProvider::class,
         'date' => DateResourceParameterInfoProvider::class,
@@ -76,8 +85,7 @@ class ResourceParameterInfoProviderFactory
 
     protected function isIntThenSetFactoryItem(): void
     {
-        // @IntTypeDeterminer
-        if ($this->factoryItemIsNotSet() && str_contains($this->dataType, 'int')) {
+        if ($this->factoryItemIsNotSet() && $this->checkForType(self::INT_TYPE_DETERMINERS)) {
             $this->setFactoryItem($this->factoryItemArray['int']);
         }
     }
@@ -100,6 +108,27 @@ class ResourceParameterInfoProviderFactory
     protected function factoryItemIsNotSet(): bool
     {
         return !$this->factoryItem;
+    }
+
+    protected function checkForType(array $checks): bool
+    {
+        $foundType = false;
+        foreach ($checks as $type) {
+            if (str_contains($type, 'contains-')) {
+                $type = explode('-', $type)[1];
+                if (str_contains($this->dataType, $type)) {
+                    $foundType = true;
+                    break;
+                }
+            } else {
+                if ($this->dataType == $type) {
+                    $foundType = true;
+                    break;
+                }
+            }
+        }
+
+        return $foundType;
     }
 
     protected function setFactoryItem($dataTypeClassPath): void
