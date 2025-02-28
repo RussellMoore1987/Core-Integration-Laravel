@@ -10,6 +10,9 @@ class StringResourceParameterInfoProvider extends ResourceParameterInfoProvider
 
     protected function setParameterData(): void
     {
+        // is char
+        // is varchar
+        // is text
         $this->formData = ['min' => -128];
         $this->defaultValidationRules = ['min:-128'];
     }

@@ -5,7 +5,7 @@ namespace App\CoreIntegrationApi\RestApi;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ComparisonOperatorProvider;
 use App\CoreIntegrationApi\QueryIndex;
 use App\CoreIntegrationApi\ResourceModelInfoProvider;
-use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviderFactory;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\InfoProviderConsts;
 
 // TODO: these
 // limiting HTTP methods per route, overall
@@ -137,7 +137,7 @@ class RestQueryIndex implements QueryIndex
                 'notes' => [
                     'Only ints, whole numbers are allowed.',
                 ],
-                'databaseDataTypes' => ResourceParameterInfoProviderFactory::INT_TYPE_DETERMINERS, // TODO: is this needed?
+                'databaseDataTypes' => InfoProviderConsts::INT_TYPE_DETERMINERS, // TODO: is this needed?
                 'documentation' => [
                     'arrayOptions' => 'in,notin,between',
                     // arrayExamples: 'in=1,2,3', 'notin=1,2,3', 'between=1,3',

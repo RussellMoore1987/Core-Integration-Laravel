@@ -2,25 +2,18 @@
 
 namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory;
 
-use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\ResourceParameterInfoProvider;
-use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\StringResourceParameterInfoProvider;
-use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\JsonResourceParameterInfoProvider;
-use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\DateResourceParameterInfoProvider;
-use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\IntResourceParameterInfoProvider;
-use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\FloatResourceParameterInfoProvider;
+use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\{
+    ResourceParameterInfoProvider,
+    StringResourceParameterInfoProvider,
+    JsonResourceParameterInfoProvider,
+    DateResourceParameterInfoProvider,
+    IntResourceParameterInfoProvider,
+    FloatResourceParameterInfoProvider
+};
 use Illuminate\Support\Facades\App;
 
 class ResourceParameterInfoProviderFactory
 {
-    const INT_TYPE_DETERMINERS = [
-        'contains-int',
-        'tinyint',
-        'smallint',
-        'mediumint',
-        'int',
-        'bigint',
-    ];
-
     protected ?ResourceParameterInfoProvider $factoryItem;
     protected string $dataType;
     protected array $factoryItemArray = [
@@ -47,60 +40,35 @@ class ResourceParameterInfoProviderFactory
 
     protected function isStringThenSetFactoryItem(): void
     {
-        if (
-            $this->factoryItemIsNotSet() &&
-            (
-                str_contains($this->dataType, 'varchar') ||
-                str_contains($this->dataType, 'char') ||
-                str_contains($this->dataType, 'blob') ||
-                str_contains($this->dataType, 'text') ||
-                $this->dataType == 'enum' ||
-                $this->dataType == 'set'
-            )
-        ) {
+        if ($this->factoryItemIsNotSet() && $this->checkForType(InfoProviderConsts::STR_TYPE_DETERMINERS)) {
             $this->setFactoryItem($this->factoryItemArray['string']);
         }
     }
 
     protected function isJsonThenSetFactoryItem(): void
     {
-        if ($this->factoryItemIsNotSet() && str_contains($this->dataType, 'json')) {
+        if ($this->factoryItemIsNotSet() && $this->checkForType(InfoProviderConsts::JSON_TYPE_DETERMINERS)) {
             $this->setFactoryItem($this->factoryItemArray['json']);
         }
     }
 
     protected function isDateThenSetFactoryItem(): void
     {
-        if (
-            $this->factoryItemIsNotSet() &&
-            (
-                $this->dataType == 'year' ||
-                $this->dataType == 'timestamp' ||
-                str_contains($this->dataType, 'date')
-            )
-        ) {
+        if ($this->factoryItemIsNotSet() && $this->checkForType(InfoProviderConsts::DATE_TYPE_DETERMINERS)) {
             $this->setFactoryItem($this->factoryItemArray['date']);
         }
     }
 
     protected function isIntThenSetFactoryItem(): void
     {
-        if ($this->factoryItemIsNotSet() && $this->checkForType(self::INT_TYPE_DETERMINERS)) {
+        if ($this->factoryItemIsNotSet() && $this->checkForType(InfoProviderConsts::INT_TYPE_DETERMINERS)) {
             $this->setFactoryItem($this->factoryItemArray['int']);
         }
     }
 
     protected function isFloatThenSetFactoryItem(): void
     {
-        if (
-            $this->factoryItemIsNotSet() &&
-            (
-                str_contains($this->dataType, 'decimal') ||
-                str_contains($this->dataType, 'numeric') ||
-                str_contains($this->dataType, 'float') ||
-                str_contains($this->dataType, 'double')
-            )
-        ) {
+        if ($this->factoryItemIsNotSet() && $this->checkForType(InfoProviderConsts::FLOAT_TYPE_DETERMINERS)) {
             $this->setFactoryItem($this->factoryItemArray['float']);
         }
     }
