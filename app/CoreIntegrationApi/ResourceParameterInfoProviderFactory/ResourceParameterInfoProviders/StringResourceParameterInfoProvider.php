@@ -13,6 +13,13 @@ class StringResourceParameterInfoProvider extends ResourceParameterInfoProvider
         // is char
         // is varchar
         // is text
+        
+        dd(
+            $this->parameterName,
+            $this->parameterAttributeArray,
+            $this->parameterDataType
+        );
+
         $this->formData = ['min' => -128];
         $this->defaultValidationRules = ['min:-128'];
     }
