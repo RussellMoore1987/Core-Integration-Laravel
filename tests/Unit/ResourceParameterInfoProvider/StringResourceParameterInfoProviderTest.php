@@ -7,8 +7,8 @@ use Tests\TestCase;
 
 class StringResourceParameterInfoProviderTest extends TestCase
 {
-    protected StringResourceParameterInfoProvider $stringResourceParameterInfoProvider;
-    protected array $parameterAttributeArray;
+    protected $stringResourceParameterInfoProvider;
+    protected $parameterAttributeArray;
 
     protected function setUp(): void
     {
@@ -16,10 +16,10 @@ class StringResourceParameterInfoProviderTest extends TestCase
 
         $this->parameterAttributeArray = [
             'field' => 'fakeParameterName',
-            'type' => 'tinyint',
-            'null' => 'no',
+            'type' => 'varchar(255)',
+            'null' => 'yes',
             'key' => '',
-            'default' => '0',
+            'default' => '',
             'extra' => '',
         ];
 
@@ -43,15 +43,80 @@ class StringResourceParameterInfoProviderTest extends TestCase
     public function stringResourceParameterInfoProvider(): array
     {
         return [
-            'varchar(50)' => [
-                'varchar(50)',
+            'char' => [
+                'char(50)',
                 [
-                    'min' => 0,
-                    'max' => 50,
                     'maxlength' => 50,
+                    'type' => 'text',
                     'defaultValidationRules' => [
-                        'min:0',
+                        'string',
                         'max:50',
+                    ]
+                ]
+            ],
+            'varchar' => [
+                'varchar(100)',
+                [
+                    'maxlength' => 100,
+                    'type' => 'text',
+                    'defaultValidationRules' => [
+                        'string',
+                        'max:100',
+                    ]
+                ]
+            ],
+            'tinytext' => [
+                'tinytext',
+                [
+                    'maxlength' => 255,
+                    'type' => 'textarea',
+                    'defaultValidationRules' => [
+                        'string',
+                        'max:255',
+                    ]
+                ]
+            ],
+            'text' => [
+                'text',
+                [
+                    'maxlength' => 65535,
+                    'type' => 'textarea',
+                    'defaultValidationRules' => [
+                        'string',
+                        'max:65535',
+                    ]
+                ]
+            ],
+            'mediumtext' => [
+                'mediumtext',
+                [
+                    'maxlength' => 16777215,
+                    'type' => 'textarea',
+                    'defaultValidationRules' => [
+                        'string',
+                        'max:16777215',
+                    ]
+                ]
+            ],
+            'longtext' => [
+                'longtext',
+                [
+                    'maxlength' => 4294967295,
+                    'type' => 'textarea',
+                    'defaultValidationRules' => [
+                        'string',
+                        'max:4294967295',
+                    ]
+                ]
+            ],
+            'enum' => [ // TODO: need to test if this is how it comes in from the database
+                "enum('active','inactive','pending')",
+                [
+                    'type' => 'select',
+                    'options' => ['active', 'inactive', 'pending'],
+                    'defaultValidationRules' => [
+                        'string',
+                        'in:active,inactive,pending',
                     ]
                 ]
             ],
@@ -60,19 +125,17 @@ class StringResourceParameterInfoProviderTest extends TestCase
 
     protected function getExpectedResult(array $expectedResultPieces): array
     {
+        $formData['type'] = $expectedResultPieces['type'];
+        if (isset($expectedResultPieces['options'])) {
+            $formData['options'] = $expectedResultPieces['options'];
+        } else {
+            $formData['maxlength'] = $expectedResultPieces['maxlength'];
+        }
+
         return [
             'apiDataType' => 'string',
-            'formData' => [
-                'min' => $expectedResultPieces['min'],
-                'max' => $expectedResultPieces['max'],
-                'maxlength' => $expectedResultPieces['maxlength'],
-                'type' => 'text',
-            ],
-            'defaultValidationRules' => [
-                'string',
-                $expectedResultPieces['defaultValidationRules'][0],
-                $expectedResultPieces['defaultValidationRules'][1]
-            ]
+            'formData' => $formData,
+            'defaultValidationRules' => $expectedResultPieces['defaultValidationRules']
         ];
     }
 }

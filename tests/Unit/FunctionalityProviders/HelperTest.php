@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\FunctionalityProviders;
 
 use App\CoreIntegrationApi\FunctionalityProviders\Helper;
 use Tests\TestCase;
