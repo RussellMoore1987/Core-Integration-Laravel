@@ -21,15 +21,6 @@ class FloatResourceParameterInfoProvider extends ResourceParameterInfoProvider
         $this->isFloatThenSetParameterInfo();
         $this->isDoubleThenSetParameterInfo();
         $this->isDecimalThenSetParameterInfo();
-
-        // dd(
-        //     $this->floatParameterDataType,
-        //     $this->parameterDataType,
-        //     $this->precision,
-        //     $this->scale,
-        //     $this->defaultValidationRules,
-        //     $this->formData
-        // );
     }
 
     protected function prepareFloatParameterForProcessing(): void
