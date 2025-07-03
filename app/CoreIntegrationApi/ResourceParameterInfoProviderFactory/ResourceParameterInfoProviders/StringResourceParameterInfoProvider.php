@@ -4,6 +4,7 @@ namespace App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourcePa
 
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\ResourceParameterInfoProviders\ResourceParameterInfoProvider;
 
+// TODO: add string data types link
 class StringResourceParameterInfoProvider extends ResourceParameterInfoProvider
 {
     protected $apiDataType = 'string';
@@ -13,7 +14,9 @@ class StringResourceParameterInfoProvider extends ResourceParameterInfoProvider
         // is char
         // is varchar
         // is text
-        
+
+        // ! start here ********************************************************************
+
         dd(
             $this->parameterName,
             $this->parameterAttributeArray,
