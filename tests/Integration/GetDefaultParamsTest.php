@@ -241,29 +241,37 @@ class GetDefaultParamsTest extends TestCase
                 'type' => 'number',
             ],
             'title' => [
-                'min' => -128,
+                'maxlength' => 75,
+                'type' => 'text',
                 'required' => true,
             ],
             'roles' => [
-                'min' => -128,
+                'maxlength' => 50,
+                'type' => 'text',
             ],
             'client' => [
-                'min' => -128,
+                'maxlength' => 50,
+                'type' => 'text',
             ],
             'description' => [
-                'min' => -128,
+                'maxlength' => 255,
+                'type' => 'text',
             ],
             'content' => [
-                'min' => -128,
+                'type' => 'textarea',
+                'placeholder' => 'Enter valid JSON...',
             ],
             'video_link' => [
-                'min' => -128,
+                'maxlength' => 255,
+                'type' => 'text',
             ],
             'code_link' => [
-                'min' => -128,
+                'maxlength' => 255,
+                'type' => 'text',
             ],
             'demo_link' => [
-                'min' => -128,
+                'maxlength' => 255,
+                'type' => 'text',
             ],
             'start_date' => [
                 'type' => 'date',
