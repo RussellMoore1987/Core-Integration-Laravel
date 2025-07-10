@@ -29,7 +29,8 @@ class PostRequestMethodTest extends TestCase
             'error' => 'Validation failed',
             'errors' => [
               'title' => [
-                0 => 'The title field is required.'
+                'The title must be a string.',
+                'The title field is required.'
               ]
             ],
             'message' => 'Validation failed, resend request after adjustments have been made.',
