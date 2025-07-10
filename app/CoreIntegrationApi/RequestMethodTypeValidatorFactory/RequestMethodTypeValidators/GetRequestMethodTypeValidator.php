@@ -48,6 +48,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
             $this->parameterValue = $parameterValue;
 
             $this->isAcceptableParametersThenValidate();
+            $this->isIndexRequestThenValidate();
             $this->isDefaultResourceParametersThenValidate();
             $this->isDefaultGetParametersThenValidate();
             $this->isInvalidParametersThenRejected();
@@ -59,12 +60,42 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
     protected function isAcceptableParametersThenValidate(): void
     {
         // TODO-Security: test for vulnerabilities accessing or filtering based off of 'password' or something like that ($this->resourceInfo['acceptableParameters'])
-        if ($this->isParameterTypeNotSet() && array_key_exists($this->parameterName, $this->resourceInfo['acceptableParameters'])) {
+        if ($this->isAcceptable()) {
             $this->parameterType = true;
 
             $dataType = $this->resourceInfo['acceptableParameters'][$this->parameterName]['apiDataType'];
             $this->getMethodParameterValidator($dataType);
         }
+    }
+
+    private function isAcceptable(): bool
+    {
+        return $this->isParameterTypeNotSet() &&
+            $this->resourceInfo &&
+            array_key_exists($this->parameterName, $this->resourceInfo['acceptableParameters']);
+    }
+
+    // TODO: add test for isIndexRequestThenValidate
+    protected function isIndexRequestThenValidate(): void
+    {
+        if ($this->isIndexRequest()) {
+            $this->parameterType = true;
+
+            // TODO: not correct, pull in IndexParameterValidator.php
+            // like this:
+            //  $this->defaultGetParameterValidator->validate($this->parameterName, $this->parameterValue, $this->validatorDataCollector);
+            $dataType = $this->resourceInfo['indexParameterDataType'] ?? 'string';
+            $this->getMethodParameterValidator($dataType);
+        }
+    }
+
+    private function isIndexRequest(): bool
+    {
+        $resource = $this->validatorDataCollector->endpointData['resource'];
+        $isIndexRequest = $resource === 'index';
+        $isValidParam = in_array($this->parameterName, IndexParameterValidator::DEFAULT_INDEX_PARAMETERS);
+
+        return $this->isParameterTypeNotSet() && $isIndexRequest && $isValidParam;
     }
 
     protected function isDefaultResourceParametersThenValidate(): void

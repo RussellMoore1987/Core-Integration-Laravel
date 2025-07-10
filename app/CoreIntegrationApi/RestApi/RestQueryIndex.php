@@ -8,6 +8,7 @@ use App\CoreIntegrationApi\ResourceModelInfoProvider;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\InfoProviderConsts;
 
 // TODO: these
+// ! NEEDS testing*********
 // limiting HTTP methods per route, overall
 // authentication, authentication by route
 // SQL restrictions per route
@@ -37,6 +38,8 @@ class RestQueryIndex implements QueryIndex
         $this->compileApiDocumentation();
         $this->compileRoutes();
 
+        $this->filterIndex();
+
         return $this->index;
     }
 
@@ -55,17 +58,20 @@ class RestQueryIndex implements QueryIndex
         }
     }
 
+    // TODO: put this in a helper class, and other methods
     private function getMainInformation(): array
     {
         return [
-            'companyName' => 'Placeholder Company',
-            'termsOfUse' => 'Placeholder Terms URL',
-            'version' => '1.0.0',
-            'contact' => 'someone@someone.com',
-            'description' => 'v1.0.0 of the api. This API may be used to retrieve data. restrictions and limitations are detailed below in the _______ section.', // TODO: fix this _______
-            'siteRoot' => substr($this->validatedMetaData['endpointData']['indexUrl'], 0, -7),
-            'apiRoot' => $this->validatedMetaData['endpointData']['indexUrl'],
-            'defaultReturnRequestStructure' => config('coreintegration.defaultReturnRequestStructure', 'dataOnly'),
+            'about' => [
+                'companyName' => 'Placeholder Company',
+                'termsOfUse' => 'Placeholder Terms URL',
+                'version' => '1.0.0',
+                'contact' => 'someone@someone.com',
+                'description' => 'v1.0.0 of the api. This API may be used to retrieve data. restrictions and limitations are detailed below in the _______ section.', // TODO: fix this _______
+                'siteRoot' => substr($this->validatedMetaData['endpointData']['indexUrl'], 0, -7),
+                'apiRoot' => $this->validatedMetaData['endpointData']['indexUrl'],
+                'defaultReturnRequestStructure' => config('coreintegration.defaultReturnRequestStructure', 'dataOnly'),
+            ]
         ];
     }
 
@@ -218,6 +224,12 @@ class RestQueryIndex implements QueryIndex
                 $this->index['quickRouteReference'][$resource]['routeSpecificAuthentication'] = true;
             }
         }
+    }
+
+    // ! start here ************************* reason or task at hand
+    private function filterIndex(): void
+    {
+        dd('Filtering index...', $this->validatedMetaData, $this->index);
     }
 }
 

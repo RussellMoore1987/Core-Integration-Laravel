@@ -4,7 +4,6 @@ namespace App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethod
 
 use App\CoreIntegrationApi\ValidatorDataCollector;
 
-// TODO: make a test for this class
 class DefaultGetParameterValidator
 {
     const DEFAULT_GET_PARAMETERS = [
