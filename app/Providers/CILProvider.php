@@ -14,6 +14,7 @@ use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ActionF
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ComparisonOperatorProvider;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ErrorCollector;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\IntParameterValidator;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\IndexParameterValidator;
 use Illuminate\Support\ServiceProvider;
 
 class CILProvider extends ServiceProvider
@@ -53,6 +54,7 @@ class CILProvider extends ServiceProvider
             return new GetRequestMethodTypeValidator(
                 $app->make(ParameterValidatorFactory::class),
                 $app->make(DefaultGetParameterValidator::class),
+                $app->make(IndexParameterValidator::class),
             );
         });
     }

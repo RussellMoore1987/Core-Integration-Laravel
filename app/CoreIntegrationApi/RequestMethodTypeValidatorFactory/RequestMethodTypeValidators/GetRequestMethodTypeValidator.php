@@ -4,6 +4,7 @@ namespace App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethod
 
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\RequestMethodTypeValidator;
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\DefaultGetParameterValidator;
+use app\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\IndexParameterValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -11,14 +12,14 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 // TODO: make a test for this class
 class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
 {
-    protected $parameterValidatorFactory;
-    protected $defaultGetParameterValidator;
-    protected $validatorDataCollector;
-    protected $resourceInfo;
-    protected $parameterType;
-    protected $parameterName;
+    protected ParameterValidatorFactory $parameterValidatorFactory;
+    protected DefaultGetParameterValidator $defaultGetParameterValidator;
+    protected ValidatorDataCollector $validatorDataCollector;
+    protected array $resourceInfo;
+    protected bool $parameterType;
+    protected string $parameterName;
     protected $parameterValue;
-    protected $defaultResourceParameters = [
+    protected array $defaultResourceParameters = [
         'columns' => 'select',
         'select' => 'select',
         'orderby' => 'orderby',
@@ -30,10 +31,12 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         'includes' => 'includes',
     ];
 
-    public function __construct(ParameterValidatorFactory $parameterValidatorFactory, DefaultGetParameterValidator $defaultGetParameterValidator)
+    // TODO: move to new spot??? DefaultGetParameterValidator and IndexParameterValidator
+    public function __construct(ParameterValidatorFactory $parameterValidatorFactory, DefaultGetParameterValidator $defaultGetParameterValidator, IndexParameterValidator $indexParameterValidator)
     {
         $this->parameterValidatorFactory = $parameterValidatorFactory;
         $this->defaultGetParameterValidator = $defaultGetParameterValidator;
+        $this->indexParameterValidator = $indexParameterValidator;
     }
 
     public function validateRequest(ValidatorDataCollector &$validatorDataCollector): void
@@ -81,11 +84,7 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         if ($this->isIndexRequest()) {
             $this->parameterType = true;
 
-            // TODO: not correct, pull in IndexParameterValidator.php
-            // like this:
-            //  $this->defaultGetParameterValidator->validate($this->parameterName, $this->parameterValue, $this->validatorDataCollector);
-            $dataType = $this->resourceInfo['indexParameterDataType'] ?? 'string';
-            $this->getMethodParameterValidator($dataType);
+            $this->indexParameterValidator->validate($this->parameterName, $this->parameterValue, $this->validatorDataCollector);
         }
     }
 

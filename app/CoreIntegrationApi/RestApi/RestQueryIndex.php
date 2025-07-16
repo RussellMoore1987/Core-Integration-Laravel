@@ -4,11 +4,13 @@ namespace App\CoreIntegrationApi\RestApi;
 
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidators\ComparisonOperatorProvider;
 use App\CoreIntegrationApi\QueryIndex;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\IndexParameterValidator;
 use App\CoreIntegrationApi\ResourceModelInfoProvider;
 use App\CoreIntegrationApi\ResourceParameterInfoProviderFactory\InfoProviderConsts;
 
 // TODO: these
 // ! NEEDS testing*********
+    // end to end testing, brake up into smaller tests and classes
 // limiting HTTP methods per route, overall
 // authentication, authentication by route
 // SQL restrictions per route
@@ -229,7 +231,21 @@ class RestQueryIndex implements QueryIndex
     // ! start here ************************* reason or task at hand
     private function filterIndex(): void
     {
-        dd('Filtering index...', $this->validatedMetaData, $this->index);
+        $indexParameters = array_keys($this->validatedMetaData['acceptedParameters'] ?? []);
+        $expectableParameters = [];
+        foreach ($indexParameters as $indexParameter) {
+            if (in_array($indexParameter, IndexParameterValidator::ACCEPTABLE_PARAMETERS)) {
+                $expectableParameters[] = $indexParameter;
+            }
+        }
+
+        if (!empty($expectableParameters)) {
+            $tempIndex = $this->index;
+            $this->index = [];
+            foreach ($expectableParameters as $indexParameter) {
+                $this->index[$indexParameter] = $tempIndex[$indexParameter];
+            }
+        }
     }
 }
 

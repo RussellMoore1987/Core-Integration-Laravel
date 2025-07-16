@@ -12,6 +12,12 @@ class IndexParameterValidator
         'quickroutereference', 'quick_route_reference',
         'routes'
     ];
+    const ACCEPTABLE_PARAMETERS = [
+        'about',
+        'generalDocumentation',
+        'quickRouteReference',
+        'routes'
+    ];
 
     protected ?bool $parameterType;
     protected string $parameterName;
