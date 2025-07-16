@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\CoreIntegrationApi\RequestMethodQueryResolverFactory\RequestMethodQueryResolvers\GetRequestMethodQueryResolver;
 use App\CoreIntegrationApi\CIL\CILQueryAssembler;
-use App\CoreIntegrationApi\RestApi\RestQueryIndex;
+use App\CoreIntegrationApi\RestApi\RestQueryIndex\RestQueryIndex;
 use Illuminate\Support\ServiceProvider;
 
 class RequestMethodQueryResolverProvider extends ServiceProvider
