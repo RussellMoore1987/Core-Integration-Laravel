@@ -4,6 +4,8 @@ namespace App\CoreIntegrationApi\RestApi\RestQueryIndex;
 
 use App\CoreIntegrationApi\ResourceModelInfoProvider;
 
+// ! start here ************************* make test, look over DocumentationHelperTest.php, MainHelperTest.php
+
 class RouteHelper
 {
     private ResourceModelInfoProvider $resourceProvider;

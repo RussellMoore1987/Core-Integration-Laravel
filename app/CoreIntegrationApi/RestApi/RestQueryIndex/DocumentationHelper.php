@@ -105,10 +105,10 @@ class DocumentationHelper
                     'singleOptions' => '>,>=,<,<=,=',
                 ]
             ],
-            'string' => 'string',
-            'json' => 'json',
-            'date' => 'date',
-            'float' => 'float',
+            'string' => ['string'],
+            'json' => ['json'],
+            'date' => ['date'],
+            'float' => ['float'],
         ];
 
         // "id": "int",
