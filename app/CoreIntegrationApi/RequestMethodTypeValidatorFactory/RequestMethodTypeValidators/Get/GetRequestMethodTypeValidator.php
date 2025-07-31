@@ -1,10 +1,10 @@
 <?php
 
-namespace App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators;
+namespace App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\Get;
 
 use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\RequestMethodTypeValidator;
-use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\DefaultGetParameterValidator;
-use app\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\IndexParameterValidator;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\Get\DefaultGetParameterValidator;
+use app\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\Get\IndexParameterValidator;
 use App\CoreIntegrationApi\ParameterValidatorFactory\ParameterValidatorFactory;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -31,7 +31,6 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
         'includes' => 'includes',
     ];
 
-    // TODO: move to new spot??? DefaultGetParameterValidator and IndexParameterValidator
     public function __construct(ParameterValidatorFactory $parameterValidatorFactory, DefaultGetParameterValidator $defaultGetParameterValidator, IndexParameterValidator $indexParameterValidator)
     {
         $this->parameterValidatorFactory = $parameterValidatorFactory;

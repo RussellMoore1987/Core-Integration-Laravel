@@ -3,7 +3,7 @@
 namespace Tests\Unit\RequestMethodTypeValidator;
 
 use App\CoreIntegrationApi\EndpointValidator;
-use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\GetRequestMethodTypeValidator;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\Get\GetRequestMethodTypeValidator;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\App;

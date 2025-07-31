@@ -38,7 +38,7 @@ class RequestMethodTypeValidatorFactoryTest extends TestCase
     public function requestMethodProvider()
     {
         return [
-            'get' => ['get', "{$this->classPath}\GetRequestMethodTypeValidator"],
+            'get' => ['get', "{$this->classPath}\Get\GetRequestMethodTypeValidator"],
             'post' => ['post', "{$this->classPath}\PostRequestMethodTypeValidator"],
             'put' => ['put', "{$this->classPath}\PutRequestMethodTypeValidator"],
             'patch' => ['patch', "{$this->classPath}\PatchRequestMethodTypeValidator"],

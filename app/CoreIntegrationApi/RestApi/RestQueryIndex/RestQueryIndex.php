@@ -3,7 +3,7 @@
 namespace App\CoreIntegrationApi\RestApi\RestQueryIndex;
 
 use App\CoreIntegrationApi\QueryIndex;
-use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\IndexParameterValidator;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\Get\IndexParameterValidator;
 
 // TODO: these
 // ! NEEDS testing*********

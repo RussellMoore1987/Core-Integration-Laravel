@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\RequestMethodTypeValidator;
 
-use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\IndexParameterValidator;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\Get\IndexParameterValidator;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;

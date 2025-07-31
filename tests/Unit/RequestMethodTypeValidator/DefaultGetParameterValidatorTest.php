@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\RequestMethodTypeValidator;
 
-use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\DefaultGetParameterValidator;
+use App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\Get\DefaultGetParameterValidator;
 use App\CoreIntegrationApi\ValidatorDataCollector;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators;
+namespace App\CoreIntegrationApi\RequestMethodTypeValidatorFactory\RequestMethodTypeValidators\Get;
 
 use App\CoreIntegrationApi\ValidatorDataCollector;
 
