@@ -78,7 +78,6 @@ class GetRequestMethodTypeValidator implements RequestMethodTypeValidator
             array_key_exists($this->parameterName, $this->resourceInfo['acceptableParameters']);
     }
 
-    // TODO: add test for isIndexRequestThenValidate
     protected function isIndexRequestThenValidate(): void
     {
         if ($this->isIndexRequest()) {

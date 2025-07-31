@@ -108,6 +108,28 @@ class GetRequestMethodTypeValidatorTest extends TestCase
         $this->assertEquals(0, count($this->validatorDataCollector->getQueryArguments()));
     }
 
+    /**
+     * @group rest
+     * @group context
+     * @group get
+     */
+    public function test_isIndexRequestThenValidate_sets_acceptedParameters(): void
+    {
+        $this->validatorDataCollector = App::make(ValidatorDataCollector::class);
+        $this->validatorDataCollector->endpointData['resource'] = 'index';
+        $this->validatorDataCollector->parameters = [
+            'about' => 'yes',
+            'general_documentation' => 'yes',
+            'routes' => 'yes',
+        ];
+
+        $this->getRequestMethodTypeValidator->validateRequest($this->validatorDataCollector);
+
+        $this->assertEquals(3, count($this->validatorDataCollector->getAcceptedParameters()));
+        $this->assertEquals(0, count($this->validatorDataCollector->getRejectedParameters()));
+        $this->assertEquals(0, count($this->validatorDataCollector->getQueryArguments()));
+    }
+
     protected function setUpValidatorDataCollector(array $parameters = []): void
     {
         $this->validatorDataCollector = App::make(ValidatorDataCollector::class);
