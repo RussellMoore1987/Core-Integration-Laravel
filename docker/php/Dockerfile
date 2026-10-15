@@ -1,6 +1,12 @@
 # Using the php 7.4 fpm base image
 FROM php:7.4-fpm
 
+# The php 7.4 image is based on an end-of-life Debian release, so its apt repositories live on archive.debian.org
+RUN rm -f /etc/apt/sources.list.d/debian.sources; \
+    CODENAME=$(. /etc/os-release && echo "$VERSION_CODENAME"); \
+    printf "deb http://archive.debian.org/debian %s main\n" "$CODENAME" > /etc/apt/sources.list; \
+    echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99archive
+
 # Update the apt-get
 RUN apt-get update && apt-get install -y \
     # Node and NPM
